@@ -38,8 +38,8 @@
   "hcclient.components.StartScreen.channelInfo": "没有频道列表，因此可以使用秘密频道名称进行私人讨论。",
   "hcclient.components.StartScreen.publicChannelsHeader": "公开频道：",
   "hcclient.components.StartScreen.formattingHeader": "格式：",
-  "hcclient.components.StartScreen.formattingMd": "这个客户端包括一個完整的 Markdown 引擎，使用 `fencing` 以保留空白。",
-  "hcclient.components.StartScreen.formattingLatex": "用一個美元符号环绕 Latex，以内联样式。",
+  "hcclient.components.StartScreen.formattingMd": "这个客户端包括一个完整的 Markdown 引擎，使用 `fencing` 以保留空白。",
+  "hcclient.components.StartScreen.formattingLatex": "用一个美元符号环绕 Latex，以内联样式。",
   "hcclient.components.StartScreen.formattingCode": "为了突出显示语法，将代码包装为：```<language> <the code>``` 其中 <language> 是任何已知的编程语言。",
   "hcclient.components.StartScreen.currentGithub": "当前的 Github：",
   "hcclient.components.StartScreen.legacyGithub": "旧版 Github：",
@@ -72,7 +72,7 @@
   "hclient.Generic.Errors.kick.modNotice": "{modNick}＃{modTrip}放逐{user}到？{channel}",
   "hclient.Generic.Errors.unmuteUnban.missingParam": "hash：'targethash'或ip：'1.2.3.4'是必需的。",
   "hclient.Generic.Errors.unmute.modNoticeAll": "{modNick}＃{modTrip}使所有用戶靜音",
-  "hclient.Generic.Errors.unmute.modNotice": "{modNick}＃{modTrip}未靜音：{target}",
+  "hclient.Generic.Errors.unmute.modNotice": "{modNick}＃{modTrip}未静音：{target}",
   "hclient.Generic.Errors.unban.modNotice": "{modNick}＃{modTrip}被禁止：{target}",
   "hcclient.containers.LocaleToggle.ar": "العربية",
   "hcclient.containers.LocaleToggle.bn": "বাংলা",
@@ -91,5 +91,6 @@
   "hcclient.containers.LocaleToggle.pt": "Português",
   "hcclient.containers.LocaleToggle.ru": "Русский язык",
   "hcclient.containers.LocaleToggle.tr": "Türkçe",
-  "hcclient.containers.LocaleToggle.zh": "普通话"
+  "hcclient.containers.LocaleToggle.zh": "繁体中文",
+  "hcclient.containers.LocaleToggle.cn": "简体中文"
 }
