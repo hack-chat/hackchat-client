@@ -45,7 +45,7 @@
   "hcclient.components.StartScreen.legacyGithub": "旧版 Github：",
   "hcclient.components.StartScreen.thirdParty": "机器人，Android 客户端，桌面客户端，浏览器扩展，Docker 镜像，编程库，服务器模块等：",
   "hcclient.components.StartScreen.legal": "根据 WTFPL 和 MIT 开源许可证发布的服务器和 Web 客户端。没有消息历史记录保留在 hack.chat 服务器上。",
-  "hcclient.containers.NotFoundPage.header": "嗯对不对",
+  "hcclient.containers.NotFoundPage.header": "emm... 不？",
   "hcclient.components.Message.inviteTo": "您邀请了 {userTo} 参加 ?{targetChannel}",
   "hcclient.components.Message.inviteFrom": "{userFrom} 邀请您参加 ?{targetChannel}",
   "hcclient.components.Message.joined": "{nick} 已加入",
