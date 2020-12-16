@@ -101,6 +101,11 @@ export default defineMessages({
 
   zh: {
     id: 'hcclient.containers.LocaleToggle.zh',
-    defaultMessage: '普通话',
+    defaultMessage: '繁体中文',
+  },
+
+  cn: {
+    id: 'hcclient.containers.LocaleToggle.cn',
+    defaultMessage: '简体中文',
   },
 });

@@ -31,7 +31,7 @@
   "hcclient.components.UserItem.mute": "靜音",
   "hcclient.components.UserItem.unmute": "取消靜音",
   "hcclient.Generic.cancel.text": "取消",
-  "hcclient.Generic.back.text": "背部",
+  "hcclient.Generic.back.text": "后退",
   "hcclient.components.ChatInput.MainInput": "你的信息",
   "hcclient.components.StartScreen.tagline": "歡迎使用hack.chat，這是一個最小的，無干擾的聊天應用程序。",
   "hcclient.components.StartScreen.createOrJoinLabel": "建立或加入頻道",
@@ -45,7 +45,7 @@
   "hcclient.components.StartScreen.legacyGithub": "舊版Github：",
   "hcclient.components.StartScreen.thirdParty": "機器人，Android客戶端，桌面客戶端，瀏覽器擴展，Docker鏡像，編程庫，服務器模塊等：",
   "hcclient.components.StartScreen.legal": "根據WTFPL和MIT開源許可證發布的服務器和Web客戶端。沒有消息歷史記錄保留在hack.chat服務器上。",
-  "hcclient.containers.NotFoundPage.header": "嗯對不對",
+  "hcclient.containers.NotFoundPage.header": "emm... 不？",
   "hcclient.components.Message.inviteTo": "您邀請了{userTo}參加 ?{targetChannel}",
   "hcclient.components.Message.inviteFrom": "{userFrom}邀請您參加 ?{targetChannel}",
   "hcclient.components.Message.joined": "{nick}已加入",
@@ -91,5 +91,6 @@
   "hcclient.containers.LocaleToggle.pt": "Português",
   "hcclient.containers.LocaleToggle.ru": "Русский язык",
   "hcclient.containers.LocaleToggle.tr": "Türkçe",
-  "hcclient.containers.LocaleToggle.zh": "普通话"
+  "hcclient.containers.LocaleToggle.zh": "繁体中文",
+  "hcclient.containers.LocaleToggle.cn": "简体中文"
 }

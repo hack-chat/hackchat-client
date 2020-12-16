@@ -20,6 +20,7 @@ const ptTranslationMessages = require('./translations/pt.json');
 const ruTranslationMessages = require('./translations/ru.json');
 const trTranslationMessages = require('./translations/tr.json');
 const zhTranslationMessages = require('./translations/zh.json');
+const cnTranslationMessages = require('./translations/cn.json');
 
 let DEFAULT_LOCALE = 'en';
 if (navigator && navigator.language) {
@@ -46,6 +47,7 @@ const appLocales = [
   'ru',
   'tr',
   'zh',
+  'cn',
 ];
 
 const formatTranslationMessages = (locale, messages) => {
@@ -81,6 +83,7 @@ const translationMessages = {
   ru: formatTranslationMessages('ru', ruTranslationMessages),
   tr: formatTranslationMessages('tr', trTranslationMessages),
   zh: formatTranslationMessages('zh', zhTranslationMessages),
+  cn: formatTranslationMessages('cn', cnTranslationMessages),
 };
 
 exports.appLocales = appLocales;
