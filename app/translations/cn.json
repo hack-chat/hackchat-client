@@ -31,7 +31,7 @@
   "hcclient.components.UserItem.mute": "静音",
   "hcclient.components.UserItem.unmute": "取消静音",
   "hcclient.Generic.cancel.text": "取消",
-  "hcclient.Generic.back.text": "背部",
+  "hcclient.Generic.back.text": "后退",
   "hcclient.components.ChatInput.MainInput": "你的信息",
   "hcclient.components.StartScreen.tagline": "欢迎使用 hack.chat，一个轻量的，无干扰的聊天程序。",
   "hcclient.components.StartScreen.createOrJoinLabel": "建立或加入频道",
