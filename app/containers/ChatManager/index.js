@@ -57,7 +57,7 @@ md.renderer = new RemarkableReactRenderer({
         <span
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(html),
+            __html: DOMPurify.sanitize(html, { ADD_ATTR: ['target'] }),
           }}
         />
       );
@@ -71,7 +71,7 @@ md.renderer = new RemarkableReactRenderer({
         <span
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(html),
+            __html: DOMPurify.sanitize(html, { ADD_ATTR: ['target'] }),
           }}
         />
       );
