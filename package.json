@@ -146,7 +146,7 @@
     "rimraf": "3.0.2",
     "shelljs": "^0.8.4",
     "style-loader": "2.0.0",
-    "stylelint": "^13.7.2",
+    "stylelint": "^13.12.0",
     "stylelint-config-recommended": "3.0.0",
     "stylelint-config-styled-components": "0.1.1",
     "stylelint-processor-styled-components": "1.10.0",
