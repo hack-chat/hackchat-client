@@ -112,7 +112,7 @@
     "babel-plugin-react-intl": "8.2.10",
     "babel-plugin-styled-components": "1.11.1",
     "babel-plugin-transform-react-remove-prop-types": "0.4.24",
-    "circular-dependency-plugin": "5.2.0",
+    "circular-dependency-plugin": "5.2.2",
     "compare-versions": "3.6.0",
     "compression-webpack-plugin": "^6.0.4",
     "coveralls": "3.1.0",
