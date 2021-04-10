@@ -61,7 +61,7 @@
     "dompurify": "^2.2.2",
     "express": "4.17.1",
     "fontfaceobserver": "2.1.0",
-    "hackchat-engine": "^1.1.1",
+    "hackchat-engine": "^1.1.2",
     "highlight.js": "^10.3.2",
     "history": "^4.10.1",
     "hoist-non-react-statics": "3.3.2",
