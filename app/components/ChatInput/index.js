@@ -43,6 +43,8 @@ export function ChatInput({ channel, onSendChat }) {
           chatInputField.style.height = `${chatInputField.scrollHeight}px`;
         }
       } else if (evt.code === 'ArrowUp' && chatInputField) {
+        if (chatInputField.selectionStart !== 0) return;
+
         if (searchIndex === 0 && chatInputField.value) {
           updateMsgHistory(
             [chatInputField.value].concat(msgHistory.slice(0, MaxMsgHistory)),
@@ -52,6 +54,8 @@ export function ChatInput({ channel, onSendChat }) {
         setSearchIndex(incSearchIndex(searchIndex, msgHistory.length));
         chatInputField.value = msgHistory[searchIndex] || '';
       } else if (evt.code === 'ArrowDown' && chatInputField) {
+        if (chatInputField.selectionStart !== chatInputField.value.length) return;
+
         setSearchIndex(decSearchIndex(searchIndex));
         chatInputField.value = msgHistory[searchIndex] || '';
       }
@@ -111,7 +115,7 @@ export function ChatInput({ channel, onSendChat }) {
           )}
         </FormattedMessage>
 
-        <InputGroupAddon addonType="append">
+        <InputGroupAddon className={"d-flex"} addonType="append">
           <SendButton type="submit">
             <FaPaperPlane />
           </SendButton>

@@ -185,7 +185,7 @@ function Message({ extended, type, payload, user, md }) {
   }
 
   return (
-    <Row noGutters>
+    <Row className={'g-0'}>
       <Col lg="2" md="2" sm="1">
         {nick}
       </Col>

@@ -234,7 +234,7 @@ export function ChatManager({ channel, channelData }) {
       {welcome}
       {messages}
       {scrollDom}
-      <Row noGutters className="mt-auto" center="xs">
+      <Row className="mt-auto g-0" center="xs">
         <Col lg="2" md="1" sm="1" />
         <Col lg="8" md="10" sm="10">
           <ChatInput channel={channel} />

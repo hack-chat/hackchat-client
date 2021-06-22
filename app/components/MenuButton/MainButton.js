@@ -8,7 +8,7 @@ import buttonStyle from './buttonStyle';
 
 const MainButton = styled.button`
   margin-bottom: 1rem;
-  margin-left: 15px;
+  margin-left: 12px;
   ${buttonStyle}
 `;
 

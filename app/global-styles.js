@@ -120,6 +120,27 @@ const GlobalStyle = createGlobalStyle`
   h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     margin-bottom: 0;
   }
+
+  .close {
+    background-color: transparent;
+    border: 0;
+    font-size: 1.5rem;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .6;
+    color: #000;
+    font-weight: 700;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+  }
 `;
 
 export default GlobalStyle;

@@ -87,7 +87,7 @@ export function MainMenu({
     <div>
       <Collapse className="fixed-bottom" isOpen={mainMenuIsOpen}>
         <Container fluid>
-          <Row>
+          <Row className={'mx-auto'}>
             <Col>
               <MenuButton
                 onClick={() => {
@@ -104,7 +104,7 @@ export function MainMenu({
               <UsersModal open={usersMenuIsOpen} />
             </Col>
           </Row>
-          <Row>
+          <Row className={'mx-auto'}>
             <Col>
               <MenuButton
                 onClick={() => {
@@ -121,7 +121,7 @@ export function MainMenu({
               <ChannelsModal open={ChannelsModalIsOpen} />
             </Col>
           </Row>
-          <Row>
+          <Row className={'mx-auto'}>
             <Col>
               <MenuButton
                 onClick={() => {
@@ -138,7 +138,7 @@ export function MainMenu({
               <JoinModal open={joinMenuIsOpen} />
             </Col>
           </Row>
-          <Row>
+          <Row className={'mx-auto'}>
             <Col>
               <MenuButton
                 onClick={() => {
@@ -155,7 +155,7 @@ export function MainMenu({
               <LocaleModal open={localeMenuIsOpen} />
             </Col>
           </Row>
-          <Row>
+          <Row className={'mx-auto'}>
             <Col>
               <MenuButton
                 onClick={() => {

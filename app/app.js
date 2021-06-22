@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import history from 'utils/history';
-import 'highlight.js/styles/atelier-dune-light.css';
+import 'highlight.js/styles/atom-one-dark.css';
 import 'sanitize.css/sanitize.css';
 
 import App from 'containers/App';

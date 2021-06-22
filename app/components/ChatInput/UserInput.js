@@ -15,7 +15,7 @@ export default styled(Input)`
   border-image-slice: 1 !important;
 
   max-height: 125px;
-  height: 32px;
+  height: auto;
 
   resize: none;
 
