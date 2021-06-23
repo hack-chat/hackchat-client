@@ -22,6 +22,15 @@ module.exports = options => {
     module: {
       rules: [
         {
+          type: 'javascript/auto',
+          test: /config\.json$/,
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]',
+            outputPath: './'
+          }
+        },
+        {
           test: /\.jsx?$/,
           exclude: /node_modules/,
           use: {

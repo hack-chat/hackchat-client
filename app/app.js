@@ -17,7 +17,7 @@ import LanguageProvider from 'containers/LanguageProvider';
 
 import '!file-loader?name=[name].[ext]!./images/favicon.ico';
 import 'file-loader?name=.htaccess!./.htaccess'; // eslint-disable-line import/extensions
-// import 'file-loader?name=config.json!./config.json'; // eslint-disable-line import/extensions
+import 'config.json'; // eslint-disable-line import/extensions
 import 'bootstrap/dist/css/bootstrap.css';
 
 import configureStore from './configureStore';
