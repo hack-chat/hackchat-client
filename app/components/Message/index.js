@@ -22,7 +22,7 @@ import { UserNick, ModNick, AdminNick } from './NickStyles';
 import { UserTrip, ModTrip, AdminTrip } from './TripStyles';
 import messages, { ERROR_ID } from './messages';
 
-function Message({ extended, type, payload, user, md }) {
+function Message({ extended, type, payload, user, msgForm }) {
   if (user && user.isBlocked) return <br />;
 
   let message;
@@ -60,7 +60,7 @@ function Message({ extended, type, payload, user, md }) {
       }
       break;
     case 'info':
-      message = <InfoStyle>{md.render(payload.text)}</InfoStyle>;
+      message = <InfoStyle>{msgForm.render(payload.text)}</InfoStyle>;
       break;
     case 'warn':
       if (
@@ -120,7 +120,7 @@ function Message({ extended, type, payload, user, md }) {
                 nick: `${payload.to}`,
               }}
             />{' '}
-            {md.render(payload.content)}
+            {msgForm.render(payload.content)}
           </WhisperStyle>
         );
       } else {
@@ -133,7 +133,7 @@ function Message({ extended, type, payload, user, md }) {
                 nick: `${payload.from}`,
               }}
             />{' '}
-            {md.render(payload.content)}
+            {msgForm.render(payload.content)}
           </WhisperStyle>
         );
       }
@@ -179,7 +179,7 @@ function Message({ extended, type, payload, user, md }) {
         }
       }
 
-      message = <ChatStyle>{md.render(payload.content)}</ChatStyle>;
+      message = <ChatStyle>{msgForm.render(payload.content)}</ChatStyle>;
       break;
     default:
   }
@@ -202,7 +202,7 @@ Message.propTypes = {
   type: PropTypes.string,
   payload: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   user: PropTypes.object,
-  md: PropTypes.object,
+  msgForm: PropTypes.object,
 };
 
 export default memo(Message);

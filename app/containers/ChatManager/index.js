@@ -7,18 +7,10 @@
  */
 
 import React, { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { Remarkable } from 'remarkable';
-import RemarkableReactRenderer from 'remarkable-react';
-import { linkify } from 'remarkable/linkify';
-import DOMPurify from 'dompurify';
-
-import hljs from 'highlight.js/lib/core';
-import javascript from 'highlight.js/lib/languages/javascript';
 
 import ChatInput from 'components/ChatInput';
 import Message from 'components/Message';
@@ -28,120 +20,10 @@ import {
   makeSelectChannelData,
 } from 'containers/CommunicationProvider/selectors';
 
-import { Row, Col, Table } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 import Wrapper from './Wrapper';
 
-// @todo Rebuild markdown and related into component form
-// along with child component functions then remove top eslint rule
-hljs.registerLanguage('javascript', javascript);
-
-const md = new Remarkable('full', {
-  html: false,
-  xhtmlOut: false,
-  breaks: true,
-  langPrefix: '',
-  linkTarget: '_blank',
-  typographer: true,
-  quotes: `""''`,
-  doHighlight: true,
-}).use(linkify);
-
-md.core.ruler.disable(['abbr']);
-
-md.renderer = new RemarkableReactRenderer({
-  components: {
-    a: ({ href, title, children }) => {
-      const html = `<a href="${href}" target="_blank" title="${title}" rel="noopener noreferrer">${children}</a>`;
-
-      return (
-        <span
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(html, { ADD_ATTR: ['target'] }),
-          }}
-        />
-      );
-    },
-    img: ({ alt, src, title }) => {
-      const html = `<a href="${src}" target="_blank" title="${
-        title || alt
-      }" rel="noopener noreferrer">${src}</a>`;
-
-      return (
-        <span
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(html, { ADD_ATTR: ['target'] }),
-          }}
-        />
-      );
-    },
-    table: ({ children }) => (
-      <Table dark striped>
-        {children}
-      </Table>
-    ),
-    p: ({ children }) => {
-      const alteredChildren = [];
-      for (let i = 0, j = children.length; i < j; i += 1) {
-        if (typeof children[i] === 'string') {
-          if (children[i].indexOf('?') !== -1) {
-            const chunks = children[i].split(/(\?\S*)/gm);
-            for (let k = 0, l = chunks.length; k < l; k += 1) {
-              if (chunks[k][0] === '?') {
-                const key = `invite-${Math.random() * 9999}`;
-                alteredChildren.push(
-                  <Link key={key} to={`/${DOMPurify.sanitize(chunks[k])}`}>
-                    {DOMPurify.sanitize(chunks[k])}
-                  </Link>,
-                );
-              } else if (chunks[k] !== '') {
-                alteredChildren.push(chunks[k]);
-              }
-            }
-          } else {
-            alteredChildren.push(children[i]);
-          }
-        } else {
-          alteredChildren.push(children[i]);
-        }
-      }
-
-      return <p>{alteredChildren}</p>;
-    },
-    pre: ({ content, params: language }) => {
-      if (hljs.getLanguage(language)) {
-        try {
-          return (
-            <pre
-              // eslint-disable-next-line react/no-danger
-              dangerouslySetInnerHTML={{
-                __html: hljs.highlight(language, content).value,
-              }}
-            />
-          );
-        } catch (__) {
-          // Yolo error handling
-        }
-      }
-
-      try {
-        return (
-          <pre
-            // eslint-disable-next-line react/no-danger
-            dangerouslySetInnerHTML={{
-              __html: hljs.highlightAuto(content).value,
-            }}
-          />
-        );
-      } catch (__) {
-        // You're changing the outcome by measuring the result, stop counting errors
-      }
-
-      return '';
-    },
-  },
-});
+import MessageFormatter from 'components/MessageFormatter';
 
 export function ChatManager({ channel, channelData }) {
   let users = '';
@@ -150,7 +32,7 @@ export function ChatManager({ channel, channelData }) {
     <Row key="welcome" center="xs">
       <Col lg="2" md="1" sm="1" />
       <Col lg="8" md="10" sm="10">
-        <Message md={md} extended={false} type="welcome" payload="" user={{}} />
+        <Message msgForm={MessageFormatter} extended={false} type="welcome" payload="" user={{}} />
       </Col>
       <Col lg="2" md="1" sm="1" />
     </Row>
@@ -170,7 +52,7 @@ export function ChatManager({ channel, channelData }) {
       <Row key="welcome" center="xs">
         <Col sm="12">
           <Message
-            md={md}
+            msgForm={MessageFormatter}
             extended={false}
             type="welcome"
             payload={`Joined channel "${channel}". ${users}`}
@@ -201,7 +83,7 @@ export function ChatManager({ channel, channelData }) {
         <Row key={rowId} center="xs">
           <Col sm="12">
             <Message
-              md={md}
+              msgForm={MessageFormatter}
               extended={extend}
               type={msg.type}
               payload={msg.data.payload}
