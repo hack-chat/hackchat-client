@@ -7,8 +7,7 @@ import { linkify } from 'remarkable/linkify';
 import DOMPurify from 'dompurify';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
-import katex from 'katex';
-// import rkatex from 'remarkable-katex';
+import { InlineMath, BlockMath } from 'react-katex';
 
 hljs.registerLanguage('javascript', javascript);
 
@@ -22,8 +21,6 @@ const MessageFormatter = new Remarkable('full', {
   quotes: `""''`,
   doHighlight: true,
 });
-
-// MessageFormatter.use(rkatex);
 
 MessageFormatter.core.ruler.disable(['abbr']);
 
@@ -61,11 +58,8 @@ MessageFormatter.renderer = new RemarkableReactRenderer({
       </Table>
     ),
     p: ({ children }) => {
-      console.log(children);
       const alteredChildren = [];
       for (let i = 0, j = children.length; i < j; i += 1) {
-        // console.log(typeof children[i]);
-        // console.log(children[i]);
         if (typeof children[i] === 'string') {
           if (children[i].indexOf('?') !== -1) {
             const chunks = children[i].split(/(\?\S*)/gm);
@@ -122,9 +116,49 @@ MessageFormatter.renderer = new RemarkableReactRenderer({
 
       return '';
     },
+    katex_block: (token) => {
+      return <BlockMath>{token.content}</BlockMath>;
+    },
+    katex_inline: (token) => {
+      return <InlineMath>{token.content}</InlineMath>;
+    },
   },
 });
 
 MessageFormatter.use(linkify);
+
+MessageFormatter.renderer.options.tokens.katex_block = 'katex_block';
+MessageFormatter.renderer.options.tokens.katex_inline = 'katex_inline';
+
+const katexRule = ({ src, tokens }) => {
+  if (src.indexOf('$') === -1) return;
+
+  for (let i = 0, j = tokens.length; i < j; i++) {
+    if (tokens[i].type !== 'inline') continue;
+    
+    console.log(tokens[i]);
+
+    let origChildren = tokens[i].children;
+    let newChildren = [];
+    let inBlock = false;
+    let inInline = false;
+    for (let o = 0, p = origChildren.length; o < p; o++) {
+      if (origChildren[o].type === 'text') {
+        newChildren.push(origChildren[o]);
+      } else if (inBlock === false) {
+        newChildren.push(origChildren[o]);
+      }
+    }
+
+    tokens[i].children = newChildren;
+    /*tokens[i].children = [{
+      type: 'katex_block',
+      content: `\\int_0^\\infty x^2 dx`,
+    }];*/
+  }
+}
+
+MessageFormatter.core.ruler.push('katex', katexRule);
+
 
 export default MessageFormatter;
