@@ -136,29 +136,81 @@ const katexRule = ({ src, tokens }) => {
   for (let i = 0, j = tokens.length; i < j; i++) {
     if (tokens[i].type !== 'inline') continue;
     
-    console.log(tokens[i]);
-
-    let origChildren = tokens[i].children;
-    let newChildren = [];
-    let inBlock = false;
-    let inInline = false;
-    for (let o = 0, p = origChildren.length; o < p; o++) {
-      if (origChildren[o].type === 'text') {
-        newChildren.push(origChildren[o]);
-      } else if (inBlock === false) {
-        newChildren.push(origChildren[o]);
-      }
-    }
-
-    tokens[i].children = newChildren;
-    /*tokens[i].children = [{
-      type: 'katex_block',
-      content: `\\int_0^\\infty x^2 dx`,
-    }];*/
+    tokens[i].children = parseKatex(tokens[i].children);
   }
 }
 
-MessageFormatter.core.ruler.push('katex', katexRule);
+const parseKatex = (children) => {
+  let buffer = '';
+  let content = '';
+  let char = '';
+  let katexDelim = '$';
+  let inBlock = false;
+  let inInline = false;
+  let newChildren = [];
+  
+  for (let i = 0, j = children.length; i < j; i++) {
+    if (children[i].type === 'text') {
+      content = children[i].content;
+      for (let o = 0, p = content.length; o <= p; o++) {
+        char = content.charAt(o);
+        if (o === p && inInline === false && inBlock === false) {
+          if (buffer !== '') {
+            newChildren.push({
+              type: 'text',
+              content: buffer,
+            });
 
+            buffer = '';
+          }
+        }
+        if (char === katexDelim) {
+          if (inBlock) {
+            newChildren.push({
+              type: 'katex_block',
+              content: buffer,
+            });
+
+            buffer = '';
+            o++;
+            inBlock = false;
+          } else if(inInline) {
+            newChildren.push({
+              type: 'katex_inline',
+              content: buffer,
+            });
+
+            buffer = '';
+            inInline = false;
+          } else {
+            newChildren.push({
+              type: 'text',
+              content: buffer,
+            });
+
+            buffer = '';
+            
+            if (content.charAt(o + 1) === katexDelim) {
+              o++;
+              inBlock = true;
+            } else {
+              inInline = true;
+            }
+          }
+        } else {
+          buffer += char;
+        }
+      }
+    } else if (children[i].type === 'hardbreak' && (inBlock || inInline)) {
+      buffer += ' \\\\ ';
+    } else if (inBlock === false && inInline === false) {
+      newChildren.push(children[i]);
+    }
+  }
+
+  return newChildren;
+}
+
+MessageFormatter.core.ruler.push('katex', katexRule);
 
 export default MessageFormatter;
