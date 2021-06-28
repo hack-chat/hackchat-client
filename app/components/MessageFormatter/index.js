@@ -23,6 +23,7 @@ const MessageFormatter = new Remarkable('full', {
 });
 
 MessageFormatter.core.ruler.disable(['abbr']);
+MessageFormatter.inline.ruler.disable(['sup']);
 
 MessageFormatter.renderer = new RemarkableReactRenderer({
   components: {
