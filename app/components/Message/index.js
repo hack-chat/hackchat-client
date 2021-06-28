@@ -4,9 +4,11 @@
  */
 
 import React, { memo } from 'react';
+import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { Row, Col } from 'reactstrap';
 import PropTypes from 'prop-types';
+import DOMPurify from 'dompurify';
 
 import InviteStyle from './InviteStyle';
 import InfoStyle from './InfoStyle';
@@ -32,6 +34,8 @@ function Message({ extended, type, payload, user, msgForm }) {
   switch (type) {
     case 'invite':
       if (payload.fromMe) {
+        const key = `invite-${Math.random() * 9999}`;
+        
         message = (
           <InviteStyle>
             <FormattedMessage
@@ -39,12 +43,16 @@ function Message({ extended, type, payload, user, msgForm }) {
               defaultMessage={messages.inviteTo.defaultMessage}
               values={{
                 userTo: `${payload.to}`,
-                targetChannel: payload.targetChannel,
+                targetChannel: (<Link key={key} to={`/?${DOMPurify.sanitize(payload.targetChannel)}`}>
+                  ?{DOMPurify.sanitize(payload.targetChannel)}
+                </Link>),
               }}
             />
           </InviteStyle>
         );
       } else {
+        const key = `invite-${Math.random() * 9999}`;
+
         message = (
           <InviteStyle>
             <FormattedMessage
@@ -52,7 +60,9 @@ function Message({ extended, type, payload, user, msgForm }) {
               defaultMessage={messages.inviteFrom.defaultMessage}
               values={{
                 userFrom: `${payload.from}`,
-                targetChannel: payload.targetChannel,
+                targetChannel: (<Link key={key} to={`/?${DOMPurify.sanitize(payload.targetChannel)}`}>
+                  ?{DOMPurify.sanitize(payload.targetChannel)}
+                </Link>),
               }}
             />
           </InviteStyle>

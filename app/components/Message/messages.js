@@ -9,11 +9,11 @@ export const scope = 'hcclient.components.Message';
 const messages = {
   inviteTo: {
     id: `${scope}.inviteTo`,
-    defaultMessage: 'You invited {userTo} to ?{targetChannel}',
+    defaultMessage: 'You invited {userTo} to {targetChannel}',
   },
   inviteFrom: {
     id: `${scope}.inviteFrom`,
-    defaultMessage: '{userFrom} invited you to ?{targetChannel}',
+    defaultMessage: '{userFrom} invited you to {targetChannel}',
   },
   joined: {
     id: `${scope}.joined`,
