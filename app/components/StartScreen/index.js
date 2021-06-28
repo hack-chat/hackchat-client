@@ -5,12 +5,14 @@
  */
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Container, Row, Col } from 'reactstrap';
+import DOMPurify from 'dompurify';
 
 import { openJoinModal } from 'components/MainMenu/actions';
 import { Button } from 'components/BaseModal';
@@ -25,14 +27,19 @@ function StartScreen({ meta, onOpenJoinMenu, intl }) {
   const publicChannels = [];
   for (let i = 0, j = channelNames.length; i < j; i += 1) {
     const key = `pchan-${i}`;
+    
     publicChannels.push(
       <Row key={key}>
         <Col className="col-4" />
         <Col className="text-center">
-          {`?${channelNames[i]}:`} {meta.channels[channelNames[i]]}
+          <Link key={`invite-${Math.random() * 9999}`} to={`/?${DOMPurify.sanitize(channelNames[i])}`}>
+            ?{DOMPurify.sanitize(channelNames[i])}
+          </Link>: {meta.channels[channelNames[i]]}
         </Col>
         <Col className="text-center">
-          {`?${channelNames[(i += 1)]}:`} {meta.channels[channelNames[i]]}
+          <Link key={`invite-${Math.random() * 9999}`} to={`/?${DOMPurify.sanitize(channelNames[(i += 1)])}`}>
+            ?{DOMPurify.sanitize(channelNames[i])}
+          </Link>: {meta.channels[channelNames[i]]}
         </Col>
         <Col className="col-4" />
       </Row>,
@@ -68,6 +75,7 @@ function StartScreen({ meta, onOpenJoinMenu, intl }) {
       <Row>
         <Col className="text-center">
           <Button onClick={onOpenJoinMenu}>{createOrJoinLabel}</Button>
+          <br />
           <br />
           <FormattedMessage
             id={messages.channelInfo.id}
