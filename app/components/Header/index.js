@@ -17,7 +17,7 @@ import ConnectionStatus from './ConnectionStatus';
 
 function Header() {
   return (
-    <Row className={'g-0'}>
+    <Row className="g-0">
       <Col>
         <ConnectionStatus />
       </Col>

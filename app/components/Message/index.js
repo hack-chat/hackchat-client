@@ -35,7 +35,7 @@ function Message({ extended, type, payload, user, msgForm }) {
     case 'invite':
       if (payload.fromMe) {
         const key = `invite-${Math.random() * 9999}`;
-        
+
         message = (
           <InviteStyle>
             <FormattedMessage
@@ -43,9 +43,14 @@ function Message({ extended, type, payload, user, msgForm }) {
               defaultMessage={messages.inviteTo.defaultMessage}
               values={{
                 userTo: `${payload.to}`,
-                targetChannel: (<Link key={key} to={`/?${DOMPurify.sanitize(payload.targetChannel)}`}>
-                  ?{DOMPurify.sanitize(payload.targetChannel)}
-                </Link>),
+                targetChannel: (
+                  <Link
+                    key={key}
+                    to={`/?${DOMPurify.sanitize(payload.targetChannel)}`}
+                  >
+                    ?{DOMPurify.sanitize(payload.targetChannel)}
+                  </Link>
+                ),
               }}
             />
           </InviteStyle>
@@ -60,9 +65,14 @@ function Message({ extended, type, payload, user, msgForm }) {
               defaultMessage={messages.inviteFrom.defaultMessage}
               values={{
                 userFrom: `${payload.from}`,
-                targetChannel: (<Link key={key} to={`/?${DOMPurify.sanitize(payload.targetChannel)}`}>
-                  ?{DOMPurify.sanitize(payload.targetChannel)}
-                </Link>),
+                targetChannel: (
+                  <Link
+                    key={key}
+                    to={`/?${DOMPurify.sanitize(payload.targetChannel)}`}
+                  >
+                    ?{DOMPurify.sanitize(payload.targetChannel)}
+                  </Link>
+                ),
               }}
             />
           </InviteStyle>
@@ -195,7 +205,7 @@ function Message({ extended, type, payload, user, msgForm }) {
   }
 
   return (
-    <Row className={'g-0'}>
+    <Row className="g-0">
       <Col lg="2" md="2" sm="1">
         {nick}
       </Col>

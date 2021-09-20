@@ -86,7 +86,7 @@ export function HomePage({
           content="a minimal, distraction-free chat application"
         />
       </Helmet>
-      <Row className={'g-0'}>
+      <Row className="g-0">
         <Col md="1" sm="1">
           <MainMenu />
         </Col>

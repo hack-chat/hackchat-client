@@ -25,6 +25,7 @@ const MessageFormatter = new Remarkable('full', {
 MessageFormatter.core.ruler.disable(['abbr']);
 MessageFormatter.inline.ruler.disable(['sup']);
 
+/* eslint-disable react/prop-types */
 MessageFormatter.renderer = new RemarkableReactRenderer({
   components: {
     a: ({ href, title, children }) => {
@@ -117,12 +118,8 @@ MessageFormatter.renderer = new RemarkableReactRenderer({
 
       return '';
     },
-    katex_block: (token) => {
-      return <BlockMath>{token.content}</BlockMath>;
-    },
-    katex_inline: (token) => {
-      return <InlineMath>{token.content}</InlineMath>;
-    },
+    katex_block: (token) => <BlockMath>{token.content}</BlockMath>,
+    katex_inline: (token) => <InlineMath>{token.content}</InlineMath>,
   },
 });
 
@@ -134,26 +131,27 @@ MessageFormatter.renderer.options.tokens.katex_inline = 'katex_inline';
 const katexRule = ({ src, tokens }) => {
   if (src.indexOf('$') === -1) return;
 
-  for (let i = 0, j = tokens.length; i < j; i++) {
-    if (tokens[i].type !== 'inline') continue;
-    
-    tokens[i].children = parseKatex(tokens[i].children);
+  for (let i = 0, j = tokens.length; i < j; i += 1) {
+    if (tokens[i].type !== 'inline') {
+      // eslint-disable-next-line no-param-reassign
+      tokens[i].children = parseKatex(tokens[i].children);
+    }
   }
-}
+};
 
 const parseKatex = (children) => {
   let buffer = '';
   let content = '';
   let char = '';
-  let katexDelim = '$';
+  const katexDelim = '$';
   let inBlock = false;
   let inInline = false;
-  let newChildren = [];
-  
-  for (let i = 0, j = children.length; i < j; i++) {
+  const newChildren = [];
+
+  for (let i = 0, j = children.length; i < j; i += 1) {
     if (children[i].type === 'text') {
       content = children[i].content;
-      for (let o = 0, p = content.length; o <= p; o++) {
+      for (let o = 0, p = content.length; o <= p; o += 1) {
         char = content.charAt(o);
         if (o === p && inInline === false && inBlock === false) {
           if (buffer !== '') {
@@ -173,9 +171,9 @@ const parseKatex = (children) => {
             });
 
             buffer = '';
-            o++;
+            o += 1;
             inBlock = false;
-          } else if(inInline) {
+          } else if (inInline) {
             newChildren.push({
               type: 'katex_inline',
               content: buffer,
@@ -190,9 +188,9 @@ const parseKatex = (children) => {
             });
 
             buffer = '';
-            
+
             if (content.charAt(o + 1) === katexDelim) {
-              o++;
+              o += 1;
               inBlock = true;
             } else {
               inInline = true;
@@ -210,7 +208,7 @@ const parseKatex = (children) => {
   }
 
   return newChildren;
-}
+};
 
 MessageFormatter.core.ruler.push('katex', katexRule);
 

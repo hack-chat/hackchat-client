@@ -21,9 +21,8 @@ import {
 } from 'containers/CommunicationProvider/selectors';
 
 import { Row, Col } from 'reactstrap';
-import Wrapper from './Wrapper';
-
 import MessageFormatter from 'components/MessageFormatter';
+import Wrapper from './Wrapper';
 
 export function ChatManager({ channel, channelData }) {
   let users = '';
@@ -32,7 +31,13 @@ export function ChatManager({ channel, channelData }) {
     <Row key="welcome" center="xs">
       <Col lg="2" md="1" sm="1" />
       <Col lg="8" md="10" sm="10">
-        <Message msgForm={MessageFormatter} extended={false} type="welcome" payload="" user={{}} />
+        <Message
+          msgForm={MessageFormatter}
+          extended={false}
+          type="welcome"
+          payload=""
+          user={{}}
+        />
       </Col>
       <Col lg="2" md="1" sm="1" />
     </Row>

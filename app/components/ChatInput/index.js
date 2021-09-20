@@ -54,7 +54,8 @@ export function ChatInput({ channel, onSendChat }) {
         setSearchIndex(incSearchIndex(searchIndex, msgHistory.length));
         chatInputField.value = msgHistory[searchIndex] || '';
       } else if (evt.code === 'ArrowDown' && chatInputField) {
-        if (chatInputField.selectionStart !== chatInputField.value.length) return;
+        if (chatInputField.selectionStart !== chatInputField.value.length)
+          return;
 
         setSearchIndex(decSearchIndex(searchIndex));
         chatInputField.value = msgHistory[searchIndex] || '';
@@ -115,7 +116,7 @@ export function ChatInput({ channel, onSendChat }) {
           )}
         </FormattedMessage>
 
-        <InputGroupAddon className={"d-flex"} addonType="append">
+        <InputGroupAddon className="d-flex" addonType="append">
           <SendButton type="submit">
             <FaPaperPlane />
           </SendButton>

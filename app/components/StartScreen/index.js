@@ -27,19 +27,27 @@ function StartScreen({ meta, onOpenJoinMenu, intl }) {
   const publicChannels = [];
   for (let i = 0, j = channelNames.length; i < j; i += 1) {
     const key = `pchan-${i}`;
-    
+
     publicChannels.push(
       <Row key={key}>
         <Col className="col-4" />
         <Col className="text-center">
-          <Link key={`invite-${Math.random() * 9999}`} to={`/?${DOMPurify.sanitize(channelNames[i])}`}>
+          <Link
+            key={`invite-${Math.random() * 9999}`}
+            to={`/?${DOMPurify.sanitize(channelNames[i])}`}
+          >
             ?{DOMPurify.sanitize(channelNames[i])}
-          </Link>: {meta.channels[channelNames[i]]}
+          </Link>
+          : {meta.channels[channelNames[i]]}
         </Col>
         <Col className="text-center">
-          <Link key={`invite-${Math.random() * 9999}`} to={`/?${DOMPurify.sanitize(channelNames[(i += 1)])}`}>
+          <Link
+            key={`invite-${Math.random() * 9999}`}
+            to={`/?${DOMPurify.sanitize(channelNames[(i += 1)])}`}
+          >
             ?{DOMPurify.sanitize(channelNames[i])}
-          </Link>: {meta.channels[channelNames[i]]}
+          </Link>
+          : {meta.channels[channelNames[i]]}
         </Col>
         <Col className="col-4" />
       </Row>,
