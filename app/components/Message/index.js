@@ -29,176 +29,39 @@ function Message({ extended, type, payload, user, msgForm }) {
 
   let message;
   let nick;
-  let trip = '';
+  const key = `invite-${Math.random() * 9999}`;
 
   switch (type) {
     case 'invite':
       if (payload.fromMe) {
-        const key = `invite-${Math.random() * 9999}`;
-
-        message = (
-          <InviteStyle>
-            <FormattedMessage
-              id={messages.inviteTo.id}
-              defaultMessage={messages.inviteTo.defaultMessage}
-              values={{
-                userTo: `${payload.to}`,
-                targetChannel: (
-                  <Link
-                    key={key}
-                    to={`/?${DOMPurify.sanitize(payload.targetChannel)}`}
-                  >
-                    ?{DOMPurify.sanitize(payload.targetChannel)}
-                  </Link>
-                ),
-              }}
-            />
-          </InviteStyle>
-        );
-      } else {
-        const key = `invite-${Math.random() * 9999}`;
-
-        message = (
-          <InviteStyle>
-            <FormattedMessage
-              id={messages.inviteFrom.id}
-              defaultMessage={messages.inviteFrom.defaultMessage}
-              values={{
-                userFrom: `${payload.from}`,
-                targetChannel: (
-                  <Link
-                    key={key}
-                    to={`/?${DOMPurify.sanitize(payload.targetChannel)}`}
-                  >
-                    ?{DOMPurify.sanitize(payload.targetChannel)}
-                  </Link>
-                ),
-              }}
-            />
-          </InviteStyle>
-        );
+        message = InviteFromMe(payload, key);
+        break;
       }
+      message = InviteFromUser(payload, key);
       break;
     case 'info':
       message = <InfoStyle>{msgForm.render(payload.text)}</InfoStyle>;
       break;
     case 'warn':
-      if (
-        typeof payload.id !== 'undefined' &&
-        typeof ERROR_ID[payload.id] !== 'undefined'
-      ) {
-        message = (
-          <FormattedMessage
-            id={ERROR_ID[payload.id]}
-            defaultMessage="Unknown error"
-          />
-        );
-      } else {
-        message = <WarnStyle>{payload.text}</WarnStyle>;
-      }
+      message = ValidateWarnPayload(payload);
       break;
     case 'welcome':
       message = <WelcomeStyle>{payload}</WelcomeStyle>;
       break;
     case 'join':
-      message = (
-        <JoinStyle>
-          <FormattedMessage
-            id={messages.joined.id}
-            defaultMessage={messages.joined.defaultMessage}
-            values={{
-              nick: user.username,
-            }}
-          />
-        </JoinStyle>
-      );
+      message = JoinMessage(user);
       break;
     case 'leave':
-      message = (
-        <LeaveStyle>
-          <FormattedMessage
-            id={messages.left.id}
-            defaultMessage={messages.left.defaultMessage}
-            values={{
-              nick: user.username,
-            }}
-          />
-        </LeaveStyle>
-      );
+      message = LeaveMessage(user);
       break;
     case 'emote':
       message = <EmoteStyle>{payload.content}</EmoteStyle>;
       break;
     case 'whisper':
-      if (payload.fromMe) {
-        message = (
-          <WhisperStyle>
-            <FormattedMessage
-              id={messages.whisperTo.id}
-              defaultMessage={messages.whisperTo.defaultMessage}
-              values={{
-                nick: `${payload.to}`,
-              }}
-            />{' '}
-            {msgForm.render(payload.content)}
-          </WhisperStyle>
-        );
-      } else {
-        message = (
-          <WhisperStyle>
-            <FormattedMessage
-              id={messages.whisperFrom.id}
-              defaultMessage={messages.whisperFrom.defaultMessage}
-              values={{
-                nick: `${payload.from}`,
-              }}
-            />{' '}
-            {msgForm.render(payload.content)}
-          </WhisperStyle>
-        );
-      }
-
+      message = ProcessWhisper(msgForm, payload);
       break;
     case 'chat':
-      if (!extended) {
-        const hasTrip = user.usertrip !== '' || false;
-
-        if (user.userlevel === 'user') {
-          if (hasTrip) {
-            trip = <UserTrip>{user.usertrip}</UserTrip>;
-          }
-
-          nick = (
-            <UserNick color={user.color ? `#${user.color}` : undefined}>
-              {trip}
-              {user.username}
-            </UserNick>
-          );
-        } else if (user.userlevel === 'mod') {
-          if (hasTrip) {
-            trip = <ModTrip>{user.usertrip}</ModTrip>;
-          }
-
-          nick = (
-            <ModNick color={user.color ? `#${user.color}` : undefined}>
-              {trip}
-              {user.username}
-            </ModNick>
-          );
-        } else if (user.userlevel === 'admin') {
-          if (hasTrip) {
-            trip = <AdminTrip>{user.usertrip}</AdminTrip>;
-          }
-
-          nick = (
-            <AdminNick color={user.color ? `#${user.color}` : undefined}>
-              {trip}
-              {user.username}
-            </AdminNick>
-          );
-        }
-      }
-
+      nick = ProcessNotExtended(extended, user).nick;
       message = <ChatStyle>{msgForm.render(payload.content)}</ChatStyle>;
       break;
     default:
@@ -212,9 +75,192 @@ function Message({ extended, type, payload, user, msgForm }) {
       <Col lg="8" md="10" sm="10">
         {message}
       </Col>
-      <Col lg="2" md="1" sm="1"></Col>
+      <Col lg="2" md="1" sm="1" />
     </Row>
   );
+}
+
+let isSent = false;
+function ProcessWhisper(msgForm, payload) {
+  const isMine = payload.fromMe;
+  const source = payload.from.username;
+  const destination = payload.to.username;
+
+  if (!isMine) return WhisperFrom(msgForm, payload);
+  if (source === destination && isSent) {
+    isSent = false;
+    return WhisperFrom(msgForm, payload);
+  }
+  isSent = true;
+
+  return WhisperTo(msgForm, payload);
+}
+
+function InviteFromMe(payload, key) {
+  return (
+    <InviteStyle>
+      <FormattedMessage
+        id={messages.inviteTo.id}
+        defaultMessage={messages.inviteTo.defaultMessage}
+        values={{
+          userTo: `${payload.to}`,
+          targetChannel: (
+            <Link
+              key={key}
+              to={`/?${DOMPurify.sanitize(payload.targetChannel)}`}
+            >
+              ?{DOMPurify.sanitize(payload.targetChannel)}
+            </Link>
+          ),
+        }}
+      />
+    </InviteStyle>
+  );
+}
+
+function InviteFromUser(payload, key) {
+  return (
+    <InviteStyle>
+      <FormattedMessage
+        id={messages.inviteFrom.id}
+        defaultMessage={messages.inviteFrom.defaultMessage}
+        values={{
+          userFrom: `${payload.from}`,
+          targetChannel: (
+            <Link
+              key={key}
+              to={`/?${DOMPurify.sanitize(payload.targetChannel)}`}
+            >
+              ?{DOMPurify.sanitize(payload.targetChannel)}
+            </Link>
+          ),
+        }}
+      />
+    </InviteStyle>
+  );
+}
+
+function WhisperTo(msgForm, payload) {
+  return (
+    <WhisperStyle>
+      <FormattedMessage
+        id={messages.whisperTo.id}
+        defaultMessage={messages.whisperTo.defaultMessage}
+        values={{
+          nick: `${payload.to}`,
+        }}
+      />{' '}
+      {msgForm.render(payload.content)}
+    </WhisperStyle>
+  );
+}
+
+function WhisperFrom(msgForm, payload) {
+  return (
+    <WhisperStyle>
+      <FormattedMessage
+        id={messages.whisperFrom.id}
+        defaultMessage={messages.whisperFrom.defaultMessage}
+        values={{
+          nick: `${payload.from}`,
+        }}
+      />{' '}
+      {msgForm.render(payload.content)}
+    </WhisperStyle>
+  );
+}
+
+function LeaveMessage(user) {
+  return (
+    <LeaveStyle>
+      <FormattedMessage
+        id={messages.left.id}
+        defaultMessage={messages.left.defaultMessage}
+        values={{
+          nick: user.username,
+        }}
+      />
+    </LeaveStyle>
+  );
+}
+
+function JoinMessage(user) {
+  return (
+    <JoinStyle>
+      <FormattedMessage
+        id={messages.joined.id}
+        defaultMessage={messages.joined.defaultMessage}
+        values={{
+          nick: user.username,
+        }}
+      />
+    </JoinStyle>
+  );
+}
+
+function ValidateWarnPayload(payload) {
+  if (
+    typeof payload.id !== 'undefined' &&
+    typeof ERROR_ID[payload.id] !== 'undefined'
+  ) {
+    return (
+      <Row className="g-0">
+        <Col lg="2" md="2" sm="1" />
+        <Col lg="8" md="10" sm="10">
+          <FormattedMessage
+            id={ERROR_ID[payload.id]}
+            defaultMessage="Unknown error"
+          />
+        </Col>
+        <Col lg="2" md="1" sm="1" />
+      </Row>
+    );
+  }
+  return <WarnStyle>{payload.text}</WarnStyle>;
+}
+
+function ProcessNotExtended(extended, user) {
+  let trip = '';
+  let nick = '';
+  if (!extended) {
+    const hasTrip = user.usertrip !== '' || false;
+
+    if (user.userlevel === 'user') {
+      if (hasTrip) {
+        trip = <UserTrip>{user.usertrip}</UserTrip>;
+      }
+
+      nick = (
+        <UserNick color={user.color ? `#${user.color}` : undefined}>
+          {trip}
+          {user.username}
+        </UserNick>
+      );
+    } else if (user.userlevel === 'mod') {
+      if (hasTrip) {
+        trip = <ModTrip>{user.usertrip}</ModTrip>;
+      }
+
+      nick = (
+        <ModNick color={user.color ? `#${user.color}` : undefined}>
+          {trip}
+          {user.username}
+        </ModNick>
+      );
+    } else if (user.userlevel === 'admin') {
+      if (hasTrip) {
+        trip = <AdminTrip>{user.usertrip}</AdminTrip>;
+      }
+
+      nick = (
+        <AdminNick color={user.color ? `#${user.color}` : undefined}>
+          {trip}
+          {user.username}
+        </AdminNick>
+      );
+    }
+  }
+  return { nick, trip };
 }
 
 Message.propTypes = {
