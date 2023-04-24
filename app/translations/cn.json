@@ -66,7 +66,7 @@
   "hclient.Generic.Errors.chat.unknownCmd": "未知命令：{cmd}",
   "hclient.Generic.Errors.invite.rateLimit": "您发送邀请的频率太高。请稍等片刻，然后重试。",
   "hclient.Generic.Errors.join.rateLimit": "您加入频道的频率太高。请稍等片刻，然后重试。",
-  "hclient.Generic.Errors.whisper.unknownUser": "无法回复任何人。",
+  "hclient.Generic.Errors.whisper.unknownUser": "无法回复不存在的用户。",
   "hclient.Generic.Errors.ban.userNotice": "已封禁 {user}",
   "hclient.Generic.Errors.ban.modNotice": "{modNick}#{modTrip} 在 ?{channel} 中封禁了{user}，用戶哈希：{hash}",
   "hclient.Generic.Errors.kick.userNotice": "未知命令：{cmd}",
