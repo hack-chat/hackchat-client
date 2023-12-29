@@ -118,7 +118,7 @@ export function JoinModal({
             </InputGroup>
             <InputGroup>
               <InputGroupAddon addonType="prepend">#</InputGroupAddon>
-              <Input placeholder={joinModalPassword} />
+              <Input type="password" placeholder={joinModalPassword} />
             </InputGroup>
             <InputGroup className={hideChannel ? 'd-none' : ''}>
               <InputGroupAddon addonType="prepend">!</InputGroupAddon>
