@@ -34,7 +34,7 @@ const prettyHost = customHost || 'localhost';
 app.get('*.js', (req, res, next) => {
   req.url = req.url + '.gz';
   res.set('Content-Encoding', 'gzip');
-  next();
+  // next();
 });
 
 app.listen(port, host, async err => {

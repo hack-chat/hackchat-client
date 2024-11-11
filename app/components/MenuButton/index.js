@@ -28,18 +28,24 @@ export default function MenuButton({
   let toolTipText = toolTip;
   if (!toolTipText) toolTipText = '';
 
+  const btnTooltip = (
+    <Tooltip
+      placement={tipPlacement || 'left'}
+      isOpen={tooltipOpen}
+      target={id}
+      toggle={toggle}
+      timeout={100}
+      autohide
+    >
+      {toolTipText}
+    </Tooltip>
+  );
+
   if (isMain) {
     return (
       <MainButton href={href} onClick={onClick} id={id} className={className}>
         {React.Children.toArray(children)}
-        <Tooltip
-          placement={tipPlacement || 'left'}
-          isOpen={tooltipOpen}
-          target={id}
-          toggle={toggle}
-        >
-          {toolTipText}
-        </Tooltip>
+        {btnTooltip}
       </MainButton>
     );
   }
@@ -47,14 +53,7 @@ export default function MenuButton({
   return (
     <StyledButton href={href} onClick={onClick} id={id} className={className}>
       {React.Children.toArray(children)}
-      <Tooltip
-        placement={tipPlacement || 'left'}
-        isOpen={tooltipOpen}
-        target={id}
-        toggle={toggle}
-      >
-        {toolTipText}
-      </Tooltip>
+      {btnTooltip}
     </StyledButton>
   );
 }

@@ -4,7 +4,6 @@
  */
 
 import React from 'react';
-import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
@@ -15,26 +14,36 @@ import Notification from 'components/Notification';
 import { clearNotifs } from 'containers/CommunicationProvider/actions';
 import { makeSelectglobalNotifs } from 'containers/CommunicationProvider/selectors';
 
+import CaptchaStyle from './CaptchaStyle';
+
 import messages, { ERROR_ID } from './messages';
 
 export function Notifier({ globalNotifs, onClearNotifs, intl }) {
   const warningLabel = intl.formatMessage(messages.warningLabel);
   const errorLabel = intl.formatMessage(messages.errorLabel);
+  const captchaLabel = intl.formatMessage(messages.captchaLabel);
 
   const notifications = globalNotifs.map((err, i) => {
     const notifKey = i;
 
-    let body = err.data.payload.text;
-    if (typeof err.data.payload.id !== 'undefined') {
-      if (ERROR_ID[err.data.payload.id]) {
-        body = intl.formatMessage(ERROR_ID[err.data.payload.id]);
+    let title = err.type === 'warn' ? warningLabel : errorLabel;
+    let body = err.data.text;
+    if (err.type == 'captcha') {
+      title = captchaLabel;
+      body = <CaptchaStyle>{err.data.text}</CaptchaStyle>;
+    } else {
+      if (typeof err.data.id !== 'undefined') {
+        if (ERROR_ID[err.data.id]) {
+          body = intl.formatMessage(ERROR_ID[err.data.id]);
+        }
       }
     }
+
     return (
       <Notification
         key={notifKey}
         icon={err.type === 'warn' ? 'warning' : 'danger'}
-        title={err.type === 'warn' ? warningLabel : errorLabel}
+        title={title}
         body={body}
         onCloseFunction={onClearNotifs}
       />
@@ -63,4 +72,4 @@ function mapDispatchToProps(dispatch) {
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-export default compose(withConnect, withRouter, injectIntl)(Notifier);
+export default compose(withConnect, injectIntl)(Notifier);

@@ -119,11 +119,11 @@ export function unlockChannel(channel) {
  * @param  {Object} user Target user to invite
  * @return {object} An action object with a type of INVITE_USER
  */
-export function inviteUser(channel, user) {
+export function inviteUser(channel, userid) {
   return {
     type: INVITE_USER,
     channel,
-    user,
+    userid,
   };
 }
 
@@ -147,11 +147,11 @@ export function whisperUser(channel, user) {
  * @param  {number} user Target user to ignore
  * @return {object} An action object with a type of IGNORE_USER
  */
-export function ignoreUser(channel, user) {
+export function ignoreUser(channel, userid) {
   return {
     type: IGNORE_USER,
     channel,
-    user,
+    userid,
   };
 }
 

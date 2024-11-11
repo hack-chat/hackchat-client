@@ -4,35 +4,35 @@
  * Format express server errors and announce when the server is ready
  */
 
-const chalk = require('chalk');
-const ip = require('ip');
+// const chalk = require('chalk');
+// import chalk from 'chalk';
 
-const divider = chalk.gray('\n-----------------------------------');
+const divider = '\n-----------------------------------';
 
 const logger = {
   // print errors
   error: err => {
-    console.error(chalk.red(err));
+    console.error(err);
   },
 
   // print when ready
   appStarted: (port, host, tunnelStarted) => {
-    console.log(chalk.green('Server started!'));
+    console.log('Server started!');
 
     // if the tunnel was requested, inform that it's ready
     if (tunnelStarted) {
-      console.log(chalk.green('Tunnel initialised!'));
+      console.log('Tunnel initialised!');
     }
 
     // output app ready banner
     console.log(`
-${chalk.bold('Access URLs:')}${divider}
-Localhost: ${chalk.magenta(`http://${host}:${port}`)}
-      LAN: ${chalk.magenta(`http://${ip.address()}:${port}`) +
+${'Access URLs:'}${divider}
+Localhost: ${`http://${host}:${port}`}
+      LAN: ${`http://127.0.0.1:${port}` +
         (tunnelStarted
-          ? `\n    Proxy: ${chalk.magenta(tunnelStarted)}`
+          ? `\n    Proxy: ${tunnelStarted}`
           : '')}${divider}
-Press ${chalk.italic('CTRL-C')} to stop. . .
+Press ${'CTRL-C'} to stop. . .
     `);
   },
 };

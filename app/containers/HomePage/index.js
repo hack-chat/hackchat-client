@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect, memo } from 'react';
-import { withRouter } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useStateIfMounted } from 'use-state-if-mounted';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
@@ -27,16 +27,18 @@ import ChatManager from 'containers/ChatManager';
 import MainContainer from './MainContainer';
 
 export function HomePage({
-  history,
-  location,
   channel,
   channelData,
   meta,
   onChangeChannel,
   onOpenJoinModal,
 }) {
+  const location = useLocation();
   const homepageTitle = location.search !== '' ? location.search : 'welcome';
   const qString = location.search.trim().substr(1);
+
+  const navigate = useNavigate();
+
   const [currentView, setView] = useStateIfMounted(1);
   const [lastChannel, setLastChannel] = useStateIfMounted('');
 
@@ -46,7 +48,7 @@ export function HomePage({
       onOpenJoinModal(qString);
     } else if (channel && qString === '') {
       setLastChannel(channel);
-      history.push(`/?${channel}`);
+      navigate(`/?${channel}`);
     } else if (channel === qString) {
       setView(2);
       setLastChannel(channel);
@@ -102,8 +104,6 @@ export function HomePage({
 }
 
 HomePage.propTypes = {
-  history: PropTypes.object,
-  location: PropTypes.object,
   channel: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   channelData: PropTypes.object,
   meta: PropTypes.object,
@@ -126,4 +126,4 @@ export function mapDispatchToProps(dispatch) {
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-export default compose(withConnect, withRouter, memo)(HomePage);
+export default compose(withConnect, memo)(HomePage);

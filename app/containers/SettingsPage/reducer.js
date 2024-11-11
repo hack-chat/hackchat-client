@@ -2,12 +2,11 @@
  * SettingsPage reducer exports
  */
 
-import produce from 'immer';
+import { produce } from 'immer';
 import { DEFAULT_ACTION } from './constants';
 
 export const initialState = {};
 
-/* eslint-disable default-case, no-param-reassign */
 const settingsPageReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {

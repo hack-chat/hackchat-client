@@ -48,9 +48,14 @@ export function ChatManager({ channel, channelData }) {
     if (channelData[channel].users.length === 1) {
       users = 'You are alone.';
     } else {
-      users = `Users online: ${channelData[channel].users
-        .map((user) => user[1].username)
-        .join(', ')}`;
+      const userIdList = Object.keys(channelData[channel].users);
+      let usernameList = [];
+      userIdList.forEach((id) => {
+        if (channelData[channel].users[id].online) {
+          usernameList.push(channelData[channel].users[id].username);
+        }
+      });
+      users = `Users online: ${usernameList.join(', ')}`;
     }
 
     welcome = (
@@ -69,29 +74,33 @@ export function ChatManager({ channel, channelData }) {
 
     let lastId = -1;
     let extend = false;
+
     messages = channelData[channel].messages.map((msg, i) => {
-      if (lastId === msg.data.payload.userid) {
-        extend = true;
-      } else {
-        extend = false;
+      let user = {};
+      if (typeof msg.data.userid !== 'undefined') {
+        user = channelData[channel].users[msg.data.userid];
+
+        if (lastId === msg.data.userid) {
+          extend = true;
+        } else {
+          extend = false;
+        }
       }
 
       if (msg.type === 'chat') {
-        lastId = msg.data.payload.userid;
+        lastId = msg.data.userid;
       } else {
         lastId = -1;
       }
 
-      const rowId = i;
-      const user = msg.data.client.users.get(msg.data.payload.userid);
       return (
-        <Row key={rowId} center="xs">
+        <Row key={i} center="xs">
           <Col sm="12">
             <Message
               msgForm={MessageFormatter}
               extended={extend}
               type={msg.type}
-              payload={msg.data.payload}
+              payload={msg.data}
               user={user}
             />
           </Col>

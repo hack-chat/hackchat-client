@@ -2,7 +2,7 @@
  * Main menu tests
  */
 
-// import produce from 'immer';
+// import { produce } from 'immer'; 
 import mainMenuReducer from '../reducer';
 
 /* eslint-disable default-case, no-param-reassign */

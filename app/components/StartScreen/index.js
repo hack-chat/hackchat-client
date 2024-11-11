@@ -53,6 +53,7 @@ function StartScreen({ meta, onOpenJoinMenu, intl }) {
       </Row>,
     );
   }
+
   return (
     <Container fluid>
       <Row center="xs">

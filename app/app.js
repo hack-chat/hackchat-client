@@ -4,10 +4,9 @@
 
 import '@babel/polyfill';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router';
-import history from 'utils/history';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import 'katex/dist/katex.min.css';
 import 'highlight.js/styles/atom-one-dark.css';
@@ -18,38 +17,38 @@ import CommunicationProvider from 'containers/CommunicationProvider';
 import LanguageProvider from 'containers/LanguageProvider';
 
 import '!file-loader?name=[name].[ext]!./images/favicon.ico';
-import 'file-loader?name=.htaccess!./.htaccess'; // eslint-disable-line import/extensions
-import 'config.json'; // eslint-disable-line import/extensions
+import 'file-loader?name=.htaccess!./.htaccess';
+import 'config.json';
 import 'bootstrap/dist/css/bootstrap.css';
 
-import configureStore from './configureStore';
+import setupStore from './setupStore';
 
 import { translationMessages } from './i18n';
 
 const initialState = {}; // @todo load local storage
-const store = configureStore(initialState, history);
-const MOUNT_NODE = document.getElementById('app');
+const store = setupStore(initialState);
+const mountNode = document.getElementById('app');
+const root = createRoot(mountNode);
 
 // Main render
 const render = (messages) => {
-  ReactDOM.render(
+  root.render(
     <Provider store={store}>
       <CommunicationProvider store={store}>
         <LanguageProvider messages={messages}>
-          <ConnectedRouter history={history}>
+          <Router>
             <App />
-          </ConnectedRouter>
+          </Router>
         </LanguageProvider>
       </CommunicationProvider>
     </Provider>,
-    MOUNT_NODE,
   );
 };
 
 // Add dev mode helpers
 if (module.hot) {
   module.hot.accept(['./i18n', 'containers/App'], () => {
-    ReactDOM.unmountComponentAtNode(MOUNT_NODE);
+    // root.unmount();
     render(translationMessages);
   });
 }
@@ -79,7 +78,7 @@ if (!window.Intl) {
         import('intl/locale-data/jsonp/tr'),
         import('intl/locale-data/jsonp/zh'),
       ]),
-    ) // eslint-disable-line prettier/prettier
+    )
     .then(() => render(translationMessages))
     .catch((err) => {
       throw err;
@@ -94,9 +93,9 @@ if (process.env.NODE_ENV === 'production') {
     window.addEventListener('load', () => {
       navigator.serviceWorker
         .register('/sw.js')
-        // eslint-disable-next-line no-unused-vars
         .then((registration) => {
-          // console.log('SW registered: ', registration);
+          // eslint-disable-next-line no-console
+          console.log('SW registered: ', registration);
         })
         .catch((registrationError) => {
           // eslint-disable-next-line no-console

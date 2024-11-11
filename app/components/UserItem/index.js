@@ -58,12 +58,12 @@ function UserItem({
 
   return (
     <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-      <WideDropdownToggle caret>{user.name}</WideDropdownToggle>
+      <WideDropdownToggle caret>{user.username}</WideDropdownToggle>
       <WideDropdownMenu>
         <WideDropdownItem
           onClick={() => {
             onCloseUsersModal();
-            onInviteUser(channel, user);
+            onInviteUser(channel, user.userid);
           }}
         >
           {inviteLabel}
@@ -71,7 +71,7 @@ function UserItem({
         <WideDropdownItem
           onClick={() => {
             onCloseUsersModal();
-            onWhisperUser(channel, user);
+            onWhisperUser(channel, user.userid);
           }}
         >
           {whisperLabel}
@@ -79,10 +79,10 @@ function UserItem({
         <WideDropdownItem
           onClick={() => {
             onCloseUsersModal();
-            onIgnoreUser(channel, user);
+            onIgnoreUser(channel, user.userid);
           }}
         >
-          {user.isBlocked ? unignoreLabel : ignoreLabel}
+          {user.blocked ? unignoreLabel : ignoreLabel}
         </WideDropdownItem>
 
         <WideDropdownItem

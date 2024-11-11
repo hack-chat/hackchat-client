@@ -4,7 +4,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { FormattedMessage, injectIntl } from 'react-intl';
@@ -17,7 +17,13 @@ import makeSelectSettingsPage from './selectors';
 import reducer from './reducer';
 import messages from './messages';
 
-export function SettingsPage({ history, intl }) {
+export function SettingsPage({ intl }) {
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate('/');
+  };
+
   useInjectReducer({ key: 'settingsPage', reducer });
 
   const backBtnText = intl.formatMessage(messages.backBtnText);
@@ -34,7 +40,7 @@ export function SettingsPage({ history, intl }) {
       />
       <br />
       <br />
-      <Button onClick={() => history.goBack()} color="secondary">
+      <Button onClick={handleGoBack} color="secondary">
         {backBtnText}
       </Button>
     </div>
@@ -42,10 +48,7 @@ export function SettingsPage({ history, intl }) {
 }
 
 SettingsPage.propTypes = {
-  // `dispatch` will be needed while building the page
-  // eslint-disable-next-line react/no-unused-prop-types
   dispatch: PropTypes.func.isRequired,
-  history: PropTypes.object,
   intl: PropTypes.object.isRequired,
 };
 
@@ -61,4 +64,4 @@ function mapDispatchToProps(dispatch) {
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-export default compose(withConnect, withRouter, injectIntl)(SettingsPage);
+export default compose(withConnect, injectIntl)(SettingsPage);

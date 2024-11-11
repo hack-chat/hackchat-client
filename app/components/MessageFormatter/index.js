@@ -25,7 +25,6 @@ const MessageFormatter = new Remarkable('full', {
 MessageFormatter.core.ruler.disable(['abbr']);
 MessageFormatter.inline.ruler.disable(['sup']);
 
-/* eslint-disable react/prop-types */
 MessageFormatter.renderer = new RemarkableReactRenderer({
   components: {
     a: ({ href, title, children }) => {
@@ -33,7 +32,6 @@ MessageFormatter.renderer = new RemarkableReactRenderer({
 
       return (
         <span
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(html, { ADD_ATTR: ['target'] }),
           }}
@@ -47,7 +45,6 @@ MessageFormatter.renderer = new RemarkableReactRenderer({
 
       return (
         <span
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(html, { ADD_ATTR: ['target'] }),
           }}
@@ -92,28 +89,28 @@ MessageFormatter.renderer = new RemarkableReactRenderer({
         try {
           return (
             <pre
-              // eslint-disable-next-line react/no-danger
               dangerouslySetInnerHTML={{
                 __html: hljs.highlight(language, content).value,
               }}
             />
           );
         } catch (__) {
-          // Yolo error handling
+          // eslint-disable-next-line no-console
+          console.log(__);
         }
       }
 
       try {
         return (
           <pre
-            // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{
               __html: hljs.highlightAuto(content).value,
             }}
           />
         );
       } catch (__) {
-        // You're changing the outcome by measuring the result, stop counting errors
+        // eslint-disable-next-line no-console
+        console.log(__);
       }
 
       return '';
@@ -133,8 +130,8 @@ const katexRule = ({ src, tokens }) => {
 
   for (let i = 0, j = tokens.length; i < j; i += 1) {
     if (tokens[i].type !== 'inline') {
-      // eslint-disable-next-line no-param-reassign
-      tokens[i].children = parseKatex(tokens[i].children);
+      // @todo: Make katex work again
+      //tokens[i].children = parseKatex(tokens[i].children);
     }
   }
 };

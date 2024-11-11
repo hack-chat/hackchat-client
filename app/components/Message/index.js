@@ -25,7 +25,7 @@ import { UserTrip, ModTrip, AdminTrip } from './TripStyles';
 import messages, { ERROR_ID } from './messages';
 
 function Message({ extended, type, payload, user, msgForm }) {
-  if (user && user.isBlocked) return <br />;
+  if (user && user.blocked) return '';
 
   let message;
   let nick;
@@ -103,7 +103,7 @@ function InviteFromMe(payload, key) {
         id={messages.inviteTo.id}
         defaultMessage={messages.inviteTo.defaultMessage}
         values={{
-          userTo: `${payload.to}`,
+          userTo: `${payload.to.username}`,
           targetChannel: (
             <Link
               key={key}
@@ -125,7 +125,7 @@ function InviteFromUser(payload, key) {
         id={messages.inviteFrom.id}
         defaultMessage={messages.inviteFrom.defaultMessage}
         values={{
-          userFrom: `${payload.from}`,
+          userFrom: `${payload.from.username}`,
           targetChannel: (
             <Link
               key={key}
@@ -147,7 +147,7 @@ function WhisperTo(msgForm, payload) {
         id={messages.whisperTo.id}
         defaultMessage={messages.whisperTo.defaultMessage}
         values={{
-          nick: `${payload.to}`,
+          nick: `${payload.to.username}`,
         }}
       />{' '}
       {msgForm.render(payload.content)}
@@ -162,7 +162,7 @@ function WhisperFrom(msgForm, payload) {
         id={messages.whisperFrom.id}
         defaultMessage={messages.whisperFrom.defaultMessage}
         values={{
-          nick: `${payload.from}`,
+          nick: `${payload.from.username}`,
         }}
       />{' '}
       {msgForm.render(payload.content)}

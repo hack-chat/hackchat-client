@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { withRouter } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
@@ -18,7 +18,7 @@ import LocaleModal from 'components/LocaleModal';
 import ChannelsModal from 'components/ChannelsModal';
 import UsersModal from 'components/UsersModal';
 
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Row } from 'reactstrap';
 import MenuButton from 'components/MenuButton';
 import {
   MdMenu,
@@ -31,6 +31,7 @@ import {
 import { FaPlus } from 'react-icons/fa';
 import Spacer from './Spacer';
 import Collapse from './Collapse';
+import BtnCol from './BtnCol';
 import messages from './messages';
 import {
   openMainMenu,
@@ -69,10 +70,11 @@ export function MainMenu({
   onCloseJoinMenu,
   onOpenLocaleMenu,
   onCloseLocaleMenu,
-  history,
   intl,
 }) {
   useInjectReducer({ key: 'mainMenu', reducer });
+
+  const navigate = useNavigate();
 
   const usersBtnToolTip = intl.formatMessage(messages.usersBtnToolTip);
   const channelsBtnToolTip = intl.formatMessage(messages.channelsBtnToolTip);
@@ -88,7 +90,7 @@ export function MainMenu({
       <Collapse className="fixed-bottom" isOpen={mainMenuIsOpen}>
         <Container fluid>
           <Row className="mx-auto">
-            <Col>
+            <BtnCol>
               <MenuButton
                 onClick={() => {
                   if (ChannelsModalIsOpen) {
@@ -102,10 +104,10 @@ export function MainMenu({
                 <MdPeople />
               </MenuButton>
               <UsersModal open={usersMenuIsOpen} />
-            </Col>
+            </BtnCol>
           </Row>
           <Row className="mx-auto">
-            <Col>
+            <BtnCol>
               <MenuButton
                 onClick={() => {
                   if (ChannelsModalIsOpen) {
@@ -119,10 +121,10 @@ export function MainMenu({
                 <MdForum />
               </MenuButton>
               <ChannelsModal open={ChannelsModalIsOpen} />
-            </Col>
+            </BtnCol>
           </Row>
           <Row className="mx-auto">
-            <Col>
+            <BtnCol>
               <MenuButton
                 onClick={() => {
                   if (joinMenuIsOpen) {
@@ -136,10 +138,10 @@ export function MainMenu({
                 <FaPlus />
               </MenuButton>
               <JoinModal open={joinMenuIsOpen} />
-            </Col>
+            </BtnCol>
           </Row>
           <Row className="mx-auto">
-            <Col>
+            <BtnCol>
               <MenuButton
                 onClick={() => {
                   if (localeMenuIsOpen) {
@@ -153,24 +155,24 @@ export function MainMenu({
                 <MdLanguage />
               </MenuButton>
               <LocaleModal open={localeMenuIsOpen} />
-            </Col>
+            </BtnCol>
           </Row>
           <Row className="mx-auto">
-            <Col>
+            <BtnCol>
               <MenuButton
                 onClick={() => {
-                  history.push('/settings');
+                  navigate('/settings');
                 }}
                 toolTip={settingsBtnText}
               >
                 <MdSettings />
               </MenuButton>
-            </Col>
+            </BtnCol>
           </Row>
           <Row>
-            <Col>
+            <BtnCol>
               <Spacer />
-            </Col>
+            </BtnCol>
           </Row>
         </Container>
       </Collapse>
@@ -210,7 +212,6 @@ MainMenu.propTypes = {
   onCloseJoinMenu: PropTypes.func,
   onOpenLocaleMenu: PropTypes.func,
   onCloseLocaleMenu: PropTypes.func,
-  history: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -239,4 +240,4 @@ function mapDispatchToProps(dispatch) {
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-export default compose(withConnect, withRouter, injectIntl)(MainMenu);
+export default compose(withConnect, injectIntl)(MainMenu);

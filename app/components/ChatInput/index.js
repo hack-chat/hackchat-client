@@ -11,7 +11,8 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
 import { sendChat } from 'containers/CommunicationProvider/actions';
-import { InputGroup, InputGroupAddon } from 'reactstrap';
+import { InputGroup } from 'reactstrap';
+import InputGroupText from '../BaseModal/InputGroupText';
 import { FaPaperPlane } from 'react-icons/fa';
 
 import messages from './messages';
@@ -21,10 +22,8 @@ import SendButton from './SendButton';
 
 const MaxMsgHistory = 25;
 
-// eslint-disable-next-line no-return-assign, no-cond-assign, no-param-reassign
 const incSearchIndex = (index, max) => ((index += 1) > max ? max : index);
 
-// eslint-disable-next-line no-return-assign, no-cond-assign, no-param-reassign
 const decSearchIndex = (index) => ((index -= 1) < 0 ? -1 : index);
 
 export function ChatInput({ channel, onSendChat }) {
@@ -116,11 +115,11 @@ export function ChatInput({ channel, onSendChat }) {
           )}
         </FormattedMessage>
 
-        <InputGroupAddon className="d-flex" addonType="append">
+        <InputGroupText className="d-flex" addontype="append">
           <SendButton type="submit">
             <FaPaperPlane />
           </SendButton>
-        </InputGroupAddon>
+        </InputGroupText>
       </InputGroup>
     </Form>
   );

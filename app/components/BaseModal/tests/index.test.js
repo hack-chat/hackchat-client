@@ -19,7 +19,7 @@ import {
   SmallDropdownToggle,
   InputGroup,
   Input,
-  InputGroupAddon,
+  InputGroupText,
 } from '../index';
 
 describe('<BaseModal />', () => {
@@ -87,7 +87,7 @@ describe('<BaseModal />', () => {
     expect(Input).not.toBeNull();
   });
 
-  it('should export a <InputGroupAddon> class', () => {
-    expect(InputGroupAddon).not.toBeNull();
+  it('should export a <InputGroupText> class', () => {
+    expect(InputGroupText).not.toBeNull();
   });
 });

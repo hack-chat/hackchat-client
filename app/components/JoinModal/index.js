@@ -15,6 +15,7 @@ import { compose } from 'redux';
 import { GiRollingDices } from 'react-icons/gi';
 
 import {
+  CloseButton,
   Modal,
   ModalHeader,
   ModalBody,
@@ -22,7 +23,7 @@ import {
   Button,
   InputGroup,
   Input,
-  InputGroupAddon,
+  InputGroupText,
 } from 'components/BaseModal';
 
 import { makeSelectJoinMenuChannel } from 'components/MainMenu/selectors';
@@ -44,12 +45,6 @@ export function JoinModal({
   defaultChannel,
   intl,
 }) {
-  // @todo Move this object into `components/BaseModal`
-  const closeBtn = (
-    <button type="button" className="close" onClick={onCloseJoinModal}>
-      &times;
-    </button>
-  );
   const joinModalTitle = intl.formatMessage(messages.joinModalTitle);
   const joinModalUsername = intl.formatMessage(messages.joinModalUsername);
   const joinModalPassword = intl.formatMessage(messages.joinModalPassword);
@@ -65,7 +60,7 @@ export function JoinModal({
   const toggleInvalidChannel = () => setInvalidChannel(!invalidChannel);
   const clearInvalidChannel = () => setInvalidChannel(false);
 
-  const doClose = () => {
+  const doCancel = () => {
     onCloseJoinModal();
     onClearJoinModalChannel();
   };
@@ -101,14 +96,14 @@ export function JoinModal({
 
   return (
     <div>
-      <Modal isOpen={open} toggle={doClose} autoFocus={false}>
-        <ModalHeader toggle={doClose} close={closeBtn}>
+      <Modal isOpen={open} toggle={doCancel} autoFocus={false}>
+        <ModalHeader toggle={doCancel} close={CloseButton(doCancel)}>
           {joinModalTitle}
         </ModalHeader>
         <Form onSubmit={handleSubmit}>
           <ModalBody>
             <InputGroup>
-              <InputGroupAddon addonType="prepend">@</InputGroupAddon>
+              <InputGroupText addontype="prepend">@</InputGroupText>
               <Input
                 autoFocus
                 invalid={invalidName}
@@ -117,27 +112,27 @@ export function JoinModal({
               />
             </InputGroup>
             <InputGroup>
-              <InputGroupAddon addonType="prepend">#</InputGroupAddon>
+              <InputGroupText addontype="prepend">#</InputGroupText>
               <Input type="password" placeholder={joinModalPassword} />
             </InputGroup>
             <InputGroup className={hideChannel ? 'd-none' : ''}>
-              <InputGroupAddon addonType="prepend">!</InputGroupAddon>
+              <InputGroupText addontype="prepend">!</InputGroupText>
               <Input
                 invalid={invalidChannel}
                 placeholder={joinModalChannel}
                 defaultValue={defaultChannel || randomChannel || ''}
                 onFocus={clearInvalidChannel}
               />
-              <InputGroupAddon addonType="append">
+              <InputGroupText addontype="append">
                 <RandomButton onClick={randomize}>
                   <GiRollingDices />
                 </RandomButton>
-              </InputGroupAddon>
+              </InputGroupText>
             </InputGroup>
           </ModalBody>
           <ModalFooter>
             <Button type="submit">{joinModalBtn}</Button>{' '}
-            <Button onClick={doClose}>{cancelText}</Button>
+            <Button onClick={doCancel}>{cancelText}</Button>
           </ModalFooter>
         </Form>
       </Modal>

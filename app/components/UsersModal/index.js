@@ -14,6 +14,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
 import {
+  CloseButton,
   Modal,
   ModalHeader,
   ModalBody,
@@ -37,12 +38,6 @@ export function UsersModal({
   channelData,
   intl,
 }) {
-  // @todo Move this object into `components/BaseModal`
-  const closeBtn = (
-    <button type="button" className="close" onClick={onCloseUsersModal}>
-      &times;
-    </button>
-  );
   const usersModalTitle = intl.formatMessage(messages.usersModalTitle);
   const cancelText = intl.formatMessage(messages.cancelText);
 
@@ -52,35 +47,40 @@ export function UsersModal({
   let userList = <div />;
   let noChannels = false;
   let myLevel = 'user';
+
   if (!channel) {
     noChannels = true;
     userList = <div key="empty">{emptyChannelsText}</div>;
   } else if (channelData[channel]) {
-    channelData[channel].users.map((user) => {
-      if (user[1].isMine) {
-        myLevel = user[1].level;
+    const userIdList = Object.keys(channelData[channel].users);
+
+    userList = [];
+    userIdList.forEach((id) => {
+      let userRecord = channelData[channel].users[id];
+      if (userRecord.mine === true) {
+        myLevel = userRecord.userlevel;
+      } else {
+        if (userRecord.online === true) {
+          userList.push(
+            <UserItem
+              channel={channel}
+              user={userRecord}
+              key={userRecord.userid}
+              myLevel={myLevel}
+            />,
+          );
+        }
       }
-      return null;
-    });
-    userList = channelData[channel].users.map((user) => {
-      if (!user[1].isMine && user[1].isOnline) {
-        return (
-          <UserItem
-            channel={channel}
-            user={user[1]}
-            key={user[1].userid}
-            myLevel={myLevel}
-          />
-        );
-      }
-      return null;
     });
   }
 
   return (
     <div>
       <Modal isOpen={open} toggle={onCloseUsersModal}>
-        <ModalHeader toggle={onCloseUsersModal} close={closeBtn}>
+        <ModalHeader
+          toggle={onCloseUsersModal}
+          close={CloseButton(onCloseUsersModal)}
+        >
           {usersModalTitle}
         </ModalHeader>
         <ModalBody>{userList}</ModalBody>

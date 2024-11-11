@@ -2,7 +2,7 @@
  * CommunicationProvider reducer exports
  */
 
-import produce from 'immer';
+import { produce } from 'immer';
 import {
   CONNECTION_ERROR,
   CHANGE_CHANNEL,
@@ -13,6 +13,7 @@ import {
   DEBUG,
   USER_JOINED,
   USER_LEFT,
+  IGNORE_USER,
   WARNING,
   GOT_CAPTCHA,
   INFORMATION,
@@ -37,7 +38,6 @@ export const initialState = {
   },
 };
 
-/* eslint-disable default-case, no-param-reassign */
 const communicationProviderReducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
@@ -65,7 +65,6 @@ const communicationProviderReducer = (state = initialState, action) =>
         break;
       case CHANGE_CHANNEL:
         draft.channel = action.channel;
-        draft.client.channel = action.channel;
         break;
       case START_JOIN:
         draft.channel = action.channel;
@@ -73,100 +72,105 @@ const communicationProviderReducer = (state = initialState, action) =>
 
       case CONNECTED:
         draft.connected = true;
-        draft.client = action.data.client;
         break;
       case SESSION_READY:
-        draft.meta.channelCount = action.data.payload.channelCount;
-        draft.meta.userCount = action.data.payload.userCount;
-        draft.meta.channels = action.data.payload.publicChannels;
+        draft.meta.channelCount = action.data.channelCount;
+        draft.meta.userCount = action.data.userCount;
+        draft.meta.channels = action.data.publicChannels;
         break;
       case JOINED_CHANNEL:
-        draft.channels[action.data.client.channel] = {
-          users: Array.from(action.data.client.users),
+        draft.channels[action.data.channel] = {
+          users: action.data.users,
           messages: [],
         };
         break;
       case DEBUG:
-        // console.log(action.data.payload);
+        //
         break;
       case USER_JOINED:
-        draft.channels[action.data.client.channel].users = Array.from(
-          action.data.client.users,
-        );
-        draft.channels[action.data.client.channel].messages.push({
+        draft.channels[action.channel].users[action.user.userid] = action.user;
+        draft.channels[action.channel].messages.push({
           type: 'join',
-          data: action.data,
+          data: {
+            channel: action.channel,
+            userid: action.user.userid,
+          },
         });
         break;
       case USER_LEFT:
-        draft.channels[action.data.client.channel].users = Array.from(
-          action.data.client.users,
-        );
-        draft.channels[action.data.client.channel].messages.push({
+        draft.channels[action.channel].users[action.user.userid] = action.user;
+        draft.channels[action.channel].messages.push({
           type: 'leave',
-          data: action.data,
+          data: {
+            channel: action.channel,
+            userid: action.user.userid,
+          },
         });
         break;
       case WARNING:
         if (
-          action.data.payload.channel === false ||
-          typeof draft.channels[action.data.client.channel] === 'undefined'
+          action.data.channel === false ||
+          typeof draft.channels[action.data.channel] === 'undefined'
         ) {
           draft.globalNotifs.push({
             type: 'warn',
             data: action.data,
           });
         } else {
-          draft.channels[action.data.client.channel].messages.push({
+          draft.channels[action.data.channel].messages.push({
             type: 'warn',
             data: action.data,
           });
         }
         break;
       case GOT_CAPTCHA:
-        draft.channels[action.data.client.channel].messages.push({
+        draft.globalNotifs.push({
           type: 'captcha',
           data: action.data,
         });
         break;
       case INFORMATION:
         if (
-          action.data.payload.channel === false ||
-          typeof draft.channels[action.data.client.channel] === 'undefined'
+          action.data.channel === false ||
+          typeof draft.channels[action.data.channel] === 'undefined'
         ) {
           draft.globalNotifs.push({
             type: 'info',
             data: action.data,
           });
         } else {
-          draft.channels[action.data.client.channel].messages.push({
+          draft.channels[action.data.channel].messages.push({
             type: 'info',
             data: action.data,
           });
         }
         break;
       case EMOTE:
-        draft.channels[action.data.client.channel].messages.push({
+        draft.channels[action.data.channel].messages.push({
           type: 'emote',
           data: action.data,
         });
         break;
       case INVITE:
-        draft.channels[action.data.client.channel].messages.push({
+        draft.channels[action.data.channel].messages.push({
           type: 'invite',
           data: action.data,
         });
         break;
       case WHISPER:
-        draft.channels[action.data.client.channel].messages.push({
+        draft.channels[action.channel].messages.push({
           type: 'whisper',
           data: action.data,
         });
         break;
       case MESSAGE:
-        draft.channels[action.data.client.channel].messages.push({
+        draft.channels[action.data.channel].messages.push({
           type: 'chat',
-          data: action.data,
+          data: {
+            userid: action.data.userid,
+            name: action.data.name,
+            content: action.data.content,
+          },
         });
         break;
       case PUSH_NOTIF:
@@ -177,6 +181,27 @@ const communicationProviderReducer = (state = initialState, action) =>
         break;
       case CLEAR_NOTIFS:
         draft.globalNotifs = [];
+        break;
+      case IGNORE_USER:
+        if (draft.channels[action.channel].users[action.userid].blocked) {
+          draft.channels[action.channel].users[action.userid].blocked = false;
+          draft.globalNotifs.push({
+            type: 'warn',
+            data: {
+              id: 1001,
+              text: 'Ignored user',
+            },
+          });
+        } else {
+          draft.channels[action.channel].users[action.userid].blocked = true;
+          draft.globalNotifs.push({
+            type: 'warn',
+            data: {
+              id: 1002,
+              text: 'Unignored user',
+            },
+          });
+        }
         break;
     }
   });

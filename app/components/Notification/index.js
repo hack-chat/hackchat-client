@@ -34,7 +34,7 @@ const Notification = ({ icon, title, body, onCloseFunction }) => {
 Notification.propTypes = {
   icon: PropTypes.string,
   title: PropTypes.string,
-  body: PropTypes.string,
+  body: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   onCloseFunction: PropTypes.func,
 };
 

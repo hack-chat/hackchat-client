@@ -5,7 +5,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
-import { Switch, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
 import SettingsPage from 'containers/SettingsPage/Loadable';
@@ -31,12 +31,15 @@ export default function App() {
           content="a minimal, distraction-free chat application"
         />
       </Helmet>
+
       <Header />
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route path="/settings" component={SettingsPage} />
-        <Route path="" component={NotFoundPage} />
-      </Switch>
+
+      <Routes>
+        <Route exact path="/" Component={HomePage} />
+        <Route exact path="/settings" Component={SettingsPage} />
+        <Route path="*" Component={NotFoundPage} />
+      </Routes>
+
       <GlobalStyle />
     </AppWrapper>
   );

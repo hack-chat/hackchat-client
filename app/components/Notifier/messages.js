@@ -56,6 +56,21 @@ const messages = {
     id: `${scope}.global.ErrorLabel`,
     defaultMessage: 'Error',
   },
+
+  captchaLabel: {
+    id: `${scope}.global.captchaLabel`,
+    defaultMessage: 'Captcha',
+  },
+
+  ignoredUser: {
+    id: `${scope}.global.ignoredUser`,
+    defaultMessage: 'Ignored user',
+  },
+
+  unignoredUser: {
+    id: `${scope}.global.unignoredUser`,
+    defaultMessage: 'Unignored user',
+  },
 };
 
 export const ERROR_ID = [];
@@ -74,5 +89,8 @@ ERROR_ID[31] = messages.globalPermsFail; // @todo
 ERROR_ID[32] = messages.globalPermsFail; // @todo
 
 ERROR_ID[41] = messages.inviteRateLimit;
+
+ERROR_ID[1001] = messages.ignoredUser;
+ERROR_ID[1002] = messages.unignoredUser;
 
 export default defineMessages(messages);

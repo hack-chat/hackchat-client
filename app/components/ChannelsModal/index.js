@@ -18,6 +18,7 @@ import ChannelItem from 'components/ChannelItem';
 import { ListGroup } from 'reactstrap';
 
 import {
+  CloseButton,
   Modal,
   ModalHeader,
   ModalBody,
@@ -35,12 +36,6 @@ export function ChannelsModal({
   className,
   intl,
 }) {
-  // @todo Move this object into `components/BaseModal`
-  const closeBtn = (
-    <button type="button" className="close" onClick={onCloseChannelsModal}>
-      &times;
-    </button>
-  );
   const channelsModalTitle = intl.formatMessage(messages.ChannelsModalTitle);
   const cancelText = intl.formatMessage(messages.cancelText);
   const emptyChannelsText = intl.formatMessage(messages.emptyChannelsText);
@@ -59,7 +54,10 @@ export function ChannelsModal({
   return (
     <div>
       <Modal isOpen={open} toggle={onCloseChannelsModal} className={className}>
-        <ModalHeader toggle={onCloseChannelsModal} close={closeBtn}>
+        <ModalHeader
+          toggle={onCloseChannelsModal}
+          close={CloseButton(onCloseChannelsModal)}
+        >
           {channelsModalTitle}
         </ModalHeader>
         <ModalBody>

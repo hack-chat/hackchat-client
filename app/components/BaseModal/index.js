@@ -1,6 +1,7 @@
 /**
  * Template export for styled modal ui objects
  */
+import CloseButton from './CloseButton';
 
 import Modal from './Modal';
 import ModalHeader from './ModalHeader';
@@ -23,9 +24,10 @@ import SmallDropdownToggle from './SmallDropdownToggle';
 
 import InputGroup from './InputGroup';
 import Input from './Input';
-import InputGroupAddon from './InputGroupAddon';
+import InputGroupText from './InputGroupText';
 
 export {
+  CloseButton,
   Modal,
   ModalHeader,
   ModalBody,
@@ -42,5 +44,5 @@ export {
   SmallDropdownToggle,
   InputGroup,
   Input,
-  InputGroupAddon,
+  InputGroupText,
 };

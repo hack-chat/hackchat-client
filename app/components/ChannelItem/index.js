@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { useStateIfMounted } from 'use-state-if-mounted';
-import { withRouter } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
@@ -35,9 +35,10 @@ function ChannelItem({
   onDisableCaptcha,
   onLockChannel,
   onUnlockChannel,
-  history,
   intl,
 }) {
+  const navigate = useNavigate();
+
   const [dropdownOpen, setOpen] = useStateIfMounted(false);
   const toggle = () => setOpen(!dropdownOpen);
 
@@ -55,7 +56,7 @@ function ChannelItem({
         id="caret"
         onClick={() => {
           onCloseChannelsModal();
-          history.push(`/?${channel}`);
+          navigate(`/?${channel}`);
         }}
       >
         {channel}
@@ -117,7 +118,6 @@ ChannelItem.propTypes = {
   onDisableCaptcha: PropTypes.func,
   onLockChannel: PropTypes.func,
   onUnlockChannel: PropTypes.func,
-  history: PropTypes.object,
   intl: PropTypes.object,
 };
 
@@ -138,4 +138,4 @@ function mapDispatchToProps(dispatch) {
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-export default compose(withConnect, withRouter, injectIntl)(ChannelItem);
+export default compose(withConnect, injectIntl)(ChannelItem);

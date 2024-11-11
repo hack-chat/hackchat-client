@@ -12,6 +12,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
 import {
+  CloseButton,
   Modal,
   ModalHeader,
   ModalBody,
@@ -33,12 +34,6 @@ export function LocaleModal({
   open,
   intl,
 }) {
-  // @todo Move this object into `components/BaseModal`
-  const closeBtn = (
-    <button type="button" className="close" onClick={onCloseLocalMenu}>
-      &times;
-    </button>
-  );
   const languageModalTitle = intl.formatMessage(messages.languageModalTitle);
   const cancelText = intl.formatMessage(messages.cancelText);
 
@@ -61,7 +56,10 @@ export function LocaleModal({
   return (
     <div>
       <Modal isOpen={open} toggle={onCloseLocalMenu}>
-        <ModalHeader toggle={onCloseLocalMenu} close={closeBtn}>
+        <ModalHeader
+          toggle={onCloseLocalMenu}
+          close={CloseButton(onCloseLocalMenu)}
+        >
           {languageModalTitle}
         </ModalHeader>
         <ModalBody>{langBtns}</ModalBody>

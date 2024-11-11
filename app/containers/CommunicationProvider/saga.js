@@ -43,44 +43,75 @@ const hcClient = new Client({
 
 function initWebsocket() {
   return eventChannel((emitter) => {
-    hcClient.on('error', (err) =>
-      emitter({ type: CONNECTION_ERROR, data: err }),
-    );
+    hcClient.on('error', () => emitter({ type: CONNECTION_ERROR, data: {} }));
 
-    hcClient.on('connected', (client) =>
-      emitter({ type: CONNECTED, data: { client } }),
-    );
+    hcClient.on('connected', () => emitter({ type: CONNECTED, data: {} }));
 
     hcClient.on('session', (payload) =>
-      emitter({ type: SESSION_READY, data: { payload } }),
-    );
-
-    hcClient.on('channelJoined', (payload) =>
       emitter({
-        type: JOINED_CHANNEL,
+        type: SESSION_READY,
         data: {
-          client: hcClient,
-          payload,
+          channelCount: payload.channelCount,
+          userCount: payload.userCount,
+          publicChannels: payload.publicChannels,
         },
       }),
     );
 
-    hcClient.on('debug', (payload) =>
+    hcClient.on('channelJoined', (payload) => {
+      let userList = {};
+      hcClient.users.forEach((userRecord, key) => {
+        userList[key] = {
+          blocked: userRecord.blocked,
+          bot: userRecord.bot,
+          mine: userRecord.mine,
+          nickColor: userRecord.nickColor,
+          online: userRecord.online,
+          permissionLevel: userRecord.permissionLevel,
+          userchannel: userRecord.userchannel,
+          userhash: userRecord.userhash,
+          userid: userRecord.userid,
+          userlevel: userRecord.userlevel,
+          username: userRecord.username,
+          usertrip: userRecord.usertrip,
+        };
+      });
+
+      return emitter({
+        type: JOINED_CHANNEL,
+        data: {
+          channel: payload.channel,
+          users: userList,
+        },
+      });
+    });
+
+    /*hcClient.on('debug', (payload) =>
       emitter({
         type: DEBUG,
         data: {
-          client: hcClient,
           payload,
         },
       }),
-    );
+    );*/
 
     hcClient.on('userJoined', (payload) =>
       emitter({
         type: USER_JOINED,
-        data: {
-          client: hcClient,
-          payload,
+        channel: payload.channel,
+        user: {
+          blocked: payload.blocked,
+          bot: payload.bot,
+          mine: payload.mine,
+          nickColor: payload.nickColor,
+          online: payload.online,
+          permissionLevel: payload.permissionLevel,
+          userchannel: payload.userchannel,
+          userhash: payload.userhash,
+          userid: payload.userid,
+          userlevel: payload.userlevel,
+          username: payload.username,
+          usertrip: payload.usertrip,
         },
       }),
     );
@@ -88,9 +119,20 @@ function initWebsocket() {
     hcClient.on('userLeft', (payload) =>
       emitter({
         type: USER_LEFT,
-        data: {
-          client: hcClient,
-          payload,
+        channel: payload.channel,
+        user: {
+          blocked: payload.blocked,
+          bot: payload.bot,
+          mine: payload.mine,
+          nickColor: payload.nickColor,
+          online: payload.online,
+          permissionLevel: payload.permissionLevel,
+          userchannel: payload.userchannel,
+          userhash: payload.userhash,
+          userid: payload.userid,
+          userlevel: payload.userlevel,
+          username: payload.username,
+          usertrip: payload.usertrip,
         },
       }),
     );
@@ -99,8 +141,9 @@ function initWebsocket() {
       emitter({
         type: WARNING,
         data: {
-          client: hcClient,
-          payload,
+          channel: payload.channel,
+          id: payload.id,
+          text: payload.text,
         },
       }),
     );
@@ -109,8 +152,8 @@ function initWebsocket() {
       emitter({
         type: GOT_CAPTCHA,
         data: {
-          client: hcClient,
-          payload,
+          channel: payload.captchaData.channel,
+          text: payload.captchaData.text,
         },
       }),
     );
@@ -119,8 +162,8 @@ function initWebsocket() {
       emitter({
         type: INFORMATION,
         data: {
-          client: hcClient,
-          payload,
+          channel: payload.channel,
+          text: payload.text,
         },
       }),
     );
@@ -129,8 +172,8 @@ function initWebsocket() {
       emitter({
         type: EMOTE,
         data: {
-          client: hcClient,
-          payload,
+          channel: payload.channel,
+          content: payload.content,
         },
       }),
     );
@@ -139,8 +182,21 @@ function initWebsocket() {
       emitter({
         type: INVITE,
         data: {
-          client: hcClient,
-          payload,
+          channel: payload.channel,
+          targetChannel: payload.targetChannel,
+          fromMe: payload.fromMe,
+          to: {
+            nickColor: payload.to.nickColor,
+            userid: payload.to.userid,
+            username: payload.to.username,
+            usertrip: payload.to.usertrip,
+          },
+          from: {
+            nickColor: payload.from.nickColor,
+            userid: payload.from.userid,
+            username: payload.from.username,
+            usertrip: payload.from.usertrip,
+          },
         },
       }),
     );
@@ -148,9 +204,38 @@ function initWebsocket() {
     hcClient.on('whisper', (payload) =>
       emitter({
         type: WHISPER,
+        channel: payload.from.userchannel,
         data: {
-          client: hcClient,
-          payload,
+          content: payload.content,
+          from: {
+            blocked: payload.from.blocked,
+            bot: payload.from.bot,
+            mine: payload.from.mine,
+            nickColor: payload.from.nickColor,
+            online: payload.from.online,
+            permissionLevel: payload.from.permissionLevel,
+            userchannel: payload.from.userchannel,
+            userhash: payload.from.userhash,
+            userid: payload.from.userid,
+            userlevel: payload.from.userlevel,
+            username: payload.from.username,
+            usertrip: payload.from.usertrip,
+          },
+          fromMe: payload.fromMe,
+          to: {
+            blocked: payload.to.blocked,
+            bot: payload.to.bot,
+            mine: payload.to.mine,
+            nickColor: payload.to.nickColor,
+            online: payload.to.online,
+            permissionLevel: payload.to.permissionLevel,
+            userchannel: payload.to.userchannel,
+            userhash: payload.to.userhash,
+            userid: payload.to.userid,
+            userlevel: payload.to.userlevel,
+            username: payload.to.username,
+            usertrip: payload.to.usertrip,
+          },
         },
       }),
     );
@@ -159,19 +244,17 @@ function initWebsocket() {
       emitter({
         type: MESSAGE,
         data: {
-          client: hcClient,
-          payload: {
-            userid: payload.user.userid,
-            name: payload.user.name,
-            content: payload.content,
-          },
+          channel: hcClient.channel || '',
+          userid: payload.user.userid,
+          name: payload.user.name,
+          content: payload.content,
         },
       }),
     );
 
     // unsubscribe function
     return () => {
-      // console.log('Socket off');
+      //
     };
   });
 }
@@ -205,23 +288,40 @@ export default function* communicationProviderSaga() {
   );
 
   // User Actions
-  yield takeLatest(INVITE_USER, (action) =>
-    action.user.sendInvite(action.channel),
-  );
+  yield takeLatest(INVITE_USER, (action) => {
+    const targetUser = hcClient.users.get(action.userid);
+    if (targetUser) targetUser.sendInvite(action.channel);
+  });
 
   yield takeLatest(WHISPER_USER, (action) =>
+    // @todo
     hcClient.say(action.channel, 'I wish the developer wasnt so lazy. . .'),
   );
 
-  yield takeLatest(IGNORE_USER, (action) => action.user.toggleBlock());
+  yield takeLatest(IGNORE_USER, (action) => {
+    const targetUser = hcClient.users.get(action.userid);
+    if (targetUser) targetUser.toggleBlock();
+  });
 
-  yield takeLatest(KICK_USER, (action) => action.user.kick(action.channel));
+  yield takeLatest(KICK_USER, (action) => {
+    const targetUser = hcClient.users.get(action.userid);
+    if (targetUser) targetUser.kick(action.channel);
+  });
 
-  yield takeLatest(BAN_USER, (action) => action.user.ban(action.channel));
+  yield takeLatest(BAN_USER, (action) => {
+    const targetUser = hcClient.users.get(action.userid);
+    if (targetUser) targetUser.ban(action.channel);
+  });
 
-  yield takeLatest(MUTE_USER, (action) => action.user.mute(action.channel));
+  yield takeLatest(MUTE_USER, (action) => {
+    const targetUser = hcClient.users.get(action.userid);
+    if (targetUser) targetUser.mute(action.channel);
+  });
 
-  yield takeLatest(UNMUTE_USER, (action) => action.user.unmute(action.channel));
+  yield takeLatest(UNMUTE_USER, (action) => {
+    const targetUser = hcClient.users.get(action.userid);
+    if (targetUser) targetUser.unmute(action.channel);
+  });
 
   while (true) {
     const action = yield take(client);

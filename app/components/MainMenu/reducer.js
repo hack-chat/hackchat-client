@@ -2,7 +2,7 @@
  * MainMenu reducer exports
  */
 
-import produce from 'immer';
+import { produce } from 'immer';
 import {
   OPEN_MAINMENU,
   CLOSE_MAINMENU,
@@ -26,7 +26,6 @@ export const initialState = {
   localeModelOpen: false,
 };
 
-/* eslint-disable default-case, no-param-reassign */
 const mainMenuReducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
