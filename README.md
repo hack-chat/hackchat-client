@@ -6,8 +6,8 @@ The default client that is webpacked and distributed in the [main](https://githu
 
 ## Prerequisites
 
-- [node.js 14.15](https://nodejs.org/en/download/package-manager/) or higher
-- [npm 6](https://nodejs.org/en/download/package-manager/) or higher
+- [node.js 22.9](https://nodejs.org/en/download/package-manager/) or higher
+- [npm 10.8](https://nodejs.org/en/download/package-manager/) or higher
 
 ## Developer Installation
 
