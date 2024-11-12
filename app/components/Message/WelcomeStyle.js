@@ -10,7 +10,6 @@ const WelcomeStyle = styled.div`
   color: #3b7ed0;
   padding-left: 1em;
   padding-top: 0.5rem;
-
   font-size: 0.9rem;
   font-weight: 200;
   font-family: 'DejaVu Sans Mono', monospace;

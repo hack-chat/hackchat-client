@@ -9,7 +9,6 @@ const ChatStyle = styled.div`
   border-left: 1px solid #386498 !important;
   color: #d3d0c1;
   padding-left: 1em;
-
   font-size: 0.9rem;
   white-space: pre-wrap;
   word-wrap: break-word;

@@ -59,6 +59,7 @@
   "hclient.Generic.Errors.global.permsFail": "Você não tem permissão para fazer isso.",
   "hclient.Generic.Errors.global.warningLabel": "Aviso",
   "hclient.Generic.Errors.global.ErrorLabel": "Erro",
+  "hclient.Generic.Errors.global.captchaLabel": "Captcha",
   "hclient.Generic.Errors.admin.saveFail": "Falha ao salvar a configuração, verifique os logs.",
   "hclient.Generic.Errors.changeNick.rateLimit": "Você está mudando apelidos muito rápido. Espere um momento antes de tentar novamente.",
   "hclient.Generic.Errors.changeNick.same": "Você já tem esse nome.",

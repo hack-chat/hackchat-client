@@ -13,10 +13,10 @@ const Banner = styled.pre`
   font-weight: bold;
   display: inline-block;
   text-align: left;
-  margin: 0px auto;
+  margin: 0 auto;
   justify-content: space-between;
   color: #3b7ed0;
-  text-shadow: 1px 1px 0px #000;
+  text-shadow: 1px 1px 0 #000;
   border: none;
 `;
 

@@ -8,7 +8,7 @@ import { Dropdown } from 'reactstrap';
 
 export default styled(Dropdown)`
   color: #f5f5f7;
-  text-shadow: 1px 1px 0px #000;
+  text-shadow: 1px 1px 0 #000;
   transition: 0.25s;
   width: 100%;
   border-radius: 0.3rem !important;

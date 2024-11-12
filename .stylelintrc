@@ -1,7 +1,11 @@
 {
-  "processors": ["stylelint-processor-styled-components"],
   "extends": [
-    "stylelint-config-recommended",
-    "stylelint-config-styled-components"
-  ]
+    "stylelint-config-standard"
+  ],
+  "ignoreFiles": [
+    "./node_modules/**/*.css",
+    "./build/**/*.css"
+  ],
+  "rules": {},
+  "customSyntax": "postcss-styled-syntax"
 }

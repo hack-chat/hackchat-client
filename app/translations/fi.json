@@ -59,6 +59,7 @@
   "hclient.Generic.Errors.global.permsFail": "Sinulla ei ole lupaa tehdä tätä.",
   "hclient.Generic.Errors.global.warningLabel": "Varoitus",
   "hclient.Generic.Errors.global.ErrorLabel": "Virhe",
+  "hclient.Generic.Errors.global.captchaLabel": "Captcha",
   "hclient.Generic.Errors.admin.saveFail": "Määrityksen tallentaminen epäonnistui, tarkista lokit.",
   "hclient.Generic.Errors.changeNick.rateLimit": "Muutat lempinimiä liian nopeasti. Odota hetki, ennen kuin yrität uudelleen.",
   "hclient.Generic.Errors.changeNick.same": "Sinulla on jo tämä nimi.",

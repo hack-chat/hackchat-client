@@ -10,14 +10,15 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
     width: 100%;
     background-color: #2a2949;
-    --scrollbarBG: #2a2a49;
-    --thumbBG: #9740dd;
+
+    --scrollbar-bg: #2a2a49;
+    --thumb-bg: #9740dd;
   }
 
   body {
     font-family: 'DejaVu Sans Mono', monospace, sans-serif;
     scrollbar-width: thin;
-    scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+    scrollbar-color: var(--thumb-bg) var(--scrollbar-bg);
   }
 
   body::-webkit-scrollbar {
@@ -25,13 +26,13 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body::-webkit-scrollbar-track {
-    background: var(--scrollbarBG);
+    background: var(--scrollbar-bg);
   }
 
   body::-webkit-scrollbar-thumb {
-    background-color: var(--thumbBG) ;
+    background-color: var(--thumb-bg) ;
     border-radius: 6px;
-    border: 3px solid var(--scrollbarBG);
+    border: 3px solid var(--scrollbar-bg);
   }
 
   #app {
@@ -43,7 +44,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .modal-content {
-    background-color: rgba(0, 0, 0, 0) !important;
+    background-color: rgba(0 0 0 0) !important;
     border: none !important;
   }
 
@@ -76,7 +77,7 @@ const GlobalStyle = createGlobalStyle`
     padding-left: 8.5px;
     margin-bottom: 0 !important;
     font-size: 13px;
-    line-height: 1.42857143;
+    line-height: 1.4286;
     color: #adb5bd;
     word-break: break-all;
     word-wrap: break-word;

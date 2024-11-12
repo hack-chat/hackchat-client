@@ -59,6 +59,7 @@
   "hclient.Generic.Errors.global.permsFail": "これを行う権限がありません。",
   "hclient.Generic.Errors.global.warningLabel": "警告",
   "hclient.Generic.Errors.global.ErrorLabel": "エラー",
+  "hclient.Generic.Errors.global.captchaLabel": "キャプチャ",
   "hclient.Generic.Errors.admin.saveFail": "設定を保存できませんでした。ログを確認してください。",
   "hclient.Generic.Errors.changeNick.rateLimit": "ニックネームの変更が速すぎます。少し待ってから、もう一度やり直してください。",
   "hclient.Generic.Errors.changeNick.same": "あなたはすでにその名前を持っています。",

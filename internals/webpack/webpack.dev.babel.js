@@ -18,6 +18,7 @@ module.exports = require('./webpack.base.babel')({
   ],
 
   output: {
+    libraryTarget: 'umd',
     filename: '[name].js',
     chunkFilename: '[name].chunk.js',
   },

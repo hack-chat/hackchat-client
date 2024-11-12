@@ -59,6 +59,7 @@
   "hclient.Generic.Errors.global.permsFail": "انت لا تملك اذنا لتعمل هذا.",
   "hclient.Generic.Errors.global.warningLabel": "تحذير",
   "hclient.Generic.Errors.global.ErrorLabel": "خطأ",
+  "hclient.Generic.Errors.global.captchaLabel": "كلمة التحقق",
   "hclient.Generic.Errors.admin.saveFail": "فشل حفظ التكوين ، تحقق من السجلات.",
   "hclient.Generic.Errors.changeNick.rateLimit": "أنت تقوم بتغيير الأسماء المستعارة بسرعة كبيرة. انتظر لحظة قبل المحاولة مرة أخرى.",
   "hclient.Generic.Errors.changeNick.same": "لديك هذا الاسم بالفعل.",

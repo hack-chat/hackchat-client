@@ -7,6 +7,6 @@ import styled from 'styled-components';
 import { Col } from 'reactstrap';
 
 export default styled(Col)`
-  padding-left: 0px;
-  padding-right: 0px;
+  padding-left: 0;
+  padding-right: 0;
 `;

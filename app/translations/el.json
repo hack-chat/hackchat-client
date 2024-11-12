@@ -59,6 +59,7 @@
   "hclient.Generic.Errors.global.permsFail": "Δεν έχετε άδεια να το κάνετε αυτό.",
   "hclient.Generic.Errors.global.warningLabel": "Προειδοποίηση",
   "hclient.Generic.Errors.global.ErrorLabel": "Λάθος",
+  "hclient.Generic.Errors.global.captchaLabel": "Captcha",
   "hclient.Generic.Errors.admin.saveFail": "Αποτυχία αποθήκευσης config, έλεγχος αρχείων καταγραφής.",
   "hclient.Generic.Errors.changeNick.rateLimit": "Αλλάζετε ψευδώνυμα πολύ γρήγορα. Περιμένετε λίγο πριν προσπαθήσετε ξανά.",
   "hclient.Generic.Errors.changeNick.same": "Έχετε ήδη αυτό το όνομα.",

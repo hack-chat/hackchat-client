@@ -60,6 +60,7 @@
   "hclient.Generic.Errors.global.permsFail": "J00 D0 n0t h4v3 p3rM15510n t0 D0 tH12.",
   "hclient.Generic.Errors.global.warningLabel": "W4Rnin'",
   "hclient.Generic.Errors.global.ErrorLabel": "eRror",
+  "hclient.Generic.Errors.global.captchaLabel": "C4p7ch4",
   "hclient.Generic.Errors.admin.saveFail": "PH41l3D 7O S4v3 KonF19, Ch3ck lO92.",
   "hclient.Generic.Errors.changeNick.rateLimit": "U r ch4n91n' N1ckn4M32 T00 f45T. w41T 4 m0M3NT 83f0r3 tRY1n' 4941N.",
   "hclient.Generic.Errors.changeNick.same": "U 4lr34dY H4V3 7h@ N4m3.",

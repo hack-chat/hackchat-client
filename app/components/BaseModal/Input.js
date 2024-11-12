@@ -9,7 +9,7 @@ import { Input } from 'reactstrap';
 export default styled(Input)`
   color: #f5f5f7 !important;
   background-color: #343a40 !important;
-  border-left: 0px solid transparent !important;
+  border-left: 0 solid transparent !important;
   border-image: linear-gradient(to right, #3b7ed0, #9740dd) !important;
   border-image-slice: 1 !important;
 

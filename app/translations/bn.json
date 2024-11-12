@@ -59,6 +59,7 @@
   "hclient.Generic.Errors.global.permsFail": "আপনার এটি করার অনুমতি নেই।",
   "hclient.Generic.Errors.global.warningLabel": "সতর্কতা",
   "hclient.Generic.Errors.global.ErrorLabel": "ত্রুটি",
+  "hclient.Generic.Errors.global.captchaLabel": "ক্যাপচা",
   "hclient.Generic.Errors.admin.saveFail": "কনফিগারেশন সংরক্ষণ করতে ব্যর্থ, লগগুলি চেক করুন।",
   "hclient.Generic.Errors.changeNick.rateLimit": "আপনি খুব দ্রুত ডাক নাম পরিবর্তন করছেন। আবার চেষ্টা করার আগে এক মুহূর্ত অপেক্ষা করুন।",
   "hclient.Generic.Errors.changeNick.same": "আপনার ইতিমধ্যে নামটি আছে।",

@@ -20,7 +20,7 @@ const ModTrip = styled.span`
   margin-left: -100%;
   font-family: 'DejaVu Sans Mono', monospace;
 
-  &:before {
+  &::before {
     content: '⭐';
     z-index: 1;
     transition: 0.2s;
@@ -34,7 +34,7 @@ const AdminTrip = styled.span`
   margin-left: -100%;
   font-family: 'DejaVu Sans Mono', monospace;
 
-  &:before {
+  &::before {
     content: '👑';
     z-index: 1;
     transition: 0.2s;

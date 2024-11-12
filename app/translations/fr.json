@@ -59,6 +59,7 @@
   "hclient.Generic.Errors.global.permsFail": "Vous n'avez pas la permission de faire cela.",
   "hclient.Generic.Errors.global.warningLabel": "avertissement",
   "hclient.Generic.Errors.global.ErrorLabel": "Erreur",
+  "hclient.Generic.Errors.global.captchaLabel": "Captcha",
   "hclient.Generic.Errors.admin.saveFail": "Échec de l'enregistrement de la configuration, vérification des journaux.",
   "hclient.Generic.Errors.changeNick.rateLimit": "Vous changez de surnoms trop vite. Attendez un moment avant de réessayer.",
   "hclient.Generic.Errors.changeNick.same": "Vous avez déjà ce nom.",

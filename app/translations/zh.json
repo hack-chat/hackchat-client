@@ -59,6 +59,7 @@
   "hclient.Generic.Errors.global.permsFail": "您無權執行此操作。",
   "hclient.Generic.Errors.global.warningLabel": "警告",
   "hclient.Generic.Errors.global.ErrorLabel": "错误",
+  "hclient.Generic.Errors.global.captchaLabel": "驗證碼",
   "hclient.Generic.Errors.admin.saveFail": "保存配置失敗，請檢查日誌。",
   "hclient.Generic.Errors.changeNick.rateLimit": "您更改暱稱的速度太快了。請稍等片刻，然後重試。",
   "hclient.Generic.Errors.changeNick.same": "您已經有這個名字了。",

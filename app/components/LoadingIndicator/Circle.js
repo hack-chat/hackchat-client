@@ -34,7 +34,7 @@ const Circle = styled.div`
   `
       : ''}
 
-  &:before {
+  &::before {
     content: '';
     display: block;
     margin: 0 auto;

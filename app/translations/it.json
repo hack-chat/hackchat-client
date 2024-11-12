@@ -59,6 +59,7 @@
   "hclient.Generic.Errors.global.permsFail": "Non sei autorizzato a farlo.",
   "hclient.Generic.Errors.global.warningLabel": "avvertimento",
   "hclient.Generic.Errors.global.ErrorLabel": "Errore",
+  "hclient.Generic.Errors.global.captchaLabel": "Captcha",
   "hclient.Generic.Errors.admin.saveFail": "Impossibile salvare la configurazione, controllare i log.",
   "hclient.Generic.Errors.changeNick.rateLimit": "Stai cambiando i soprannomi troppo velocemente. Aspetta un momento prima di riprovare.",
   "hclient.Generic.Errors.changeNick.same": "Hai già quel nome.",

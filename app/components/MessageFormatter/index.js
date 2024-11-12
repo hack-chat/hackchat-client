@@ -120,6 +120,7 @@ MessageFormatter.renderer = new RemarkableReactRenderer({
   },
 });
 
+// eslint-disable-next-line react-hooks/rules-of-hooks
 MessageFormatter.use(linkify);
 
 MessageFormatter.renderer.options.tokens.katex_block = 'katex_block';
@@ -129,9 +130,8 @@ const katexRule = ({ src, tokens }) => {
   if (src.indexOf('$') === -1) return;
 
   for (let i = 0, j = tokens.length; i < j; i += 1) {
-    if (tokens[i].type !== 'inline') {
-      // @todo: Make katex work again
-      //tokens[i].children = parseKatex(tokens[i].children);
+    if (tokens[i].type === 'inline') {
+      tokens[i].children = parseKatex(tokens[i].children);
     }
   }
 };

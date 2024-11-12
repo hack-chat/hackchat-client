@@ -59,6 +59,7 @@
   "hclient.Generic.Errors.global.permsFail": "Bunu yapmaya izniniz yok.",
   "hclient.Generic.Errors.global.warningLabel": "Uyarı",
   "hclient.Generic.Errors.global.ErrorLabel": "Hata",
+  "hclient.Generic.Errors.global.captchaLabel": "Captcha",
   "hclient.Generic.Errors.admin.saveFail": "Yapılandırma kaydedilemedi, günlükleri kontrol edin.",
   "hclient.Generic.Errors.changeNick.rateLimit": "Takma adları çok hızlı değiştiriyorsunuz. Tekrar denemeden önce biraz bekleyin.",
   "hclient.Generic.Errors.changeNick.same": "Bu isme zaten sahipsiniz.",

@@ -12,5 +12,5 @@ export default styled(Toast)`
   margin-top: 15px;
   background-color: none !important;
   border: none !important;
-  box-shadow: 0 0 10px #000000;
+  box-shadow: 0 0 10px #000;
 `;

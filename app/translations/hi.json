@@ -59,6 +59,7 @@
   "hclient.Generic.Errors.global.permsFail": "तुमको यह करने की इजाजत नहीं है।",
   "hclient.Generic.Errors.global.warningLabel": "चेतावनी",
   "hclient.Generic.Errors.global.ErrorLabel": "त्रुटि",
+  "hclient.Generic.Errors.global.captchaLabel": "कॅप्चा",
   "hclient.Generic.Errors.admin.saveFail": "कॉन्फ़िगरेशन को बचाने में विफल, लॉग की जाँच करें।",
   "hclient.Generic.Errors.changeNick.rateLimit": "आप बहुत तेज़ी से उपनाम बदल रहे हैं। दोबारा कोशिश करने से पहले एक पल रुकें।",
   "hclient.Generic.Errors.changeNick.same": "आपके पास पहले से ही वह नाम है।",

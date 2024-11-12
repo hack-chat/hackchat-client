@@ -59,6 +59,7 @@
   "hclient.Generic.Errors.global.permsFail": "شما اجازه این کار را ندارید.",
   "hclient.Generic.Errors.global.warningLabel": "هشدار",
   "hclient.Generic.Errors.global.ErrorLabel": "خطا",
+  "hclient.Generic.Errors.global.captchaLabel": "کپچا",
   "hclient.Generic.Errors.admin.saveFail": "پیکربندی ذخیره نشد ، گزارش ها را بررسی کنید.",
   "hclient.Generic.Errors.changeNick.rateLimit": "شما خیلی سریع نام مستعار را تغییر می دهید. قبل از تلاش دوباره لحظه ای صبر کنید.",
   "hclient.Generic.Errors.changeNick.same": "شما قبلاً آن نام را دارید",

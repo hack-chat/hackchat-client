@@ -59,6 +59,7 @@
   "hclient.Generic.Errors.global.permsFail": "Anda tidak memiliki izin untuk melakukan ini.",
   "hclient.Generic.Errors.global.warningLabel": "Peringatan",
   "hclient.Generic.Errors.global.ErrorLabel": "Kesalahan",
+  "hclient.Generic.Errors.global.captchaLabel": "Captcha",
   "hclient.Generic.Errors.admin.saveFail": "Gagal menyimpan konfigurasi, periksa log.",
   "hclient.Generic.Errors.changeNick.rateLimit": "Anda mengubah nama panggilan terlalu cepat. Tunggu beberapa saat sebelum mencoba lagi.",
   "hclient.Generic.Errors.changeNick.same": "Kamu sudah punya nama itu.",

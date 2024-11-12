@@ -46,6 +46,7 @@ export function ChatManager({ channel, channelData }) {
   if (typeof channelData[channel] !== 'undefined') {
     // @todo Messages pagination here
     if (channelData[channel].users.length === 1) {
+      // @todo i18n
       users = 'You are alone.';
     } else {
       const userIdList = Object.keys(channelData[channel].users);
@@ -55,6 +56,7 @@ export function ChatManager({ channel, channelData }) {
           usernameList.push(channelData[channel].users[id].username);
         }
       });
+      // @todo i18n
       users = `Users online: ${usernameList.join(', ')}`;
     }
 
@@ -65,6 +67,7 @@ export function ChatManager({ channel, channelData }) {
             msgForm={MessageFormatter}
             extended={false}
             type="welcome"
+            // @todo i18n
             payload={`Joined channel "${channel}". ${users}`}
             user={{}}
           />

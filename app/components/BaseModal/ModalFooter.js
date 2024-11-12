@@ -12,7 +12,7 @@ export default styled(ModalFooter)`
   border-top: none !important;
   border-left: 1px solid #3b7ed0;
   border-right: 1px solid #9740dd;
-  padding: 0.5rem 0.5rem !important;
+  padding: 0.5rem !important;
   color: #f5f5f7;
-  text-shadow: 1px 1px 0px #000;
+  text-shadow: 1px 1px 0 #000;
 `;

@@ -1,19 +1,14 @@
+import js from '@eslint/js';
+import importPlugin from 'eslint-plugin-import';
+import tseslint from 'typescript-eslint';
+import prettier from "eslint-plugin-prettier";
 import reduxSaga from "eslint-plugin-redux-saga";
 import react from "eslint-plugin-react";
+import { fixupPluginRules } from "@eslint/compat";
 import reactHooks from "eslint-plugin-react-hooks";
 import jsxA11Y from "eslint-plugin-jsx-a11y";
-import { fixupPluginRules } from "@eslint/compat";
-import globals from "globals";
-import ESLintPlugin from 'eslint-webpack-plugin';
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import { FlatCompat } from "@eslint/eslintrc";
 import babelParser from "@babel/eslint-parser";
-
-import prettier from "eslint-plugin-prettier";
-import importPlugin from 'eslint-plugin-import';
-import js from '@eslint/js';
-import tseslint from 'typescript-eslint';
+import globals from "globals";
 
 export default [
   js.configs.recommended,
@@ -30,6 +25,10 @@ export default [
     },
     settings: {
       "import/resolver": {
+        node: {
+          extensions: [".js", ".ts", ".tsx"],
+          moduleDirectory: ["src", "node_modules"],
+        },
         webpack: {
           config: "./internals/webpack/webpack.prod.babel.js",
         },

@@ -7,7 +7,7 @@ import { css } from 'styled-components';
 const buttonStyles = css`
   width: 40px;
   height: 40px;
-  padding: 0px 0px;
+  padding: 0;
   margin-bottom: 16px;
   border-image: linear-gradient(to right, #2a65ac, #9740dd) !important;
   border-image-slice: 1 !important;
@@ -27,7 +27,7 @@ const buttonStyles = css`
   overflow: hidden;
 
   & > svg {
-    filter: drop-shadow(1px 1px 0px #000);
+    filter: drop-shadow(1px 1px 0 #000);
   }
 
   &:hover {
@@ -39,7 +39,7 @@ const buttonStyles = css`
   }
 
   &:active {
-    background: rgba(125, 35, 199, 1);
+    background: rgba(125 35 199 100%);
   }
 `;
 

@@ -59,6 +59,7 @@
   "hclient.Generic.Errors.global.permsFail": "Du hast keine Erlaubnis das zu tun.",
   "hclient.Generic.Errors.global.warningLabel": "Warnung",
   "hclient.Generic.Errors.global.ErrorLabel": "Error",
+  "hclient.Generic.Errors.global.captchaLabel": "Captcha",
   "hclient.Generic.Errors.admin.saveFail": "Konfiguration konnte nicht gespeichert werden. Überprüfen Sie die Protokolle.",
   "hclient.Generic.Errors.changeNick.rateLimit": "Sie ändern Spitznamen zu schnell. Warten Sie einen Moment, bevor Sie es erneut versuchen.",
   "hclient.Generic.Errors.changeNick.same": "Du hast diesen Namen schon.",

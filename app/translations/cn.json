@@ -60,6 +60,7 @@
   "hclient.Generic.Errors.global.permsFail": "您无权执行此操作。",
   "hclient.Generic.Errors.global.warningLabel": "警告",
   "hclient.Generic.Errors.global.ErrorLabel": "错误",
+  "hclient.Generic.Errors.global.captchaLabel": "验证码",
   "hclient.Generic.Errors.admin.saveFail": "保存配置失败，请检查日志。",
   "hclient.Generic.Errors.changeNick.rateLimit": "您更改昵称的频率太高了。请稍等片刻，然后重試。",
   "hclient.Generic.Errors.changeNick.same": "您已经在使用这个昵称了。",

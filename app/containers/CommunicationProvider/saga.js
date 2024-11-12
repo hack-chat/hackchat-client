@@ -6,6 +6,8 @@
 import { eventChannel } from 'redux-saga';
 import { take, call, put, takeLatest } from 'redux-saga/effects';
 
+import { Client } from 'hackchat-engine';
+
 import {
   CONNECTION_ERROR,
   CONNECTED,
@@ -24,7 +26,7 @@ import {
   UNMUTE_USER,
   SEND_CHAT,
   JOINED_CHANNEL,
-  DEBUG,
+  // DEBUG,
   USER_JOINED,
   USER_LEFT,
   WARNING,
@@ -36,7 +38,6 @@ import {
   MESSAGE,
 } from './constants';
 
-const { Client } = require('hackchat-engine');
 const hcClient = new Client({
   isBot: false,
 });

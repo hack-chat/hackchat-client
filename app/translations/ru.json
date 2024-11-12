@@ -59,6 +59,7 @@
   "hclient.Generic.Errors.global.permsFail": "У вас нет разрешения на это.",
   "hclient.Generic.Errors.global.warningLabel": "Предупреждение",
   "hclient.Generic.Errors.global.ErrorLabel": "ошибка",
+  "hclient.Generic.Errors.global.captchaLabel": "Капча",
   "hclient.Generic.Errors.admin.saveFail": "Не удалось сохранить конфигурацию, проверьте логи.",
   "hclient.Generic.Errors.changeNick.rateLimit": "Вы слишком быстро меняете никнеймы. Подождите, прежде чем повторить попытку.",
   "hclient.Generic.Errors.changeNick.same": "У тебя уже есть это имя.",

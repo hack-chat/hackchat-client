@@ -9,7 +9,7 @@ import { DropdownItem } from 'reactstrap';
 export default styled(DropdownItem)`
   background-color: #2a2a49 !important;
   color: #f5f5f7 !important;
-  text-shadow: 1px 1px 0px #000;
+  text-shadow: 1px 1px 0 #000;
   transition: 0.25s;
   cursor: 'pointer';
 

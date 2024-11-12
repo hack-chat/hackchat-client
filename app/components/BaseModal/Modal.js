@@ -9,5 +9,5 @@ import { Modal } from 'reactstrap';
 export default styled(Modal)`
   background-color: none !important;
   border: none !important;
-  box-shadow: 0 0 10px #000000;
+  box-shadow: 0 0 10px #000;
 `;

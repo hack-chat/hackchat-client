@@ -2,33 +2,33 @@
  * This is the engine that changes words into other words :D
  */
 
-const arTranslationMessages = require('./translations/ar.json');
-const bnTranslationMessages = require('./translations/bn.json');
-const deTranslationMessages = require('./translations/de.json');
-const elTranslationMessages = require('./translations/el.json');
-const enTranslationMessages = require('./translations/en.json');
-const esTranslationMessages = require('./translations/es.json');
-const faTranslationMessages = require('./translations/fa.json');
-const fiTranslationMessages = require('./translations/fi.json');
-const frTranslationMessages = require('./translations/fr.json');
-const hiTranslationMessages = require('./translations/hi.json');
-const idTranslationMessages = require('./translations/id.json');
-const itTranslationMessages = require('./translations/it.json');
-const jaTranslationMessages = require('./translations/ja.json');
-const lvTranslationMessages = require('./translations/lv.json');
-const ptTranslationMessages = require('./translations/pt.json');
-const ruTranslationMessages = require('./translations/ru.json');
-const trTranslationMessages = require('./translations/tr.json');
-const zhTranslationMessages = require('./translations/zh.json');
-const cnTranslationMessages = require('./translations/cn.json');
+import * as arTranslationMessages from './translations/ar.json';
+import * as bnTranslationMessages from './translations/bn.json';
+import * as deTranslationMessages from './translations/de.json';
+import * as elTranslationMessages from './translations/el.json';
+import * as enTranslationMessages from './translations/en.json';
+import * as esTranslationMessages from './translations/es.json';
+import * as faTranslationMessages from './translations/fa.json';
+import * as fiTranslationMessages from './translations/fi.json';
+import * as frTranslationMessages from './translations/fr.json';
+import * as hiTranslationMessages from './translations/hi.json';
+import * as idTranslationMessages from './translations/id.json';
+import * as itTranslationMessages from './translations/it.json';
+import * as jaTranslationMessages from './translations/ja.json';
+import * as lvTranslationMessages from './translations/lv.json';
+import * as ptTranslationMessages from './translations/pt.json';
+import * as ruTranslationMessages from './translations/ru.json';
+import * as trTranslationMessages from './translations/tr.json';
+import * as zhTranslationMessages from './translations/zh.json';
+import * as cnTranslationMessages from './translations/cn.json';
 
-let DEFAULT_LOCALE = 'en';
+export let DEFAULT_LOCALE = 'en';
 if (navigator && navigator.language) {
   [DEFAULT_LOCALE] = navigator.language.split(/[-_]/);
 }
 
 // prettier-ignore
-const appLocales = [
+export const appLocales = [
   'ar',
   'bn',
   'de',
@@ -65,7 +65,7 @@ const formatTranslationMessages = (locale, messages) => {
   return Object.keys(messages).reduce(flattenFormattedMessages, {});
 };
 
-const translationMessages = {
+export const translationMessages = {
   ar: formatTranslationMessages('ar', arTranslationMessages),
   bn: formatTranslationMessages('bn', bnTranslationMessages),
   de: formatTranslationMessages('de', deTranslationMessages),
@@ -85,8 +85,3 @@ const translationMessages = {
   zh: formatTranslationMessages('zh', zhTranslationMessages),
   cn: formatTranslationMessages('cn', cnTranslationMessages),
 };
-
-exports.appLocales = appLocales;
-exports.formatTranslationMessages = formatTranslationMessages;
-exports.translationMessages = translationMessages;
-exports.DEFAULT_LOCALE = DEFAULT_LOCALE;

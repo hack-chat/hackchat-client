@@ -17,6 +17,6 @@ export default styled(InputGroupText)`
   & > button {
     color: #f5f5f7 !important;
     margin: 0 auto;
-    border: 0px !important;
+    border: 0 !important;
   }
 `;
