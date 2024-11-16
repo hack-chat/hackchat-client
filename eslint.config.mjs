@@ -1,14 +1,14 @@
 import js from '@eslint/js';
 import importPlugin from 'eslint-plugin-import';
 import tseslint from 'typescript-eslint';
-import prettier from "eslint-plugin-prettier";
-import reduxSaga from "eslint-plugin-redux-saga";
-import react from "eslint-plugin-react";
-import { fixupPluginRules } from "@eslint/compat";
-import reactHooks from "eslint-plugin-react-hooks";
-import jsxA11Y from "eslint-plugin-jsx-a11y";
-import babelParser from "@babel/eslint-parser";
-import globals from "globals";
+import prettier from 'eslint-plugin-prettier';
+import reduxSaga from 'eslint-plugin-redux-saga';
+import react from 'eslint-plugin-react';
+import { fixupPluginRules } from '@eslint/compat';
+import reactHooks from 'eslint-plugin-react-hooks';
+import jsxA11Y from 'eslint-plugin-jsx-a11y';
+import babelParser from '@babel/eslint-parser';
+import globals from 'globals';
 
 export default [
   js.configs.recommended,

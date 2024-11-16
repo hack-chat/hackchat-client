@@ -2,7 +2,7 @@
  * This is the entry file for the application
  */
 
-import '@babel/polyfill';
+import 'core-js/stable';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
@@ -18,7 +18,7 @@ import LanguageProvider from 'containers/LanguageProvider';
 
 import '!file-loader?name=[name].[ext]!./images/favicon.ico';
 import 'file-loader?name=.htaccess!./.htaccess';
-import 'config.json';
+import './config.json';
 import 'bootstrap/dist/css/bootstrap.css';
 
 import setupStore from './setupStore';
@@ -53,7 +53,7 @@ if (module.hot) {
   });
 }
 
-// Initialize internationization
+// Initialize internationalization
 if (!window.Intl) {
   new Promise((resolve) => {
     resolve(import('intl'));

@@ -2,6 +2,8 @@
  * Exports common base options common to both dev and prod webpack configs
  */
 
+const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
+
 const path = require('path');
 const webpack = require('webpack');
 
@@ -53,45 +55,26 @@ module.exports = options => {
           use: 'file-loader',
         },
         {
-          test: /\.svg$/,
-          use: [
-            {
-              loader: 'svg-url-loader',
-              options: {
-                limit: 10 * 1024,
-                noquotes: true,
-              },
-            },
-          ],
+          test: /\.(jpe?g|png|gif|svg)$/i,
+          type: "asset",
         },
         {
-          test: /\.(jpg|png|gif)$/,
-          use: [
-            {
-              loader: 'url-loader',
+          test: /\.(jpe?g|png|gif|svg)$/i,
+          loader: ImageMinimizerPlugin.loader,
+          enforce: "pre",
+          options: {
+            minimizer: {
+              implementation: ImageMinimizerPlugin.imageminMinify,
               options: {
-                limit: 10 * 1024,
+                plugins: [
+                  "imagemin-gifsicle",
+                  "imagemin-mozjpeg",
+                  "imagemin-pngquant",
+                  "imagemin-svgo",
+                ],
               },
             },
-            {
-              loader: 'image-webpack-loader',
-              options: {
-                mozjpeg: {
-                  enabled: false,
-                },
-                gifsicle: {
-                  interlaced: false,
-                },
-                optipng: {
-                  optimizationLevel: 7,
-                },
-                pngquant: {
-                  quality: '65-90',
-                  speed: 4,
-                },
-              },
-            },
-          ],
+          },
         },
         {
           test: /\.html$/,

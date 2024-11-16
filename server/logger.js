@@ -4,9 +4,6 @@
  * Format express server errors and announce when the server is ready
  */
 
-// const chalk = require('chalk');
-// import chalk from 'chalk';
-
 const divider = '\n-----------------------------------';
 
 const logger = {
