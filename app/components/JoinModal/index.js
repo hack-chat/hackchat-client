@@ -33,6 +33,18 @@ import {
   closeJoinModal,
   clearJoinModalChannel,
 } from 'components/MainMenu/actions';
+
+import {
+  setUsername,
+  setPassword,
+  setColor,
+} from 'containers/SettingsPage/actions';
+import {
+  makeSelectCachedUsername,
+  makeSelectCachedPassword,
+  makeSelectCachedColor,
+} from 'containers/SettingsPage/selectors';
+
 import messages from './messages';
 import Form from './Form';
 import RandomButton from './RandomButton';
@@ -43,6 +55,9 @@ export function JoinModal({
   open,
   onSubmitForm,
   defaultChannel,
+  username,
+  password,
+  prevColor,
   intl,
 }) {
   const joinModalTitle = intl.formatMessage(messages.joinModalTitle);
@@ -79,19 +94,25 @@ export function JoinModal({
     if (evt !== undefined && evt.stopPropagation) evt.stopPropagation();
     if (evt !== undefined && evt.stopImmediatePropagation)
       evt.nativeEvent.stopImmediatePropagation();
+
     let err = false;
     const user = evt.target[0].value;
+
     if (!user) {
       err = true;
       toggleInvalidName();
     }
+
     const pass = evt.target[1].value;
     const chan = evt.target[2].value;
+    const color = prevColor; // @todo Add color picker to modal
+
     if (!chan) {
       err = true;
       toggleInvalidChannel();
     }
-    if (!err) onSubmitForm(user, pass, chan);
+
+    if (!err) onSubmitForm(user, pass, chan, color);
   };
 
   return (
@@ -109,11 +130,16 @@ export function JoinModal({
                 invalid={invalidName}
                 placeholder={joinModalUsername}
                 onFocus={clearInvalidName}
+                defaultValue={username}
               />
             </InputGroup>
             <InputGroup>
               <InputGroupText addontype="prepend">#</InputGroupText>
-              <Input type="password" placeholder={joinModalPassword} />
+              <Input
+                type="password"
+                placeholder={joinModalPassword}
+                defaultValue={password}
+              />
             </InputGroup>
             <InputGroup className={hideChannel ? 'd-none' : ''}>
               <InputGroupText addontype="prepend">!</InputGroupText>
@@ -146,21 +172,32 @@ JoinModal.propTypes = {
   open: PropTypes.bool,
   onSubmitForm: PropTypes.func,
   defaultChannel: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  username: PropTypes.string,
+  password: PropTypes.string,
+  prevColor: PropTypes.string,
   intl: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   defaultChannel: makeSelectJoinMenuChannel(),
+  username: makeSelectCachedUsername(),
+  password: makeSelectCachedPassword(),
+  prevColor: makeSelectCachedColor(),
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
     onCloseJoinModal: () => dispatch(closeJoinModal()),
     onClearJoinModalChannel: () => dispatch(clearJoinModalChannel()),
-    onSubmitForm: (user, pass, chan) => {
+    onSubmitForm: (user, pass, chan, color) => {
       dispatch(clearJoinModalChannel());
       dispatch(closeJoinModal());
-      dispatch(joinChannel(user, pass, chan));
+
+      dispatch(setUsername(user));
+      dispatch(setPassword(pass));
+      dispatch(setColor(color));
+
+      dispatch(joinChannel(user, pass, chan, color));
     },
     dispatch,
   };

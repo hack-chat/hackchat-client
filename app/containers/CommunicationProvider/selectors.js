@@ -32,15 +32,6 @@ const makeSelectChannelData = () =>
   );
 
 /**
- * Get the main hackchat-engine client reference
- */
-const makeSelectClient = () =>
-  createSelector(
-    selectCommunicationProviderDomain,
-    (substate) => substate.client,
-  );
-
-/**
  * Get the meta data passed by a session event
  */
 const makeSelectMeta = () =>
@@ -63,7 +54,6 @@ export {
   selectCommunicationProviderDomain,
   makeSelectChannel,
   makeSelectChannelData,
-  makeSelectClient,
   makeSelectMeta,
   makeSelectglobalNotifs,
 };

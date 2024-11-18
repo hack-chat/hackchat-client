@@ -25,8 +25,7 @@ import setupStore from './setupStore';
 
 import { translationMessages } from './i18n';
 
-const initialState = {}; // @todo load local storage
-const store = setupStore(initialState);
+const store = setupStore();
 const mountNode = document.getElementById('app');
 const root = createRoot(mountNode);
 

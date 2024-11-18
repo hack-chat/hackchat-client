@@ -13,6 +13,7 @@ import {
   CONNECTED,
   SESSION_READY,
   START_JOIN,
+  CHANGE_COLOR,
   ENABLE_CAPTCHA,
   DISABLE_CAPTCHA,
   LOCK_CHANNEL,
@@ -264,12 +265,21 @@ export default function* communicationProviderSaga() {
   const client = yield call(initWebsocket);
 
   // Channel Actions
-  yield takeLatest(START_JOIN, (action) =>
-    hcClient.join(action.username, action.password, action.channel),
+  yield takeLatest(START_JOIN, (action) => {
+    hcClient.color = action.color;
+    hcClient.join(action.username, action.password, action.channel);
+  });
+
+  yield takeLatest(JOINED_CHANNEL, (action) =>
+    hcClient.changeColor(hcClient.color, action.channel),
   );
 
   yield takeLatest(SEND_CHAT, (action) =>
     hcClient.say(action.channel, action.message),
+  );
+
+  yield takeLatest(CHANGE_COLOR, (action) =>
+    hcClient.changeColor(action.color, action.channel),
   );
 
   yield takeLatest(ENABLE_CAPTCHA, (action) =>

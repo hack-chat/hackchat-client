@@ -5,6 +5,7 @@
 import { combineReducers } from 'redux';
 
 import languageProviderReducer from 'containers/LanguageProvider/reducer';
+import settingsPageReducer from 'containers/SettingsPage/reducer';
 
 /**
  * Exports an object container the root reducer, router state, i18n and injected reducers
@@ -15,6 +16,7 @@ import languageProviderReducer from 'containers/LanguageProvider/reducer';
 export default function createReducer(injectedReducers = {}) {
   const rootReducer = combineReducers({
     language: languageProviderReducer,
+    settings: settingsPageReducer,
     ...injectedReducers,
   });
 

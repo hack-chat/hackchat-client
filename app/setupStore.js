@@ -28,7 +28,7 @@ const logger = (store) => (next) => (action) => {
  * @public
  * @return {redux#Store}
  */
-export default function setupStore(initialState = {}) {
+export default function setupStore() {
   const reduxSagaMonitorOptions = {};
   const sagaMiddleware = createSagaMiddleware(reduxSagaMonitorOptions);
   const middlewares = [sagaMiddleware];
@@ -41,7 +41,6 @@ export default function setupStore(initialState = {}) {
     reducer: createReducer(),
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().prepend(middlewares),
-    preloadedState: initialState,
   });
 
   // Add extensions

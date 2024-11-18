@@ -27,7 +27,6 @@ import {
 
 export const initialState = {
   connected: false,
-  client: false,
   channel: false,
   channels: {},
   globalNotifs: [],

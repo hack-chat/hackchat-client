@@ -5,6 +5,7 @@
 import {
   CHANGE_CHANNEL,
   START_JOIN,
+  CHANGE_COLOR,
   SEND_CHAT,
   ENABLE_CAPTCHA,
   DISABLE_CAPTCHA,
@@ -40,11 +41,26 @@ export function changeChannel(channel) {
  * @param  {string} channel Target channel name
  * @return {object} An action object with a type of START_JOIN
  */
-export function joinChannel(username, password, channel) {
+export function joinChannel(username, password, channel, color) {
   return {
     type: START_JOIN,
     username,
     password,
+    channel,
+    color,
+  };
+}
+
+/**
+ * Sends a `changecolor` command to the chat server
+ * @param  {string} color HTML color code
+ * @param  {string} channel Target channel name
+ * @return {object} An action object with a type of CHANGE_COLOR
+ */
+export function changeColor(color, channel) {
+  return {
+    type: CHANGE_COLOR,
+    color,
     channel,
   };
 }

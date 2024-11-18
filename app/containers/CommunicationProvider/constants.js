@@ -7,6 +7,7 @@ export const CONNECTION_ERROR = 'app/CommunicationProvider/CONNECTION_ERROR';
 // action constants
 export const CHANGE_CHANNEL = 'app/CommunicationProvider/CHANGE_CHANNEL';
 export const START_JOIN = 'app/CommunicationProvider/START_JOIN';
+export const CHANGE_COLOR = 'app/CommunicationProvider/CHANGE_COLOR';
 export const SEND_CHAT = 'app/CommunicationProvider/SEND_CHAT';
 export const ENABLE_CAPTCHA = 'app/CommunicationProvider/ENABLE_CAPTCHA';
 export const DISABLE_CAPTCHA = 'app/CommunicationProvider/DISABLE_CAPTCHA';
