@@ -29,6 +29,7 @@ export const JOINED_CHANNEL = 'app/CommunicationProvider/JOINED_CHANNEL';
 export const DEBUG = 'app/CommunicationProvider/DEBUG';
 export const USER_JOINED = 'app/CommunicationProvider/USER_JOINED';
 export const USER_LEFT = 'app/CommunicationProvider/USER_LEFT';
+export const USER_UPDATE = 'app/CommunicationProvider/USER_UPDATE';
 export const WARNING = 'app/CommunicationProvider/WARNING';
 export const GOT_CAPTCHA = 'app/CommunicationProvider/GOT_CAPTCHA';
 export const INFORMATION = 'app/CommunicationProvider/INFORMATION';

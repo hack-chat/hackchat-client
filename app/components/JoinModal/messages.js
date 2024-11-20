@@ -38,4 +38,19 @@ export default defineMessages({
     id: 'hcclient.Generic.cancel.text',
     defaultMessage: 'Cancel',
   },
+
+  usernameColorText: {
+    id: 'hcclient.Generic.usernameColor.text',
+    defaultMessage: 'Your Color',
+  },
+
+  rememberText: {
+    id: 'hcclient.Generic.remember.text',
+    defaultMessage: 'Remember',
+  },
+
+  randomButtonText: {
+    id: 'hcclient.Generic.randomButton.text',
+    defaultMessage: 'Use Random',
+  },
 });

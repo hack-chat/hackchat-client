@@ -13,6 +13,7 @@ import {
   DEBUG,
   USER_JOINED,
   USER_LEFT,
+  USER_UPDATE,
   IGNORE_USER,
   WARNING,
   GOT_CAPTCHA,
@@ -105,6 +106,9 @@ const communicationProviderReducer = (state = initialState, action) =>
             userid: action.user.userid,
           },
         });
+        break;
+      case USER_UPDATE:
+        draft.channels[action.channel].users[action.user.userid] = action.user;
         break;
       case WARNING:
         if (

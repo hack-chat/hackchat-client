@@ -36,20 +36,24 @@ import {
 } from './constants';
 
 export const settingsInitialState = {
-  username: localStorage.getItem(USERNAME_LSLABEL) || '',
-  password: localStorage.getItem(PASSWORD_LSLABEL) || '',
-  color: localStorage.getItem(COLOR_LSLABEL) || '#3b7ed0',
-  storeChannels: localStorage.getItem(STORECHANNELS_LSLABEL) || false,
-  prevChannels: localStorage.getItem(PREVCHANNELS_LSLABEL) || [],
-  theme: localStorage.getItem(THEME_LSLABEL) || '',
-  allowKatex: localStorage.getItem(ALLOWKATEX_LSLABEL) || true,
-  allowMarkdown: localStorage.getItem(ALLOWMARKDOWN_LSLABEL) || true,
-  allowExternalCode: localStorage.getItem(ALLOWEXTCODE_LSLABEL) || false,
-  ltr: localStorage.getItem(LTR_LSLABEL) || true,
-  menuBtnPos: localStorage.getItem(MENUBTNPOS_LSLABEL) || 'left',
-  highlightMentions: localStorage.getItem(HIGHLIGHTMENTIONS_LSLABEL) || true,
-  autoConnect: localStorage.getItem(AUTOCONNECT_LSLABEL) || true,
-  wsPath: localStorage.getItem(WSPATH_LSLABEL) || '',
+  username: JSON.parse(localStorage.getItem(USERNAME_LSLABEL)) || '',
+  password: JSON.parse(localStorage.getItem(PASSWORD_LSLABEL)) || '',
+  color: JSON.parse(localStorage.getItem(COLOR_LSLABEL)) || '#3b7ed0',
+  storeChannels:
+    JSON.parse(localStorage.getItem(STORECHANNELS_LSLABEL)) || true,
+  prevChannels: JSON.parse(localStorage.getItem(PREVCHANNELS_LSLABEL)) || [],
+  theme: JSON.parse(localStorage.getItem(THEME_LSLABEL)) || '',
+  allowKatex: JSON.parse(localStorage.getItem(ALLOWKATEX_LSLABEL)) || true,
+  allowMarkdown:
+    JSON.parse(localStorage.getItem(ALLOWMARKDOWN_LSLABEL)) || true,
+  allowExternalCode:
+    JSON.parse(localStorage.getItem(ALLOWEXTCODE_LSLABEL)) || false,
+  ltr: JSON.parse(localStorage.getItem(LTR_LSLABEL)) || true,
+  menuBtnPos: JSON.parse(localStorage.getItem(MENUBTNPOS_LSLABEL)) || 'left',
+  highlightMentions:
+    JSON.parse(localStorage.getItem(HIGHLIGHTMENTIONS_LSLABEL)) || true,
+  autoConnect: JSON.parse(localStorage.getItem(AUTOCONNECT_LSLABEL)) || true,
+  wsPath: JSON.parse(localStorage.getItem(WSPATH_LSLABEL)) || '',
 };
 
 const settingsPageReducer = (state = settingsInitialState, action) =>

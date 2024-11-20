@@ -30,6 +30,7 @@ import {
   // DEBUG,
   USER_JOINED,
   USER_LEFT,
+  USER_UPDATE,
   WARNING,
   GOT_CAPTCHA,
   INFORMATION,
@@ -122,6 +123,28 @@ function initWebsocket() {
       emitter({
         type: USER_LEFT,
         channel: payload.channel,
+        user: {
+          blocked: payload.blocked,
+          bot: payload.bot,
+          mine: payload.mine,
+          nickColor: payload.nickColor,
+          online: payload.online,
+          permissionLevel: payload.permissionLevel,
+          userchannel: payload.userchannel,
+          userhash: payload.userhash,
+          userid: payload.userid,
+          userlevel: payload.userlevel,
+          username: payload.username,
+          usertrip: payload.usertrip,
+        },
+      }),
+    );
+
+    hcClient.on('userUpdate', (payload) =>
+      emitter({
+        type: USER_UPDATE,
+        channel: payload.userchannel,
+        userid: payload.userid,
         user: {
           blocked: payload.blocked,
           bot: payload.bot,

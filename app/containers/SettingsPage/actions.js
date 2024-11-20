@@ -39,7 +39,7 @@ import {
  * @return {object} An action object with a type of SET_USERNAME
  */
 export function setUsername(username) {
-  localStorage.setItem(USERNAME_LSLABEL, username);
+  localStorage.setItem(USERNAME_LSLABEL, JSON.stringify(username));
 
   return {
     type: SET_USERNAME,
@@ -53,7 +53,7 @@ export function setUsername(username) {
  * @return {object} An action object with a type of SET_PASSWORD
  */
 export function setPassword(password) {
-  localStorage.setItem(PASSWORD_LSLABEL, password);
+  localStorage.setItem(PASSWORD_LSLABEL, JSON.stringify(password));
 
   return {
     type: SET_PASSWORD,
@@ -67,7 +67,7 @@ export function setPassword(password) {
  * @return {object} An action object with a type of SET_COLOR
  */
 export function setColor(color) {
-  localStorage.setItem(COLOR_LSLABEL, color);
+  localStorage.setItem(COLOR_LSLABEL, JSON.stringify(color));
 
   return {
     type: SET_COLOR,
@@ -81,7 +81,7 @@ export function setColor(color) {
  * @return {object} An action object with a type of SET_CHANSTORFLAG
  */
 export function setStoreChannelsFlag(allowed) {
-  localStorage.setItem(STORECHANNELS_LSLABEL, allowed);
+  localStorage.setItem(STORECHANNELS_LSLABEL, JSON.stringify(allowed));
 
   return {
     type: SET_CHANSTORFLAG,
@@ -95,10 +95,11 @@ export function setStoreChannelsFlag(allowed) {
  * @return {object} An action object with a type of ADD_PREVCHANNEL
  */
 export function addPrevChannel(newChannel) {
-  localStorage.setItem(
-    PREVCHANNELS_LSLABEL,
-    (localStorage.getItem(PREVCHANNELS_LSLABEL) || []).push(newChannel),
-  );
+  let prevChannelList =
+    JSON.parse(localStorage.getItem(PREVCHANNELS_LSLABEL)) || [];
+
+  prevChannelList.push(newChannel);
+  localStorage.setItem(PREVCHANNELS_LSLABEL, JSON.stringify(prevChannelList));
 
   return {
     type: ADD_PREVCHANNEL,
@@ -112,7 +113,7 @@ export function addPrevChannel(newChannel) {
  * @return {object} An action object with a type of SET_THEME
  */
 export function setTheme(themeName) {
-  localStorage.setItem(THEME_LSLABEL, themeName);
+  localStorage.setItem(THEME_LSLABEL, JSON.stringify(themeName));
 
   return {
     type: SET_THEME,
@@ -126,7 +127,7 @@ export function setTheme(themeName) {
  * @return {object} An action object with a type of SET_ALLOWKATEX
  */
 export function setAllowKatex(allowed) {
-  localStorage.setItem(ALLOWKATEX_LSLABEL, allowed);
+  localStorage.setItem(ALLOWKATEX_LSLABEL, JSON.stringify(allowed));
 
   return {
     type: SET_ALLOWKATEX,
@@ -140,7 +141,7 @@ export function setAllowKatex(allowed) {
  * @return {object} An action object with a type of SET_ALLOWMARKDOWN
  */
 export function setAllowMarkdown(allowed) {
-  localStorage.setItem(ALLOWMARKDOWN_LSLABEL, allowed);
+  localStorage.setItem(ALLOWMARKDOWN_LSLABEL, JSON.stringify(allowed));
 
   return {
     type: SET_ALLOWMARKDOWN,
@@ -154,7 +155,7 @@ export function setAllowMarkdown(allowed) {
  * @return {object} An action object with a type of SET_ALLOWEXTCODE
  */
 export function setAllowExternalCode(allowed) {
-  localStorage.setItem(ALLOWEXTCODE_LSLABEL, allowed);
+  localStorage.setItem(ALLOWEXTCODE_LSLABEL, JSON.stringify(allowed));
 
   return {
     type: SET_ALLOWEXTCODE,
@@ -168,7 +169,7 @@ export function setAllowExternalCode(allowed) {
  * @return {object} An action object with a type of SET_LTR
  */
 export function setLtr(isLtr) {
-  localStorage.setItem(LTR_LSLABEL, isLtr);
+  localStorage.setItem(LTR_LSLABEL, JSON.stringify(isLtr));
 
   return {
     type: SET_LTR,
@@ -182,7 +183,7 @@ export function setLtr(isLtr) {
  * @return {object} An action object with a type of SET_MENUBTNPOS
  */
 export function setMenuBtnPos(newPos) {
-  localStorage.setItem(MENUBTNPOS_LSLABEL, newPos);
+  localStorage.setItem(MENUBTNPOS_LSLABEL, JSON.stringify(newPos));
 
   return {
     type: SET_MENUBTNPOS,
@@ -196,7 +197,7 @@ export function setMenuBtnPos(newPos) {
  * @return {object} An action object with a type of SET_HIGHLIGHTMENTIONS
  */
 export function setDoHighlight(doHighlight) {
-  localStorage.setItem(HIGHLIGHTMENTIONS_LSLABEL, doHighlight);
+  localStorage.setItem(HIGHLIGHTMENTIONS_LSLABEL, JSON.stringify(doHighlight));
 
   return {
     type: SET_HIGHLIGHTMENTIONS,
@@ -210,7 +211,7 @@ export function setDoHighlight(doHighlight) {
  * @return {object} An action object with a type of SET_AUTOCONNECT
  */
 export function setAutoConnect(allowed) {
-  localStorage.setItem(AUTOCONNECT_LSLABEL, allowed);
+  localStorage.setItem(AUTOCONNECT_LSLABEL, JSON.stringify(allowed));
 
   return {
     type: SET_AUTOCONNECT,
@@ -224,7 +225,7 @@ export function setAutoConnect(allowed) {
  * @return {object} An action object with a type of SET_WSPATH
  */
 export function setWsPath(wsPath) {
-  localStorage.setItem(WSPATH_LSLABEL, wsPath);
+  localStorage.setItem(WSPATH_LSLABEL, JSON.stringify(wsPath));
 
   return {
     type: SET_WSPATH,

@@ -231,7 +231,7 @@ function ProcessNotExtended(extended, user) {
       }
 
       nick = (
-        <UserNick color={user.color ? `#${user.color}` : undefined}>
+        <UserNick color={user.nickColor ? `#${user.nickColor}` : undefined}>
           {trip}
           {user.username}
         </UserNick>
@@ -242,7 +242,7 @@ function ProcessNotExtended(extended, user) {
       }
 
       nick = (
-        <ModNick color={user.color ? `#${user.color}` : undefined}>
+        <ModNick color={user.nickColor ? `#${user.nickColor}` : undefined}>
           {trip}
           {user.username}
         </ModNick>
@@ -253,7 +253,7 @@ function ProcessNotExtended(extended, user) {
       }
 
       nick = (
-        <AdminNick color={user.color ? `#${user.color}` : undefined}>
+        <AdminNick color={user.nickColor ? `#${user.nickColor}` : undefined}>
           {trip}
           {user.username}
         </AdminNick>
