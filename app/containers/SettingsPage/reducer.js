@@ -10,6 +10,7 @@ import {
   SET_COLOR,
   SET_CHANSTORFLAG,
   ADD_PREVCHANNEL,
+  CLEAR_PREVCHANNELS,
   SET_THEME,
   SET_ALLOWKATEX,
   SET_ALLOWMARKDOWN,
@@ -42,14 +43,14 @@ export const settingsInitialState = {
   storeChannels:
     JSON.parse(localStorage.getItem(STORECHANNELS_LSLABEL)) || true,
   prevChannels: JSON.parse(localStorage.getItem(PREVCHANNELS_LSLABEL)) || [],
-  theme: JSON.parse(localStorage.getItem(THEME_LSLABEL)) || '',
+  theme: JSON.parse(localStorage.getItem(THEME_LSLABEL)) || 'default',
   allowKatex: JSON.parse(localStorage.getItem(ALLOWKATEX_LSLABEL)) || true,
   allowMarkdown:
     JSON.parse(localStorage.getItem(ALLOWMARKDOWN_LSLABEL)) || true,
   allowExternalCode:
     JSON.parse(localStorage.getItem(ALLOWEXTCODE_LSLABEL)) || false,
   ltr: JSON.parse(localStorage.getItem(LTR_LSLABEL)) || true,
-  menuBtnPos: JSON.parse(localStorage.getItem(MENUBTNPOS_LSLABEL)) || 'left',
+  menuLeft: JSON.parse(localStorage.getItem(MENUBTNPOS_LSLABEL)) || true,
   highlightMentions:
     JSON.parse(localStorage.getItem(HIGHLIGHTMENTIONS_LSLABEL)) || true,
   autoConnect: JSON.parse(localStorage.getItem(AUTOCONNECT_LSLABEL)) || true,
@@ -74,6 +75,9 @@ const settingsPageReducer = (state = settingsInitialState, action) =>
       case ADD_PREVCHANNEL:
         draft.prevChannels.push(action.newChannel);
         break;
+      case CLEAR_PREVCHANNELS:
+        draft.prevChannels = [];
+        break;
       case SET_THEME:
         draft.theme = action.themeName;
         break;
@@ -90,7 +94,7 @@ const settingsPageReducer = (state = settingsInitialState, action) =>
         draft.ltr = action.isLtr;
         break;
       case SET_MENUBTNPOS:
-        draft.menuBtnPos = action.newPos;
+        draft.menuLeft = action.newPos;
         break;
       case SET_HIGHLIGHTMENTIONS:
         draft.highlightMentions = action.doHighlight;

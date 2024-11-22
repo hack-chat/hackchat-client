@@ -8,6 +8,7 @@ import {
   SET_COLOR,
   SET_CHANSTORFLAG,
   ADD_PREVCHANNEL,
+  CLEAR_PREVCHANNELS,
   SET_THEME,
   SET_ALLOWKATEX,
   SET_ALLOWMARKDOWN,
@@ -104,6 +105,18 @@ export function addPrevChannel(newChannel) {
   return {
     type: ADD_PREVCHANNEL,
     newChannel,
+  };
+}
+
+/**
+ * Clear channel history
+ * @return {object} An action object with a type of CLEAR_PREVCHANNELS
+ */
+export function clearPrevChannels() {
+  localStorage.setItem(PREVCHANNELS_LSLABEL, JSON.stringify([]));
+
+  return {
+    type: CLEAR_PREVCHANNELS,
   };
 }
 

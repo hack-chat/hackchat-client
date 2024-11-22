@@ -68,6 +68,15 @@ const makeSelectCachedAllowMarkdown = () =>
   );
 
 /**
+ * Perform markdown rendering flag
+ */
+const makeSelectCachedAllowExtCode = () =>
+  createSelector(
+    selectSettingsPageDomain,
+    (substate) => substate.allowExternalCode,
+  );
+
+/**
  * Reading direction flag
  */
 const makeSelectCachedLTR = () =>
@@ -77,7 +86,7 @@ const makeSelectCachedLTR = () =>
  * Main menu button position flag
  */
 const makeSelectCachedMenuBtnPos = () =>
-  createSelector(selectSettingsPageDomain, (substate) => substate.menuBtnPos);
+  createSelector(selectSettingsPageDomain, (substate) => substate.menuLeft);
 
 /**
  * Message highlighter flag
@@ -102,6 +111,7 @@ const makeSelectCachedWsPath = () =>
 
 export default makeSelectSettingsPage;
 export {
+  makeSelectSettingsPage,
   selectSettingsPageDomain,
   makeSelectCachedUsername,
   makeSelectCachedPassword,
@@ -111,6 +121,7 @@ export {
   makeSelectCachedTheme,
   makeSelectCachedAllowKatex,
   makeSelectCachedAllowMarkdown,
+  makeSelectCachedAllowExtCode,
   makeSelectCachedLTR,
   makeSelectCachedMenuBtnPos,
   makeSelectCachedHighlightMentions,

@@ -1,9 +1,6 @@
-/* eslint react/prop-types: 0 */
-
 /**
  * ChatManager exports the ui rendering functions to display chat channel
  * events, based on the currently selected channel
- * @todo temp eslint rule, ref line 34
  */
 
 import React, { useEffect, useRef } from 'react';

@@ -1,7 +1,6 @@
 /**
  * StartScreen exports the ui rendering functions to display the default application screen
  * @todo Make Banner message loadable from the config.js file
- * @todo Move onOpenJoinMenu into a styled-component element to allow for theming
  */
 
 import React from 'react';

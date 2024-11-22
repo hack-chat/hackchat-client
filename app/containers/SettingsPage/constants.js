@@ -8,6 +8,7 @@ export const SET_PASSWORD = 'app/SettingsPage/SET_PASSWORD';
 export const SET_COLOR = 'app/SettingsPage/SET_COLOR';
 export const SET_CHANSTORFLAG = 'app/SettingsPage/SET_CHANSTORFLAG';
 export const ADD_PREVCHANNEL = 'app/SettingsPage/ADD_PREVCHANNEL';
+export const CLEAR_PREVCHANNELS = 'app/SettingsPage/CLEAR_PREVCHANNELS';
 export const SET_THEME = 'app/SettingsPage/SET_THEME';
 export const SET_ALLOWKATEX = 'app/SettingsPage/SET_ALLOWKATEX';
 export const SET_ALLOWMARKDOWN = 'app/SettingsPage/SET_ALLOWMARKDOWN';
