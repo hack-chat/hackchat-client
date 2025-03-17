@@ -42,8 +42,7 @@ function StartScreen({ meta, onOpenJoinMenu, intl }) {
 
     publicChannels.push(
       <Row key={key}>
-        <Col className="col-4" />
-        <Col className="text-center">
+        <Col style={{ textAlign: 'right'}}>
           <Link
             key={`invite-${Math.random() * 9999}`}
             to={`/?${DOMPurify.sanitize(list[indexes[i]].name)}`}
@@ -52,7 +51,7 @@ function StartScreen({ meta, onOpenJoinMenu, intl }) {
           </Link>
           : {list[indexes[i]].count}
         </Col>
-        {typeof indexes[(i + 1)] !== 'undefined' ? <Col className="text-center">
+        {typeof indexes[(i + 1)] !== 'undefined' ? <Col style={{ textAlign: 'left'}}>
           <Link
             key={`invite-${Math.random() * 9999}`}
             to={`/?${DOMPurify.sanitize(list[indexes[(i += 1)]].name)}`}
@@ -61,7 +60,6 @@ function StartScreen({ meta, onOpenJoinMenu, intl }) {
           </Link>
           : {list[indexes[i]].count}
         </Col> : ''}
-        <Col className="col-4" />
       </Row>,
     );
   }
