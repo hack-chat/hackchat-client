@@ -22,9 +22,22 @@ import messages from './messages';
 function StartScreen({ meta, onOpenJoinMenu, intl }) {
   const createOrJoinLabel = intl.formatMessage(messages.createOrJoinLabel);
 
-  const channelNames = Object.keys(meta.channels);
   const publicChannels = [];
-  for (let i = 0, j = channelNames.length; i < j; i += 1) {
+  const list = [...meta.channels];
+  list.sort((a, b) => {
+    if (a.count < b.count) {
+      return 1;
+    }
+
+    if (a.count > b.count) {
+      return -1;
+    }
+
+    return 0;
+  });
+
+  const indexes = Object.keys(list);
+  for (let i = 0, j = indexes.length; i < j; i++) {
     const key = `pchan-${i}`;
 
     publicChannels.push(
@@ -33,21 +46,21 @@ function StartScreen({ meta, onOpenJoinMenu, intl }) {
         <Col className="text-center">
           <Link
             key={`invite-${Math.random() * 9999}`}
-            to={`/?${DOMPurify.sanitize(channelNames[i])}`}
+            to={`/?${DOMPurify.sanitize(list[indexes[i]].name)}`}
           >
-            ?{DOMPurify.sanitize(channelNames[i])}
+            ?{DOMPurify.sanitize(list[indexes[i]].name)}
           </Link>
-          : {meta.channels[channelNames[i]]}
+          : {list[indexes[i]].count}
         </Col>
-        <Col className="text-center">
+        {typeof indexes[(i + 1)] !== 'undefined' ? <Col className="text-center">
           <Link
             key={`invite-${Math.random() * 9999}`}
-            to={`/?${DOMPurify.sanitize(channelNames[(i += 1)])}`}
+            to={`/?${DOMPurify.sanitize(list[indexes[(i += 1)]].name)}`}
           >
-            ?{DOMPurify.sanitize(channelNames[i])}
+            ?{DOMPurify.sanitize(list[indexes[i]].name)}
           </Link>
-          : {meta.channels[channelNames[i]]}
-        </Col>
+          : {list[indexes[i]].count}
+        </Col> : ''}
         <Col className="col-4" />
       </Row>,
     );

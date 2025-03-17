@@ -24,6 +24,7 @@ import {
   MESSAGE,
   PUSH_NOTIF,
   CLEAR_NOTIFS,
+  PUB_CHANS,
 } from './constants';
 
 export const initialState = {
@@ -34,7 +35,7 @@ export const initialState = {
   meta: {
     channelCount: 0,
     userCount: 0,
-    channels: {},
+    channels: [],
   },
 };
 
@@ -74,9 +75,10 @@ const communicationProviderReducer = (state = initialState, action) =>
         draft.connected = true;
         break;
       case SESSION_READY:
-        draft.meta.channelCount = action.data.channelCount;
-        draft.meta.userCount = action.data.userCount;
-        draft.meta.channels = action.data.publicChannels;
+        //
+        break;
+      case PUB_CHANS:
+        draft.meta.channels = action.list;
         break;
       case JOINED_CHANNEL:
         draft.channels[action.data.channel] = {

@@ -86,14 +86,14 @@ export function JoinModal({
   const [rememberMe, setRememberMe] = useStateIfMounted(rememberUser);
   const [chosenUsername, setChosenUsername] = useStateIfMounted(username);
   const [chosenPassword, setChosenPassword] = useStateIfMounted(password);
-  const [chosenChannel, setChosenChannel] = useStateIfMounted(defaultChannel);
+  const [chosenChannel, setChosenChannel] = useStateIfMounted(defaultChannel || '');
 
   const toggleInvalidName = () => setInvalidName(!invalidName);
   const clearInvalidName = () => setInvalidName(false);
   const toggleInvalidChannel = () => setInvalidChannel(!invalidChannel);
-  const clearInvalidChannel = () => setInvalidChannel(false);
 
   const doCancel = () => {
+    setChosenChannel('');
     onCloseJoinModal();
     onClearJoinModalChannel();
   };
@@ -104,7 +104,7 @@ export function JoinModal({
 
   const randomize = (e) => {
     e.preventDefault();
-    randomizeChannel(Math.random().toString(36).substr(2, 8));
+    randomizeChannel();
   };
 
   const handleSubmit = (evt) => {
@@ -182,12 +182,17 @@ export function JoinModal({
               <Input
                 invalid={invalidChannel}
                 placeholder={joinModalChannel}
-                defaultValue={defaultChannel || randomChannel || ''}
-                onFocus={clearInvalidChannel}
+                defaultValue={chosenChannel}
+                onFocus={() => setInvalidChannel(false)}
                 onChange={(e) => setChosenChannel(e.target.value)}
               />
               <InputGroupText id="randomButton" addontype="append">
-                <RandomButton onClick={randomize}>
+                <RandomButton
+                  onClick={() => {
+                    const newChan = Math.random().toString(36).substr(2, 8);
+                    setChosenChannel(newChan);
+                  }}
+                >
                   <GiRollingDices />
                 </RandomButton>
               </InputGroupText>

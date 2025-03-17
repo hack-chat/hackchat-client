@@ -38,6 +38,7 @@ import {
   INVITE,
   WHISPER,
   MESSAGE,
+  PUB_CHANS,
 } from './constants';
 
 const hcClient = new Client({
@@ -48,15 +49,21 @@ function initWebsocket() {
   return eventChannel((emitter) => {
     hcClient.on('error', () => emitter({ type: CONNECTION_ERROR, data: {} }));
 
-    hcClient.on('connected', () => emitter({ type: CONNECTED, data: {} }));
+    hcClient.on('connected', () => {
+      hcClient.ws.send({
+        cmd: 'getchannels',
+      });
+
+      return emitter({ type: CONNECTED, data: {} });
+    });
 
     hcClient.on('session', (payload) =>
       emitter({
         type: SESSION_READY,
         data: {
-          channelCount: payload.channelCount,
-          userCount: payload.userCount,
-          publicChannels: payload.publicChannels,
+          restored: payload.restored,
+          token: payload.token,
+          channels: payload.channels,
         },
       }),
     );
@@ -276,6 +283,15 @@ function initWebsocket() {
         },
       }),
     );
+
+    hcClient.on('raw', (payload) => {
+      if (payload.cmd === 'publicchannels') {
+        return emitter({
+          type: PUB_CHANS,
+          list: payload.list,
+        });
+      }
+    });
 
     // unsubscribe function
     return () => {

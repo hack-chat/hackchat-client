@@ -66,7 +66,13 @@ function ChannelItem({
         <DropdownItem>
           <LeaveChannelLabel>{leaveChannelLabel}</LeaveChannelLabel>
         </DropdownItem>
-        <DropdownItem disabled>{copyInviteLabel}</DropdownItem>
+        <DropdownItem
+          onClick={() => {
+            navigator.clipboard.writeText(window.location.href);
+          }}
+        >
+          {copyInviteLabel}
+        </DropdownItem>
         <DropdownItem divider />
         <DropdownItem disabled>{takeOwnershipLabel}</DropdownItem>
         <DropdownItem

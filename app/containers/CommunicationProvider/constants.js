@@ -40,3 +40,4 @@ export const MESSAGE = 'app/CommunicationProvider/MESSAGE';
 
 export const PUSH_NOTIF = 'app/CommunicationProvider/PUSH_NOTIF';
 export const CLEAR_NOTIFS = 'app/CommunicationProvider/CLEAR_NOTIFS';
+export const PUB_CHANS = 'app/CommunicationProvider/PUB_CHANS';
