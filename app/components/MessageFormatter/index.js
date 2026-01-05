@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Table } from 'reactstrap';
 import { Remarkable } from 'remarkable';
 import RemarkableReactRenderer from 'remarkable-react';
 import { linkify } from 'remarkable/linkify';
@@ -52,9 +51,9 @@ MessageFormatter.renderer = new RemarkableReactRenderer({
       );
     },
     table: ({ children }) => (
-      <Table dark striped>
+      <div dark striped>
         {children}
-      </Table>
+      </div>
     ),
     p: ({ children }) => {
       const alteredChildren = [];

@@ -25,6 +25,8 @@ import {
   PUSH_NOTIF,
   CLEAR_NOTIFS,
   PUB_CHANS,
+  HACK_ATTEMPT,
+  NEW_TX_REQUEST,
 } from './constants';
 
 export const initialState = {
@@ -79,6 +81,15 @@ const communicationProviderReducer = (state = initialState, action) =>
         break;
       case PUB_CHANS:
         draft.meta.channels = action.list;
+        break;
+      case HACK_ATTEMPT:
+        draft.channels[action.data.channel].messages.push({
+          type: 'hackAttempt',
+          data: {
+            from: action.data.from,
+            url: action.data.url,
+          },
+        });
         break;
       case JOINED_CHANNEL:
         draft.channels[action.data.channel] = {
@@ -175,6 +186,7 @@ const communicationProviderReducer = (state = initialState, action) =>
             userid: action.data.userid,
             name: action.data.name,
             content: action.data.content,
+            id: action.data.id,
           },
         });
         break;
@@ -207,6 +219,16 @@ const communicationProviderReducer = (state = initialState, action) =>
             },
           });
         }
+        break;
+      case NEW_TX_REQUEST:
+        draft.channels[action.channel].messages.push({
+          type: 'tx_request',
+          data: {
+            tx: action.tx,
+            tx_type: action.tx_type,
+            from: action.from,
+          },
+        });
         break;
     }
   });

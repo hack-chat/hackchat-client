@@ -13,21 +13,6 @@ const makeSelectMainMenuStatus = () =>
   createSelector(selectMainMenuDomain, (substate) => substate.mainMenuOpen);
 
 /**
- * Users menu status
- */
-const makeSelectUsersMenuStatus = () =>
-  createSelector(selectMainMenuDomain, (substate) => substate.usersModalOpen);
-
-/**
- * Join menu status
- */
-const makeSelectChannelsModalStatus = () =>
-  createSelector(
-    selectMainMenuDomain,
-    (substate) => substate.channelsModalOpen,
-  );
-
-/**
  * Join menu status
  */
 const makeSelectJoinMenuStatus = () =>
@@ -48,8 +33,6 @@ const makeSelectLocaleMenuStatus = () =>
 export {
   selectMainMenuDomain,
   makeSelectMainMenuStatus,
-  makeSelectUsersMenuStatus,
-  makeSelectChannelsModalStatus,
   makeSelectJoinMenuStatus,
   makeSelectJoinMenuChannel,
   makeSelectLocaleMenuStatus,

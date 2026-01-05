@@ -7,8 +7,6 @@ import {
   closeMainMenu,
   openUsersModal,
   closeUsersModal,
-  openChannelsModal,
-  closeChannelsModal,
   openJoinModal,
   closeJoinModal,
   openLocaleModal,
@@ -59,22 +57,6 @@ describe('MainMenu actions', () => {
         type: CLOSE_USERMODAL,
       };
       expect(closeUsersModal()).toEqual(expected);
-    });
-  });
-
-  describe('Channels Modal Control', () => {
-    it('has a type of OPEN_CHANNELSMODAL', () => {
-      const expected = {
-        type: OPEN_CHANNELSMODAL,
-      };
-      expect(openChannelsModal()).toEqual(expected);
-    });
-
-    it('has a type of CLOSE_CHANNELSMODAL', () => {
-      const expected = {
-        type: CLOSE_CHANNELSMODAL,
-      };
-      expect(closeChannelsModal()).toEqual(expected);
     });
   });
 

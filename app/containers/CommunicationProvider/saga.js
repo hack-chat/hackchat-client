@@ -4,9 +4,11 @@
  */
 
 import { eventChannel } from 'redux-saga';
-import { take, call, put, takeLatest } from 'redux-saga/effects';
+import { take, call, put, takeLatest, takeEvery } from 'redux-saga/effects';
 
 import { Client } from 'hackchat-engine';
+
+import { SHOW_TOAST } from 'containers/ToastNotifier/constants';
 
 import {
   CONNECTION_ERROR,
@@ -27,7 +29,6 @@ import {
   UNMUTE_USER,
   SEND_CHAT,
   JOINED_CHANNEL,
-  // DEBUG,
   USER_JOINED,
   USER_LEFT,
   USER_UPDATE,
@@ -39,25 +40,35 @@ import {
   WHISPER,
   MESSAGE,
   PUB_CHANS,
+  HACK_ATTEMPT,
+  NEW_TX_REQUEST,
 } from './constants';
+
+import {
+  SET_ACCOUNT,
+  SIGN_MESSAGE_REQUEST,
+  SIGN_MESSAGE_SUCCESS,
+  SIGN_MESSAGE_FAILURE,
+} from 'containers/WalletLayer/constants';
 
 const hcClient = new Client({
   isBot: false,
 });
 
+window.hcClient = hcClient;
+
+let waitingOnSIW = false;
+
 function initWebsocket() {
   return eventChannel((emitter) => {
-    hcClient.on('error', () => emitter({ type: CONNECTION_ERROR, data: {} }));
+    const onError = () => emitter({ type: CONNECTION_ERROR, data: {} });
 
-    hcClient.on('connected', () => {
-      hcClient.ws.send({
-        cmd: 'getchannels',
-      });
-
+    const onConnected = () => {
+      hcClient.ws.send({ cmd: 'getchannels' });
       return emitter({ type: CONNECTED, data: {} });
-    });
+    };
 
-    hcClient.on('session', (payload) =>
+    const onSession = (payload) =>
       emitter({
         type: SESSION_READY,
         data: {
@@ -65,10 +76,9 @@ function initWebsocket() {
           token: payload.token,
           channels: payload.channels,
         },
-      }),
-    );
+      });
 
-    hcClient.on('channelJoined', (payload) => {
+    const onChannelJoined = (payload) => {
       let userList = {};
       hcClient.users.forEach((userRecord, key) => {
         userList[key] = {
@@ -84,6 +94,7 @@ function initWebsocket() {
           userlevel: userRecord.userlevel,
           username: userRecord.username,
           usertrip: userRecord.usertrip,
+          flair: userRecord.flair,
         };
       });
 
@@ -94,18 +105,9 @@ function initWebsocket() {
           users: userList,
         },
       });
-    });
+    };
 
-    /*hcClient.on('debug', (payload) =>
-      emitter({
-        type: DEBUG,
-        data: {
-          payload,
-        },
-      }),
-    );*/
-
-    hcClient.on('userJoined', (payload) =>
+    const onUserJoined = (payload) =>
       emitter({
         type: USER_JOINED,
         channel: payload.channel,
@@ -122,11 +124,11 @@ function initWebsocket() {
           userlevel: payload.userlevel,
           username: payload.username,
           usertrip: payload.usertrip,
+          flair: payload.flair,
         },
-      }),
-    );
+      });
 
-    hcClient.on('userLeft', (payload) =>
+    const onUserLeft = (payload) =>
       emitter({
         type: USER_LEFT,
         channel: payload.channel,
@@ -143,11 +145,11 @@ function initWebsocket() {
           userlevel: payload.userlevel,
           username: payload.username,
           usertrip: payload.usertrip,
+          flair: payload.flair,
         },
-      }),
-    );
+      });
 
-    hcClient.on('userUpdate', (payload) =>
+    const onUserUpdate = (payload) =>
       emitter({
         type: USER_UPDATE,
         channel: payload.userchannel,
@@ -165,11 +167,11 @@ function initWebsocket() {
           userlevel: payload.userlevel,
           username: payload.username,
           usertrip: payload.usertrip,
+          flair: payload.flair,
         },
-      }),
-    );
+      });
 
-    hcClient.on('warning', (payload) =>
+    const onWarning = (payload) =>
       emitter({
         type: WARNING,
         data: {
@@ -177,40 +179,36 @@ function initWebsocket() {
           id: payload.id,
           text: payload.text,
         },
-      }),
-    );
+      });
 
-    hcClient.on('gotCaptcha', (payload) =>
+    const onGotCaptcha = (payload) =>
       emitter({
         type: GOT_CAPTCHA,
         data: {
           channel: payload.captchaData.channel,
           text: payload.captchaData.text,
         },
-      }),
-    );
+      });
 
-    hcClient.on('information', (payload) =>
+    const onInformation = (payload) =>
       emitter({
         type: INFORMATION,
         data: {
           channel: payload.channel,
           text: payload.text,
         },
-      }),
-    );
+      });
 
-    hcClient.on('emote', (payload) =>
+    const onEmote = (payload) =>
       emitter({
         type: EMOTE,
         data: {
           channel: payload.channel,
           content: payload.content,
         },
-      }),
-    );
+      });
 
-    hcClient.on('invite', (payload) =>
+    const onInvite = (payload) =>
       emitter({
         type: INVITE,
         data: {
@@ -230,10 +228,9 @@ function initWebsocket() {
             usertrip: payload.from.usertrip,
           },
         },
-      }),
-    );
+      });
 
-    hcClient.on('whisper', (payload) =>
+    const onWhisper = (payload) =>
       emitter({
         type: WHISPER,
         channel: payload.from.userchannel,
@@ -252,6 +249,7 @@ function initWebsocket() {
             userlevel: payload.from.userlevel,
             username: payload.from.username,
             usertrip: payload.from.usertrip,
+            flair: payload.from.flair,
           },
           fromMe: payload.fromMe,
           to: {
@@ -267,12 +265,12 @@ function initWebsocket() {
             userlevel: payload.to.userlevel,
             username: payload.to.username,
             usertrip: payload.to.usertrip,
+            flair: payload.to.flair,
           },
         },
-      }),
-    );
+      });
 
-    hcClient.on('message', (payload) =>
+    const onMessage = (payload) =>
       emitter({
         type: MESSAGE,
         data: {
@@ -280,22 +278,86 @@ function initWebsocket() {
           userid: payload.user.userid,
           name: payload.user.name,
           content: payload.content,
+          id: payload.id || 0,
         },
-      }),
-    );
+      });
 
-    hcClient.on('raw', (payload) => {
-      if (payload.cmd === 'publicchannels') {
-        return emitter({
-          type: PUB_CHANS,
-          list: payload.list,
-        });
-      }
-    });
+    const onPublicChannels = (payload) =>
+      emitter({
+        type: PUB_CHANS,
+        list: payload.list,
+      });
 
-    // unsubscribe function
+    const onHackAttempt = (payload) =>
+      emitter({
+        type: HACK_ATTEMPT,
+        data: {
+          channel: payload.channel,
+          from: {
+            nickColor: payload.from.nickColor,
+            flair: payload.from.flair,
+            userid: payload.from.userid,
+            username: payload.from.username,
+            usertrip: payload.from.usertrip,
+          },
+          url: payload.lib,
+        },
+      });
+
+    const onSignMessage = (payload) =>
+      emitter({
+        type: SIGN_MESSAGE_REQUEST,
+        wallet: payload.wallet,
+        message: payload.message,
+      });
+
+    const onSignTransaction = (payload) =>
+      emitter({
+        type: NEW_TX_REQUEST,
+        tx: payload.tx,
+        tx_type: payload.type,
+        channel: payload.channel,
+        from: payload.from,
+      });
+
+    hcClient.on('error', onError);
+    hcClient.on('connected', onConnected);
+    hcClient.on('session', onSession);
+    hcClient.on('channelJoined', onChannelJoined);
+    hcClient.on('userJoined', onUserJoined);
+    hcClient.on('userLeft', onUserLeft);
+    hcClient.on('userUpdate', onUserUpdate);
+    hcClient.on('warning', onWarning);
+    hcClient.on('gotCaptcha', onGotCaptcha);
+    hcClient.on('information', onInformation);
+    hcClient.on('emote', onEmote);
+    hcClient.on('invite', onInvite);
+    hcClient.on('whisper', onWhisper);
+    hcClient.on('message', onMessage);
+    hcClient.on('publicchannels', onPublicChannels);
+    hcClient.on('hackAttempt', onHackAttempt);
+    hcClient.on('signMessage', onSignMessage);
+    hcClient.on('signTransaction', onSignTransaction);
+
     return () => {
-      //
+      hcClient.removeListener('error', onError);
+      hcClient.removeListener('connected', onConnected);
+      hcClient.removeListener('session', onSession);
+      hcClient.removeListener('channelJoined', onChannelJoined);
+      hcClient.removeListener('userJoined', onUserJoined);
+      hcClient.removeListener('userLeft', onUserLeft);
+      hcClient.removeListener('userUpdate', onUserUpdate);
+      hcClient.removeListener('warning', onWarning);
+      hcClient.removeListener('gotCaptcha', onGotCaptcha);
+      hcClient.removeListener('information', onInformation);
+      hcClient.removeListener('emote', onEmote);
+      hcClient.removeListener('invite', onInvite);
+      hcClient.removeListener('whisper', onWhisper);
+      hcClient.removeListener('message', onMessage);
+      hcClient.removeListener('publicchannels', onPublicChannels);
+      hcClient.removeListener('hackAttempt', onHackAttempt);
+      hcClient.removeListener('signMessage', onSignMessage);
+      hcClient.removeListener('signTransaction', onSignTransaction);
     };
   });
 }
@@ -313,7 +375,7 @@ export default function* communicationProviderSaga() {
     hcClient.changeColor(hcClient.color, action.channel),
   );
 
-  yield takeLatest(SEND_CHAT, (action) =>
+  yield takeEvery(SEND_CHAT, (action) =>
     hcClient.say(action.channel, action.message),
   );
 
@@ -354,27 +416,57 @@ export default function* communicationProviderSaga() {
   });
 
   yield takeLatest(KICK_USER, (action) => {
-    const targetUser = hcClient.users.get(action.userid);
+    const targetUser = hcClient.users.get(action.user);
     if (targetUser) targetUser.kick(action.channel);
   });
 
   yield takeLatest(BAN_USER, (action) => {
-    const targetUser = hcClient.users.get(action.userid);
+    const targetUser = hcClient.users.get(action.user);
     if (targetUser) targetUser.ban(action.channel);
   });
 
   yield takeLatest(MUTE_USER, (action) => {
-    const targetUser = hcClient.users.get(action.userid);
+    const targetUser = hcClient.users.get(action.user);
     if (targetUser) targetUser.mute(action.channel);
   });
 
   yield takeLatest(UNMUTE_USER, (action) => {
-    const targetUser = hcClient.users.get(action.userid);
+    const targetUser = hcClient.users.get(action.user);
     if (targetUser) targetUser.unmute(action.channel);
+  });
+
+  yield takeLatest(SET_ACCOUNT, (action) => {
+    waitingOnSIW = true;
+    hcClient.requestSiw(action.account.name, action.account.address);
+  });
+
+  yield takeLatest(SIGN_MESSAGE_SUCCESS, (action) => {
+    if (waitingOnSIW === false) return;
+
+    waitingOnSIW = false;
+    hcClient.sendSignature(action.signature, action.signedMessage);
+  });
+
+  yield takeLatest(SIGN_MESSAGE_FAILURE, () => {
+    waitingOnSIW = false;
   });
 
   while (true) {
     const action = yield take(client);
     yield put(action);
+
+    if (
+      action.type === WARNING &&
+      action.data &&
+      action.data.channel === false
+    ) {
+      yield put({
+        type: SHOW_TOAST,
+        payload: {
+          message: action.data.text,
+          type: 'error',
+        },
+      });
+    }
   }
 }

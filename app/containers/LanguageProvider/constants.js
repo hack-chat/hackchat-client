@@ -3,6 +3,8 @@
  */
 
 export const CHANGE_LOCALE = 'app/LanguageToggle/CHANGE_LOCALE';
+export const OPEN_LOCALE_MODAL = 'app/LanguageToggle/OPEN_LOCALE_MODAL';
+export const CLOSE_LOCALE_MODAL = 'app/LanguageToggle/CLOSE_LOCALE_MODAL';
 
 /**
  * LanguageProvider localStorage labels

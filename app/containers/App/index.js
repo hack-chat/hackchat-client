@@ -4,43 +4,44 @@
 
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import styled from 'styled-components';
 import { Routes, Route } from 'react-router-dom';
+import { ToastContainer, Slide } from 'react-toastify';
 
 import HomePage from 'containers/HomePage/Loadable';
-import SettingsPage from 'containers/SettingsPage/Loadable';
-import NotFoundPage from 'containers/NotFoundPage/Loadable';
-import Header from 'components/Header';
+import ToastNotifier from 'containers/ToastNotifier';
+
+import Wrapper from './Wrapper';
 
 import GlobalStyle from '../../global-styles';
 
-const AppWrapper = styled.div`
-  margin: 0 auto;
-  display: flex;
-  min-height: 100%;
-  padding: 0;
-  flex-direction: column;
-`;
-
 export default function App() {
   return (
-    <AppWrapper>
-      <Helmet titleTemplate="%s - hack.chat" defaultTitle="hack.chat">
+    <Wrapper>
+      <Helmet titleTemplate="%s" defaultTitle="hack.chat">
         <meta
           name="description"
           content="a minimal, distraction-free chat application"
         />
       </Helmet>
 
-      <Header />
-
       <Routes>
-        <Route exact path="/" Component={HomePage} />
-        <Route exact path="/settings" Component={SettingsPage} />
-        <Route path="*" Component={NotFoundPage} />
+        <Route path="*" Component={HomePage} />
       </Routes>
 
+      <ToastNotifier />
+      <ToastContainer
+        position="bottom-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        theme="dark"
+        transition={Slide}
+      />
+
       <GlobalStyle />
-    </AppWrapper>
+    </Wrapper>
   );
 }

@@ -6,12 +6,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectCommunicationProvider from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
@@ -23,12 +21,8 @@ export function CommunicationProvider({ children }) {
 }
 
 CommunicationProvider.propTypes = {
-  children: PropTypes.object,
+  children: PropTypes.element.isRequired,
 };
-
-const mapStateToProps = createStructuredSelector({
-  communicationProvider: makeSelectCommunicationProvider(),
-});
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -36,6 +30,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
+const withConnect = connect(null, mapDispatchToProps);
 
 export default compose(withConnect)(CommunicationProvider);

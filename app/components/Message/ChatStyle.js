@@ -6,18 +6,58 @@
 import styled from 'styled-components';
 
 const ChatStyle = styled.div`
-  border-left: 1px solid #386498 !important;
-  color: #d3d0c1;
-  padding-left: 1em;
-  font-size: 0.9rem;
+  color: #a6a28c;
   white-space: pre-wrap;
   word-wrap: break-word;
-  font-weight: 400;
   font-family: 'DejaVu Sans Mono', monospace;
+  max-height: 50vh;
+  overflow-y: auto;
+  min-width: 0;
+
+  & {
+    --sb-track-color: rgba(0 0 0 / 60%);
+    --sb-thumb-color: #909090;
+    --sb-size: 8px;
+  }
+
+  &::-webkit-scrollbar {
+    width: var(--sb-size);
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--sb-track-color);
+    border-radius: 4px;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb-color);
+    border-radius: 3px;
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    & {
+      scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+    }
+  }
 
   & > p {
-    margin-bottom: 0;
+    margin: 0;
+    overflow-wrap: anywhere;
   }
+
+  ${({ $canExpand, $isExpanded }) =>
+    $canExpand &&
+    !$isExpanded &&
+    `
+    overflow-y: hidden;
+    max-height: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 10;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  `}
 `;
 
 export default ChatStyle;

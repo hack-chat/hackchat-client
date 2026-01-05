@@ -1,14 +1,14 @@
 /**
- * Exports a styled `reactstrap` Button
- * - https://reactstrap.github.io/components/input-group/
+ * Exports a styled html button
  */
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'reactstrap';
 import styled from 'styled-components';
 
-const StyledBackButton = styled(Button)`
+const StyledBackButton = styled.button.attrs({
+  type: 'button',
+})`
   margin-top: 32px;
   margin-left: auto;
 `;

@@ -1,22 +1,39 @@
 /**
- * Exports a styled `reactstrap` Input
- * - https://reactstrap.github.io/components/input-group/
+ * Exports a styled textarea for user input.
  */
-
 import styled from 'styled-components';
-import { Input } from 'reactstrap';
 
-export default styled(Input)`
-  color: #f5f5f7 !important;
-  background-color: #343a40 !important;
-  border-right: 0 solid transparent !important;
-  border-image: linear-gradient(to right, #3b7ed0, #9740dd) !important;
-  border-image-slice: 1 !important;
-  max-height: 125px;
+export default styled.textarea`
+  flex-grow: 1;
+  min-height: 4em;
+  max-width: 600px;
+  max-height: 200px;
   height: auto;
   resize: none;
+  padding: 0.75em 1em;
+  box-sizing: border-box;
+  border: none;
+  border-top: 1px solid rgba(125, 122, 104, 0.5);
+  border-left: 1px solid rgba(125, 122, 104, 0.5);
+  background-color: transparent;
+  color: #f5f5f7;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   &:focus {
-    background: linear-gradient(to right, #3e444c, #343a40) !important;
+    outline: none;
+  }
+
+  &::placeholder {
+    color: #8a8a8a;
+  }
+
+  @media (max-width: 767px) {
+    border-left: none;
+    max-width: 100%;
+    padding: 0.75em 0.5em;
   }
 `;

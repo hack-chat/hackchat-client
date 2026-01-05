@@ -1,19 +1,27 @@
 /**
- * Exports a styled `reactstrap` Button
- * - https://reactstrap.github.io/components/buttons/
+ * Exports a styled html button for sending messages.
  */
 
 import styled from 'styled-components';
-import { Button } from 'reactstrap';
 
-export default styled(Button)`
-  color: #f5f5f7 !important;
-  background-color: #343a40 !important;
-  border: 1px solid #9740dd !important;
-  border-left: 0 solid transparent !important;
+export default styled.button.attrs({
+  type: 'button',
+})`
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  color: #a6a28c;
+  font-size: 1.2em;
+  padding: 5px;
+  border-top: 1px solid rgba(125, 122, 104, 0.5);
 
   &:focus {
+    outline: none;
     box-shadow: none !important;
+  }
+
+  &:hover {
+    color: #f5f5f7;
   }
 
   & > svg {

@@ -1,86 +1,328 @@
 /**
- * HomePage will either display the StartScreen or ChatManager depending on
- * the current channel, query string and other channel data
+ * HomePage will
  */
 
-import React, { useEffect, memo } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useStateIfMounted } from 'use-state-if-mounted';
+import React, { useEffect, useMemo, useState, memo, useRef } from 'react';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { injectIntl } from 'react-intl';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import { changeChannel } from 'containers/CommunicationProvider/actions';
+import DOMPurify from 'dompurify';
+
+import { FaMarkdown, FaGithub } from 'react-icons/fa6';
+import { SiLatex } from 'react-icons/si';
+import { FaFileCode } from 'react-icons/fa';
+
+import {
+  changeChannel,
+  sendChat,
+  kickUser,
+  banUser,
+  ignoreUser,
+  inviteUser,
+  muteUser,
+  unmuteUser,
+  uwuifyUser,
+} from 'containers/CommunicationProvider/actions';
 import {
   makeSelectChannel,
   makeSelectChannelData,
   makeSelectMeta,
 } from 'containers/CommunicationProvider/selectors';
-import { openJoinModal } from 'components/MainMenu/actions';
-import { Row, Col } from 'reactstrap';
-import Notifier from 'components/Notifier';
+
+import { makeSelectIsLocaleModalOpen } from 'containers/LanguageProvider/selectors';
+import {
+  closeLocaleModal,
+  openLocaleModal,
+} from 'containers/LanguageProvider/actions';
+
+import { disconnectWallet } from 'containers/WalletLayer/actions';
+import {
+  makeSelectConnectedTo,
+  makeSelectConnectedAccount,
+} from 'containers/WalletLayer/selectors';
+
+import LoadingIndicator from 'components/LoadingIndicator';
+import ChatManager from 'components/ChatManager';
+import ChatInput from 'components/ChatInput';
+import Modal from 'components/Modal';
+import JoinMenu from 'components/JoinMenu';
+import LocaleModal from 'components/LocaleModal';
 import MainMenu from 'components/MainMenu';
-import StartScreen from 'components/StartScreen';
-import ChatManager from 'containers/ChatManager';
+import WalletMenu from 'components/WalletMenu';
+
+import messages from './messages';
 
 import MainContainer from './MainContainer';
+import ChatLayout from './ChatLayout';
+import LandingPageContents from './Contents';
+import Banner from './Banner';
+import Center from './Center';
+import Socials from './Socials';
+import ChannelRow from './ChannelRow';
+import ChannelButton from './ChannelButton';
+
+const useUrlChannel = () => {
+  const { search } = useLocation();
+  return useMemo(() => search.substring(1), [search]);
+};
 
 export function HomePage({
   channel,
   channelData,
   meta,
   onChangeChannel,
-  onOpenJoinModal,
+  onSendMessage,
+  onKickUser,
+  onBanUser,
+  onIgnoreUser,
+  onInviteUser,
+  onMuteUser,
+  onUnmuteUser,
+  onUwuifyUser,
+  isLocaleModalOpen,
+  onCloseLocaleModal,
+  onOpenLocaleModal,
+  intl,
+  connectedTo,
+  connectedAccount,
+  onDisconnectWallet,
 }) {
-  const location = useLocation();
-  const homepageTitle = location.search !== '' ? location.search : 'welcome';
-  const qString = location.search.trim().substr(1);
-
   const navigate = useNavigate();
+  const channelFromUrl = useUrlChannel();
+  const [isJoinModalOpen, setJoinModalOpen] = useState(false);
+  const toggleJoinModal = () => setJoinModalOpen(!isJoinModalOpen);
+  const [isWalletModalOpen, setWalletModalOpen] = useState(false);
 
-  const [currentView, setView] = useStateIfMounted(1);
-  const [lastChannel, setLastChannel] = useStateIfMounted('');
+  const createOrJoinLabel = intl.formatMessage(messages.createOrJoinLabel);
+  const publicChannelsHeader = intl.formatMessage(
+    messages.publicChannelsHeader,
+  );
+  const currentGithub = intl.formatMessage(messages.currentGithub);
+  const legacyGithub = intl.formatMessage(messages.legacyGithub);
+  const thirdParty = intl.formatMessage(messages.thirdParty);
+
+  const chatInputRef = useRef(null);
+
+  const handleMenuCommand = (commandText) => {
+    const mentionMatch = commandText.match(/^@\S+\s$/);
+
+    if (mentionMatch) {
+      chatInputRef.current?.insertText(
+        commandText.substr(0, commandText.length),
+      );
+      return;
+    }
+
+    const kickMatch = commandText.match(/^\/kick @(.+)/);
+    const banMatch = commandText.match(/^\/ban @(.+)/);
+    const ignoreMatch = commandText.match(/^\/ignore @(.+)/);
+    const inviteMatch = commandText.match(/^\/invite @(.+)/);
+    const muzzleMatch = commandText.match(/^\/muzzle @(.+)/);
+    const unmuzzleMatch = commandText.match(/^\/unmuzzle @(.+)/);
+    const uwuifyMatch = commandText.match(/^\/uwuify @(.+)/);
+
+    if (
+      kickMatch ||
+      banMatch ||
+      ignoreMatch ||
+      inviteMatch ||
+      muzzleMatch ||
+      unmuzzleMatch ||
+      uwuifyMatch
+    ) {
+      const username =
+        (kickMatch && kickMatch[1]) ||
+        (banMatch && banMatch[1]) ||
+        (ignoreMatch && ignoreMatch[1]) ||
+        (inviteMatch && inviteMatch[1]) ||
+        (muzzleMatch && muzzleMatch[1]) ||
+        (unmuzzleMatch && unmuzzleMatch[1]) ||
+        (uwuifyMatch && uwuifyMatch[1]);
+
+      const users = channelData[channel]?.users;
+
+      if (!users) {
+        // eslint-disable-next-line no-console
+        console.warn('User list not available for this channel.');
+        return;
+      }
+
+      const targetUser = Object.values(users).find(
+        (u) => u.username === username,
+      );
+
+      if (targetUser) {
+        if (kickMatch) {
+          // eslint-disable-next-line no-console
+          console.log(`Kicking user: ${username} (ID: ${targetUser.userid})`);
+          onKickUser(channel, targetUser.userid);
+        } else if (banMatch) {
+          // eslint-disable-next-line no-console
+          console.log(`Banning user: ${username} (ID: ${targetUser.userid})`);
+          onBanUser(channel, targetUser.userid);
+        } else if (ignoreMatch) {
+          // eslint-disable-next-line no-console
+          console.log(`Ignoring user: ${username} (ID: ${targetUser.userid})`);
+          onIgnoreUser(channel, targetUser.userid);
+        } else if (inviteMatch) {
+          // eslint-disable-next-line no-console
+          console.log(`Inviting user: ${username} (ID: ${targetUser.userid})`);
+          onInviteUser(channel, targetUser.userid);
+        } else if (muzzleMatch) {
+          // eslint-disable-next-line no-console
+          console.log(`Muzzling user: ${username} (ID: ${targetUser.userid})`);
+          onMuteUser(channel, targetUser.userid);
+        } else if (unmuzzleMatch) {
+          // eslint-disable-next-line no-console
+          console.log(
+            `Unmuzzling user: ${username} (ID: ${targetUser.userid})`,
+          );
+          onUnmuteUser(channel, targetUser.userid);
+        } else if (uwuifyMatch) {
+          // eslint-disable-next-line no-console
+          console.log(`Uwuifying user: ${username} (ID: ${targetUser.userid})`);
+          onUwuifyUser(channel, targetUser.userid);
+        }
+      } else {
+        // eslint-disable-next-line no-console
+        console.warn(`Could not find user "${username}" to perform action.`);
+        chatInputRef.current?.setCommand(commandText);
+      }
+      return;
+    }
+
+    chatInputRef.current?.setCommand(commandText);
+  };
 
   useEffect(() => {
-    if (channel === false && qString !== '') {
-      setView(1);
-      onOpenJoinModal(qString);
-    } else if (channel && qString === '') {
-      setLastChannel(channel);
-      navigate(`/?${channel}`);
-    } else if (channel === qString) {
-      setView(2);
-      setLastChannel(channel);
-    } else if (channel !== qString) {
-      if (channel === false) {
-        setView(0);
-      } else if (typeof channelData[qString] === 'undefined') {
-        setView(1);
-        onOpenJoinModal(qString);
-      } else if (channel === lastChannel) {
-        onChangeChannel(qString);
+    if (channelFromUrl) {
+      const isAlreadyMember = channelData && channelData[channelFromUrl];
+
+      if (isAlreadyMember) {
+        if (channel !== channelFromUrl) {
+          onChangeChannel(channelFromUrl);
+        }
+        setJoinModalOpen(false);
+      } else {
+        setJoinModalOpen(true);
+      }
+    } else {
+      if (channel) {
+        navigate(`/?${channel}`, { replace: true });
       }
     }
-  }, [channel, qString]);
+  }, [channelFromUrl, channel, channelData, onChangeChannel, navigate]);
 
-  let homepageView;
-  switch (currentView) {
-    case 0:
-      homepageView = <StartScreen meta={meta} />;
-      break;
-    case 1:
-      homepageView = '';
-      break;
-    case 2:
-      homepageView = <ChatManager />;
-      break;
-    default:
-      homepageView = '';
-  }
+  const publicChannels = useMemo(() => {
+    const sortedChannels = [...meta.channels].sort((a, b) => b.count - a.count);
+    const channelPairs = [];
+    for (let i = 0; i < sortedChannels.length; i += 2) {
+      channelPairs.push(sortedChannels.slice(i, i + 2));
+    }
+    return channelPairs.map(([ch1, ch2]) => {
+      const key = ch1 ? `pchan-${ch1.name}` : `pchan-empty-${Math.random()}`;
+      return (
+        <ChannelRow key={key}>
+          <div>
+            {ch1 && (
+              <Link to={`/?${DOMPurify.sanitize(ch1.name)}`}>
+                ?{DOMPurify.sanitize(ch1.name)}: {ch1.count}
+              </Link>
+            )}
+          </div>
+          <div>
+            {ch2 && (
+              <Link to={`/?${DOMPurify.sanitize(ch2.name)}`}>
+                ?{DOMPurify.sanitize(ch2.name)}: {ch2.count}
+              </Link>
+            )}
+          </div>
+        </ChannelRow>
+      );
+    });
+  }, [meta.channels]);
+
+  const showChat = channel && channel === channelFromUrl;
+  const homepageTitle = channelFromUrl || 'hack.chat';
+
+  const HomePageContent = (
+    <>
+      <Center>
+        <Banner>
+          {`
+ _           _         _        _
+| |_ ___ ___| |_   ___| |_ ___ | |_
+|   |_ ||  _| '_| |  _|   |_  ||  _|
+|_|_|__/|___|_,_|.|___|_|_|__/ |_|
+        `}
+        </Banner>
+      </Center>
+      <Center>
+        <ChannelButton onClick={() => setJoinModalOpen(true)}>
+          {createOrJoinLabel}
+        </ChannelButton>
+      </Center>
+      <br />
+      <Center>{publicChannelsHeader}</Center>
+      {publicChannels.length === 0 ? <LoadingIndicator /> : publicChannels}
+      <Center>
+        <Socials>
+          <Link
+            to="https://www.markdownguide.org/cheat-sheet/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <FaMarkdown />
+          </Link>
+          <Link
+            to="https://katex.org/docs/supported"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <SiLatex />
+          </Link>
+          <Link
+            to="https://highlightjs.org/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <FaFileCode />
+          </Link>
+          <Link
+            to="https://github.com/hack-chat"
+            rel="noopener noreferrer"
+            target="_blank"
+            title={currentGithub}
+          >
+            <FaGithub />
+          </Link>
+          <Link
+            to="https://github.com/AndrewBelt/hack.chat"
+            rel="noopener noreferrer"
+            target="_blank"
+            title={legacyGithub}
+          >
+            <FaGithub />
+          </Link>
+          <Link
+            to="https://github.com/hack-chat/3rd-party-software-list"
+            rel="noopener noreferrer"
+            target="_blank"
+            title={thirdParty}
+          >
+            <FaGithub />
+          </Link>
+        </Socials>
+      </Center>
+    </>
+  );
 
   return (
-    <MainContainer fluid className="p-0">
+    <MainContainer>
       <Helmet>
         <title>{homepageTitle}</title>
         <meta
@@ -88,17 +330,51 @@ export function HomePage({
           content="a minimal, distraction-free chat application"
         />
       </Helmet>
-      <Row className="g-0">
-        <Col md="1" sm="1">
-          <MainMenu />
-        </Col>
-        <Col md="10" sm="10">
-          {homepageView}
-        </Col>
-        <Col md="1" sm="0">
-          <Notifier />
-        </Col>
-      </Row>
+
+      {showChat && (
+        <MainMenu
+          channel={channel}
+          channelData={channelData}
+          onJoinOrCreateClick={toggleJoinModal}
+          onCommandClick={handleMenuCommand}
+          onOpenLocaleModal={onOpenLocaleModal}
+          onOpenWalletModal={() => setWalletModalOpen(true)}
+          isWalletConnected={!!connectedTo}
+          walletAddress={connectedAccount ? connectedAccount.address : ''}
+          onDisconnectWallet={onDisconnectWallet}
+        />
+      )}
+
+      {showChat ? (
+        <ChatLayout>
+          <ChatManager
+            channel={channel}
+            channelData={channelData}
+            handleMenuCommand={handleMenuCommand}
+            intl={intl}
+          />
+          <ChatInput
+            channel={channel}
+            onSendMessage={onSendMessage}
+            ref={chatInputRef}
+          />
+        </ChatLayout>
+      ) : (
+        <LandingPageContents>
+          {isJoinModalOpen && !!channelFromUrl ? null : HomePageContent}
+        </LandingPageContents>
+      )}
+
+      <Modal isOpen={isJoinModalOpen} doToggle={setJoinModalOpen}>
+        <JoinMenu
+          doToggle={toggleJoinModal}
+          qString={!showChat ? channelFromUrl : ''}
+        />
+      </Modal>
+      <Modal isOpen={isLocaleModalOpen} doToggle={onCloseLocaleModal}>
+        <LocaleModal />
+      </Modal>
+      <WalletMenu isOpen={isWalletModalOpen} doToggle={setWalletModalOpen} />
     </MainContainer>
   );
 }
@@ -108,22 +384,49 @@ HomePage.propTypes = {
   channelData: PropTypes.object,
   meta: PropTypes.object,
   onChangeChannel: PropTypes.func,
-  onOpenJoinModal: PropTypes.func,
+  onSendMessage: PropTypes.func,
+  onKickUser: PropTypes.func,
+  onBanUser: PropTypes.func,
+  onIgnoreUser: PropTypes.func,
+  onInviteUser: PropTypes.func,
+  onMuteUser: PropTypes.func,
+  onUnmuteUser: PropTypes.func,
+  onUwuifyUser: PropTypes.func,
+  isLocaleModalOpen: PropTypes.bool,
+  onCloseLocaleModal: PropTypes.func,
+  onOpenLocaleModal: PropTypes.func,
+  intl: PropTypes.object.isRequired,
+  connectedTo: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+  connectedAccount: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+  onDisconnectWallet: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   channel: makeSelectChannel(),
   channelData: makeSelectChannelData(),
   meta: makeSelectMeta(),
+  isLocaleModalOpen: makeSelectIsLocaleModalOpen(),
+  connectedTo: makeSelectConnectedTo(),
+  connectedAccount: makeSelectConnectedAccount(),
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
-    onChangeChannel: (channel) => dispatch(changeChannel(channel)),
-    onOpenJoinModal: (channel) => dispatch(openJoinModal(channel)),
+    onChangeChannel: (channelName) => dispatch(changeChannel(channelName)),
+    onSendMessage: (channel, message) => dispatch(sendChat(channel, message)),
+    onKickUser: (channel, user) => dispatch(kickUser(channel, user)),
+    onBanUser: (channel, user) => dispatch(banUser(channel, user)),
+    onIgnoreUser: (channel, userid) => dispatch(ignoreUser(channel, userid)),
+    onInviteUser: (channel, userid) => dispatch(inviteUser(channel, userid)),
+    onMuteUser: (channel, user) => dispatch(muteUser(channel, user)),
+    onUnmuteUser: (channel, user) => dispatch(unmuteUser(channel, user)),
+    onUwuifyUser: (channel, user) => dispatch(uwuifyUser(channel, user)),
+    onCloseLocaleModal: () => dispatch(closeLocaleModal()),
+    onOpenLocaleModal: () => dispatch(openLocaleModal()),
+    onDisconnectWallet: () => dispatch(disconnectWallet()),
   };
 }
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-export default compose(withConnect, memo)(HomePage);
+export default compose(withConnect, injectIntl, memo)(HomePage);
