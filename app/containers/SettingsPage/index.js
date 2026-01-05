@@ -1,5 +1,6 @@
 /**
  * SettingsPage allows the user to change application settings
+ * @todo This container is currently disabled pending revision
  */
 
 import React from 'react';
@@ -11,28 +12,11 @@ import { Helmet } from 'react-helmet';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { FormGroup, Tooltip, Row, Col } from 'reactstrap';
 import { IoGlobe } from 'react-icons/io5';
 import { TfiReload } from 'react-icons/tfi';
 
-import {
-  Dropdown,
-  WideDropdownMenu,
-  WideDropdownItem,
-  WideDropdownToggle,
-  InputGroup,
-  Input,
-  InputGroupText,
-} from 'components/BaseModal';
-
 import MainMenu from 'components/MainMenu';
-import Notifier from 'components/Notifier';
-
-import NickColor from 'components/JoinModal/NickColor';
-import RememberBox from 'components/JoinModal/RememberBox';
-
 import { openLocaleModal } from 'components/MainMenu/actions';
-
 import { useInjectReducer } from 'utils/injectReducer';
 
 import MainContainer from './MainContainer';
@@ -41,6 +25,7 @@ import ReconnectButton from './ReconnectButton';
 import Label from './Label';
 import WideButton from './WideButton';
 import BackButton from './BackButton';
+
 import {
   setUsername,
   setPassword,
@@ -57,6 +42,7 @@ import {
   setAutoConnect,
   setWsPath,
 } from './actions';
+
 import {
   makeSelectSettingsPage,
   makeSelectCachedUsername,
@@ -74,7 +60,9 @@ import {
   makeSelectCachedAutoconnect,
   makeSelectCachedWsPath,
 } from './selectors';
+
 import reducer from './reducer';
+
 import messages from './messages';
 
 export function SettingsPage({
@@ -126,6 +114,7 @@ export function SettingsPage({
   const [chosenDoAutoconnect, setChosenDoAutoconnect] =
     useStateIfMounted(cachedDoAutoconnect);
   const [chosenWsPath, setChosenWsPath] = useStateIfMounted(cachedWsPath);
+
   const [nickColorTTOpen, setNickColorTTOpen] = useStateIfMounted(false);
   const [rememberMeTTOpen, setRememberMeTTOpen] = useStateIfMounted(false);
   const [reconnectTTOpen, setReconnectTTOpen] = useStateIfMounted(false);
@@ -141,9 +130,6 @@ export function SettingsPage({
   const menuPosText = intl.formatMessage(messages.menuPosText);
   const doHighlightsText = intl.formatMessage(messages.doHighlightsText);
   const autoReconnectText = intl.formatMessage(messages.autoReconnectText);
-  const usernameColorText = intl.formatMessage(messages.usernameColorText);
-  const rememberText = intl.formatMessage(messages.rememberText);
-  const reconnectText = intl.formatMessage(messages.reconnectText);
   const languageText = intl.formatMessage(messages.languageText);
   const backBtnText = intl.formatMessage(messages.backBtnText);
 
@@ -153,18 +139,19 @@ export function SettingsPage({
         <title>{headerText}</title>
         <meta name="description" content="Chat client settings" />
       </Helmet>
-      <Row className="g-0">
-        <Col md="1" sm="1">
+      <div className="row g-0">
+        <div className="col-md-1 col-sm-1">
           <MainMenu />
-        </Col>
-        <Col md="10" sm="10">
+        </div>
+        <div className="col-md-10 col-sm-10">
           <MainContainer>
             <h4>{headerText}</h4>
-            <InputGroup>
-              <InputGroupText addontype="prepend">@</InputGroupText>
-              <Input
+
+            <div>
+              <span>@</span>
+              <input
                 autoFocus
-                invalid={invalidName}
+                className={invalidName ? 'is-invalid' : ''}
                 placeholder={usernameText}
                 onFocus={clearInvalidName}
                 defaultValue={chosenUsername}
@@ -173,19 +160,16 @@ export function SettingsPage({
                   dispatch(setUsername(e.target.value));
                 }}
               />
-              <InputGroupText id="nickColorButton" addontype="append">
-                <NickColor
-                  color={chosenColor}
-                  onChangeComplete={(color) => {
-                    setChosenColor(color.hex);
-                    dispatch(setColor(color.hex));
-                  }}
-                />
-              </InputGroupText>
-            </InputGroup>
-            <InputGroup>
-              <InputGroupText addontype="prepend">#</InputGroupText>
-              <Input
+              <span id="nickColorButton">
+                <div style={{ padding: '5px', border: '1px solid #ccc' }}>
+                  Color Picker Placeholder
+                </div>
+              </span>
+            </div>
+
+            <div style={{ marginTop: '10px' }}>
+              <span>#</span>
+              <input
                 type="password"
                 placeholder={passwordText}
                 defaultValue={chosenPassword}
@@ -194,8 +178,8 @@ export function SettingsPage({
                   dispatch(setPassword(e.target.value));
                 }}
               />
-              <InputGroupText id="rememberMeInput" addontype="append">
-                <RememberBox
+              <span id="rememberMeInput">
+                <input
                   type="checkbox"
                   checked={chosenDoStore}
                   onChange={() => {
@@ -203,8 +187,9 @@ export function SettingsPage({
                     dispatch(setStoreChannelsFlag(!chosenDoStore));
                   }}
                 />
-              </InputGroupText>
-            </InputGroup>
+              </span>
+            </div>
+
             <WideButton onClick={() => dispatch(clearPrevChannels())}>
               <FormattedMessage
                 id={messages.clearHistoryText.id}
@@ -214,14 +199,13 @@ export function SettingsPage({
                 }}
               />
             </WideButton>
+
             <WideButton onClick={() => dispatch(openLocaleModal())}>
               {languageText}
             </WideButton>
-            <Dropdown
-              isOpen={themePickerOpen}
-              toggle={() => setThemePickerOpen(!themePickerOpen)}
-            >
-              <WideDropdownToggle caret>
+
+            <div style={{ margin: '10px 0', border: '1px solid #ccc' }}>
+              <div onClick={() => {}}>
                 <FormattedMessage
                   id={messages.currentThemeText.id}
                   defaultMessage={messages.currentThemeText.defaultMessage}
@@ -229,24 +213,22 @@ export function SettingsPage({
                     themeName: chosenTheme,
                   }}
                 />
-              </WideDropdownToggle>
-              <WideDropdownMenu>
-                <WideDropdownItem
-                  // todo Themes
-                  onClick={() => {
-                    setChosenTheme(chosenTheme);
-                    dispatch(setTheme(chosenTheme));
-                  }}
-                >
-                  {chosenTheme}
-                </WideDropdownItem>
-              </WideDropdownMenu>
-            </Dropdown>
-            <InputGroup>
-              <InputGroupText addontype="prepend">
+              </div>
+              <div
+                onClick={() => {
+                  setChosenTheme(chosenTheme);
+                  dispatch(setTheme(chosenTheme));
+                }}
+              >
+                {chosenTheme}
+              </div>
+            </div>
+
+            <div style={{ marginTop: '10px' }}>
+              <span>
                 <IoGlobe />
-              </InputGroupText>
-              <Input
+              </span>
+              <input
                 autoFocus
                 placeholder={wsPathText}
                 defaultValue={chosenWsPath}
@@ -255,17 +237,19 @@ export function SettingsPage({
                   dispatch(setWsPath(e.target.value));
                 }}
               />
-              <InputGroupText id="reconnectButton" addontype="append">
+              <span id="reconnectButton">
                 <ReconnectButton
+                  // eslint-disable-next-line no-console
                   onClick={() => console.log('todo reconnecting')}
                 >
                   <TfiReload />
                 </ReconnectButton>
-              </InputGroupText>
-            </InputGroup>
-            <Row className="g-0">
-              <Col md="6" sm="12">
-                <FormGroup switch>
+              </span>
+            </div>
+
+            <div className="row g-0">
+              <div className="col-md-6 col-sm-12">
+                <div>
                   <BooleanSwitch
                     type="switch"
                     checked={chosenAllowKatex}
@@ -277,8 +261,8 @@ export function SettingsPage({
                   <Label>
                     <h5>{allowKatexText}</h5>
                   </Label>
-                </FormGroup>
-                <FormGroup switch>
+                </div>
+                <div>
                   <BooleanSwitch
                     type="switch"
                     checked={chosenAllowMarkdown}
@@ -290,8 +274,8 @@ export function SettingsPage({
                   <Label>
                     <h5>{allowMarkdownText}</h5>
                   </Label>
-                </FormGroup>
-                <FormGroup switch>
+                </div>
+                <div>
                   <BooleanSwitch
                     type="switch"
                     checked={chosenExtCode}
@@ -303,8 +287,8 @@ export function SettingsPage({
                   <Label>
                     <h5>{allowExtCodeText}</h5>
                   </Label>
-                </FormGroup>
-                <FormGroup switch>
+                </div>
+                <div>
                   <BooleanSwitch
                     type="switch"
                     checked={chosenLtr}
@@ -316,10 +300,10 @@ export function SettingsPage({
                   <Label>
                     <h5>{useLtrText}</h5>
                   </Label>
-                </FormGroup>
-              </Col>
-              <Col md="6" sm="12">
-                <FormGroup switch>
+                </div>
+              </div>
+              <div className="col-md-6 col-sm-12">
+                <div>
                   <BooleanSwitch
                     type="switch"
                     checked={chosenMenuBtnPos}
@@ -331,8 +315,8 @@ export function SettingsPage({
                   <Label>
                     <h5>{menuPosText}</h5>
                   </Label>
-                </FormGroup>
-                <FormGroup switch>
+                </div>
+                <div>
                   <BooleanSwitch
                     type="switch"
                     checked={chosenDoHighlight}
@@ -344,8 +328,8 @@ export function SettingsPage({
                   <Label>
                     <h5>{doHighlightsText}</h5>
                   </Label>
-                </FormGroup>
-                <FormGroup switch>
+                </div>
+                <div>
                   <BooleanSwitch
                     type="switch"
                     checked={chosenDoAutoconnect}
@@ -357,41 +341,20 @@ export function SettingsPage({
                   <Label>
                     <h5>{autoReconnectText}</h5>
                   </Label>
-                </FormGroup>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div>
                 <BackButton onClick={handleGoBack} text={backBtnText} />
-              </Col>
-            </Row>
+              </div>
+            </div>
           </MainContainer>
-        </Col>
-        <Col md="1" sm="0">
-          <Notifier />
-        </Col>
-      </Row>
-      <Tooltip
-        isOpen={nickColorTTOpen}
-        target="nickColorButton"
-        toggle={() => setNickColorTTOpen(!nickColorTTOpen)}
-      >
-        {usernameColorText}
-      </Tooltip>
-      <Tooltip
-        isOpen={rememberMeTTOpen}
-        target="rememberMeInput"
-        toggle={() => setRememberMeTTOpen(!rememberMeTTOpen)}
-      >
-        {rememberText}
-      </Tooltip>
-      <Tooltip
-        isOpen={reconnectTTOpen}
-        target="reconnectButton"
-        toggle={() => setReconnectTTOpen(!reconnectTTOpen)}
-      >
-        {reconnectText}
-      </Tooltip>
+        </div>
+        <div className="col-md-1 col-sm-0">
+          <div />
+        </div>
+      </div>
     </div>
   );
 }

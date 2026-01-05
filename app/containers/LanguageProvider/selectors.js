@@ -12,4 +12,13 @@ const selectLanguage = (state) => state.language || initialState;
 const makeSelectLocale = () =>
   createSelector(selectLanguage, (languageState) => languageState.locale);
 
-export { selectLanguage, makeSelectLocale };
+/**
+ * Get the language modal open/closed state
+ */
+const makeSelectIsLocaleModalOpen = () =>
+  createSelector(
+    selectLanguage,
+    (languageState) => languageState.isLocaleModalOpen,
+  );
+
+export { selectLanguage, makeSelectLocale, makeSelectIsLocaleModalOpen };

@@ -1,12 +1,12 @@
 /**
- * Exports a styled `reactstrap` Input
- * - https://reactstrap.github.io/components/input-group/
+ * Exports a styled html button
  */
 
 import styled from 'styled-components';
-import { Input } from 'reactstrap';
 
-export default styled(Input)`
+export default styled.button.attrs({
+  type: 'button',
+})`
   min-width: 50px;
   min-height: 30px;
   margin-right: 10px;

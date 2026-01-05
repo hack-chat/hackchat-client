@@ -20,6 +20,8 @@ import {
   UNMUTE_USER,
   PUSH_NOTIF,
   CLEAR_NOTIFS,
+  UWUIFY_USER,
+  SET_PENDING_SIGN_REQUEST,
 } from './constants';
 
 /**
@@ -246,5 +248,30 @@ export function pushNotif(notifType, data) {
 export function clearNotifs() {
   return {
     type: CLEAR_NOTIFS,
+  };
+}
+
+/**
+ * Uwuify target user
+ * @param  {string} channel Channel
+ * @param  {number} user Target user to uwuify
+ * @return {object} An action object with a type of UWUIFY_USER
+ */
+export function uwuifyUser(channel, user) {
+  return {
+    type: UWUIFY_USER,
+    channel,
+    user,
+  };
+}
+
+/**
+ * Set queue a pending sign request
+ * @return {object} An action object with a type of SET_PENDING_SIGN_REQUEST
+ */
+export function setPendingSignRequest(request) {
+  return {
+    type: SET_PENDING_SIGN_REQUEST,
+    payload: request,
   };
 }

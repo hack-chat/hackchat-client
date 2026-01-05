@@ -2,7 +2,7 @@
  * This is the entry file for the application
  */
 
-import 'core-js/stable';
+//import 'core-js/stable';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
@@ -14,12 +14,12 @@ import 'sanitize.css/sanitize.css';
 
 import App from 'containers/App';
 import CommunicationProvider from 'containers/CommunicationProvider';
+import WalletLayer from 'containers/WalletLayer';
 import LanguageProvider from 'containers/LanguageProvider';
 
 import '!file-loader?name=[name].[ext]!./images/favicon.ico';
 import 'file-loader?name=.htaccess!./.htaccess';
 import './config.json';
-import 'bootstrap/dist/css/bootstrap.css';
 
 import setupStore from './setupStore';
 
@@ -35,9 +35,13 @@ const render = (messages) => {
     <Provider store={store}>
       <CommunicationProvider store={store}>
         <LanguageProvider messages={messages}>
-          <Router>
-            <App />
-          </Router>
+          <WalletLayer>
+            <Router
+              future={{ v7_relativeSplatPath: true, v7_startTransition: true }}
+            >
+              <App />
+            </Router>
+          </WalletLayer>
         </LanguageProvider>
       </CommunicationProvider>
     </Provider>,

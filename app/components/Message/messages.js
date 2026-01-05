@@ -31,7 +31,18 @@ const messages = {
     id: `${scope}.whisper`,
     defaultMessage: '{nick} whispered:',
   },
-
+  acceptCode: {
+    id: `${scope}.acceptCode`,
+    defaultMessage: '[ accept and run ]',
+  },
+  codeSuggestText: {
+    id: `${scope}.codeSuggestText`,
+    defaultMessage: ' is suggesting that you run the following code',
+  },
+  confirmWarningText: {
+    id: `${scope}.confirmWarningText`,
+    defaultMessage: `Warning, hitting okay will load unknown 3rd party code, this could result in many bad things happening- including (but not limited to) location disclosure, trip code theft, malicious trolling.`,
+  },
   globalRateLimit: {
     id: `${scope}.global.rateLimit`,
     defaultMessage:
@@ -45,7 +56,6 @@ const messages = {
     id: `${scope}.global.permsFail`,
     defaultMessage: 'You do not have permission to do this.',
   },
-
   joinRateLimit: {
     id: `${scope}.join.rateLimit`,
     defaultMessage:
@@ -60,25 +70,39 @@ const messages = {
     id: `${scope}.global.taken`,
     defaultMessage: 'Nickname taken.',
   },
-
   inviteRateLimit: {
     id: `${scope}.invite.rateLimit`,
     defaultMessage:
       'You are sending invites too fast. Wait a moment before trying again.',
   },
-
   warningLabel: {
     id: `${scope}.global.warningLabel`,
     defaultMessage: 'Warning',
   },
-
   errorLabel: {
     id: `${scope}.global.ErrorLabel`,
     defaultMessage: 'Error',
   },
+  showLess: {
+    id: `${scope}.showLess`,
+    defaultMessage: 'Show less',
+  },
+  showMore: {
+    id: `${scope}.showMore`,
+    defaultMessage: 'Show more',
+  },
+  txRequest: {
+    id: `${scope}.txRequest`,
+    defaultMessage: '{name} is requesting you sign a transaction:',
+  },
+  txPreview: {
+    id: `${scope}.txPreview`,
+    defaultMessage: 'Preview Transaction',
+  },
 };
 
 export const ERROR_ID = [];
+
 ERROR_ID[11] = messages.globalRateLimit;
 ERROR_ID[12] = messages.globalUnknownUser;
 ERROR_ID[13] = messages.globalPermsFail;

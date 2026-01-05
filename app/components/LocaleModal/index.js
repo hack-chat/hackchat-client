@@ -1,5 +1,3 @@
-/* eslint react/no-multi-comp: 0, react/prop-types: 0 */
-
 /**
  * LocaleModal exports the ui rendering functions to display the popup that allows
  * the user to change the current language
@@ -12,70 +10,47 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
 import {
-  CloseButton,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  WideButton,
-} from 'components/BaseModal';
-
-import { changeLocale } from 'containers/LanguageProvider/actions';
-import { closeLocaleModal } from 'components/MainMenu/actions';
+  changeLocale,
+  closeLocaleModal,
+} from 'containers/LanguageProvider/actions';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { appLocales } from '../../i18n';
 import messages from './messages';
 
-export function LocaleModal({
-  onCloseLocalMenu,
-  onLocaleToggle,
-  locale,
-  open,
-  intl,
-}) {
+import Container from './Container';
+import Title from './Title';
+import LanguageButton from './LanguageButton';
+
+export function LocaleModal({ doToggle, onLocaleToggle, locale, intl }) {
   const languageModalTitle = intl.formatMessage(messages.languageModalTitle);
-  const cancelText = intl.formatMessage(messages.cancelText);
 
   const langBtns = appLocales.map((lang) => (
-    <WideButton
-      tag="button"
-      active={locale === lang}
+    <LanguageButton
+      $active={locale === lang}
       key={`lang-${lang}`}
       onClick={() => {
-        onCloseLocalMenu();
         onLocaleToggle(lang);
+        doToggle();
       }}
     >
       {messages[lang]
         ? intl.formatMessage(messages[lang])
         : messages[lang].defaultMessage}
-    </WideButton>
+    </LanguageButton>
   ));
 
   return (
-    <div>
-      <Modal isOpen={open} toggle={onCloseLocalMenu}>
-        <ModalHeader
-          toggle={onCloseLocalMenu}
-          close={CloseButton(onCloseLocalMenu)}
-        >
-          {languageModalTitle}
-        </ModalHeader>
-        <ModalBody>{langBtns}</ModalBody>
-        <ModalFooter>
-          <Button onClick={onCloseLocalMenu}>{cancelText}</Button>
-        </ModalFooter>
-      </Modal>
-    </div>
+    <Container>
+      <Title>{languageModalTitle}</Title>
+      {langBtns}
+    </Container>
   );
 }
 
 LocaleModal.propTypes = {
-  onCloseLocalMenu: PropTypes.func,
-  onLocaleToggle: PropTypes.func,
-  locale: PropTypes.string,
-  open: PropTypes.bool,
+  doToggle: PropTypes.func.isRequired,
+  onLocaleToggle: PropTypes.func.isRequired,
+  locale: PropTypes.string.isRequired,
   intl: PropTypes.object.isRequired,
 };
 
@@ -86,7 +61,7 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
   return {
     onLocaleToggle: (lang) => dispatch(changeLocale(lang)),
-    onCloseLocalMenu: () => dispatch(closeLocaleModal()),
+    doToggle: () => dispatch(closeLocaleModal()),
     dispatch,
   };
 }

@@ -10,8 +10,8 @@ const selectCommunicationProviderDomain = (state) =>
 /**
  * Main element state
  */
-const makeSelectCommunicationProvider = () =>
-  createSelector(selectCommunicationProviderDomain, (substate) => substate);
+//const makeSelectCommunicationProvider = () =>
+//  createSelector(selectCommunicationProviderDomain, (substate) => substate);
 
 /**
  * Get currently focused channel
@@ -49,7 +49,7 @@ const makeSelectglobalNotifs = () =>
     (substate) => substate.globalNotifs,
   );
 
-export default makeSelectCommunicationProvider;
+//export default makeSelectCommunicationProvider;
 export {
   selectCommunicationProviderDomain,
   makeSelectChannel,

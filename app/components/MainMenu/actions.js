@@ -5,10 +5,6 @@
 import {
   OPEN_MAINMENU,
   CLOSE_MAINMENU,
-  OPEN_USERMODAL,
-  CLOSE_USERMODAL,
-  OPEN_CHANNELSMODAL,
-  CLOSE_CHANNELSMODAL,
   OPEN_JOINMODAL,
   CLOSE_JOINMODAL,
   OPEN_LOCALEMODAL,
@@ -33,46 +29,6 @@ export function openMainMenu() {
 export function closeMainMenu() {
   return {
     type: CLOSE_MAINMENU,
-  };
-}
-
-/**
- * Show user modal
- * @return {object} An action object with a type of OPEN_USERMODAL
- */
-export function openUsersModal() {
-  return {
-    type: OPEN_USERMODAL,
-  };
-}
-
-/**
- * Hide user modal
- * @return {object} An action object with a type of CLOSE_USERMODAL
- */
-export function closeUsersModal() {
-  return {
-    type: CLOSE_USERMODAL,
-  };
-}
-
-/**
- * Show channels menu
- * @return {object} An action object with a type of OPEN_CHANNELSMODAL
- */
-export function openChannelsModal() {
-  return {
-    type: OPEN_CHANNELSMODAL,
-  };
-}
-
-/**
- * Hide channels menu
- * @return {object} An action object with a type of CLOSE_CHANNELSMODAL
- */
-export function closeChannelsModal() {
-  return {
-    type: CLOSE_CHANNELSMODAL,
   };
 }
 

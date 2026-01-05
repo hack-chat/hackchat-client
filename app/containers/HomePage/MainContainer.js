@@ -1,15 +1,12 @@
 /**
- * Exports a styled `reactstrap` Container
- * - https://reactstrap.github.io/components/layout/
+ * Exports a styled html div that centers its content on the screen.
  */
-
-import { Container } from 'reactstrap';
 import styled from 'styled-components';
 
-export default styled(Container)`
-  height: 100%;
-
-  & > div {
-    height: 100%;
-  }
+export default styled.div`
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 `;

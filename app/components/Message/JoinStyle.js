@@ -6,11 +6,7 @@
 import styled from 'styled-components';
 
 const JoinStyle = styled.div`
-  border-left: 1px solid #386498 !important;
-  color: #3b7ed0;
-  padding-left: 1em;
-  font-size: 0.9rem;
-  font-weight: 200;
+  color: #60ac39;
   font-family: 'DejaVu Sans Mono', monospace;
 `;
 
