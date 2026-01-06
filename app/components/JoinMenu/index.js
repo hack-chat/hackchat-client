@@ -12,7 +12,6 @@ import { compose } from 'redux';
 import { GiRollingDices } from 'react-icons/gi';
 
 import { joinChannel } from 'containers/CommunicationProvider/actions';
-import { clearJoinModalChannel } from 'components/MainMenu/actions';
 
 import {
   setUsername,
@@ -190,8 +189,6 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
   return {
     onSubmitForm: (user, pass, chan, color, remember) => {
-      dispatch(clearJoinModalChannel());
-
       dispatch(setStoreChannelsFlag(remember));
 
       if (remember) {
