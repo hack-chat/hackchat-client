@@ -56,19 +56,19 @@ export default defineMessages({
     defaultMessage: 'Reconnect Now',
   },
   usernameText: {
-    id: 'hcclient.components.JoinModal.username',
+    id: 'hcclient.components.JoinMenu.username',
     defaultMessage: 'username',
   },
   passwordText: {
-    id: 'hcclient.components.JoinModal.password',
+    id: 'hcclient.components.JoinMenu.password',
     defaultMessage: 'password',
   },
   usernameColorText: {
-    id: 'hcclient.components.JoinModal.usernameColorText',
+    id: 'hcclient.Generic.usernameColor',
     defaultMessage: 'Your Color',
   },
   rememberText: {
-    id: 'hcclient.components.JoinModal.rememberText',
+    id: 'hcclient.Generic.remember',
     defaultMessage: 'Remember',
   },
   languageText: {
