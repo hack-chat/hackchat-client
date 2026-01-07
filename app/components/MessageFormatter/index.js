@@ -38,6 +38,35 @@ MessageFormatter.renderer = new RemarkableReactRenderer({
       );
     },
     img: ({ alt, src, title }) => {
+      let isGiphy = false;
+
+      try {
+        const url = new URL(src);
+
+        if (
+          url.hostname === 'giphy.com' ||
+          url.hostname.endsWith('.giphy.com')
+        ) {
+          isGiphy = true;
+        }
+      } catch {
+        isGiphy = false;
+      }
+
+      if (isGiphy) {
+        const html = `<a href="${src}" target="_blank" title="${
+          title || alt
+        }" rel="noopener noreferrer"><img src="${src}" alt="${alt}" /></a>`;
+
+        return (
+          <span
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(html, { ADD_ATTR: ['target'] }),
+            }}
+          />
+        );
+      }
+
       const html = `<a href="${src}" target="_blank" title="${
         title || alt
       }" rel="noopener noreferrer">${src}</a>`;
@@ -50,11 +79,6 @@ MessageFormatter.renderer = new RemarkableReactRenderer({
         />
       );
     },
-    table: ({ children }) => (
-      <div dark striped>
-        {children}
-      </div>
-    ),
     p: ({ children }) => {
       const alteredChildren = [];
       for (let i = 0, j = children.length; i < j; i += 1) {
@@ -62,15 +86,21 @@ MessageFormatter.renderer = new RemarkableReactRenderer({
           if (children[i].indexOf('?') !== -1) {
             const chunks = children[i].split(/(\?\S*)/gm);
             for (let k = 0, l = chunks.length; k < l; k += 1) {
-              if (chunks[k][0] === '?') {
+              const chunk = chunks[k];
+              const isChannelLink =
+                chunk.startsWith('?') &&
+                chunk.length > 1 &&
+                /[^?.,;:!"']/.test(chunk);
+
+              if (isChannelLink) {
                 const key = `invite-${Math.random() * 9999}`;
                 alteredChildren.push(
-                  <Link key={key} to={`/${DOMPurify.sanitize(chunks[k])}`}>
-                    {DOMPurify.sanitize(chunks[k])}
+                  <Link key={key} to={`/${DOMPurify.sanitize(chunk)}`}>
+                    {DOMPurify.sanitize(chunk)}
                   </Link>,
                 );
-              } else if (chunks[k] !== '') {
-                alteredChildren.push(chunks[k]);
+              } else if (chunk !== '') {
+                alteredChildren.push(chunk);
               }
             }
           } else {
@@ -89,7 +119,7 @@ MessageFormatter.renderer = new RemarkableReactRenderer({
           return (
             <pre
               dangerouslySetInnerHTML={{
-                __html: hljs.highlight(language, content).value,
+                __html: hljs.highlight(content, { language }).value,
               }}
             />
           );
