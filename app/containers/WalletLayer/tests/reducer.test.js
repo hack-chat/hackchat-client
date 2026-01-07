@@ -2,7 +2,7 @@
  * WalletLayer
  */
 
-// import { produce } from 'immer'; 
+// import { produce } from 'immer';
 import walletLayerReducer from '../reducer';
 
 /* eslint-disable default-case, no-param-reassign */

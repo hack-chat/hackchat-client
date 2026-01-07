@@ -2,7 +2,7 @@
  * Settings page tests
  */
 
-// import { produce } from 'immer'; 
+// import { produce } from 'immer';
 import settingsPageReducer from '../reducer';
 // import { someAction } from '../actions';
 

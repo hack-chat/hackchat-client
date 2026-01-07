@@ -24,21 +24,21 @@ const GlobalStyle = createGlobalStyle`
     --sb-thumb-color: #909090;
     --sb-size: 10px;
   }
-  
+
   body::-webkit-scrollbar {
     width: var(--sb-size)
   }
-  
+
   body::-webkit-scrollbar-track {
     background: var(--sb-track-color);
     border-radius: 3px;
   }
-  
+
   body::-webkit-scrollbar-thumb {
     background: var(--sb-thumb-color);
     border-radius: 3px;
   }
-  
+
   @supports not selector(::-webkit-scrollbar) {
     body {
       scrollbar-color: var(--sb-thumb-color)
@@ -206,6 +206,7 @@ const GlobalStyle = createGlobalStyle`
     color: black;
   }
   table {
+    color: #ddd;
     background-color: transparent;
     width: 100%;
     max-width: 100%;
