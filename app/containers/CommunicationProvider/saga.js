@@ -42,6 +42,7 @@ import {
   PUB_CHANS,
   HACK_ATTEMPT,
   NEW_TX_REQUEST,
+  UPDATE_MSG,
 } from './constants';
 
 import {
@@ -320,6 +321,16 @@ function initWebsocket() {
         from: payload.from,
       });
 
+    const onUpdateMessage = (payload) =>
+      emitter({
+        type: UPDATE_MSG,
+        channel: payload.channel,
+        customId: payload.customId,
+        mode: payload.mode,
+        text: payload.text,
+        userid: payload.user.userid,
+      });
+
     hcClient.on('error', onError);
     hcClient.on('connected', onConnected);
     hcClient.on('session', onSession);
@@ -338,6 +349,7 @@ function initWebsocket() {
     hcClient.on('hackAttempt', onHackAttempt);
     hcClient.on('signMessage', onSignMessage);
     hcClient.on('signTransaction', onSignTransaction);
+    hcClient.on('updateMessage', onUpdateMessage);
 
     return () => {
       hcClient.removeListener('error', onError);
@@ -358,6 +370,7 @@ function initWebsocket() {
       hcClient.removeListener('hackAttempt', onHackAttempt);
       hcClient.removeListener('signMessage', onSignMessage);
       hcClient.removeListener('signTransaction', onSignTransaction);
+      hcClient.removeListener('updateMessage', onUpdateMessage);
     };
   });
 }

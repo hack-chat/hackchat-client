@@ -27,6 +27,7 @@ import {
   PUB_CHANS,
   HACK_ATTEMPT,
   NEW_TX_REQUEST,
+  UPDATE_MSG,
 } from './constants';
 
 export const initialState = {
@@ -230,6 +231,31 @@ const communicationProviderReducer = (state = initialState, action) =>
           },
         });
         break;
+      case UPDATE_MSG: {
+        const targetChannel = draft.channels[action.channel];
+        if (!targetChannel) break;
+
+        const targetMessage = targetChannel.messages.find(
+          (msg) => msg.data && msg.data.id === action.customId
+        );
+
+        if (targetMessage) {
+          switch (action.mode) {
+            case 'overwrite':
+              targetMessage.data.content = action.text;
+              break;
+            case 'append':
+              targetMessage.data.content += action.text;
+              break;
+            case 'prepend':
+              targetMessage.data.content = action.text + targetMessage.data.content;
+              break;
+            default:
+              break;
+          }
+        }
+        break;
+      }
     }
   });
 

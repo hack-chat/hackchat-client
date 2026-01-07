@@ -47,3 +47,5 @@ export const SET_PENDING_SIGN_REQUEST =
   'app/CommunicationProvider/SET_PENDING_SIGN_REQUEST';
 
 export const NEW_TX_REQUEST = 'app/WalletLayer/NEW_TX_REQUEST';
+
+export const UPDATE_MSG = 'app/CommunicationProvider/UPDATE_MSG';
