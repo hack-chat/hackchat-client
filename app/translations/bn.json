@@ -139,5 +139,7 @@
   "hcclient.components.Message.whisper": "{nick} ফিসফিস করে বলল:",
   "hcclient.Generic.randomButton": "র্যান্ডম ব্যবহার করুন",
   "hcclient.Generic.remember": "মনে রাখুন",
-  "hcclient.Generic.usernameColor": "আপনার রং"
+  "hcclient.Generic.usernameColor": "আপনার রং",
+  "hcclient.containers.HomePage.siwText": "সার্ভারটি ওয়ালেট মালিকানা যাচাইয়ের অনুরোধ করছে, সাইন ইন প্রক্রিয়াটি সম্পূর্ণ করতে নীচের বোতামটি ব্যবহার করুন৷",
+  "hcclient.containers.HomePage.siwFinish": "বার্তায় স্বাক্ষর করুন"
 }

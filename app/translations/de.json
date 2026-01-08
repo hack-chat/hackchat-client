@@ -139,5 +139,7 @@
   "hcclient.components.Message.whisper": "{nick} flüsterte:",
   "hcclient.Generic.randomButton": "Zufall",
   "hcclient.Generic.remember": "Merken",
-  "hcclient.Generic.usernameColor": "Deine Farbe"
+  "hcclient.Generic.usernameColor": "Deine Farbe",
+  "hcclient.containers.HomePage.siwText": "Der Server fordert eine Überprüfung des Wallet-Besitzes an. Verwenden Sie die Schaltfläche unten, um den Anmeldevorgang abzuschließen",
+  "hcclient.containers.HomePage.siwFinish": "Nachricht unterschreiben"
 }

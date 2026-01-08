@@ -139,5 +139,7 @@
   "hcclient.components.Message.whisper": "{nick} fısıldadı:",
   "hcclient.Generic.randomButton": "Rastgele",
   "hcclient.Generic.remember": "Beni Hatırla",
-  "hcclient.Generic.usernameColor": "Renginiz"
+  "hcclient.Generic.usernameColor": "Renginiz",
+  "hcclient.containers.HomePage.siwText": "Sunucu, cüzdan sahipliği doğrulaması istiyor, oturum açma işlemini tamamlamak için aşağıdaki düğmeyi kullanın",
+  "hcclient.containers.HomePage.siwFinish": "Mesajı İmzala"
 }

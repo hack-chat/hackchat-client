@@ -60,4 +60,13 @@ export default defineMessages({
     defaultMessage:
       'Server and web client released under the WTFPL and MIT open source license. No message history is retained on the hack.chat server.',
   },
+  siwText: {
+    id: `${scope}.siwText`,
+    defaultMessage:
+      'The server is requesting wallet ownership verification, use the button below to complete the sign in process',
+  },
+  siwFinish: {
+    id: `${scope}.siwFinish`,
+    defaultMessage: 'Sign Message',
+  },
 });

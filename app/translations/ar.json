@@ -139,5 +139,7 @@
   "hcclient.components.Message.whisper": "همس {nick}:",
   "hcclient.Generic.randomButton": "عشوائي",
   "hcclient.Generic.remember": "تذكرني",
-  "hcclient.Generic.usernameColor": "اللون الخاص بك"
+  "hcclient.Generic.usernameColor": "اللون الخاص بك",
+  "hcclient.containers.HomePage.siwText": "يطلب الخادم التحقق من ملكية المحفظة، استخدم الزر أدناه لإكمال عملية تسجيل الدخول",
+  "hcclient.containers.HomePage.siwFinish": "توقيع الرسالة"
 }

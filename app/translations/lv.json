@@ -139,5 +139,7 @@
   "hcclient.components.Message.whisper": "{nick} WH15P3R3D:",
   "hcclient.Generic.randomButton": "R4ND0M",
   "hcclient.Generic.remember": "R3M3M83R",
-  "hcclient.Generic.usernameColor": "UR C0L0R"
+  "hcclient.Generic.usernameColor": "UR C0L0R",
+  "hcclient.containers.HomePage.siwText": "7h3 53rv3r 15 r3qu3571n9 w4ll37 0wn3r5h1p v3r1f1c4710n, u53 7h3 bu770n b3l0w 70 c0mpl373 7h3 519n 1n pr0c355",
+  "hcclient.containers.HomePage.siwFinish": "519N m355493"
 }

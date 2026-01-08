@@ -39,10 +39,14 @@ import {
   openLocaleModal,
 } from 'containers/LanguageProvider/actions';
 
-import { disconnectWallet } from 'containers/WalletLayer/actions';
+import {
+  disconnectWallet,
+  signMessageRequest,
+} from 'containers/WalletLayer/actions';
 import {
   makeSelectConnectedTo,
   makeSelectConnectedAccount,
+  makeSelectPendingSignRequest,
 } from 'containers/WalletLayer/selectors';
 
 import LoadingIndicator from 'components/LoadingIndicator';
@@ -90,6 +94,8 @@ export function HomePage({
   connectedTo,
   connectedAccount,
   onDisconnectWallet,
+  pendingSignRequest,
+  onSignMessageRequest,
 }) {
   const navigate = useNavigate();
   const channelFromUrl = useUrlChannel();
@@ -104,6 +110,8 @@ export function HomePage({
   const currentGithub = intl.formatMessage(messages.currentGithub);
   const legacyGithub = intl.formatMessage(messages.legacyGithub);
   const thirdParty = intl.formatMessage(messages.thirdParty);
+  const siwText = intl.formatMessage(messages.siwText);
+  const siwFinish = intl.formatMessage(messages.siwFinish);
 
   const chatInputRef = useRef(null);
 
@@ -374,6 +382,21 @@ export function HomePage({
       <Modal isOpen={isLocaleModalOpen} doToggle={onCloseLocaleModal}>
         <LocaleModal />
       </Modal>
+      <Modal isOpen={!!pendingSignRequest} doToggle={() => {}}>
+        <Center>{siwText}</Center>
+        <Center>
+          <ChannelButton
+            onClick={() =>
+              onSignMessageRequest(
+                pendingSignRequest.wallet,
+                pendingSignRequest.message,
+              )
+            }
+          >
+            {siwFinish}
+          </ChannelButton>
+        </Center>
+      </Modal>
       <WalletMenu isOpen={isWalletModalOpen} doToggle={setWalletModalOpen} />
     </MainContainer>
   );
@@ -399,6 +422,8 @@ HomePage.propTypes = {
   connectedTo: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
   connectedAccount: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
   onDisconnectWallet: PropTypes.func,
+  pendingSignRequest: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+  onSignMessageRequest: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -408,6 +433,7 @@ const mapStateToProps = createStructuredSelector({
   isLocaleModalOpen: makeSelectIsLocaleModalOpen(),
   connectedTo: makeSelectConnectedTo(),
   connectedAccount: makeSelectConnectedAccount(),
+  pendingSignRequest: makeSelectPendingSignRequest(),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -424,6 +450,8 @@ export function mapDispatchToProps(dispatch) {
     onCloseLocaleModal: () => dispatch(closeLocaleModal()),
     onOpenLocaleModal: () => dispatch(openLocaleModal()),
     onDisconnectWallet: () => dispatch(disconnectWallet()),
+    onSignMessageRequest: (wallet, message) =>
+      dispatch(signMessageRequest(wallet, message)),
   };
 }
 

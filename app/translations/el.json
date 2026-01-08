@@ -139,5 +139,7 @@
   "hcclient.components.Message.whisper": "Ο/Η {nick} ψιθύρισε:",
   "hcclient.Generic.randomButton": "Τυχαία επιλογή",
   "hcclient.Generic.remember": "Απομνημόνευση",
-  "hcclient.Generic.usernameColor": "Το χρώμα σου"
+  "hcclient.Generic.usernameColor": "Το χρώμα σου",
+  "hcclient.containers.HomePage.siwText": "Ο διακομιστής ζητά επαλήθευση ιδιοκτησίας πορτοφολιού. Χρησιμοποιήστε το παρακάτω κουμπί για να ολοκληρώσετε τη διαδικασία σύνδεσης",
+  "hcclient.containers.HomePage.siwFinish": "Υπογράψτε Μήνυμα"
 }

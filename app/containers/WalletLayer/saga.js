@@ -224,9 +224,7 @@ function* performTransaction(action) {
             'Transaction failed: Insufficient SOL to complete this transfer.',
           );
         } else if (errorStr.includes('BlockhashNotFound')) {
-          throw new Error(
-            'Transaction failed: Blockhash expired. Please try again.',
-          );
+          throw new Error('Transaction failed: Blockhash expired. Try again.');
         } else if (errorStr.includes('InsufficientFundsForRent')) {
           throw new Error(
             'Transaction failed: Recipient account needs rent exemption (Auto-fix failed).',

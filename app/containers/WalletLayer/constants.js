@@ -26,3 +26,7 @@ export const SET_AUTH_TOKEN = 'app/WalletLayer/SET_AUTH_TOKEN';
 export const SET_ACTIVE_ACCOUNT = 'app/WalletLayer/SET_ACTIVE_ACCOUNT';
 
 export const DO_TX = 'app/WalletLayer/DO_TX';
+
+export const INCOMING_SIGN_REQUEST = 'app/WalletLayer/INCOMING_SIGN_REQUEST';
+export const SET_PENDING_SIGN_REQUEST =
+  'app/WalletLayer/SET_PENDING_SIGN_REQUEST';

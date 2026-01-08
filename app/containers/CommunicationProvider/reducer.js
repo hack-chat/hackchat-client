@@ -236,7 +236,7 @@ const communicationProviderReducer = (state = initialState, action) =>
         if (!targetChannel) break;
 
         const targetMessage = targetChannel.messages.find(
-          (msg) => msg.data && msg.data.id === action.customId
+          (msg) => msg.data && msg.data.id === action.customId,
         );
 
         if (targetMessage) {
@@ -248,7 +248,8 @@ const communicationProviderReducer = (state = initialState, action) =>
               targetMessage.data.content += action.text;
               break;
             case 'prepend':
-              targetMessage.data.content = action.text + targetMessage.data.content;
+              targetMessage.data.content =
+                action.text + targetMessage.data.content;
               break;
             default:
               break;

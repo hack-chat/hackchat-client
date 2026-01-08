@@ -21,7 +21,6 @@ import {
   PUSH_NOTIF,
   CLEAR_NOTIFS,
   UWUIFY_USER,
-  SET_PENDING_SIGN_REQUEST,
 } from './constants';
 
 /**
@@ -262,16 +261,5 @@ export function uwuifyUser(channel, user) {
     type: UWUIFY_USER,
     channel,
     user,
-  };
-}
-
-/**
- * Set queue a pending sign request
- * @return {object} An action object with a type of SET_PENDING_SIGN_REQUEST
- */
-export function setPendingSignRequest(request) {
-  return {
-    type: SET_PENDING_SIGN_REQUEST,
-    payload: request,
   };
 }

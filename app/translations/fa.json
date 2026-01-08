@@ -139,5 +139,7 @@
   "hcclient.components.Message.whisper": "{nick} زمزمه کرد:",
   "hcclient.Generic.randomButton": "تصادفی",
   "hcclient.Generic.remember": "مرا به خاطر بسپار",
-  "hcclient.Generic.usernameColor": "رنگ شما"
+  "hcclient.Generic.usernameColor": "رنگ شما",
+  "hcclient.containers.HomePage.siwText": "سرور در حال درخواست تأیید مالکیت کیف پول است، از دکمه زیر برای تکمیل فرآیند ورود استفاده کنید",
+  "hcclient.containers.HomePage.siwFinish": "پیام را امضا کنید"
 }
