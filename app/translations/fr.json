@@ -139,5 +139,7 @@
   "hcclient.components.Message.whisper": "{nick} a chuchoté :",
   "hcclient.Generic.randomButton": "Aléatoire",
   "hcclient.Generic.remember": "Mémoriser",
-  "hcclient.Generic.usernameColor": "Votre couleur"
+  "hcclient.Generic.usernameColor": "Votre couleur",
+  "hcclient.containers.HomePage.siwText": "Le serveur demande une vérification de la propriété du portefeuille, utilisez le bouton ci-dessous pour terminer le processus de connexion",
+  "hcclient.containers.HomePage.siwFinish": "Signer le message"
 }

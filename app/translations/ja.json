@@ -139,5 +139,7 @@
   "hcclient.components.Message.whisper": "{nick} のささやき：",
   "hcclient.Generic.randomButton": "ランダム",
   "hcclient.Generic.remember": "情報を記憶する",
-  "hcclient.Generic.usernameColor": "あなたの色"
+  "hcclient.Generic.usernameColor": "あなたの色",
+  "hcclient.containers.HomePage.siwText": "サーバーはウォレットの所有権の確認を要求しています。下のボタンを使用してサインインプロセスを完了してください",
+  "hcclient.containers.HomePage.siwFinish": "メッセージに署名する"
 }

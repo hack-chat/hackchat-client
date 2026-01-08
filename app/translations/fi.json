@@ -139,5 +139,7 @@
   "hcclient.components.Message.whisper": "{nick} kuiskasi:",
   "hcclient.Generic.randomButton": "Satunnainen",
   "hcclient.Generic.remember": "Muista minut",
-  "hcclient.Generic.usernameColor": "Sinun värisi"
+  "hcclient.Generic.usernameColor": "Sinun värisi",
+  "hcclient.containers.HomePage.siwText": "Palvelin pyytää lompakon omistajuuden vahvistusta. Viimeistele kirjautumisprosessi alla olevalla painikkeella",
+  "hcclient.containers.HomePage.siwFinish": "Allekirjoita viesti"
 }

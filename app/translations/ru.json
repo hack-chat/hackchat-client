@@ -139,5 +139,7 @@
   "hcclient.components.Message.whisper": "{nick} прошептал:",
   "hcclient.Generic.randomButton": "Случайный",
   "hcclient.Generic.remember": "Запомнить",
-  "hcclient.Generic.usernameColor": "Ваш цвет"
+  "hcclient.Generic.usernameColor": "Ваш цвет",
+  "hcclient.containers.HomePage.siwText": "Сервер запрашивает подтверждение владения кошельком. Используйте кнопку ниже, чтобы завершить процесс входа.",
+  "hcclient.containers.HomePage.siwFinish": "Подписать сообщение"
 }

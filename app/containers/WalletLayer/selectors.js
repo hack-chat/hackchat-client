@@ -51,6 +51,15 @@ const makeSelectWaitingOnWallet = () =>
 const makeSelectAuthToken = () =>
   createSelector(selectWalletLayerDomain, (substate) => substate.authToken);
 
+/**
+ * Get pending sign requests
+ */
+const makeSelectPendingSignRequest = () =>
+  createSelector(
+    selectWalletLayerDomain,
+    (substate) => substate.pendingSignRequest,
+  );
+
 export default makeSelectWallets;
 export {
   selectWalletLayerDomain,
@@ -60,4 +69,5 @@ export {
   makeSelectConnectedAccount,
   makeSelectWaitingOnWallet,
   makeSelectAuthToken,
+  makeSelectPendingSignRequest,
 };

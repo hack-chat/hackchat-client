@@ -139,5 +139,7 @@
   "hcclient.components.Message.whisper": "{nick} ha sussurrato:",
   "hcclient.Generic.randomButton": "Casuale",
   "hcclient.Generic.remember": "Ricordami",
-  "hcclient.Generic.usernameColor": "Il tuo colore"
+  "hcclient.Generic.usernameColor": "Il tuo colore",
+  "hcclient.containers.HomePage.siwText": "Il server sta richiedendo la verifica della proprietà del portafoglio, utilizza il pulsante in basso per completare la procedura di accesso",
+  "hcclient.containers.HomePage.siwFinish": "Firma il messaggio"
 }

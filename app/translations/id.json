@@ -139,5 +139,7 @@
   "hcclient.components.Message.whisper": "{nick} berbisik:",
   "hcclient.Generic.randomButton": "Acak",
   "hcclient.Generic.remember": "Ingat Saya",
-  "hcclient.Generic.usernameColor": "Warna Anda"
+  "hcclient.Generic.usernameColor": "Warna Anda",
+  "hcclient.containers.HomePage.siwText": "Server meminta verifikasi kepemilikan dompet, gunakan tombol di bawah untuk menyelesaikan proses masuk",
+  "hcclient.containers.HomePage.siwFinish": "Tandatangani Pesan"
 }

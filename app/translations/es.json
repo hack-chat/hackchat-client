@@ -139,5 +139,7 @@
   "hcclient.components.Message.whisper": "{nick} susurró:",
   "hcclient.Generic.randomButton": "Aleatorio",
   "hcclient.Generic.remember": "Recordar",
-  "hcclient.Generic.usernameColor": "Tu color"
+  "hcclient.Generic.usernameColor": "Tu color",
+  "hcclient.containers.HomePage.siwText": "El servidor solicita la verificación de propiedad de la billetera. Utilice el botón a continuación para completar el proceso de inicio de sesión.",
+  "hcclient.containers.HomePage.siwFinish": "Firmar mensaje"
 }

@@ -140,5 +140,7 @@
   "hcclient.components.Message.whisper": "{nick} 悄悄對你說：",
   "hcclient.Generic.randomButton": "使用隨機",
   "hcclient.Generic.remember": "記住我",
-  "hcclient.Generic.usernameColor": "你的顏色"
+  "hcclient.Generic.usernameColor": "你的顏色",
+  "hcclient.containers.HomePage.siwText": "伺服器正在請求驗證錢包所有權，請使用下方的按鈕完成登入程序",
+  "hcclient.containers.HomePage.siwFinish": "簽署訊息"
 }

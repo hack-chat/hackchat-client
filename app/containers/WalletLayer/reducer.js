@@ -12,6 +12,8 @@ import {
   WAITING_ON_WALLET,
   SET_ACCOUNT,
   SET_AUTH_TOKEN,
+  SET_PENDING_SIGN_REQUEST,
+  SIGN_MESSAGE_REQUEST,
 } from './constants';
 
 export const initialState = {
@@ -21,6 +23,7 @@ export const initialState = {
   recentPayments: [],
   waitingOnWallet: false,
   authToken: null,
+  pendingSignRequest: false,
 };
 
 const walletLayerReducer = (state = initialState, action) =>
@@ -51,6 +54,12 @@ const walletLayerReducer = (state = initialState, action) =>
         break;
       case SET_AUTH_TOKEN:
         draft.authToken = action.token;
+        break;
+      case SET_PENDING_SIGN_REQUEST:
+        draft.pendingSignRequest = action.payload;
+        break;
+      case SIGN_MESSAGE_REQUEST:
+        draft.pendingSignRequest = false;
         break;
     }
   });

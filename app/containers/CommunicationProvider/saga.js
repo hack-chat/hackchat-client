@@ -47,10 +47,14 @@ import {
 
 import {
   SET_ACCOUNT,
-  SIGN_MESSAGE_REQUEST,
   SIGN_MESSAGE_SUCCESS,
   SIGN_MESSAGE_FAILURE,
+  INCOMING_SIGN_REQUEST,
 } from 'containers/WalletLayer/constants';
+import {
+  setPendingSignRequest,
+  signMessageRequest,
+} from 'containers/WalletLayer/actions';
 
 const hcClient = new Client({
   isBot: false,
@@ -59,6 +63,20 @@ const hcClient = new Client({
 window.hcClient = hcClient;
 
 let waitingOnSIW = false;
+
+export function* handleIncomingSignRequest(action) {
+  const { wallet, message } = action;
+  const isMobile =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent,
+    );
+
+  if (isMobile) {
+    yield put(setPendingSignRequest({ wallet, message }));
+  } else {
+    yield put(signMessageRequest(wallet, message));
+  }
+}
 
 function initWebsocket() {
   return eventChannel((emitter) => {
@@ -307,7 +325,7 @@ function initWebsocket() {
 
     const onSignMessage = (payload) =>
       emitter({
-        type: SIGN_MESSAGE_REQUEST,
+        type: INCOMING_SIGN_REQUEST,
         wallet: payload.wallet,
         message: payload.message,
       });
@@ -463,6 +481,8 @@ export default function* communicationProviderSaga() {
   yield takeLatest(SIGN_MESSAGE_FAILURE, () => {
     waitingOnSIW = false;
   });
+
+  yield takeLatest(INCOMING_SIGN_REQUEST, handleIncomingSignRequest);
 
   while (true) {
     const action = yield take(client);

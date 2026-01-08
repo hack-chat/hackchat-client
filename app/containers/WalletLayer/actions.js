@@ -13,6 +13,7 @@ import {
   SET_ACTIVE_ACCOUNT,
   SIGN_MESSAGE_SUCCESS,
   SIGN_MESSAGE_FAILURE,
+  SET_PENDING_SIGN_REQUEST,
 } from './constants';
 
 /**
@@ -127,5 +128,16 @@ export function signMessageFailure(error) {
   return {
     type: SIGN_MESSAGE_FAILURE,
     error,
+  };
+}
+
+/**
+ * Store the sign request in redux so the UI can display a modal
+ * @param {object} payload { wallet, message }
+ */
+export function setPendingSignRequest(payload) {
+  return {
+    type: SET_PENDING_SIGN_REQUEST,
+    payload,
   };
 }

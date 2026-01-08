@@ -80,7 +80,7 @@
   "hcclient.containers.LocaleToggle.tr": "Türkçe",
   "hcclient.containers.LocaleToggle.zh": "繁体中文",
   "hcclient.containers.LocaleToggle.cn": "简体中文",
-  "hcclient.components.WalletMenu.installWalletNotice": "Please install a Solana-compatible wallet.",
+  "hcclient.components.WalletMenu.installWalletNotice": "Install a Solana-compatible wallet",
   "hcclient.components.WalletMenu.noWalletsFound": "No wallets found.",
   "hcclient.components.WalletMenu.selectAccountLabel": "Select an Account",
   "hcclient.components.WalletMenu.signInWithLabel": "Sign in with",
@@ -142,5 +142,7 @@
   "hcclient.components.Message.whisper": "{nick} whispered:",
   "hcclient.Generic.randomButton": "Use Random",
   "hcclient.Generic.remember": "Remember",
-  "hcclient.Generic.usernameColor": "Your Color"
+  "hcclient.Generic.usernameColor": "Your Color",
+  "hcclient.containers.HomePage.siwText": "The server is requesting wallet ownership verification, use the button below to complete the sign in process",
+  "hcclient.containers.HomePage.siwFinish": "Sign Message"
 }

@@ -43,8 +43,6 @@ export const CLEAR_NOTIFS = 'app/CommunicationProvider/CLEAR_NOTIFS';
 export const PUB_CHANS = 'app/CommunicationProvider/PUB_CHANS';
 export const HACK_ATTEMPT = 'app/CommunicationProvider/HACK_ATTEMPT';
 export const UWUIFY_USER = 'app/CommunicationProvider/UWUIFY_USER';
-export const SET_PENDING_SIGN_REQUEST =
-  'app/CommunicationProvider/SET_PENDING_SIGN_REQUEST';
 
 export const NEW_TX_REQUEST = 'app/WalletLayer/NEW_TX_REQUEST';
 

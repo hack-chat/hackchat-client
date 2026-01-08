@@ -10,6 +10,7 @@ const InfoStyle = styled.div`
   font-family: 'DejaVu Sans Mono', monospace;
   padding-top: 0.25em;
   padding-bottom: 0.25em;
+  width: 98%;
 
   & > p {
     margin: 0;
