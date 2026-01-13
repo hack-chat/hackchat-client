@@ -18,8 +18,6 @@ import {
   BAN_USER,
   MUTE_USER,
   UNMUTE_USER,
-  PUSH_NOTIF,
-  CLEAR_NOTIFS,
   UWUIFY_USER,
 } from './constants';
 
@@ -225,28 +223,6 @@ export function unmuteUser(channel, user) {
     type: UNMUTE_USER,
     channel,
     user,
-  };
-}
-
-/**
- * Clear all global notifications
- * @return {object} An action object with a type of CLEAR_NOTIFS
- */
-export function pushNotif(notifType, data) {
-  return {
-    type: PUSH_NOTIF,
-    notifType,
-    data,
-  };
-}
-
-/**
- * Clear all global notifications
- * @return {object} An action object with a type of CLEAR_NOTIFS
- */
-export function clearNotifs() {
-  return {
-    type: CLEAR_NOTIFS,
   };
 }
 

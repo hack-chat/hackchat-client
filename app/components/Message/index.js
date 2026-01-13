@@ -289,7 +289,6 @@ export const Message = memo(
           : MessageContent;
         return (
           <MessageContainer>
-            {!extended ? <Nick user={user} /> : <NickPlaceholder />}
             <ContentWrapper $hasBackground={hasBackground}>
               <EmoteStyle>{payload.content}</EmoteStyle>
             </ContentWrapper>
@@ -313,8 +312,8 @@ export const Message = memo(
               {payload.id && ERROR_ID[payload.id] ? (
                 <WarnStyle>
                   <FormattedMessage
-                    id={ERROR_ID[payload.id]}
-                    defaultMessage={`Error: ${payload.text || 'unknown'}`}
+                    id={ERROR_ID[payload.id].id}
+                    defaultMessage={ERROR_ID[payload.id].defaultMessage}
                   />
                 </WarnStyle>
               ) : (

@@ -38,8 +38,6 @@ export const INVITE = 'app/CommunicationProvider/INVITE';
 export const WHISPER = 'app/CommunicationProvider/WHISPER';
 export const MESSAGE = 'app/CommunicationProvider/MESSAGE';
 
-export const PUSH_NOTIF = 'app/CommunicationProvider/PUSH_NOTIF';
-export const CLEAR_NOTIFS = 'app/CommunicationProvider/CLEAR_NOTIFS';
 export const PUB_CHANS = 'app/CommunicationProvider/PUB_CHANS';
 export const HACK_ATTEMPT = 'app/CommunicationProvider/HACK_ATTEMPT';
 export const UWUIFY_USER = 'app/CommunicationProvider/UWUIFY_USER';
@@ -47,3 +45,4 @@ export const UWUIFY_USER = 'app/CommunicationProvider/UWUIFY_USER';
 export const NEW_TX_REQUEST = 'app/WalletLayer/NEW_TX_REQUEST';
 
 export const UPDATE_MSG = 'app/CommunicationProvider/UPDATE_MSG';
+export const SESSION_LS = 'app/CommunicationProvider/SESSION_LS';

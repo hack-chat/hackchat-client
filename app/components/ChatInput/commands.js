@@ -16,7 +16,6 @@ const commands = [
   { command: 'unclaimchannel', params: [] },
   { command: 'color', params: ['rgbHex'] },
   { command: 'nick', params: ['newNick'] },
-  { command: 'chat', params: ['text'] },
   { command: 'emote', params: ['action'] },
   { command: 'help', params: ['<command>'] },
   { command: 'invite', params: ['username', '<channel>'] },

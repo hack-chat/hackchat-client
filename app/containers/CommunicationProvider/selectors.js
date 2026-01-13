@@ -8,12 +8,6 @@ const selectCommunicationProviderDomain = (state) =>
   state.communicationProvider || initialState;
 
 /**
- * Main element state
- */
-//const makeSelectCommunicationProvider = () =>
-//  createSelector(selectCommunicationProviderDomain, (substate) => substate);
-
-/**
  * Get currently focused channel
  */
 const makeSelectChannel = () =>
@@ -41,19 +35,18 @@ const makeSelectMeta = () =>
   );
 
 /**
- * Get the awaiting global notifications
+ * Get the sessionReady flag
  */
-const makeSelectglobalNotifs = () =>
+const makeSelectSessionReady = () =>
   createSelector(
     selectCommunicationProviderDomain,
-    (substate) => substate.globalNotifs,
+    (substate) => substate.sessionReady,
   );
 
-//export default makeSelectCommunicationProvider;
 export {
   selectCommunicationProviderDomain,
   makeSelectChannel,
   makeSelectChannelData,
   makeSelectMeta,
-  makeSelectglobalNotifs,
+  makeSelectSessionReady,
 };

@@ -22,49 +22,54 @@ import {
   INVITE,
   WHISPER,
   MESSAGE,
-  PUSH_NOTIF,
-  CLEAR_NOTIFS,
   PUB_CHANS,
   HACK_ATTEMPT,
   NEW_TX_REQUEST,
   UPDATE_MSG,
+  SESSION_LS,
 } from './constants';
 
 export const initialState = {
   connected: false,
   channel: false,
   channels: {},
-  globalNotifs: [],
   meta: {
     channelCount: 0,
     userCount: 0,
     channels: [],
   },
+  sessionReady: false,
+  lastSession: false,
 };
 
 const communicationProviderReducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
       case CONNECTION_ERROR:
-        // prevent multiple connection notices
-        if (draft.globalNotifs.length > 0) {
-          if (
-            draft.globalNotifs[draft.globalNotifs.length - 1].data.payload
-              .id === 1
-          ) {
-            break;
-          }
-        }
+        draft.connected = false;
+        draft.sessionReady = false;
 
-        draft.globalNotifs.push({
-          type: 'error',
-          data: {
-            payload: {
-              err: action.data,
-              text: '',
-              id: 1,
+        Object.keys(draft.channels).forEach((chanName) => {
+          const channelMessages = draft.channels[chanName].messages;
+          const lastMsg =
+            channelMessages.length > 0
+              ? channelMessages[channelMessages.length - 1]
+              : null;
+
+          if (
+            lastMsg &&
+            lastMsg.type === 'warn' &&
+            lastMsg.data.id === 987654321
+          ) {
+            return;
+          }
+
+          channelMessages.push({
+            type: 'warn',
+            data: {
+              id: 987654321,
             },
-          },
+          });
         });
         break;
       case CHANGE_CHANNEL:
@@ -73,12 +78,37 @@ const communicationProviderReducer = (state = initialState, action) =>
       case START_JOIN:
         draft.channel = action.channel;
         break;
-
       case CONNECTED:
         draft.connected = true;
         break;
       case SESSION_READY:
-        //
+        localStorage.setItem(SESSION_LS, JSON.stringify(action.data.token));
+        draft.sessionReady = true;
+
+        if (action.data.restored === true) {
+          Object.keys(draft.channels).forEach((chanName) => {
+            const channelMessages = draft.channels[chanName].messages;
+            const lastMsg =
+              channelMessages.length > 0
+                ? channelMessages[channelMessages.length - 1]
+                : null;
+
+            if (
+              lastMsg &&
+              lastMsg.type === 'warn' &&
+              lastMsg.data.id === 987654322
+            ) {
+              return;
+            }
+
+            channelMessages.push({
+              type: 'warn',
+              data: {
+                id: 987654322,
+              },
+            });
+          });
+        }
         break;
       case PUB_CHANS:
         draft.meta.channels = action.list;
@@ -93,10 +123,14 @@ const communicationProviderReducer = (state = initialState, action) =>
         });
         break;
       case JOINED_CHANNEL:
-        draft.channels[action.data.channel] = {
-          users: action.data.users,
-          messages: [],
-        };
+        if (typeof draft.channels[action.data.channel] === 'undefined') {
+          draft.channels[action.data.channel] = {
+            users: action.data.users,
+            messages: [],
+          };
+        } else {
+          draft.channels[action.data.channel].users = action.data.users;
+        }
         break;
       case DEBUG:
         //
@@ -125,40 +159,63 @@ const communicationProviderReducer = (state = initialState, action) =>
         draft.channels[action.channel].users[action.user.userid] = action.user;
         break;
       case WARNING:
-        if (
-          action.data.channel === false ||
-          typeof draft.channels[action.data.channel] === 'undefined'
-        ) {
-          draft.globalNotifs.push({
+        if (action.data.channel && draft.channels[action.data.channel]) {
+          draft.channels[action.data.channel].messages.push({
             type: 'warn',
             data: action.data,
           });
         } else {
-          draft.channels[action.data.channel].messages.push({
-            type: 'warn',
-            data: action.data,
+          Object.keys(draft.channels).forEach((chanName) => {
+            const channelMessages = draft.channels[chanName].messages;
+            const lastMsg =
+              channelMessages.length > 0
+                ? channelMessages[channelMessages.length - 1]
+                : null;
+
+            if (
+              lastMsg &&
+              lastMsg.type === 'warn' &&
+              lastMsg.data.text === action.data.text
+            ) {
+              return;
+            }
+
+            channelMessages.push({
+              type: 'warn',
+              data: action.data,
+            });
           });
         }
         break;
       case GOT_CAPTCHA:
-        draft.globalNotifs.push({
-          type: 'captcha',
-          data: action.data,
-        });
+        // @todo add captcha support
         break;
       case INFORMATION:
-        if (
-          action.data.channel === false ||
-          typeof draft.channels[action.data.channel] === 'undefined'
-        ) {
-          draft.globalNotifs.push({
+        if (action.data.channel && draft.channels[action.data.channel]) {
+          draft.channels[action.data.channel].messages.push({
             type: 'info',
             data: action.data,
           });
         } else {
-          draft.channels[action.data.channel].messages.push({
-            type: 'info',
-            data: action.data,
+          Object.keys(draft.channels).forEach((chanName) => {
+            const channelMessages = draft.channels[chanName].messages;
+            const lastMsg =
+              channelMessages.length > 0
+                ? channelMessages[channelMessages.length - 1]
+                : null;
+
+            if (
+              lastMsg &&
+              lastMsg.type === 'info' &&
+              lastMsg.data.text === action.data.text
+            ) {
+              return;
+            }
+
+            channelMessages.push({
+              type: 'info',
+              data: action.data,
+            });
           });
         }
         break;
@@ -191,32 +248,23 @@ const communicationProviderReducer = (state = initialState, action) =>
           },
         });
         break;
-      case PUSH_NOTIF:
-        draft.globalNotifs.push({
-          type: action.notifType,
-          data: action.data,
-        });
-        break;
-      case CLEAR_NOTIFS:
-        draft.globalNotifs = [];
-        break;
       case IGNORE_USER:
         if (draft.channels[action.channel].users[action.userid].blocked) {
           draft.channels[action.channel].users[action.userid].blocked = false;
-          draft.globalNotifs.push({
-            type: 'warn',
+          draft.channels[action.channel].messages.push({
+            type: 'info',
             data: {
-              id: 1001,
-              text: 'Ignored user',
+              // yes, this is lazy af
+              text: `👁️ @${draft.channels[action.channel].users[action.userid].username}`,
             },
           });
         } else {
           draft.channels[action.channel].users[action.userid].blocked = true;
-          draft.globalNotifs.push({
-            type: 'warn',
+          draft.channels[action.channel].messages.push({
+            type: 'info',
             data: {
-              id: 1002,
-              text: 'Unignored user',
+              // yes, this is also lazy af
+              text: `🚫 @${draft.channels[action.channel].users[action.userid].username}`,
             },
           });
         }

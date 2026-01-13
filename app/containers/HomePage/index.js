@@ -31,6 +31,7 @@ import {
   makeSelectChannel,
   makeSelectChannelData,
   makeSelectMeta,
+  makeSelectSessionReady,
 } from 'containers/CommunicationProvider/selectors';
 
 import { makeSelectIsLocaleModalOpen } from 'containers/LanguageProvider/selectors';
@@ -96,6 +97,7 @@ export function HomePage({
   onDisconnectWallet,
   pendingSignRequest,
   onSignMessageRequest,
+  sessionReady,
 }) {
   const navigate = useNavigate();
   const channelFromUrl = useUrlChannel();
@@ -207,6 +209,8 @@ export function HomePage({
   };
 
   useEffect(() => {
+    if (!sessionReady) return;
+
     if (channelFromUrl) {
       const isAlreadyMember = channelData && channelData[channelFromUrl];
 
@@ -223,7 +227,14 @@ export function HomePage({
         navigate(`/?${channel}`, { replace: true });
       }
     }
-  }, [channelFromUrl, channel, channelData, onChangeChannel, navigate]);
+  }, [
+    channelFromUrl,
+    channel,
+    channelData,
+    onChangeChannel,
+    navigate,
+    sessionReady,
+  ]);
 
   const publicChannels = useMemo(() => {
     const sortedChannels = [...meta.channels].sort((a, b) => b.count - a.count);
@@ -254,7 +265,7 @@ export function HomePage({
     });
   }, [meta.channels]);
 
-  const showChat = channel && channel === channelFromUrl;
+  const showChat = sessionReady && channel && channel === channelFromUrl;
   const homepageTitle = channelFromUrl || 'hack.chat';
 
   const HomePageContent = (
@@ -270,7 +281,14 @@ export function HomePage({
         </Banner>
       </Center>
       <Center>
-        <ChannelButton onClick={() => setJoinModalOpen(true)}>
+        <ChannelButton
+          onClick={() => setJoinModalOpen(true)}
+          disabled={!sessionReady}
+          style={{
+            opacity: !sessionReady ? 0.5 : 1,
+            cursor: !sessionReady ? 'not-allowed' : 'pointer',
+          }}
+        >
           {createOrJoinLabel}
         </ChannelButton>
       </Center>
@@ -369,7 +387,11 @@ export function HomePage({
         </ChatLayout>
       ) : (
         <LandingPageContents>
-          {isJoinModalOpen && !!channelFromUrl ? null : HomePageContent}
+          {!!channelFromUrl && !sessionReady ? (
+            <LoadingIndicator />
+          ) : isJoinModalOpen && !!channelFromUrl ? null : (
+            HomePageContent
+          )}
         </LandingPageContents>
       )}
 
@@ -424,6 +446,7 @@ HomePage.propTypes = {
   onDisconnectWallet: PropTypes.func,
   pendingSignRequest: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
   onSignMessageRequest: PropTypes.func,
+  sessionReady: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -434,6 +457,7 @@ const mapStateToProps = createStructuredSelector({
   connectedTo: makeSelectConnectedTo(),
   connectedAccount: makeSelectConnectedAccount(),
   pendingSignRequest: makeSelectPendingSignRequest(),
+  sessionReady: makeSelectSessionReady(),
 });
 
 export function mapDispatchToProps(dispatch) {
