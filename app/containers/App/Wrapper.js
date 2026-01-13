@@ -9,5 +9,5 @@ export default styled.div`
   margin: 0;
   overflow-y: auto;
   font-family: monospace;
-  min-height: 100vh;
+  min-height: 100dvh;
 `;

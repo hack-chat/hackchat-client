@@ -36,4 +36,8 @@ export default styled.textarea`
     max-width: 100%;
     padding: 0.75em 0.5em;
   }
+
+  @media (max-width: 768px) {
+    font-size: 1.2em;
+  }
 `;

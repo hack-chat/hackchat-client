@@ -7,13 +7,13 @@ import { createGlobalStyle } from 'styled-components';
 const GlobalStyle = createGlobalStyle`
   html,
   body {
-    height: 100vh;
+    height: 100dvh;
     margin: 0;
     overflow: hidden;
   }
 
   #app {
-    height: 100vh;
+    height: 100dvh;
     display: flex;
     flex-direction: column;
     overflow: hidden;

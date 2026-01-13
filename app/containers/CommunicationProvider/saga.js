@@ -43,6 +43,7 @@ import {
   HACK_ATTEMPT,
   NEW_TX_REQUEST,
   UPDATE_MSG,
+  SESSION_LS,
 } from './constants';
 
 import {
@@ -58,6 +59,7 @@ import {
 
 const hcClient = new Client({
   isBot: false,
+  session: JSON.parse(localStorage.getItem(SESSION_LS)) || false,
 });
 
 window.hcClient = hcClient;
@@ -293,7 +295,7 @@ function initWebsocket() {
       emitter({
         type: MESSAGE,
         data: {
-          channel: hcClient.channel || '',
+          channel: payload.channel || hcClient.channel,
           userid: payload.user.userid,
           name: payload.user.name,
           content: payload.content,
@@ -402,9 +404,9 @@ export default function* communicationProviderSaga() {
     hcClient.join(action.username, action.password, action.channel);
   });
 
-  yield takeLatest(JOINED_CHANNEL, (action) =>
-    hcClient.changeColor(hcClient.color, action.channel),
-  );
+  yield takeLatest(JOINED_CHANNEL, (action) => {
+    if (hcClient.color) hcClient.changeColor(hcClient.color, action.channel);
+  });
 
   yield takeEvery(SEND_CHAT, (action) =>
     hcClient.say(action.channel, action.message),

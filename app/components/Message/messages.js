@@ -99,6 +99,14 @@ const messages = {
     id: `${scope}.txPreview`,
     defaultMessage: 'Preview Transaction',
   },
+  dcError: {
+    id: `${scope}.dcError`,
+    defaultMessage: 'Lost connection to server. . .',
+  },
+  rcWarning: {
+    id: `${scope}.rcWarning`,
+    defaultMessage: 'Reconnected- you may have missed messages',
+  },
 };
 
 export const ERROR_ID = [];
@@ -116,5 +124,8 @@ ERROR_ID[31] = messages.globalPermsFail; // @todo
 ERROR_ID[32] = messages.globalPermsFail; // @todo
 
 ERROR_ID[41] = messages.inviteRateLimit;
+
+ERROR_ID[987654321] = messages.dcError;
+ERROR_ID[987654322] = messages.rcWarning;
 
 export default defineMessages(messages);
