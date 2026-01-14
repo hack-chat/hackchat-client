@@ -1,4 +1,11 @@
-const commands = [
+export const MAX_MSG_HISTORY = 25;
+
+export const KAOMOJI = {
+  ':um:': '(¯﹃¯ԅ)',
+  ':tableflip:': '(╯°□°）╯︵ ┻━┻',
+};
+
+export const COMMANDS = [
   { command: 'addmod', params: ['tripCode'] },
   { command: 'bomb', params: [] },
   { command: 'listusers', params: ['channel'] },
@@ -45,5 +52,3 @@ const commands = [
   { command: 'sendsol', params: ['username', 'amount'] },
   { command: 'leave', params: [] },
 ];
-
-export default commands;

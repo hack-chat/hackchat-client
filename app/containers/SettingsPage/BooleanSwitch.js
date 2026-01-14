@@ -13,7 +13,6 @@ export default styled.button.attrs({
   border: 1px solid rgba(125 122 104 / 50%);
   position: relative;
   transition: all 0.2s ease;
-
   background-color: ${(props) => (props.checked ? '#a6a28c' : 'transparent')};
 
   &::after {
