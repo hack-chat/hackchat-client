@@ -14,9 +14,10 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
+import EmojiConvertor from 'emoji-js';
 import { FaPaperPlane } from 'react-icons/fa';
 
-import commands from './commands';
+import { COMMANDS, MAX_MSG_HISTORY, KAOMOJI } from './constants';
 import messages from './messages';
 
 import Container from './Container';
@@ -24,7 +25,20 @@ import UserInput from './UserInput';
 import SendButton from './SendButton';
 import { SuggestionContainer, SuggestionItem } from './SuggestionBox';
 
-const MAX_MSG_HISTORY = 25;
+const emoji = new EmojiConvertor();
+emoji.replace_mode = 'unified';
+emoji.allow_native = true;
+
+const parseMessage = (text) => {
+  if (!text) return '';
+
+  let processedText = text;
+  Object.keys(KAOMOJI).forEach((shortcode) => {
+    processedText = processedText.split(shortcode).join(KAOMOJI[shortcode]);
+  });
+
+  return emoji.replace_colons(processedText);
+};
 
 function ChatInput({ channel, onSendMessage }, ref) {
   const [inputValue, setInputValue] = useState('');
@@ -81,7 +95,7 @@ function ChatInput({ channel, onSendMessage }, ref) {
   useEffect(() => {
     if (inputValue.startsWith('/')) {
       const commandText = inputValue.slice(1).toLowerCase();
-      const filtered = commands.filter((cmd) =>
+      const filtered = COMMANDS.filter((cmd) =>
         cmd.command.startsWith(commandText),
       );
       setSuggestions(filtered);
@@ -104,7 +118,8 @@ function ChatInput({ channel, onSendMessage }, ref) {
   );
 
   const submitInput = useCallback(() => {
-    const text = inputValue.trim();
+    const text = parseMessage(inputValue.trim());
+
     if (text) {
       onSendMessage(channel, text);
       updateHistory(text);
