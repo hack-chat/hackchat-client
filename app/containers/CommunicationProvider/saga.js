@@ -15,6 +15,7 @@ import {
   CONNECTED,
   SESSION_READY,
   START_JOIN,
+  LEAVE_CHANNEL,
   CHANGE_COLOR,
   ENABLE_CAPTCHA,
   DISABLE_CAPTCHA,
@@ -403,6 +404,8 @@ export default function* communicationProviderSaga() {
     hcClient.color = action.color;
     hcClient.join(action.username, action.password, action.channel);
   });
+
+  yield takeLatest(LEAVE_CHANNEL, (action) => hcClient.leave(action.channel));
 
   yield takeLatest(JOINED_CHANNEL, (action) => {
     if (hcClient.color) hcClient.changeColor(hcClient.color, action.channel);

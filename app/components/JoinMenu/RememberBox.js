@@ -23,12 +23,12 @@ export default styled.div`
   }
 
   &.checked {
-    background-color: #a6a28c; /* Changed to theme accent color */
-    border-color: #a6a28c; /* Changed to theme accent color */
+    background-color: #a6a28c;
+    border-color: #a6a28c;
   }
 
   &.checked::after {
     content: '✔';
-    color: #1e1e1e; /* Dark color for high contrast */
+    color: #1e1e1e;
   }
 `;

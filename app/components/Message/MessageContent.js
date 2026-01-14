@@ -28,8 +28,6 @@ const MessageContent = styled.div`
     border-left: 1px solid rgba(125, 122, 104, 0.5);
   }
 
-  /* --- Styles for Rendered Markdown --- */
-
   & p,
   & h1,
   & h2,

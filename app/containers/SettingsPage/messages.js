@@ -19,6 +19,14 @@ export default defineMessages({
     id: `${scope}.currentThemeText`,
     defaultMessage: 'Current Theme: {themeName}',
   },
+  changeThemeText: {
+    id: `${scope}.changeThemeText`,
+    defaultMessage: 'Change Theme',
+  },
+  themeNoticeText: {
+    id: `${scope}.themeNoticeText`,
+    defaultMessage: 'Theme selection coming soon',
+  },
   allowKatexText: {
     id: `${scope}.allowKatexText`,
     defaultMessage: 'Allow KaTeX',

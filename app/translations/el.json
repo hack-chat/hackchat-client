@@ -141,5 +141,8 @@
   "hcclient.Generic.remember": "Απομνημόνευση",
   "hcclient.Generic.usernameColor": "Το χρώμα σου",
   "hcclient.containers.HomePage.siwText": "Ο διακομιστής ζητά επαλήθευση ιδιοκτησίας πορτοφολιού. Χρησιμοποιήστε το παρακάτω κουμπί για να ολοκληρώσετε τη διαδικασία σύνδεσης",
-  "hcclient.containers.HomePage.siwFinish": "Υπογράψτε Μήνυμα"
+  "hcclient.containers.HomePage.siwFinish": "Υπογράψτε Μήνυμα",
+  "hcclient.components.ChannelList.leaveChannel": "Αποχώρηση από το κανάλι",
+  "hcclient.containers.SettingsPage.changeThemeText": "Αλλαγή θέματος",
+  "hcclient.containers.SettingsPage.themeNoticeText": "Η επιλογή θέματος έρχεται σύντομα"
 }

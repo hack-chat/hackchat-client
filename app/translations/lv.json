@@ -140,6 +140,9 @@
   "hcclient.Generic.randomButton": "R4ND0M",
   "hcclient.Generic.remember": "R3M3M83R",
   "hcclient.Generic.usernameColor": "UR C0L0R",
-  "hcclient.containers.HomePage.siwText": "7h3 53rv3r 15 r3qu3571n9 w4ll37 0wn3r5h1p v3r1f1c4710n, u53 7h3 bu770n b3l0w 70 c0mpl373 7h3 519n 1n pr0c355",
-  "hcclient.containers.HomePage.siwFinish": "519N m355493"
+  "hcclient.containers.HomePage.siwText": "7H3 53RV3R 15 R3QU3571N9 W4LL37 0WN3R5H1P V3R1F1C4710N, U53 7H3 BU770N B3L0W 70 C0MPL373 7H3 519N 1N PR0C355",
+  "hcclient.containers.HomePage.siwFinish": "519N M355493",
+  "hcclient.components.ChannelList.leaveChannel": "L34V3 CH4NN3L",
+  "hcclient.containers.SettingsPage.changeThemeText": "CH4N93 7H3M3",
+  "hcclient.containers.SettingsPage.themeNoticeText": "7H3M3 53L3C710N C0M1N9 500N"
 }

@@ -144,5 +144,8 @@
   "hcclient.Generic.remember": "Remember",
   "hcclient.Generic.usernameColor": "Your Color",
   "hcclient.containers.HomePage.siwText": "The server is requesting wallet ownership verification, use the button below to complete the sign in process",
-  "hcclient.containers.HomePage.siwFinish": "Sign Message"
+  "hcclient.containers.HomePage.siwFinish": "Sign Message",
+  "hcclient.components.ChannelList.leaveChannel": "Leave Channel",
+  "hcclient.containers.SettingsPage.changeThemeText": "Change Theme",
+  "hcclient.containers.SettingsPage.themeNoticeText": "Theme selection coming soon"
 }

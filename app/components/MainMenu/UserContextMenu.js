@@ -45,7 +45,7 @@ export const MenuPanel = styled.div.attrs((props) => {
     },
   };
 })`
-  position: absolute; /* Default for desktop */
+  position: absolute;
   z-index: 1100;
   background-color: #2a2a2a;
   border: 1px solid #555;
@@ -56,7 +56,7 @@ export const MenuPanel = styled.div.attrs((props) => {
   ${(props) =>
     props.$isMobile &&
     css`
-      position: relative; /* Override desktop 'absolute' */
+      position: relative;
       width: 90vw;
       max-width: 320px;
     `}
@@ -73,17 +73,16 @@ export const ContextMenuItem = styled.div`
   display: flex;
   align-items: center;
   white-space: nowrap;
-  position: relative; /* For desktop submenu anchor */
+  position: relative;
 
   &:hover {
-    background-color: #3b7ed0;
+    background-color: #151513;
   }
 
-  /* Icon at the start (e.g., Solana, Token) */
   > svg:first-child:not(:last-child) {
     margin-right: 8px;
   }
-  /* Arrow at the end (submenu indicator) */
+
   > svg:last-child:not(:first-child) {
     margin-left: 16px;
     font-size: 0.8em;

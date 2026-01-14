@@ -7,8 +7,8 @@ import styled from 'styled-components';
 export default styled.button.attrs({
   type: 'button',
 })`
-  color: #ddd; /* Updated to standard theme text color */
-  background-color: #333; /* Base grey color */
+  color: #ddd;
+  background-color: #333;
   min-height: 42px;
   width: 100%;
   padding: 0.5rem 1rem;
@@ -20,7 +20,7 @@ export default styled.button.attrs({
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: #444; /* Lighter grey on hover */
+    background-color: #444;
     color: #fff;
   }
 `;

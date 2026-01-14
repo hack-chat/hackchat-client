@@ -141,5 +141,8 @@
   "hcclient.Generic.remember": "याद रखें",
   "hcclient.Generic.usernameColor": "आपका रंग",
   "hcclient.containers.HomePage.siwText": "सर्वर वॉलेट स्वामित्व सत्यापन का अनुरोध कर रहा है, साइन इन प्रक्रिया को पूरा करने के लिए नीचे दिए गए बटन का उपयोग करें",
-  "hcclient.containers.HomePage.siwFinish": "संदेश पर हस्ताक्षर करें"
+  "hcclient.containers.HomePage.siwFinish": "संदेश पर हस्ताक्षर करें",
+  "hcclient.components.ChannelList.leaveChannel": "चैनल छोड़ें",
+  "hcclient.containers.SettingsPage.changeThemeText": "थीम बदलें",
+  "hcclient.containers.SettingsPage.themeNoticeText": "थीम चयन जल्द ही आ रहा है"
 }
