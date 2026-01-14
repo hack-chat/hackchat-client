@@ -27,6 +27,8 @@ import {
   NEW_TX_REQUEST,
   UPDATE_MSG,
   SESSION_LS,
+  LEAVE_CHANNEL,
+  CLEAR_CHANNEL,
 } from './constants';
 
 export const initialState = {
@@ -303,6 +305,20 @@ const communicationProviderReducer = (state = initialState, action) =>
               break;
           }
         }
+        break;
+      }
+      case LEAVE_CHANNEL: {
+        delete draft.channels[action.channel];
+
+        if (draft.channel === action.channel) {
+          const remainingChannels = Object.keys(draft.channels);
+          draft.channel =
+            remainingChannels.length > 0 ? remainingChannels[0] : false;
+        }
+        break;
+      }
+      case CLEAR_CHANNEL: {
+        draft.channels[action.channel].messages = [];
         break;
       }
     }

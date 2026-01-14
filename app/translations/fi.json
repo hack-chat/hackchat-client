@@ -141,5 +141,8 @@
   "hcclient.Generic.remember": "Muista minut",
   "hcclient.Generic.usernameColor": "Sinun värisi",
   "hcclient.containers.HomePage.siwText": "Palvelin pyytää lompakon omistajuuden vahvistusta. Viimeistele kirjautumisprosessi alla olevalla painikkeella",
-  "hcclient.containers.HomePage.siwFinish": "Allekirjoita viesti"
+  "hcclient.containers.HomePage.siwFinish": "Allekirjoita viesti",
+  "hcclient.components.ChannelList.leaveChannel": "Poistu kanavalta",
+  "hcclient.containers.SettingsPage.changeThemeText": "Vaihda teemaa",
+  "hcclient.containers.SettingsPage.themeNoticeText": "Teeman valinta tulossa pian"
 }

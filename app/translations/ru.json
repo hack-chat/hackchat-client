@@ -141,5 +141,8 @@
   "hcclient.Generic.remember": "Запомнить",
   "hcclient.Generic.usernameColor": "Ваш цвет",
   "hcclient.containers.HomePage.siwText": "Сервер запрашивает подтверждение владения кошельком. Используйте кнопку ниже, чтобы завершить процесс входа.",
-  "hcclient.containers.HomePage.siwFinish": "Подписать сообщение"
+  "hcclient.containers.HomePage.siwFinish": "Подписать сообщение",
+  "hcclient.components.ChannelList.leaveChannel": "Покинуть канал",
+  "hcclient.containers.SettingsPage.changeThemeText": "Сменить тему",
+  "hcclient.containers.SettingsPage.themeNoticeText": "Выбор темы скоро будет доступен"
 }

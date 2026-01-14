@@ -43,6 +43,7 @@ const commands = [
   { command: 'unlockroom', params: [] },
   { command: 'uwuify', params: ['username'] },
   { command: 'sendsol', params: ['username', 'amount'] },
+  { command: 'leave', params: [] },
 ];
 
 export default commands;

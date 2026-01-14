@@ -26,6 +26,7 @@ import {
   muteUser,
   unmuteUser,
   uwuifyUser,
+  leaveChannel,
 } from 'containers/CommunicationProvider/actions';
 import {
   makeSelectChannel,
@@ -58,6 +59,7 @@ import JoinMenu from 'components/JoinMenu';
 import LocaleModal from 'components/LocaleModal';
 import MainMenu from 'components/MainMenu';
 import WalletMenu from 'components/WalletMenu';
+import ChannelList from 'components/ChannelList';
 
 import messages from './messages';
 
@@ -88,6 +90,7 @@ export function HomePage({
   onMuteUser,
   onUnmuteUser,
   onUwuifyUser,
+  onLeaveChannel,
   isLocaleModalOpen,
   onCloseLocaleModal,
   onOpenLocaleModal,
@@ -114,6 +117,11 @@ export function HomePage({
   const thirdParty = intl.formatMessage(messages.thirdParty);
   const siwText = intl.formatMessage(messages.siwText);
   const siwFinish = intl.formatMessage(messages.siwFinish);
+
+  const joinedChannels = useMemo(
+    () => (channelData ? Object.keys(channelData) : []),
+    [channelData],
+  );
 
   const chatInputRef = useRef(null);
 
@@ -292,6 +300,10 @@ export function HomePage({
           {createOrJoinLabel}
         </ChannelButton>
       </Center>
+      <ChannelList
+        channels={joinedChannels}
+        onLeaveChannel={(ch) => onLeaveChannel(ch)}
+      />
       <br />
       <Center>{publicChannelsHeader}</Center>
       {publicChannels.length === 0 ? <LoadingIndicator /> : publicChannels}
@@ -437,6 +449,7 @@ HomePage.propTypes = {
   onMuteUser: PropTypes.func,
   onUnmuteUser: PropTypes.func,
   onUwuifyUser: PropTypes.func,
+  onLeaveChannel: PropTypes.func,
   isLocaleModalOpen: PropTypes.bool,
   onCloseLocaleModal: PropTypes.func,
   onOpenLocaleModal: PropTypes.func,
@@ -463,7 +476,14 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
   return {
     onChangeChannel: (channelName) => dispatch(changeChannel(channelName)),
-    onSendMessage: (channel, message) => dispatch(sendChat(channel, message)),
+    onSendMessage: (channel, message) => {
+      // bet there is a better spot for this. . .
+      if (message.trim() === '/leave') {
+        dispatch(leaveChannel(channel));
+      } else {
+        dispatch(sendChat(channel, message));
+      }
+    },
     onKickUser: (channel, user) => dispatch(kickUser(channel, user)),
     onBanUser: (channel, user) => dispatch(banUser(channel, user)),
     onIgnoreUser: (channel, userid) => dispatch(ignoreUser(channel, userid)),
@@ -471,6 +491,7 @@ export function mapDispatchToProps(dispatch) {
     onMuteUser: (channel, user) => dispatch(muteUser(channel, user)),
     onUnmuteUser: (channel, user) => dispatch(unmuteUser(channel, user)),
     onUwuifyUser: (channel, user) => dispatch(uwuifyUser(channel, user)),
+    onLeaveChannel: (channel) => dispatch(leaveChannel(channel)),
     onCloseLocaleModal: () => dispatch(closeLocaleModal()),
     onOpenLocaleModal: () => dispatch(openLocaleModal()),
     onDisconnectWallet: () => dispatch(disconnectWallet()),

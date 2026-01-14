@@ -8,6 +8,7 @@ import { Routes, Route } from 'react-router-dom';
 import { ToastContainer, Slide } from 'react-toastify';
 
 import HomePage from 'containers/HomePage/Loadable';
+import SettingsPage from 'containers/SettingsPage/Loadable';
 import ToastNotifier from 'containers/ToastNotifier';
 
 import Wrapper from './Wrapper';
@@ -25,6 +26,7 @@ export default function App() {
       </Helmet>
 
       <Routes>
+        <Route exact path="/settings" Component={SettingsPage} />
         <Route path="*" Component={HomePage} />
       </Routes>
 

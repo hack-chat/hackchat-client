@@ -142,5 +142,8 @@
   "hcclient.Generic.remember": "記住我",
   "hcclient.Generic.usernameColor": "你的顏色",
   "hcclient.containers.HomePage.siwText": "伺服器正在請求驗證錢包所有權，請使用下方的按鈕完成登入程序",
-  "hcclient.containers.HomePage.siwFinish": "簽署訊息"
+  "hcclient.containers.HomePage.siwFinish": "簽署訊息",
+  "hcclient.components.ChannelList.leaveChannel": "離開頻道",
+  "hcclient.containers.SettingsPage.changeThemeText": "變更主題",
+  "hcclient.containers.SettingsPage.themeNoticeText": "主題選擇功能即將推出"
 }

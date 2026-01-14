@@ -141,5 +141,8 @@
   "hcclient.Generic.remember": "Mémoriser",
   "hcclient.Generic.usernameColor": "Votre couleur",
   "hcclient.containers.HomePage.siwText": "Le serveur demande une vérification de la propriété du portefeuille, utilisez le bouton ci-dessous pour terminer le processus de connexion",
-  "hcclient.containers.HomePage.siwFinish": "Signer le message"
+  "hcclient.containers.HomePage.siwFinish": "Signer le message",
+  "hcclient.components.ChannelList.leaveChannel": "Quitter le canal",
+  "hcclient.containers.SettingsPage.changeThemeText": "Changer de thème",
+  "hcclient.containers.SettingsPage.themeNoticeText": "Sélection de thème bientôt disponible"
 }

@@ -30,7 +30,7 @@ export const SuggestionItem = styled.div`
 
   &:hover,
   &.active {
-    background-color: #3b7ed0;
+    background-color: #151513;
   }
 
   & > span {

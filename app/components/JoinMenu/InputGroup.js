@@ -21,7 +21,7 @@ export default styled.div`
   }
 
   &:focus-within {
-    border-color: #a6a28c; /* Changed to theme accent color */
-    box-shadow: 0 0 0 1px #a6a28c; /* Changed to theme accent color */
+    border-color: #a6a28c;
+    box-shadow: 0 0 0 1px #a6a28c;
   }
 `;

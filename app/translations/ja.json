@@ -141,5 +141,8 @@
   "hcclient.Generic.remember": "情報を記憶する",
   "hcclient.Generic.usernameColor": "あなたの色",
   "hcclient.containers.HomePage.siwText": "サーバーはウォレットの所有権の確認を要求しています。下のボタンを使用してサインインプロセスを完了してください",
-  "hcclient.containers.HomePage.siwFinish": "メッセージに署名する"
+  "hcclient.containers.HomePage.siwFinish": "メッセージに署名する",
+  "hcclient.components.ChannelList.leaveChannel": "チャンネルを退出",
+  "hcclient.containers.SettingsPage.changeThemeText": "テーマを変更",
+  "hcclient.containers.SettingsPage.themeNoticeText": "テーマ選択機能は近日公開予定"
 }

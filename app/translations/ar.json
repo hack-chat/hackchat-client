@@ -141,5 +141,8 @@
   "hcclient.Generic.remember": "تذكرني",
   "hcclient.Generic.usernameColor": "اللون الخاص بك",
   "hcclient.containers.HomePage.siwText": "يطلب الخادم التحقق من ملكية المحفظة، استخدم الزر أدناه لإكمال عملية تسجيل الدخول",
-  "hcclient.containers.HomePage.siwFinish": "توقيع الرسالة"
+  "hcclient.containers.HomePage.siwFinish": "توقيع الرسالة",
+  "hcclient.components.ChannelList.leaveChannel": "مغادرة القناة",
+  "hcclient.containers.SettingsPage.changeThemeText": "تغيير المظهر",
+  "hcclient.containers.SettingsPage.themeNoticeText": "اختيار المظهر قريباً"
 }

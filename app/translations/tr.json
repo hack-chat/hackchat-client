@@ -141,5 +141,8 @@
   "hcclient.Generic.remember": "Beni Hatırla",
   "hcclient.Generic.usernameColor": "Renginiz",
   "hcclient.containers.HomePage.siwText": "Sunucu, cüzdan sahipliği doğrulaması istiyor, oturum açma işlemini tamamlamak için aşağıdaki düğmeyi kullanın",
-  "hcclient.containers.HomePage.siwFinish": "Mesajı İmzala"
+  "hcclient.containers.HomePage.siwFinish": "Mesajı İmzala",
+  "hcclient.components.ChannelList.leaveChannel": "Kanaldan Ayrıl",
+  "hcclient.containers.SettingsPage.changeThemeText": "Temayı Değiştir",
+  "hcclient.containers.SettingsPage.themeNoticeText": "Tema seçimi yakında geliyor"
 }

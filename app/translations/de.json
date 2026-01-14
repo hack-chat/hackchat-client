@@ -141,5 +141,8 @@
   "hcclient.Generic.remember": "Merken",
   "hcclient.Generic.usernameColor": "Deine Farbe",
   "hcclient.containers.HomePage.siwText": "Der Server fordert eine Überprüfung des Wallet-Besitzes an. Verwenden Sie die Schaltfläche unten, um den Anmeldevorgang abzuschließen",
-  "hcclient.containers.HomePage.siwFinish": "Nachricht unterschreiben"
+  "hcclient.containers.HomePage.siwFinish": "Nachricht unterschreiben",
+  "hcclient.components.ChannelList.leaveChannel": "Kanal verlassen",
+  "hcclient.containers.SettingsPage.changeThemeText": "Design ändern",
+  "hcclient.containers.SettingsPage.themeNoticeText": "Designauswahl kommt bald"
 }

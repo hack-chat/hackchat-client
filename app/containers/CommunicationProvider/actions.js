@@ -5,6 +5,7 @@
 import {
   CHANGE_CHANNEL,
   START_JOIN,
+  LEAVE_CHANNEL,
   CHANGE_COLOR,
   SEND_CHAT,
   ENABLE_CAPTCHA,
@@ -19,6 +20,7 @@ import {
   MUTE_USER,
   UNMUTE_USER,
   UWUIFY_USER,
+  CLEAR_CHANNEL,
 } from './constants';
 
 /**
@@ -47,6 +49,18 @@ export function joinChannel(username, password, channel, color) {
     password,
     channel,
     color,
+  };
+}
+
+/**
+ * Unsubscribe from target channel
+ * @param  {string} channel Target channel name
+ * @return {object} An action object with a type of LEAVE_CHANNEL
+ */
+export function leaveChannel(channel) {
+  return {
+    type: LEAVE_CHANNEL,
+    channel,
   };
 }
 
@@ -237,5 +251,17 @@ export function uwuifyUser(channel, user) {
     type: UWUIFY_USER,
     channel,
     user,
+  };
+}
+
+/**
+ * Clear target channel messages
+ * @param  {string} channel Channel
+ * @return {object} An action object with a type of CLEAR_CHANNEL
+ */
+export function clearChannel(channel) {
+  return {
+    type: CLEAR_CHANNEL,
+    channel,
   };
 }

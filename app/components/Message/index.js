@@ -289,6 +289,7 @@ export const Message = memo(
           : MessageContent;
         return (
           <MessageContainer>
+            <NickPlaceholder />
             <ContentWrapper $hasBackground={hasBackground}>
               <EmoteStyle>{payload.content}</EmoteStyle>
             </ContentWrapper>

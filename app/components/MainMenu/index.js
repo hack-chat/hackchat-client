@@ -5,7 +5,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { compose } from 'redux';
 import {
@@ -24,7 +23,6 @@ import { SiSolana } from 'react-icons/si';
 import { GiToken } from 'react-icons/gi';
 import { RiNftLine } from 'react-icons/ri';
 
-import { SHOW_TOAST } from 'containers/ToastNotifier/constants';
 import CurrentChannelInfo from './CurrentChannelInfo';
 import MenuFooter from './MenuFooter';
 import { MenuWrapper, MenuContent } from './MenuWrapper';
@@ -84,7 +82,6 @@ export function MainMenu({
   onDisconnectWallet = () => {},
 }) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isPinned, setIsPinned] = useState(false);
@@ -452,21 +449,7 @@ export function MainMenu({
               >
                 <FaLanguage /> {intl.formatMessage(messages.language)}
               </Item>
-              {/* <Item onClick={() => navigate('/settings')}>
-                <FaCog /> {intl.formatMessage(messages.settings)}
-              </Item> */}
-              <Item
-                onClick={() => {
-                  dispatch({
-                    type: SHOW_TOAST,
-                    payload: {
-                      message: 'Settings are coming soon, lmao.',
-                      type: 'warning',
-                    },
-                  });
-                  if (!isPinned) setIsOpen(false);
-                }}
-              >
+              <Item onClick={() => navigate('/settings')}>
                 <FaCog /> {intl.formatMessage(messages.settings)}
               </Item>
               {isWalletConnected ? (

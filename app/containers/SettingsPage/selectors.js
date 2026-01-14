@@ -8,12 +8,6 @@ const selectSettingsPageDomain = (state) =>
   state.settingsPage || settingsInitialState;
 
 /**
- * Default selector
- */
-const makeSelectSettingsPage = () =>
-  createSelector(selectSettingsPageDomain, (substate) => substate);
-
-/**
  * Last used username
  */
 const makeSelectCachedUsername = () =>
@@ -109,9 +103,7 @@ const makeSelectCachedAutoconnect = () =>
 const makeSelectCachedWsPath = () =>
   createSelector(selectSettingsPageDomain, (substate) => substate.wsPath);
 
-export default makeSelectSettingsPage;
 export {
-  makeSelectSettingsPage,
   selectSettingsPageDomain,
   makeSelectCachedUsername,
   makeSelectCachedPassword,

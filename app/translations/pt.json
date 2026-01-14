@@ -141,5 +141,8 @@
   "hcclient.Generic.remember": "Lembrar",
   "hcclient.Generic.usernameColor": "Sua cor",
   "hcclient.containers.HomePage.siwText": "O servidor está solicitando verificação de propriedade da carteira. Use o botão abaixo para concluir o processo de login",
-  "hcclient.containers.HomePage.siwFinish": "Assinar mensagem"
+  "hcclient.containers.HomePage.siwFinish": "Assinar mensagem",
+  "hcclient.components.ChannelList.leaveChannel": "Sair do canal",
+  "hcclient.containers.SettingsPage.changeThemeText": "Alterar tema",
+  "hcclient.containers.SettingsPage.themeNoticeText": "Seleção de temas em breve"
 }
