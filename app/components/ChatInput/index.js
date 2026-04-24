@@ -29,15 +29,69 @@ const emoji = new EmojiConvertor();
 emoji.replace_mode = 'unified';
 emoji.allow_native = true;
 
+const isInProtectedBlock = (text, cursorIndex) => {
+  const textBefore = text.substring(0, cursorIndex);
+
+  let inCodeBlock = false;
+  let inInlineCode = false;
+  let inMathBlock = false;
+  let inInlineMath = false;
+  let inHighlight = false;
+
+  for (let i = 0; i < textBefore.length; i++) {
+    const remaining = textBefore.substring(i);
+
+    if (remaining.startsWith('```')) {
+      if (!inInlineCode && !inMathBlock && !inInlineMath && !inHighlight) {
+        inCodeBlock = !inCodeBlock;
+        i += 2;
+      }
+    } else if (remaining.startsWith('`')) {
+      if (!inCodeBlock && !inMathBlock && !inInlineMath && !inHighlight) {
+        inInlineCode = !inInlineCode;
+      }
+    } else if (remaining.startsWith('$$')) {
+      if (!inCodeBlock && !inInlineCode && !inInlineMath && !inHighlight) {
+        inMathBlock = !inMathBlock;
+        i += 1;
+      }
+    } else if (remaining.startsWith('$')) {
+      if (!inCodeBlock && !inInlineCode && !inMathBlock && !inHighlight) {
+        inInlineMath = !inInlineMath;
+      }
+    } else if (remaining.startsWith('==')) {
+      if (!inCodeBlock && !inInlineCode && !inMathBlock && !inInlineMath) {
+        inHighlight = !inHighlight;
+        i += 1;
+      }
+    }
+  }
+
+  return (
+    inCodeBlock || inInlineCode || inMathBlock || inInlineMath || inHighlight
+  );
+};
+
 const parseMessage = (text) => {
   if (!text) return '';
 
-  let processedText = text;
-  Object.keys(KAOMOJI).forEach((shortcode) => {
-    processedText = processedText.split(shortcode).join(KAOMOJI[shortcode]);
-  });
+  const protectedRegex =
+    /(```[\s\S]*?```|`[^`]+`|\$\$[\s\S]*?\$\$|\$[^$]+\$|==[^=]+==)/g;
+  const chunks = text.split(protectedRegex);
 
-  return emoji.replace_colons(processedText);
+  for (let i = 0; i < chunks.length; i++) {
+    if (i % 2 === 0) {
+      let processedChunk = chunks[i];
+      Object.keys(KAOMOJI).forEach((shortcode) => {
+        processedChunk = processedChunk
+          .split(shortcode)
+          .join(KAOMOJI[shortcode]);
+      });
+      chunks[i] = emoji.replace_colons(processedChunk);
+    }
+  }
+
+  return chunks.join('');
 };
 
 function ChatInput({ channel, users, onSendMessage }, ref) {
@@ -262,8 +316,8 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
   );
 
   const handleInputChange = (evt) => {
-    setInputValue(evt.target.value);
-    resizeTextarea();
+    let newVal = evt.target.value;
+    let cursor = evt.target.selectionStart;
 
     if (historyIndex !== -1) {
       setHistoryIndex(-1);
@@ -271,6 +325,56 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
 
     if (mentionState.isCycling) {
       setMentionState((prev) => ({ ...prev, isCycling: false }));
+    }
+
+    if (!isInProtectedBlock(newVal, cursor)) {
+      const textBefore = newVal.substring(0, cursor);
+      const textAfter = newVal.substring(cursor);
+      let replaced = false;
+      let matchLength = 0;
+      let replacementText = '';
+
+      for (const shortcode of Object.keys(KAOMOJI)) {
+        if (textBefore.endsWith(shortcode)) {
+          replaced = true;
+          matchLength = shortcode.length;
+          replacementText = KAOMOJI[shortcode];
+          break;
+        }
+      }
+
+      if (!replaced) {
+        const emojiMatch = textBefore.match(/:[a-zA-Z0-9_+-]+:$/);
+        if (emojiMatch) {
+          const matchedStr = emojiMatch[0];
+          const potentialEmoji = emoji.replace_colons(matchedStr);
+
+          if (potentialEmoji !== matchedStr) {
+            replaced = true;
+            matchLength = matchedStr.length;
+            replacementText = potentialEmoji;
+          }
+        }
+      }
+
+      if (replaced) {
+        newVal =
+          textBefore.slice(0, -matchLength) + replacementText + textAfter;
+        cursor = cursor - matchLength + replacementText.length;
+      }
+    }
+
+    setInputValue(newVal);
+
+    if (newVal !== evt.target.value) {
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.setSelectionRange(cursor, cursor);
+          resizeTextarea();
+        }
+      }, 0);
+    } else {
+      resizeTextarea();
     }
   };
 
