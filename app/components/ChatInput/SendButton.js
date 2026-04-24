@@ -1,5 +1,5 @@
 /**
- * Exports a styled html button for sending messages.
+ * Exports a styled html button
  */
 
 import styled from 'styled-components';
@@ -13,7 +13,7 @@ export default styled.button.attrs({
   color: #a6a28c;
   font-size: 1.2em;
   padding: 5px;
-  border-top: 1px solid rgba(125, 122, 104, 0.5);
+  border-top: 1px solid rgb(125 122 104 / 50%);
 
   &:focus {
     outline: none;

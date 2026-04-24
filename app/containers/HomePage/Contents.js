@@ -1,7 +1,7 @@
 /**
- * The main layout container for the chat view. Stacks the message
- * list and chat input vertically.
+ * Exports a styled html div
  */
+
 import styled from 'styled-components';
 
 export default styled.div`

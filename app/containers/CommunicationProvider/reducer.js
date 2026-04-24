@@ -148,7 +148,7 @@ const communicationProviderReducer = (state = initialState, action) =>
         });
         break;
       case USER_LEFT:
-        draft.channels[action.channel].users[action.user.userid] = action.user;
+        draft.channels[action.channel].users[action.user.userid].online = false;
         draft.channels[action.channel].messages.push({
           type: 'leave',
           data: {

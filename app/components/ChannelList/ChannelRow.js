@@ -8,7 +8,7 @@ export default styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 12px 0;
-  border-bottom: 1px solid rgba(125, 122, 104, 0.2);
+  border-bottom: 1px solid rgb(125 122 104 / 20%);
   font-family: monospace;
   color: #f5f5f7;
   cursor: pointer;

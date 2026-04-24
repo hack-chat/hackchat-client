@@ -8,9 +8,6 @@ import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import DOMPurify from 'dompurify';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
-
-import { doTransfer } from 'containers/WalletLayer/actions';
 
 import messages, { ERROR_ID } from './messages';
 
@@ -33,7 +30,8 @@ import HackStyle from './HackStyle';
 import ExpandButton from './ExpandButton';
 
 const ExtendedMessageContent = styled(MessageContent)`
-  @media (min-width: 768px) {
+  @media (width >= 768px) {
+    /* im sure we will need this at some point */
   }
 `;
 
@@ -203,10 +201,7 @@ HackAttemptMessage.propTypes = {
   intl: PropTypes.object,
 };
 
-const TxAttemptMessage = ({ payload, intl }) => {
-  const dispatch = useDispatch();
-  const [hasAccepted, setHasAccepted] = useState(false);
-
+const TxAttemptMessage = ({ payload, intl, onTxAttemptClick }) => {
   const txRequest = intl.formatMessage(messages.txRequest, {
     name: payload.from || 'hack.chat',
   });
@@ -214,10 +209,9 @@ const TxAttemptMessage = ({ payload, intl }) => {
   const txPreview = intl.formatMessage(messages.txPreview);
 
   const handleAccept = () => {
-    if (hasAccepted) return;
-
-    setHasAccepted(true);
-    dispatch(doTransfer(payload.tx));
+    if (onTxAttemptClick) {
+      onTxAttemptClick(payload.tx);
+    }
   };
 
   return (
@@ -226,26 +220,14 @@ const TxAttemptMessage = ({ payload, intl }) => {
       <MessageContent $hasBackground={true}>
         <InfoStyle>
           {txRequest}{' '}
-          {hasAccepted ? (
-            <span
-              style={{
-                textDecoration: 'line-through',
-                opacity: 0.6,
-                cursor: 'default',
-              }}
-            >
-              {txPreview}
-            </span>
-          ) : (
-            <a
-              onClick={handleAccept}
-              role="button"
-              tabIndex={0}
-              style={{ cursor: 'pointer' }}
-            >
-              {txPreview}
-            </a>
-          )}
+          <a
+            onClick={handleAccept}
+            role="button"
+            tabIndex={0}
+            style={{ cursor: 'pointer' }}
+          >
+            {txPreview}
+          </a>
         </InfoStyle>
       </MessageContent>
     </MessageContainer>
@@ -254,6 +236,7 @@ const TxAttemptMessage = ({ payload, intl }) => {
 TxAttemptMessage.propTypes = {
   payload: PropTypes.object,
   intl: PropTypes.object,
+  onTxAttemptClick: PropTypes.func,
 };
 
 export const Message = memo(
@@ -266,6 +249,7 @@ export const Message = memo(
     msgForm,
     intl,
     hasBackground,
+    onTxAttemptClick,
   }) => {
     if (user && user.blocked) {
       return null;
@@ -383,7 +367,13 @@ export const Message = memo(
       case 'hackAttempt':
         return <HackAttemptMessage payload={payload} intl={intl} />;
       case 'tx_request':
-        return <TxAttemptMessage payload={payload} intl={intl} />;
+        return (
+          <TxAttemptMessage
+            payload={payload}
+            intl={intl}
+            onTxAttemptClick={onTxAttemptClick}
+          />
+        );
       default:
         return null;
     }
@@ -398,6 +388,7 @@ Message.propTypes = {
   msgForm: PropTypes.object,
   intl: PropTypes.object,
   hasBackground: PropTypes.bool,
+  onTxAttemptClick: PropTypes.func,
 };
 
 Message.displayName = 'Message';

@@ -1,5 +1,5 @@
 /**
- * A styled div to contain the modal contents
+ * Exports a styled html div
  */
 import styled from 'styled-components';
 

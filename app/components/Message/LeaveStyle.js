@@ -1,6 +1,5 @@
 /**
- * Exports a styled div element, this wraps the message portion
- * of a leave event
+ * Exports a styled html div
  */
 
 import styled from 'styled-components';

@@ -8,7 +8,6 @@ export default styled.div`
   flex: 1 1 auto;
   overflow-y: auto;
   padding: 1rem;
-
   scrollbar-width: thin;
   scrollbar-color: #4f4d42 #20201d;
 

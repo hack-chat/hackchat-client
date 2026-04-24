@@ -1,6 +1,5 @@
 /**
- * Exports a styled div element, this wraps the message portion
- * of an info event
+ * Exports a styled html div
  */
 
 import styled from 'styled-components';

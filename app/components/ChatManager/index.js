@@ -13,7 +13,14 @@ import MessageFormatter from 'components/MessageFormatter';
 import { ChatWrapper } from './Wrapper';
 import messages from './messages';
 
-export function ChatManager({ channel, channelData, handleMenuCommand, intl }) {
+export function ChatManager({
+  channel,
+  channelData,
+  handleMenuCommand,
+  onExternalLinkClick,
+  onTxAttemptClick,
+  intl,
+}) {
   const scrollContainerRef = useRef(null);
   const isAtBottomRef = useRef(true);
 
@@ -43,6 +50,21 @@ export function ChatManager({ channel, channelData, handleMenuCommand, intl }) {
         scrollContainerRef.current;
       const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
       isAtBottomRef.current = distanceFromBottom < 150;
+    }
+  };
+
+  const handleChatClick = (e) => {
+    const linkTarget = e.target.closest('a');
+
+    if (
+      linkTarget &&
+      linkTarget.getAttribute('target') === '_blank' &&
+      linkTarget.href
+    ) {
+      e.preventDefault();
+      if (onExternalLinkClick) {
+        onExternalLinkClick(linkTarget.href);
+      }
     }
   };
 
@@ -113,13 +135,18 @@ export function ChatManager({ channel, channelData, handleMenuCommand, intl }) {
           user={user}
           intl={intl}
           hasBackground={stripe}
+          onTxAttemptClick={onTxAttemptClick}
         />
       );
     });
   }, [currentChannelData.messages, currentChannelData.users, intl]);
 
   return (
-    <ChatWrapper ref={scrollContainerRef} onScroll={handleScroll}>
+    <ChatWrapper
+      ref={scrollContainerRef}
+      onScroll={handleScroll}
+      onClick={handleChatClick}
+    >
       {welcomeMessage}
       {messageElements}
     </ChatWrapper>
@@ -129,7 +156,10 @@ export function ChatManager({ channel, channelData, handleMenuCommand, intl }) {
 ChatManager.propTypes = {
   channel: PropTypes.string,
   channelData: PropTypes.object,
+  handleMenuCommand: PropTypes.func,
+  onExternalLinkClick: PropTypes.func,
   intl: PropTypes.object.isRequired,
+  onTxAttemptClick: PropTypes.func,
 };
 
 export default compose(injectIntl)(ChatManager);

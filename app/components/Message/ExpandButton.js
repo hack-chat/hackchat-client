@@ -9,7 +9,7 @@ const ExpandButton = styled.button`
   border: none;
   color: #8a8a8a;
   cursor: pointer;
-  padding: 4px 0 0 0;
+  padding: 4px 0 0;
   font-size: 0.9em;
   font-family: 'DejaVu Sans Mono', monospace;
   text-decoration: underline;

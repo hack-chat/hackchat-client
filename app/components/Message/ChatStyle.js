@@ -1,6 +1,5 @@
 /**
- * Exports a styled div element, this wraps the message portion
- * of a normal chat message event
+ * Exports a styled html div
  */
 
 import styled from 'styled-components';

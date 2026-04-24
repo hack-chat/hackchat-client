@@ -44,6 +44,7 @@ import {
 import {
   disconnectWallet,
   signMessageRequest,
+  doTransfer,
 } from 'containers/WalletLayer/actions';
 import {
   makeSelectConnectedTo,
@@ -71,6 +72,13 @@ import Center from './Center';
 import Socials from './Socials';
 import ChannelRow from './ChannelRow';
 import ChannelButton from './ChannelButton';
+import ModalHeader from './ModalHeader';
+import ModalBody from './ModalBody';
+import ModalLabel from './ModalLabel';
+import ModalActions from './ModalActions';
+import CodeBox from './CodeBox';
+import CodeText from './CodeText';
+import CodeAction from './CodeAction';
 
 const useUrlChannel = () => {
   const { search } = useLocation();
@@ -100,6 +108,7 @@ export function HomePage({
   onDisconnectWallet,
   pendingSignRequest,
   onSignMessageRequest,
+  onDoTransfer,
   sessionReady,
 }) {
   const navigate = useNavigate();
@@ -107,6 +116,20 @@ export function HomePage({
   const [isJoinModalOpen, setJoinModalOpen] = useState(false);
   const toggleJoinModal = () => setJoinModalOpen(!isJoinModalOpen);
   const [isWalletModalOpen, setWalletModalOpen] = useState(false);
+
+  const [externalUrlToWarn, setExternalUrlToWarn] = useState(null);
+  const [suppressLinkWarning, setSuppressLinkWarning] = useState(false);
+  const [tempSuppressCheckbox, setTempSuppressCheckbox] = useState(false);
+
+  const [txToWarn, setTxToWarn] = useState(null);
+  const [suppressTxWarning, setSuppressTxWarning] = useState(false);
+  const [tempSuppressTxCheckbox, setTempSuppressTxCheckbox] = useState(false);
+
+  const [isFocused, setIsFocused] = useState(true);
+  const [missedMessages, setMissedMessages] = useState(0);
+  const currentMessageCount = channelData?.[channel]?.messages?.length || 0;
+  const prevMessageCountRef = useRef(currentMessageCount);
+  const baseTitle = channelFromUrl ? `?${channelFromUrl}` : 'hack.chat';
 
   const createOrJoinLabel = intl.formatMessage(messages.createOrJoinLabel);
   const publicChannelsHeader = intl.formatMessage(
@@ -117,6 +140,14 @@ export function HomePage({
   const thirdParty = intl.formatMessage(messages.thirdParty);
   const siwText = intl.formatMessage(messages.siwText);
   const siwFinish = intl.formatMessage(messages.siwFinish);
+  const cancelText = intl.formatMessage(messages.cancelText);
+  const understoodText = intl.formatMessage(messages.understoodText);
+  const externalWarningText = intl.formatMessage(messages.externalLinkWarning);
+  const suppressWarningMsg = intl.formatMessage(messages.suppressWarningText);
+  const txWarningHeader = intl.formatMessage(messages.txWarningHeader);
+  const txWarningBody = intl.formatMessage(messages.txWarningBody);
+  const txCopy = intl.formatMessage(messages.txCopy);
+  const txSignAndSend = intl.formatMessage(messages.txSignAndSend);
 
   const joinedChannels = useMemo(
     () => (channelData ? Object.keys(channelData) : []),
@@ -124,6 +155,59 @@ export function HomePage({
   );
 
   const chatInputRef = useRef(null);
+
+  useEffect(() => {
+    setIsFocused(document.hasFocus());
+
+    const handleFocus = () => {
+      setIsFocused(true);
+      setMissedMessages(0);
+      document.title = baseTitle;
+    };
+    const handleBlur = () => {
+      setIsFocused(false);
+    };
+
+    window.addEventListener('focus', handleFocus);
+    window.addEventListener('blur', handleBlur);
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      window.removeEventListener('blur', handleBlur);
+    };
+  }, [baseTitle]);
+
+  useEffect(() => {
+    if (!isFocused && currentMessageCount > prevMessageCountRef.current) {
+      const diff = currentMessageCount - prevMessageCountRef.current;
+
+      setMissedMessages((prev) => {
+        const newMissedCount = prev + diff;
+        document.title = `(${newMissedCount}) ${baseTitle}`;
+        return newMissedCount;
+      });
+    }
+
+    prevMessageCountRef.current = currentMessageCount;
+  }, [currentMessageCount, isFocused, baseTitle]);
+
+  const handleExternalLinkClick = (url) => {
+    if (suppressLinkWarning) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    } else {
+      setTempSuppressCheckbox(false);
+      setExternalUrlToWarn(url);
+    }
+  };
+
+  const handleTxAttemptClick = (tx) => {
+    if (suppressTxWarning) {
+      onDoTransfer(tx);
+    } else {
+      setTempSuppressTxCheckbox(false);
+      setTxToWarn(tx);
+    }
+  };
 
   const handleMenuCommand = (commandText) => {
     const mentionMatch = commandText.match(/^@\S+\s$/);
@@ -244,6 +328,17 @@ export function HomePage({
     sessionReady,
   ]);
 
+  const handleCopyTx = async () => {
+    if (txToWarn) {
+      try {
+        await navigator.clipboard.writeText(txToWarn);
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error('Failed to copy transaction', err);
+      }
+    }
+  };
+
   const publicChannels = useMemo(() => {
     const sortedChannels = [...meta.channels].sort((a, b) => b.count - a.count);
     const channelPairs = [];
@@ -274,7 +369,11 @@ export function HomePage({
   }, [meta.channels]);
 
   const showChat = sessionReady && channel && channel === channelFromUrl;
-  const homepageTitle = channelFromUrl || 'hack.chat';
+
+  let homepageTitle = baseTitle;
+  if (missedMessages > 0) {
+    homepageTitle = `(${missedMessages}) ${baseTitle}`;
+  }
 
   const HomePageContent = (
     <>
@@ -380,6 +479,7 @@ export function HomePage({
           isWalletConnected={!!connectedTo}
           walletAddress={connectedAccount ? connectedAccount.address : ''}
           onDisconnectWallet={onDisconnectWallet}
+          onLeaveChannel={onLeaveChannel}
         />
       )}
 
@@ -389,6 +489,8 @@ export function HomePage({
             channel={channel}
             channelData={channelData}
             handleMenuCommand={handleMenuCommand}
+            onExternalLinkClick={handleExternalLinkClick}
+            onTxAttemptClick={handleTxAttemptClick}
             intl={intl}
           />
           <ChatInput
@@ -413,9 +515,11 @@ export function HomePage({
           qString={!showChat ? channelFromUrl : ''}
         />
       </Modal>
+
       <Modal isOpen={isLocaleModalOpen} doToggle={onCloseLocaleModal}>
         <LocaleModal />
       </Modal>
+
       <Modal isOpen={!!pendingSignRequest} doToggle={() => {}}>
         <Center>{siwText}</Center>
         <Center>
@@ -431,6 +535,89 @@ export function HomePage({
           </ChannelButton>
         </Center>
       </Modal>
+
+      <Modal
+        isOpen={!!externalUrlToWarn}
+        doToggle={() => setExternalUrlToWarn(null)}
+      >
+        <ModalHeader>{externalWarningText}</ModalHeader>
+
+        <ModalBody>
+          <a href={externalUrlToWarn} target="_blank" rel="noopener noreferrer">
+            {externalUrlToWarn}
+          </a>
+        </ModalBody>
+
+        <Center>
+          <ModalLabel>
+            <input
+              type="checkbox"
+              checked={tempSuppressCheckbox}
+              onChange={(e) => setTempSuppressCheckbox(e.target.checked)}
+            />
+            {suppressWarningMsg}
+          </ModalLabel>
+        </Center>
+
+        <ModalActions>
+          <ChannelButton onClick={() => setExternalUrlToWarn(null)}>
+            {cancelText}
+          </ChannelButton>
+          <ChannelButton
+            onClick={() => {
+              if (tempSuppressCheckbox) {
+                setSuppressLinkWarning(true);
+              }
+              window.open(externalUrlToWarn, '_blank', 'noopener,noreferrer');
+              setExternalUrlToWarn(null);
+            }}
+          >
+            {understoodText}
+          </ChannelButton>
+        </ModalActions>
+      </Modal>
+
+      <Modal isOpen={!!txToWarn} doToggle={() => setTxToWarn(null)}>
+        <ModalHeader>{txWarningHeader}</ModalHeader>
+
+        <ModalBody>{txWarningBody}</ModalBody>
+
+        <CodeBox>
+          <CodeText>{txToWarn}</CodeText>
+          <CodeAction onClick={handleCopyTx} title={txCopy}>
+            {txCopy}
+          </CodeAction>
+        </CodeBox>
+
+        <Center>
+          <ModalLabel>
+            <input
+              type="checkbox"
+              checked={tempSuppressTxCheckbox}
+              onChange={(e) => setTempSuppressTxCheckbox(e.target.checked)}
+            />
+            {suppressWarningMsg}
+          </ModalLabel>
+        </Center>
+
+        <ModalActions>
+          <ChannelButton onClick={() => setTxToWarn(null)}>
+            {cancelText}
+          </ChannelButton>
+          <ChannelButton
+            onClick={() => {
+              if (tempSuppressTxCheckbox) {
+                setSuppressTxWarning(true);
+              }
+              onDoTransfer(txToWarn);
+              setTxToWarn(null);
+            }}
+          >
+            {txSignAndSend}
+          </ChannelButton>
+        </ModalActions>
+      </Modal>
+
       <WalletMenu isOpen={isWalletModalOpen} doToggle={setWalletModalOpen} />
     </MainContainer>
   );
@@ -460,6 +647,7 @@ HomePage.propTypes = {
   pendingSignRequest: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
   onSignMessageRequest: PropTypes.func,
   sessionReady: PropTypes.bool,
+  onDoTransfer: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -497,6 +685,7 @@ export function mapDispatchToProps(dispatch) {
     onDisconnectWallet: () => dispatch(disconnectWallet()),
     onSignMessageRequest: (wallet, message) =>
       dispatch(signMessageRequest(wallet, message)),
+    onDoTransfer: (tx) => dispatch(doTransfer(tx)),
   };
 }
 

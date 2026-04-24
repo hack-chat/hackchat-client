@@ -8,7 +8,7 @@ export default styled.button.attrs({
 })`
   display: none;
   position: absolute;
-  top: 0.75rem;
+  top: 1rem;
   right: 0.75rem;
   background: transparent;
   border: none;
@@ -22,7 +22,7 @@ export default styled.button.attrs({
     color: #fff;
   }
 
-  @media (min-width: 768px) {
+  @media (width >= 768px) {
     display: block;
   }
 `;

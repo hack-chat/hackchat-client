@@ -1,6 +1,5 @@
 /**
- * Wraps the ChatManager content, providing scroll behavior
- * and a custom-styled scrollbar.
+ * Exports a styled html div
  */
 import styled from 'styled-components';
 

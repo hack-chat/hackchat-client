@@ -6,8 +6,7 @@ import styled from 'styled-components';
 
 export default styled.div`
   display: flex;
-  flex-wrap: nowrap;
-  flex-direction: row;
+  flex-flow: row nowrap;
   justify-content: space-evenly;
   width: 100%;
 

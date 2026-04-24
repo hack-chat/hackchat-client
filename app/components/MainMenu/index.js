@@ -18,7 +18,8 @@ import {
   FaUser,
   FaChevronLeft,
 } from 'react-icons/fa';
-import { MdOutlinePushPin, MdPushPin } from 'react-icons/md';
+import { MdOutlinePushPin, MdPushPin, MdOutlineLogout } from 'react-icons/md';
+import { BsPaperclip } from 'react-icons/bs';
 import { SiSolana } from 'react-icons/si';
 import { GiToken } from 'react-icons/gi';
 import { RiNftLine } from 'react-icons/ri';
@@ -28,6 +29,8 @@ import MenuFooter from './MenuFooter';
 import { MenuWrapper, MenuContent } from './MenuWrapper';
 import MenuToggle from './MenuToggle';
 import PinButton from './PinButton';
+import MenuLeaveButton from './MenuLeaveButton';
+import MenuCopyButton from './MenuCopyButton';
 import { ItemList, Item } from './Section';
 import {
   ContextMenuOverlay,
@@ -80,6 +83,7 @@ export function MainMenu({
   isWalletConnected = false,
   walletAddress = '',
   onDisconnectWallet = () => {},
+  onLeaveChannel = () => {},
 }) {
   const navigate = useNavigate();
 
@@ -340,6 +344,13 @@ export function MainMenu({
     );
   };
 
+  const handleCopyUrl = () => {
+    navigator.clipboard.writeText(window.location.href).catch((err) => {
+      // eslint-disable-next-line no-console
+      console.error('Failed to copy: ', err);
+    });
+  };
+
   return (
     <>
       <MenuToggle onClick={() => setIsOpen(!isOpen)}>
@@ -355,6 +366,24 @@ export function MainMenu({
             {isPinned ? <MdPushPin /> : <MdOutlinePushPin />}
           </PinButton>
         )}
+
+        <MenuCopyButton
+          onClick={handleCopyUrl}
+          title={intl.formatMessage(messages.copyUrl)}
+        >
+          <BsPaperclip />
+        </MenuCopyButton>
+
+        <MenuLeaveButton
+          onClick={() => {
+            onLeaveChannel(channel);
+            if (!isPinned) setIsOpen(false);
+          }}
+          title={intl.formatMessage(messages.leaveChannel)}
+        >
+          <MdOutlineLogout />
+        </MenuLeaveButton>
+
         <MenuContent>
           {channel && (
             <CurrentChannelInfo>
@@ -494,6 +523,7 @@ MainMenu.propTypes = {
   isWalletConnected: PropTypes.bool,
   walletAddress: PropTypes.string,
   onDisconnectWallet: PropTypes.func,
+  onLeaveChannel: PropTypes.func,
 };
 
 export default compose(injectIntl)(MainMenu);

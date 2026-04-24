@@ -25,7 +25,7 @@ export default styled.button.attrs({
     color: #fff;
   }
 
-  @media (min-width: 768px) {
+  @media (width >= 768px) {
     display: none;
   }
 `;

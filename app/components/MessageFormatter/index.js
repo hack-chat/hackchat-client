@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Remarkable } from 'remarkable';
 import RemarkableReactRenderer from 'remarkable-react';
@@ -9,6 +9,30 @@ import javascript from 'highlight.js/lib/languages/javascript';
 import { InlineMath, BlockMath } from 'react-katex';
 
 hljs.registerLanguage('javascript', javascript);
+
+const Spoiler = ({ children }) => {
+  const [isRevealed, setIsRevealed] = useState(false);
+
+  return (
+    <span
+      onClick={() => setIsRevealed((prev) => !prev)}
+      style={{
+        backgroundColor: isRevealed
+          ? 'rgba(0,0,0,0.1)'
+          : 'rgba(79, 77, 66, 0.77)',
+        color: isRevealed ? 'inherit' : 'transparent',
+        borderRadius: '3px',
+        cursor: 'pointer',
+        padding: '0 2px',
+        userSelect: isRevealed ? 'text' : 'none',
+        transition: 'all 0.2s ease',
+      }}
+      title={isRevealed ? '' : '👀'} /* lazy or genius? */
+    >
+      {children}
+    </span>
+  );
+};
 
 const MessageFormatter = new Remarkable('full', {
   html: false,
@@ -146,6 +170,7 @@ MessageFormatter.renderer = new RemarkableReactRenderer({
     },
     katex_block: (token) => <BlockMath>{token.content}</BlockMath>,
     katex_inline: (token) => <InlineMath>{token.content}</InlineMath>,
+    spoiler: (token) => <Spoiler>{token.content}</Spoiler>,
   },
 });
 
@@ -154,6 +179,7 @@ MessageFormatter.use(linkify);
 
 MessageFormatter.renderer.options.tokens.katex_block = 'katex_block';
 MessageFormatter.renderer.options.tokens.katex_inline = 'katex_inline';
+MessageFormatter.renderer.options.tokens.spoiler = 'spoiler';
 
 const katexRule = ({ src, tokens }) => {
   if (src.indexOf('$') === -1) return;
@@ -163,6 +189,53 @@ const katexRule = ({ src, tokens }) => {
       tokens[i].children = parseKatex(tokens[i].children);
     }
   }
+};
+
+const spoilerRule = ({ src, tokens }) => {
+  if (src.indexOf('||') === -1) return;
+
+  for (let i = 0, j = tokens.length; i < j; i += 1) {
+    if (tokens[i].type === 'inline') {
+      tokens[i].children = parseSpoiler(tokens[i].children);
+    }
+  }
+};
+
+const parseSpoiler = (children) => {
+  const newChildren = [];
+  const delimiter = '||';
+
+  for (let i = 0, j = children.length; i < j; i += 1) {
+    if (children[i].type === 'text') {
+      const content = children[i].content;
+      const parts = content.split(delimiter);
+
+      if (parts.length === 1) {
+        newChildren.push(children[i]);
+        continue;
+      }
+
+      for (let k = 0; k < parts.length; k += 1) {
+        if (k % 2 === 1) {
+          newChildren.push({
+            type: 'spoiler',
+            content: parts[k],
+          });
+        } else {
+          if (parts[k] !== '') {
+            newChildren.push({
+              type: 'text',
+              content: parts[k],
+            });
+          }
+        }
+      }
+    } else {
+      newChildren.push(children[i]);
+    }
+  }
+
+  return newChildren;
 };
 
 const parseKatex = (children) => {
@@ -237,5 +310,6 @@ const parseKatex = (children) => {
 };
 
 MessageFormatter.core.ruler.push('katex', katexRule);
+MessageFormatter.core.ruler.push('spoiler', spoilerRule);
 
 export default MessageFormatter;

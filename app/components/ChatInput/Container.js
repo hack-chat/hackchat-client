@@ -1,12 +1,10 @@
 /**
- * Exports a styled form element that wraps the input field and mimics
- * the message layout with a spacer pseudo-element.
+ * Exports a styled form
  */
 import styled from 'styled-components';
 
 export default styled.form`
   position: relative;
-
   display: flex;
   width: 100%;
 
@@ -14,7 +12,7 @@ export default styled.form`
     content: '';
     display: none;
 
-    @media (min-width: 768px) {
+    @media (width >= 768px) {
       display: block;
       flex-shrink: 0;
       width: 220px;

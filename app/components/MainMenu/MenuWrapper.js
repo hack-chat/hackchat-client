@@ -1,6 +1,5 @@
 /**
- * Wraps the entire MainMenu, handling its positioning, visibility,
- * and responsive behavior (desktop slide-out vs. mobile overlay).
+ * Exports styled html divs
  */
 import styled from 'styled-components';
 
@@ -24,7 +23,7 @@ export const MenuWrapper = styled.div`
     transform: translateX(0);
   }
 
-  @media (min-width: 768px) {
+  @media (width >= 768px) {
     transform: translateX(calc(100% - 40px));
 
     &:hover,

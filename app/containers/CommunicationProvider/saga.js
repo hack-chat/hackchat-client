@@ -90,34 +90,25 @@ function initWebsocket() {
       return emitter({ type: CONNECTED, data: {} });
     };
 
-    const onSession = (payload) =>
-      emitter({
-        type: SESSION_READY,
-        data: {
-          restored: payload.restored,
-          token: payload.token,
-          channels: payload.channels,
-        },
-      });
-
     const onChannelJoined = (payload) => {
       let userList = {};
       hcClient.users.forEach((userRecord, key) => {
-        userList[key] = {
-          blocked: userRecord.blocked,
-          bot: userRecord.bot,
-          mine: userRecord.mine,
-          nickColor: userRecord.nickColor,
-          online: userRecord.online,
-          permissionLevel: userRecord.permissionLevel,
-          userchannel: userRecord.userchannel,
-          userhash: userRecord.userhash,
-          userid: userRecord.userid,
-          userlevel: userRecord.userlevel,
-          username: userRecord.username,
-          usertrip: userRecord.usertrip,
-          flair: userRecord.flair,
-        };
+        if (userRecord.channels.has(payload.channel)) {
+          userList[key] = {
+            blocked: userRecord.blocked,
+            bot: userRecord.bot,
+            mine: userRecord.mine,
+            nickColor: userRecord.nickColor,
+            online: userRecord.online,
+            permissionLevel: userRecord.permissionLevel,
+            userhash: userRecord.userhash,
+            userid: userRecord.userid,
+            userlevel: userRecord.userlevel,
+            username: userRecord.username,
+            usertrip: userRecord.usertrip,
+            flair: userRecord.flair,
+          };
+        }
       });
 
       return emitter({
@@ -140,7 +131,6 @@ function initWebsocket() {
           nickColor: payload.nickColor,
           online: payload.online,
           permissionLevel: payload.permissionLevel,
-          userchannel: payload.userchannel,
           userhash: payload.userhash,
           userid: payload.userid,
           userlevel: payload.userlevel,
@@ -161,7 +151,6 @@ function initWebsocket() {
           nickColor: payload.nickColor,
           online: payload.online,
           permissionLevel: payload.permissionLevel,
-          userchannel: payload.userchannel,
           userhash: payload.userhash,
           userid: payload.userid,
           userlevel: payload.userlevel,
@@ -174,7 +163,7 @@ function initWebsocket() {
     const onUserUpdate = (payload) =>
       emitter({
         type: USER_UPDATE,
-        channel: payload.userchannel,
+        channel: payload.channel,
         userid: payload.userid,
         user: {
           blocked: payload.blocked,
@@ -183,7 +172,6 @@ function initWebsocket() {
           nickColor: payload.nickColor,
           online: payload.online,
           permissionLevel: payload.permissionLevel,
-          userchannel: payload.userchannel,
           userhash: payload.userhash,
           userid: payload.userid,
           userlevel: payload.userlevel,
@@ -255,7 +243,7 @@ function initWebsocket() {
     const onWhisper = (payload) =>
       emitter({
         type: WHISPER,
-        channel: payload.from.userchannel,
+        channel: payload.channel,
         data: {
           content: payload.content,
           from: {
@@ -265,7 +253,6 @@ function initWebsocket() {
             nickColor: payload.from.nickColor,
             online: payload.from.online,
             permissionLevel: payload.from.permissionLevel,
-            userchannel: payload.from.userchannel,
             userhash: payload.from.userhash,
             userid: payload.from.userid,
             userlevel: payload.from.userlevel,
@@ -281,7 +268,6 @@ function initWebsocket() {
             nickColor: payload.to.nickColor,
             online: payload.to.online,
             permissionLevel: payload.to.permissionLevel,
-            userchannel: payload.to.userchannel,
             userhash: payload.to.userhash,
             userid: payload.to.userid,
             userlevel: payload.to.userlevel,
@@ -350,6 +336,16 @@ function initWebsocket() {
         mode: payload.mode,
         text: payload.text,
         userid: payload.user.userid,
+      });
+
+    const onSession = (payload) =>
+      emitter({
+        type: SESSION_READY,
+        data: {
+          restored: payload.restored,
+          token: payload.token,
+          channels: payload.channels,
+        },
       });
 
     hcClient.on('error', onError);

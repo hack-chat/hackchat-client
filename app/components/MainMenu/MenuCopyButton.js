@@ -6,17 +6,18 @@ import styled from 'styled-components';
 export default styled.button.attrs({
   type: 'button',
 })`
-  position: fixed;
-  top: 1.5rem;
-  right: 0.25em;
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
   z-index: 10;
   background: none;
   border: none;
-  color: #fff;
-  font-size: 24px;
+  color: #aaa;
+  font-size: 1.2rem;
   cursor: pointer;
+  font-weight: normal;
 
-  @media (width >= 768px) {
-    display: none;
+  &:hover {
+    color: #fff;
   }
 `;

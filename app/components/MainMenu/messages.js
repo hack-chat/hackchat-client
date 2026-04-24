@@ -110,4 +110,12 @@ export default defineMessages({
     id: `${scope}.sendNft`,
     defaultMessage: 'NFT',
   },
+  copyUrl: {
+    id: `${scope}.copyUrl`,
+    defaultMessage: 'Copy Chat Link',
+  },
+  leaveChannel: {
+    id: `${scope}.leaveChannel`,
+    defaultMessage: 'Leave Channel',
+  },
 });

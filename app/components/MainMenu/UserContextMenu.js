@@ -21,7 +21,7 @@ export const ContextMenuOverlay = styled.div`
   ${(props) =>
     props.$isMobile &&
     css`
-      background-color: rgba(0, 0, 0, 0.7);
+      background-color: rgb(0 0 0 / 70%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -50,7 +50,7 @@ export const MenuPanel = styled.div.attrs((props) => {
   background-color: #2a2a2a;
   border: 1px solid #555;
   border-radius: 4px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 50%);
   min-width: 200px;
 
   ${(props) =>
@@ -99,7 +99,7 @@ export const SubMenu = styled.div`
   background-color: #2a2a2a;
   border: 1px solid #555;
   border-radius: 4px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 50%);
   min-width: 200px;
   z-index: 1101;
 `;

@@ -1,5 +1,5 @@
 /**
- * Exports a styled div for displaying command suggestions.
+ * Exports styled divs
  */
 import styled from 'styled-components';
 
@@ -17,7 +17,7 @@ export const SuggestionContainer = styled.div`
   left: 0;
   right: 0;
 
-  @media (min-width: 768px) {
+  @media (width <= 767px) {
     left: calc(220px + 1em);
     right: auto;
   }

@@ -1,6 +1,5 @@
 /**
- * Exports a styled div element, this wraps the first message upon
- * entering a channel
+ * Exports a styled html div
  */
 
 import styled from 'styled-components';

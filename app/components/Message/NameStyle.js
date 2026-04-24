@@ -1,6 +1,7 @@
 /**
- * Exports a styled div element, this wraps the nick/trip.
+ * Exports a styled html div
  */
+
 import styled from 'styled-components';
 
 const NameStyle = styled.div`
@@ -19,7 +20,7 @@ const NameStyle = styled.div`
     content: ':';
   }
 
-  @media (min-width: 768px) {
+  @media (width >= 768px) {
     flex-shrink: 0;
     width: 220px;
     text-align: right;
@@ -27,6 +28,7 @@ const NameStyle = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
     &::after {
       content: '';
     }

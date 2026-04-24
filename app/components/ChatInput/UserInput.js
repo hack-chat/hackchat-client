@@ -1,5 +1,5 @@
 /**
- * Exports a styled textarea for user input.
+ * Exports a styled textarea
  */
 import styled from 'styled-components';
 
@@ -13,8 +13,8 @@ export default styled.textarea`
   padding: 0.75em 1em;
   box-sizing: border-box;
   border: none;
-  border-top: 1px solid rgba(125, 122, 104, 0.5);
-  border-left: 1px solid rgba(125, 122, 104, 0.5);
+  border-top: 1px solid rgb(125 122 104 / 50%);
+  border-left: 1px solid rgb(125 122 104 / 50%);
   background-color: transparent;
   color: #f5f5f7;
   scrollbar-width: none;
@@ -31,13 +31,13 @@ export default styled.textarea`
     color: #8a8a8a;
   }
 
-  @media (max-width: 767px) {
+  @media (width <= 767px) {
     border-left: none;
     max-width: 100%;
     padding: 0.75em 0.5em;
   }
 
-  @media (max-width: 768px) {
+  @media (width <= 768px) {
     font-size: 1.2em;
   }
 `;

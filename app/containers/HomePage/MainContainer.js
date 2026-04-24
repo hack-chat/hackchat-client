@@ -1,6 +1,7 @@
 /**
- * Exports a styled html div that centers its content on the screen.
+ * Exports a styled html div
  */
+
 import styled from 'styled-components';
 
 export default styled.div`
@@ -10,7 +11,7 @@ export default styled.div`
   width: 100vw;
   overflow: hidden;
 
-  @media (max-width: 768px) {
+  @media (width <= 768px) {
     font-size: 1.2em;
   }
 `;

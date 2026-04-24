@@ -1,6 +1,7 @@
 /**
  * Exports a restyled StyledInput
  */
+
 import styled from 'styled-components';
 import StyledInput from './StyledInput';
 

@@ -6,9 +6,10 @@ import styled from 'styled-components';
 
 export default styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(125 122 104 / 20%);
-  margin-bottom: 20px;
+  justify-content: space-between;
+  background: rgb(0 0 0 / 10%);
+  padding: 10px;
+  border-radius: 5px;
+  margin: 20px 15px;
 `;

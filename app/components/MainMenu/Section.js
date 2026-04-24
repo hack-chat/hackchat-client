@@ -1,6 +1,5 @@
 /**
- * Styled components for organizing content within the MainMenu,
- * including section titles and lists.
+ * Exports styled html h3, ul, li
  */
 import styled from 'styled-components';
 
@@ -26,6 +25,7 @@ export const Item = styled.li`
   border-radius: 4px;
   display: flex;
   align-items: center;
+  margin-top: 0.3rem;
 
   &.active {
     background-color: #333;

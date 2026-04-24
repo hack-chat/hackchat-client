@@ -19,7 +19,7 @@ export default styled.div`
     margin-right: 0.5rem;
   }
 
-  @media (min-width: 768px) {
+  @media (width >= 768px) {
     padding-right: 1rem;
   }
 `;

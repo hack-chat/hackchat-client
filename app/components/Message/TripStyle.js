@@ -1,6 +1,5 @@
 /**
- * Exports a styled div element, this wraps the trip portion
- * of a normal chat message event
+ * Exports a styled html span
  */
 
 import styled from 'styled-components';

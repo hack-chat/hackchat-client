@@ -16,12 +16,12 @@ export default styled.div`
   background-color: #2a2a2a;
   border: 1px solid #555;
   border-radius: 4px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 50%);
   padding: 0;
   padding-top: 2.5rem;
   overflow: hidden;
 
-  @media (min-width: 768px) {
+  @media (width >= 768px) {
     padding-top: 0;
   }
 `;

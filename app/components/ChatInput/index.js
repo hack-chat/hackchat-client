@@ -144,12 +144,21 @@ function ChatInput({ channel, onSendMessage }, ref) {
         if (suggestions.length > 0) {
           evt.preventDefault();
           setActiveSuggestion((prev) => (prev > 0 ? prev - 1 : 0));
-        } else if (inputRef.current.selectionStart === 0) {
-          evt.preventDefault();
-          const newIndex = Math.min(historyIndex + 1, history.length - 1);
-          if (newIndex >= 0) {
-            setHistoryIndex(newIndex);
-            setInputValue(history[newIndex]);
+        } else {
+          if (historyIndex !== -1 && inputRef.current.selectionStart !== 0) {
+            evt.preventDefault();
+            inputRef.current.setSelectionRange(0, 0);
+            return;
+          }
+
+          if (inputRef.current.selectionStart === 0) {
+            evt.preventDefault();
+            const newIndex = Math.min(historyIndex + 1, history.length - 1);
+            if (newIndex >= 0) {
+              setHistoryIndex(newIndex);
+              setInputValue(history[newIndex]);
+              setTimeout(resizeTextarea, 0);
+            }
           }
         }
       } else if (evt.key === 'ArrowDown') {
@@ -163,6 +172,7 @@ function ChatInput({ channel, onSendMessage }, ref) {
           const newIndex = Math.max(historyIndex - 1, -1);
           setHistoryIndex(newIndex);
           setInputValue(newIndex >= 0 ? history[newIndex] : '');
+          setTimeout(resizeTextarea, 0);
         }
       } else if (evt.key === 'Tab' && suggestions.length > 0) {
         evt.preventDefault();
@@ -178,6 +188,7 @@ function ChatInput({ channel, onSendMessage }, ref) {
       inputValue.length,
       suggestions,
       activeSuggestion,
+      resizeTextarea,
     ],
   );
 

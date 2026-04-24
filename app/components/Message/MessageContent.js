@@ -1,9 +1,7 @@
 /**
- * A wrapper for the main content of a message. It grows to fill
- * available space and contains the border and alternating background.
- *
- * It also contains styles for rendered markdown content.
+ * Exports a styled html div
  */
+
 import styled from 'styled-components';
 
 const MessageContent = styled.div`
@@ -14,18 +12,16 @@ const MessageContent = styled.div`
   padding-top: 0.25em;
   padding-bottom: 0.25em;
   min-width: 0;
-
   ${({ $hasBackground }) =>
     $hasBackground &&
     `
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgb(0 0 0 / 5%);
   `}
-
   padding-left: 1.5em;
 
-  @media (min-width: 768px) {
+  @media (width >= 768px) {
     padding-left: 1em;
-    border-left: 1px solid rgba(125, 122, 104, 0.5);
+    border-left: 1px solid rgb(125 122 104 / 50%);
   }
 
   & p,
@@ -50,19 +46,23 @@ const MessageContent = styled.div`
     margin-bottom: 0.5em;
     font-weight: 600;
   }
+
   & h1 {
     font-size: 1.7em;
   }
+
   & h2 {
     font-size: 1.4em;
   }
+
   & h3 {
     font-size: 1.2em;
   }
 
   & a {
-    color: #60ac39;
+    color: #fff;
     text-decoration: none;
+
     &:hover {
       text-decoration: underline;
     }
@@ -73,6 +73,7 @@ const MessageContent = styled.div`
     padding-left: 2em;
     margin-bottom: 1em;
   }
+
   & li {
     margin-bottom: 0.4em;
   }
@@ -90,15 +91,15 @@ const MessageContent = styled.div`
     height: 1px;
     background-image: linear-gradient(
       to right,
-      rgba(125, 122, 104, 0),
-      rgba(125, 122, 104, 0.75),
-      rgba(125, 122, 104, 0)
+      rgb(125 122 104 / 0%),
+      rgb(125 122 104 / 75%),
+      rgb(125 122 104 / 0%)
     );
     margin: 1.5em 0;
   }
 
   & code {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgb(0 0 0 / 20%);
     padding: 0.2em 0.4em;
     font-size: 0.85em;
     border-radius: 3px;
@@ -106,7 +107,7 @@ const MessageContent = styled.div`
   }
 
   & pre {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgb(0 0 0 / 20%);
     border-radius: 4px;
     padding: 1em;
     overflow-x: auto;
@@ -126,7 +127,7 @@ const MessageContent = styled.div`
   }
 
   & blockquote {
-    border-left: 3px solid rgba(125, 122, 104, 0.5);
+    border-left: 3px solid rgb(125 122 104 / 50%);
     margin-left: 0;
     padding-left: 1em;
     opacity: 0.85;
@@ -136,7 +137,7 @@ const MessageContent = styled.div`
     width: 100%;
     border-collapse: collapse;
     margin: 1em 0;
-    border: 1px solid rgba(125, 122, 104, 0.2);
+    border: 1px solid rgb(125 122 104 / 20%);
     border-radius: 4px;
     overflow: hidden;
     font-size: 0.9em;
@@ -145,24 +146,24 @@ const MessageContent = styled.div`
   & th,
   & td {
     padding: 0.75em;
-    border-bottom: 1px solid rgba(125, 122, 104, 0.2);
+    border-bottom: 1px solid rgb(125 122 104 / 20%);
   }
 
   & thead {
-    background-color: rgba(0, 0, 0, 0.15);
+    background-color: rgb(0 0 0 / 15%);
     color: #ddd;
     font-weight: 600;
   }
 
   & tbody tr:nth-child(even) {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgb(0 0 0 / 5%);
   }
 
   & tbody tr:last-child td {
     border-bottom: none;
   }
 
-  @media (max-width: 767px) {
+  @media (width <= 767px) {
     & table {
       display: block;
       overflow-x: auto;

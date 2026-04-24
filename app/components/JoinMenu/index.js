@@ -3,6 +3,7 @@
  */
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useStateIfMounted } from 'use-state-if-mounted';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -48,6 +49,8 @@ export function JoinMenu({
   qString,
   intl,
 }) {
+  const navigate = useNavigate();
+
   const joinModalUsername = intl.formatMessage(messages.joinModalUsername);
   const joinModalPassword = intl.formatMessage(messages.joinModalPassword);
   const joinModalChannel = intl.formatMessage(messages.joinModalChannel);
@@ -101,6 +104,8 @@ export function JoinMenu({
       );
 
       if (typeof doToggle === 'function') doToggle();
+
+      navigate(`/?${chan}`);
     }
   };
 

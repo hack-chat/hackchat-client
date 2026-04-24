@@ -1,6 +1,7 @@
 /**
- * A styled Button for language selection
+ * Exports a styled html button
  */
+
 import styled from 'styled-components';
 
 export default styled.button.attrs({
@@ -9,15 +10,12 @@ export default styled.button.attrs({
   cursor: pointer;
   font-family: monospace;
   min-height: 46px;
-  color: #f5f5f7;
   padding-left: 23px;
   padding-right: 23px;
   border-radius: 4px;
   border: 1px solid transparent;
   background: #333;
-
   margin-top: 0.75rem;
-
   background-color: ${(props) => (props.$active ? '#a6a28c' : '#555')};
   color: ${(props) => (props.$active ? '#1e1e1e' : '#ddd')};
   border-color: ${(props) => (props.$active ? '#a6a28c' : '#555')};
@@ -25,10 +23,6 @@ export default styled.button.attrs({
 
   &.disabled {
     pointer-events: none;
-  }
-
-  &:hover {
-    background: #4d4d4d;
   }
 
   & > svg {

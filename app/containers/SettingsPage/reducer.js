@@ -36,10 +36,27 @@ import {
   WSPATH_LSLABEL,
 } from './constants';
 
+const randomRGB = () => {
+  const saturation = 0.8;
+  const lightness = 0.65;
+  const hue = Math.floor(Math.random() * 360);
+
+  const k = (n) => (n + hue / 30) % 12;
+  const a = saturation * Math.min(lightness, 1 - lightness);
+  const f = (n) =>
+    lightness - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+
+  const r = `${Math.floor(255 * f(0)).toString(16)}`;
+  const g = `${Math.floor(255 * f(8)).toString(16)}`;
+  const b = `${Math.floor(255 * f(4)).toString(16)}`;
+
+  return `#${r}${g}${b}`;
+};
+
 export const settingsInitialState = {
   username: JSON.parse(localStorage.getItem(USERNAME_LSLABEL)) || '',
   password: JSON.parse(localStorage.getItem(PASSWORD_LSLABEL)) || '',
-  color: JSON.parse(localStorage.getItem(COLOR_LSLABEL)) || '#3b7ed0',
+  color: JSON.parse(localStorage.getItem(COLOR_LSLABEL)) || randomRGB(),
   storeChannels:
     JSON.parse(localStorage.getItem(STORECHANNELS_LSLABEL)) || true,
   prevChannels: JSON.parse(localStorage.getItem(PREVCHANNELS_LSLABEL)) || [],

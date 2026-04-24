@@ -12,7 +12,7 @@ export default styled.div`
   max-width: 850px;
   justify-content: flex-end;
 
-  @media (min-width: 768px) {
+  @media (width >= 768px) {
     transform: translate(-110px, 0);
   }
 `;

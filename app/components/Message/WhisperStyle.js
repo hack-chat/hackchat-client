@@ -1,6 +1,5 @@
 /**
- * Exports a styled div element, this wraps the entire portion
- * of a whisper event
+ * Exports a styled html div
  */
 
 import styled from 'styled-components';

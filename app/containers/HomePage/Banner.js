@@ -1,6 +1,5 @@
 /**
- * Exports a styled div element, this wraps the top most text
- * of the default application screen
+ * Exports a styled html pre
  */
 
 import styled from 'styled-components';

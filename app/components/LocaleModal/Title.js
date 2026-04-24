@@ -1,5 +1,5 @@
 /**
- * A styled h3 for the modal title
+ * Exports a styled html h3
  */
 import styled from 'styled-components';
 

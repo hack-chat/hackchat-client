@@ -1,6 +1,7 @@
 /**
  * Exports a restyled WideButton
  */
+
 import styled from 'styled-components';
 import WideButton from './WideButton';
 

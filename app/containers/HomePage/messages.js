@@ -4,6 +4,7 @@
 import { defineMessages } from 'react-intl';
 
 export const scope = 'hcclient.containers.HomePage';
+export const genScope = 'hcclient.Generic';
 
 export default defineMessages({
   tagline: {
@@ -68,5 +69,39 @@ export default defineMessages({
   siwFinish: {
     id: `${scope}.siwFinish`,
     defaultMessage: 'Sign Message',
+  },
+  cancelText: {
+    id: `${genScope}.cancel.text`,
+    defaultMessage: 'Cancel',
+  },
+  understoodText: {
+    id: `${scope}.understoodText`,
+    defaultMessage: 'Understood',
+  },
+  externalLinkWarning: {
+    id: `${scope}.externalLinkWarning`,
+    defaultMessage:
+      'You are about to visit an external link. This may compromise your security and privacy. Please be careful!',
+  },
+  suppressWarningText: {
+    id: `${scope}.suppressWarningText`,
+    defaultMessage: 'Dont show this again for this session',
+  },
+  txWarningHeader: {
+    id: `${scope}.txWarningHeader`,
+    defaultMessage: 'Third-Party Transaction Warning',
+  },
+  txWarningBody: {
+    id: `${scope}.txWarningBody`,
+    defaultMessage:
+      'This transaction request was sent by a 3rd party. Please review the raw transaction data below before proceeding.',
+  },
+  txCopy: {
+    id: `${scope}.txCopy`,
+    defaultMessage: '[ copy ]',
+  },
+  txSignAndSend: {
+    id: `${scope}.txSignAndSend`,
+    defaultMessage: 'Sign & Send',
   },
 });
