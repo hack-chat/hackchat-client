@@ -2,7 +2,7 @@
  * Modal exports
  */
 
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Backdrop from './Backdrop';
 import Container from './Container';
@@ -18,12 +18,28 @@ const Modal = ({
   onCloseFunction,
   children,
 }) => {
-  const toggle = () => {
+  const toggle = useCallback(() => {
     doToggle(!isOpen);
     if (typeof onCloseFunction === 'function') {
       onCloseFunction();
     }
-  };
+  }, [isOpen, doToggle, onCloseFunction]);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        toggle();
+      }
+    };
+
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, toggle]);
 
   const handleContainerClick = (evt) => {
     evt.stopPropagation();
