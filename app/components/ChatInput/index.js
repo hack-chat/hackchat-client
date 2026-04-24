@@ -40,12 +40,20 @@ const parseMessage = (text) => {
   return emoji.replace_colons(processedText);
 };
 
-function ChatInput({ channel, onSendMessage }, ref) {
+function ChatInput({ channel, users, onSendMessage }, ref) {
   const [inputValue, setInputValue] = useState('');
   const [history, setHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [suggestions, setSuggestions] = useState([]);
   const [activeSuggestion, setActiveSuggestion] = useState(0);
+
+  const [mentionState, setMentionState] = useState({
+    isCycling: false,
+    originalPrefix: '',
+    matches: [],
+    currentIndex: 0,
+    startIndex: -1,
+  });
 
   const inputRef = useRef(null);
 
@@ -125,12 +133,17 @@ function ChatInput({ channel, onSendMessage }, ref) {
       updateHistory(text);
       setInputValue('');
       setHistoryIndex(-1);
+      setMentionState((prev) => ({ ...prev, isCycling: false }));
       setTimeout(resizeTextarea, 0);
     }
   }, [inputValue, onSendMessage, channel, updateHistory, resizeTextarea]);
 
   const handleKeyDown = useCallback(
     (evt) => {
+      if (evt.key !== 'Tab' && evt.key !== 'Shift' && mentionState.isCycling) {
+        setMentionState((prev) => ({ ...prev, isCycling: false }));
+      }
+
       if (evt.key === 'Enter' && !evt.shiftKey) {
         evt.preventDefault();
         if (suggestions.length > 0 && activeSuggestion < suggestions.length) {
@@ -174,29 +187,90 @@ function ChatInput({ channel, onSendMessage }, ref) {
           setInputValue(newIndex >= 0 ? history[newIndex] : '');
           setTimeout(resizeTextarea, 0);
         }
-      } else if (evt.key === 'Tab' && suggestions.length > 0) {
+      } else if (evt.key === 'Tab') {
         evt.preventDefault();
-        const selectedCommand = suggestions[activeSuggestion];
-        setInputValue(`/${selectedCommand.command} `);
-        setSuggestions([]);
+
+        if (suggestions.length > 0) {
+          const selectedCommand = suggestions[activeSuggestion];
+          setInputValue(`/${selectedCommand.command} `);
+          setSuggestions([]);
+        } else {
+          const cursor = inputRef.current.selectionStart;
+          let mState = { ...mentionState };
+
+          if (!mState.isCycling) {
+            const textBeforeCursor = inputValue.slice(0, cursor);
+            const match = textBeforeCursor.match(/(?:^|\s)(@\S+)$/);
+
+            if (match) {
+              const prefix = match[1].toLowerCase();
+              const startIndex = cursor - match[1].length;
+              const userList = users
+                ? Object.values(users).map((u) => u.username)
+                : [];
+
+              const matches = userList.filter((u) =>
+                `@${u.toLowerCase()}`.startsWith(prefix),
+              );
+
+              if (matches.length > 0) {
+                mState = {
+                  isCycling: true,
+                  originalPrefix: prefix,
+                  matches,
+                  currentIndex: 0,
+                  startIndex,
+                };
+              }
+            }
+          } else {
+            mState.currentIndex =
+              (mState.currentIndex + 1) % mState.matches.length;
+          }
+
+          if (mState.isCycling) {
+            const matchName = `@${mState.matches[mState.currentIndex]}`;
+            const textBefore = inputValue.slice(0, mState.startIndex);
+            const textAfter = inputValue.slice(inputRef.current.selectionEnd);
+
+            const newValue = textBefore + matchName + textAfter;
+            setInputValue(newValue);
+            setMentionState(mState);
+
+            setTimeout(() => {
+              if (inputRef.current) {
+                const newCursor = mState.startIndex + matchName.length;
+                inputRef.current.setSelectionRange(newCursor, newCursor);
+                resizeTextarea();
+              }
+            }, 0);
+          }
+        }
       }
     },
     [
       submitInput,
       history,
       historyIndex,
-      inputValue.length,
+      inputValue,
       suggestions,
       activeSuggestion,
       resizeTextarea,
+      mentionState,
+      users,
     ],
   );
 
   const handleInputChange = (evt) => {
     setInputValue(evt.target.value);
     resizeTextarea();
+
     if (historyIndex !== -1) {
       setHistoryIndex(-1);
+    }
+
+    if (mentionState.isCycling) {
+      setMentionState((prev) => ({ ...prev, isCycling: false }));
     }
   };
 
@@ -246,6 +320,7 @@ const ChatInputWithRef = forwardRef(ChatInput);
 ChatInputWithRef.displayName = 'ChatInput';
 ChatInputWithRef.propTypes = {
   channel: PropTypes.string,
+  users: PropTypes.object,
   onSendMessage: PropTypes.func.isRequired,
 };
 

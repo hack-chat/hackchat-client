@@ -495,6 +495,7 @@ export function HomePage({
           />
           <ChatInput
             channel={channel}
+            users={channelData?.[channel]?.users}
             onSendMessage={onSendMessage}
             ref={chatInputRef}
           />
