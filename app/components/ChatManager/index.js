@@ -10,7 +10,7 @@ import { compose } from 'redux';
 import { Message } from 'components/Message';
 import MessageFormatter from 'components/MessageFormatter';
 
-import { ChatWrapper } from './Wrapper';
+import Wrapper from './Wrapper';
 import messages from './messages';
 
 export function ChatManager({
@@ -142,14 +142,14 @@ export function ChatManager({
   }, [currentChannelData.messages, currentChannelData.users, intl]);
 
   return (
-    <ChatWrapper
+    <Wrapper
       ref={scrollContainerRef}
       onScroll={handleScroll}
       onClick={handleChatClick}
     >
       {welcomeMessage}
       {messageElements}
-    </ChatWrapper>
+    </Wrapper>
   );
 }
 

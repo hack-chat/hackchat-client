@@ -17,6 +17,8 @@ const ChatStyle = styled.div`
     --sb-track-color: rgba(0 0 0 / 60%);
     --sb-thumb-color: #909090;
     --sb-size: 8px;
+
+    scrollbar-width: thin;
   }
 
   &::-webkit-scrollbar {

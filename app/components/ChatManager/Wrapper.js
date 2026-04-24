@@ -4,12 +4,12 @@
 
 import styled from 'styled-components';
 
-export const ChatWrapper = styled.div`
+export default styled.div`
   display: flex;
   flex-direction: column;
   height: 0;
   flex: 1;
-  overflow-y: auto;
+  overflow: hidden auto;
   min-height: 0;
   scrollbar-width: thin;
   scrollbar-color: #4f4d42 #20201d;
