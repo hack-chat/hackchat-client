@@ -3,7 +3,7 @@
  * @todo Some elements are not implemented yet
  */
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useCallback } from 'react';
 import { useStateIfMounted } from 'use-state-if-mounted';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
@@ -112,14 +112,29 @@ export function SettingsPage({
 }) {
   const navigate = useNavigate();
 
-  const handleGoBack = () => {
+  const handleGoBack = useCallback(() => {
     const channels = channelData ? Object.keys(channelData) : [];
-    if (channels.length > 0) {
-      navigate(`/?${channels[0]}`);
-    } else {
+
+    if (channels.length === 0) {
       navigate('/');
+    } else {
+      navigate(-1);
     }
-  };
+  }, [channelData, navigate]);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        handleGoBack();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleGoBack]);
 
   useInjectReducer({ key: 'settingsPage', reducer });
 
