@@ -110,6 +110,18 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
   });
 
   const inputRef = useRef(null);
+  const suggestionsRef = useRef(null);
+
+  useEffect(() => {
+    if (suggestionsRef.current) {
+      const activeElement = suggestionsRef.current.querySelector('.active');
+      if (activeElement) {
+        activeElement.scrollIntoView({
+          block: 'nearest',
+        });
+      }
+    }
+  }, [activeSuggestion]);
 
   const resizeTextarea = useCallback(() => {
     if (inputRef.current) {
@@ -381,7 +393,7 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
   return (
     <Container>
       {suggestions.length > 0 && (
-        <SuggestionContainer>
+        <SuggestionContainer ref={suggestionsRef}>
           {suggestions.map((cmd, index) => (
             <SuggestionItem
               key={cmd.command}

@@ -13,10 +13,11 @@ export const SuggestionContainer = styled.div`
   max-height: 200px;
   overflow-y: auto;
   z-index: 10;
-  max-width: 600px;
+  max-width: 618px;
   width: 100%;
-  left: 0;
   right: 0;
+  scrollbar-width: thin;
+  scrollbar-color: #4f4d42 #20201d;
 
   @media (width <= 767px) {
     left: calc(220px + 1em);

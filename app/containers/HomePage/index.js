@@ -27,6 +27,7 @@ import {
   unmuteUser,
   uwuifyUser,
   leaveChannel,
+  clearChannel,
 } from 'containers/CommunicationProvider/actions';
 import {
   makeSelectChannel,
@@ -649,6 +650,7 @@ HomePage.propTypes = {
   onSignMessageRequest: PropTypes.func,
   sessionReady: PropTypes.bool,
   onDoTransfer: PropTypes.func,
+  onClearChannel: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -666,13 +668,16 @@ export function mapDispatchToProps(dispatch) {
   return {
     onChangeChannel: (channelName) => dispatch(changeChannel(channelName)),
     onSendMessage: (channel, message) => {
-      // bet there is a better spot for this. . .
+      // bet there is a better spot for these. . .
       if (message.trim() === '/leave') {
         dispatch(leaveChannel(channel));
+      } else if (message.trim() === '/clear') {
+        dispatch(clearChannel(channel));
       } else {
         dispatch(sendChat(channel, message));
       }
     },
+    onClearChannel: (channel) => dispatch(clearChannel(channel)),
     onKickUser: (channel, user) => dispatch(kickUser(channel, user)),
     onBanUser: (channel, user) => dispatch(banUser(channel, user)),
     onIgnoreUser: (channel, userid) => dispatch(ignoreUser(channel, userid)),

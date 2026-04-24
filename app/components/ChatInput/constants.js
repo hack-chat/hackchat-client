@@ -96,4 +96,5 @@ export const COMMANDS = [
   { command: 'uwuify', params: ['username'] },
   { command: 'sendsol', params: ['username', 'amount'] },
   { command: 'leave', params: [] },
+  { command: 'clear', params: [] },
 ];
