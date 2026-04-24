@@ -1,6 +1,7 @@
 /**
  * Exports styled divs
  */
+
 import styled from 'styled-components';
 
 export const SuggestionContainer = styled.div`

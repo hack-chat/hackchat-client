@@ -1,6 +1,7 @@
 /**
  * Exports styled html h3, ul, li
  */
+
 import styled from 'styled-components';
 
 export const SectionTitle = styled.h3`

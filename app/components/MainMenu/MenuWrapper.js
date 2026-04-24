@@ -1,6 +1,7 @@
 /**
  * Exports styled html divs
  */
+
 import styled from 'styled-components';
 
 export const MenuWrapper = styled.div`
@@ -26,9 +27,22 @@ export const MenuWrapper = styled.div`
   @media (width >= 768px) {
     transform: translateX(calc(100% - 40px));
 
+    & > * {
+      transition:
+        filter 0.3s ease-in-out,
+        opacity 0.3s ease-in-out;
+      filter: grayscale(70%);
+      opacity: 0.5;
+    }
+
     &:hover,
     &.open {
       transform: translateX(0);
+
+      & > * {
+        filter: grayscale(0%);
+        opacity: 1;
+      }
     }
   }
 `;

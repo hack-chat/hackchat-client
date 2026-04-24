@@ -1,6 +1,7 @@
 /**
  * Exports a styled html h3
  */
+
 import styled from 'styled-components';
 
 export default styled.h3`

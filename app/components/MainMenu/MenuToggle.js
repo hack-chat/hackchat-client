@@ -1,6 +1,7 @@
 /**
  * Exports a styled html button
  */
+
 import styled from 'styled-components';
 
 export default styled.button.attrs({
