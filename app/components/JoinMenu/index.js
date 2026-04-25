@@ -2,7 +2,7 @@
  * JoinMenu exports
  */
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStateIfMounted } from 'use-state-if-mounted';
 import PropTypes from 'prop-types';
@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import styled from 'styled-components';
 import { GiRollingDices } from 'react-icons/gi';
 
 import { joinChannel } from 'containers/CommunicationProvider/actions';
@@ -26,6 +27,7 @@ import {
   makeSelectCachedPassword,
   makeSelectCachedColor,
   makeSelectCachedStoreChannels,
+  makeSelectCachedPrevChannels,
 } from 'containers/SettingsPage/selectors';
 
 import messages from './messages';
@@ -38,6 +40,16 @@ import NickColor from './NickColor';
 import RememberBox from './RememberBox';
 import RandomButton from './RandomButton';
 import JoinButton from './JoinButton';
+import { SuggestionContainer, SuggestionItem } from './SuggestionBox';
+
+const AutocompleteWrapper = styled.div`
+  position: relative;
+  width: 100%;
+
+  &.hide {
+    display: none;
+  }
+`;
 
 export function JoinMenu({
   doToggle,
@@ -46,6 +58,7 @@ export function JoinMenu({
   password,
   prevColor,
   rememberUser,
+  prevChannels,
   qString,
   intl,
 }) {
@@ -66,6 +79,9 @@ export function JoinMenu({
   const [chosenUsername, setChosenUsername] = useStateIfMounted(username);
   const [chosenPassword, setChosenPassword] = useStateIfMounted(password);
   const [chosenChannel, setChosenChannel] = useStateIfMounted(qString || '');
+  const [suggestions, setSuggestions] = useStateIfMounted([]);
+  const [activeSuggestion, setActiveSuggestion] = useStateIfMounted(0);
+  const suggestionsRef = useRef(null);
 
   const toggleInvalidName = () => setInvalidName(!invalidName);
   const clearInvalidName = () => setInvalidName(false);
@@ -73,6 +89,50 @@ export function JoinMenu({
   const toggleInvalidChannel = () => setInvalidChannel(!invalidChannel);
 
   const hideChannel = !!qString;
+
+  useEffect(() => {
+    if (suggestionsRef.current) {
+      const activeElement = suggestionsRef.current.querySelector('.active');
+      if (activeElement) {
+        activeElement.scrollIntoView({ block: 'nearest' });
+      }
+    }
+  }, [activeSuggestion]);
+
+  const handleChannelChange = (e) => {
+    const val = e.target.value;
+    setChosenChannel(val);
+
+    if (val && prevChannels && prevChannels.length > 0) {
+      const filtered = prevChannels.filter((ch) =>
+        ch.toLowerCase().includes(val.toLowerCase()),
+      );
+      setSuggestions(filtered);
+      setActiveSuggestion(0);
+    } else {
+      setSuggestions([]);
+    }
+  };
+
+  const handleKeyDown = (evt) => {
+    if (suggestions.length === 0) return;
+
+    if (evt.key === 'ArrowDown') {
+      evt.preventDefault();
+      setActiveSuggestion((prev) =>
+        prev < suggestions.length - 1 ? prev + 1 : prev,
+      );
+    } else if (evt.key === 'ArrowUp') {
+      evt.preventDefault();
+      setActiveSuggestion((prev) => (prev > 0 ? prev - 1 : 0));
+    } else if (evt.key === 'Enter' || evt.key === 'Tab') {
+      evt.preventDefault();
+      setChosenChannel(suggestions[activeSuggestion]);
+      setSuggestions([]);
+    } else if (evt.key === 'Escape') {
+      setSuggestions([]);
+    }
+  };
 
   const doJoin = (evt) => {
     if (evt !== undefined && evt.preventDefault) evt.preventDefault();
@@ -130,6 +190,7 @@ export function JoinMenu({
           />
         </InputGroupText>
       </InputGroup>
+
       <InputGroup>
         <InputGroupText>#</InputGroupText>
         <Input
@@ -147,28 +208,60 @@ export function JoinMenu({
           />
         </InputGroupText>
       </InputGroup>
-      <InputGroup className={hideChannel ? 'hide' : ''}>
-        <InputGroupText>!</InputGroupText>
-        <Input
-          autoComplete="on"
-          className={invalidChannel ? 'invalid' : ''}
-          placeholder={joinModalChannel}
-          defaultValue={chosenChannel}
-          onFocus={() => setInvalidChannel(false)}
-          onChange={(e) => setChosenChannel(e.target.value)}
-        />
-        <InputGroupText id="randomButton">
-          <RandomButton
-            title={randomButtonText}
-            onClick={() => {
-              const newChan = Math.random().toString(36).substr(2, 8);
-              setChosenChannel(newChan);
+
+      <AutocompleteWrapper className={hideChannel ? 'hide' : ''}>
+        {suggestions.length > 0 && (
+          <SuggestionContainer ref={suggestionsRef}>
+            {suggestions.map((chan, index) => (
+              <SuggestionItem
+                key={chan}
+                className={index === activeSuggestion ? 'active' : ''}
+                onMouseDown={() => {
+                  setChosenChannel(chan);
+                  setSuggestions([]);
+                }}
+              >
+                ?{chan}
+              </SuggestionItem>
+            ))}
+          </SuggestionContainer>
+        )}
+
+        <InputGroup>
+          <InputGroupText>?</InputGroupText>
+          <Input
+            autoComplete="off"
+            className={invalidChannel ? 'invalid' : ''}
+            placeholder={joinModalChannel}
+            value={chosenChannel}
+            onFocus={() => {
+              setInvalidChannel(false);
+              if (chosenChannel && prevChannels) {
+                const filtered = prevChannels.filter((ch) =>
+                  ch.toLowerCase().includes(chosenChannel.toLowerCase()),
+                );
+                setSuggestions(filtered);
+              }
             }}
-          >
-            <GiRollingDices />
-          </RandomButton>
-        </InputGroupText>
-      </InputGroup>
+            onBlur={() => setSuggestions([])}
+            onChange={handleChannelChange}
+            onKeyDown={handleKeyDown}
+          />
+          <InputGroupText id="randomButton">
+            <RandomButton
+              title={randomButtonText}
+              onClick={() => {
+                const newChan = Math.random().toString(36).substr(2, 8);
+                setChosenChannel(newChan);
+                setSuggestions([]);
+              }}
+            >
+              <GiRollingDices />
+            </RandomButton>
+          </InputGroupText>
+        </InputGroup>
+      </AutocompleteWrapper>
+
       <JoinButton onClick={(e) => doJoin(e)}>{joinModalBtn}</JoinButton>
     </Form>
   );
@@ -181,6 +274,8 @@ JoinMenu.propTypes = {
   password: PropTypes.string,
   prevColor: PropTypes.string,
   rememberUser: PropTypes.bool,
+  prevChannels: PropTypes.array,
+  qString: PropTypes.string,
   intl: PropTypes.object.isRequired,
 };
 
@@ -189,6 +284,7 @@ const mapStateToProps = createStructuredSelector({
   password: makeSelectCachedPassword(),
   prevColor: makeSelectCachedColor(),
   rememberUser: makeSelectCachedStoreChannels(),
+  prevChannels: makeSelectCachedPrevChannels(),
 });
 
 export function mapDispatchToProps(dispatch) {

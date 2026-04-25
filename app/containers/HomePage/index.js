@@ -469,7 +469,7 @@ export function HomePage({
         />
       </Helmet>
 
-      {showChat && (
+      {sessionReady && channel && (
         <MainMenu
           channel={channel}
           channelData={channelData}

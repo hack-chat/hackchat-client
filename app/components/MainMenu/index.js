@@ -404,7 +404,9 @@ export function MainMenu({
                 className={ch === channel ? 'active' : ''}
                 onClick={() => {
                   navigate(`/?${ch}`);
-                  if (!isPinned) setIsOpen(false);
+                  if (isMobile && !isPinned) {
+                    setIsOpen(false);
+                  }
                 }}
               >
                 <FaHashtag /> {ch}
