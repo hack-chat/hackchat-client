@@ -11,7 +11,10 @@ const ChatStyle = styled.div`
   font-family: 'DejaVu Sans Mono', monospace;
   max-height: 50vh;
   overflow-y: auto;
-  min-width: 0;
+  min-width: 100%;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
 
   & {
     --sb-track-color: rgba(0 0 0 / 60%);
@@ -19,6 +22,10 @@ const ChatStyle = styled.div`
     --sb-size: 8px;
 
     scrollbar-width: thin;
+  }
+
+  &:hover {
+    background-color: rgb(255 255 255 / 8%);
   }
 
   &::-webkit-scrollbar {

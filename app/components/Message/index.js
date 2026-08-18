@@ -37,22 +37,37 @@ const ExtendedMessageContent = styled(MessageContent)`
 
 const TRUNCATION_CHAR_THRESHOLD = 450;
 
-const Nick = ({ user, handleMention }) => {
+const Nick = ({ user, handleMention, handleContextMenu }) => {
   const handleClick = () => {
     handleMention(`@${user.username} `);
   };
+
+  const handleRightClick = (e) => {
+    if (handleContextMenu) {
+      e.preventDefault();
+      handleContextMenu(user, e);
+    }
+  };
+
   const trip = <TripStyle $flair={user.flair}>{user.usertrip}</TripStyle>;
+
   return (
-    <NameStyle onClick={handleClick} $color={`#${user.nickColor}`}>
+    <NameStyle
+      onClick={handleClick}
+      onContextMenu={handleRightClick}
+      $color={`#${user.nickColor}`}
+    >
       {trip}
       {user.username}
     </NameStyle>
   );
 };
-Nick.propTypes = { user: PropTypes.object.isRequired };
 
 const ChatMessage = ({
   handleMention,
+  handleContextMenu,
+  onMessageClick,
+  onMessageContextMenu,
   extended,
   user,
   payload,
@@ -64,15 +79,48 @@ const ChatMessage = ({
   const isLongMessage = payload.content.length > TRUNCATION_CHAR_THRESHOLD;
   const ContentWrapper = extended ? ExtendedMessageContent : MessageContent;
 
+  const handleChatClick = (e) => {
+    if (
+      e.target.closest('a') ||
+      e.target.closest('button') ||
+      window.getSelection().toString().length > 0
+    ) {
+      return;
+    }
+    if (onMessageClick) {
+      onMessageClick(payload, user);
+    }
+  };
+
+  const handleChatRightClick = (e) => {
+    if (e.target.closest('a') || e.target.closest('button')) {
+      return;
+    }
+    if (onMessageContextMenu) {
+      e.preventDefault();
+      onMessageContextMenu(payload, user, e);
+    }
+  };
+
   return (
     <MessageContainer>
       {!extended ? (
-        <Nick handleMention={handleMention} user={user} />
+        <Nick
+          handleMention={handleMention}
+          handleContextMenu={handleContextMenu}
+          user={user}
+        />
       ) : (
         <NickPlaceholder />
       )}
       <ContentWrapper $hasBackground={hasBackground}>
-        <ChatStyle $canExpand={isLongMessage} $isExpanded={isExpanded}>
+        <ChatStyle
+          $canExpand={isLongMessage}
+          $isExpanded={isExpanded}
+          onClick={handleChatClick}
+          onContextMenu={handleChatRightClick}
+          style={{ cursor: 'pointer' }}
+        >
           {msgForm.render(payload.content)}
         </ChatStyle>
         {isLongMessage && (
@@ -94,6 +142,10 @@ ChatMessage.propTypes = {
   msgForm: PropTypes.object,
   intl: PropTypes.object.isRequired,
   hasBackground: PropTypes.bool,
+  handleMention: PropTypes.func,
+  handleContextMenu: PropTypes.func,
+  onMessageClick: PropTypes.func,
+  onMessageContextMenu: PropTypes.func,
 };
 
 const WhisperMessage = ({ payload, msgForm, intl }) => {
@@ -242,6 +294,9 @@ TxAttemptMessage.propTypes = {
 export const Message = memo(
   ({
     handleMention,
+    handleContextMenu,
+    onMessageClick,
+    onMessageContextMenu,
     extended,
     type,
     payload,
@@ -260,6 +315,9 @@ export const Message = memo(
           <ChatMessage
             extended={extended}
             handleMention={handleMention}
+            handleContextMenu={handleContextMenu}
+            onMessageClick={onMessageClick}
+            onMessageContextMenu={onMessageContextMenu}
             user={user}
             payload={payload}
             msgForm={msgForm}
@@ -389,6 +447,8 @@ Message.propTypes = {
   intl: PropTypes.object,
   hasBackground: PropTypes.bool,
   onTxAttemptClick: PropTypes.func,
+  handleMention: PropTypes.func,
+  handleContextMenu: PropTypes.func,
 };
 
 Message.displayName = 'Message';

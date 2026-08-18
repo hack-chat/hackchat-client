@@ -16,13 +16,11 @@ import {
   FaPlusCircle,
   FaLanguage,
   FaUser,
-  FaChevronLeft,
 } from 'react-icons/fa';
 import { MdOutlinePushPin, MdPushPin, MdOutlineLogout } from 'react-icons/md';
 import { BsPaperclip } from 'react-icons/bs';
-import { SiSolana } from 'react-icons/si';
-import { GiToken } from 'react-icons/gi';
-import { RiNftLine } from 'react-icons/ri';
+
+import UserContextMenu from 'components/UserContextMenu';
 
 import CurrentChannelInfo from './CurrentChannelInfo';
 import MenuFooter from './MenuFooter';
@@ -32,14 +30,6 @@ import PinButton from './PinButton';
 import MenuLeaveButton from './MenuLeaveButton';
 import MenuCopyButton from './MenuCopyButton';
 import { ItemList, Item } from './Section';
-import {
-  ContextMenuOverlay,
-  MenuPanel,
-  ContextMenuItem,
-  ContextMenuSeparator,
-  SubMenu,
-  SubMenuHeader,
-} from './UserContextMenu';
 
 import messages from './messages';
 
@@ -90,7 +80,6 @@ export function MainMenu({
   const [isOpen, setIsOpen] = useState(false);
   const [isPinned, setIsPinned] = useState(false);
   const [contextMenu, setContextMenu] = useState(null);
-  const [openSubMenu, setOpenSubMenu] = useState(null);
 
   // Mobile detection
   const windowSize = useWindowSize();
@@ -116,232 +105,10 @@ export function MainMenu({
       x: event.clientX,
       y: event.clientY,
     });
-    setOpenSubMenu(null);
   };
 
   const closeContextMenu = () => {
     setContextMenu(null);
-    setOpenSubMenu(null);
-  };
-
-  const handleContextMenuClick = (command) => {
-    if (!contextMenu || !contextMenu.user) return;
-    const { username } = contextMenu.user;
-
-    let commandString = '';
-    switch (command) {
-      case 'mention':
-        commandString = `@${username} `;
-        break;
-      case 'whisper':
-        commandString = `/whisper @${username} `;
-        break;
-      case 'invite':
-        commandString = `/invite @${username}`;
-        break;
-      case 'kick':
-        commandString = `/kick @${username}`;
-        break;
-      case 'ban':
-        commandString = `/ban @${username}`;
-        break;
-      case 'muzzle':
-        commandString = `/muzzle @${username}`;
-        break;
-      case 'unmuzzle':
-        commandString = `/unmuzzle @${username}`;
-        break;
-      case 'uwuify':
-        commandString = `/uwuify @${username}`;
-        break;
-      case 'ignore':
-        commandString = `/ignore @${username}`;
-        break;
-      case 'setlevel':
-        commandString = `/setlevel @${username} `;
-        break;
-      case 'change-color':
-        commandString = `/forcecolor @${username} `;
-        break;
-      case 'change-flair':
-        commandString = `/forceflair @${username} `;
-        break;
-      case 'send-solana':
-        commandString = `/sendsol @${username} `;
-        break;
-      case 'send-token':
-        commandString = `/sendtoken @${username} `;
-        break;
-      case 'send-nft':
-        commandString = `/sendnft @${username} `;
-        break;
-      default:
-        commandString = `/${command} @${username}`;
-    }
-
-    onCommandClick(commandString);
-    closeContextMenu();
-  };
-
-  /**
-   * Renders the "Manage" submenu content.
-   * Includes a "Back" button for mobile.
-   */
-  const renderManageMenu = () => (
-    <>
-      {isMobile && (
-        <SubMenuHeader onClick={() => setOpenSubMenu(null)}>
-          <FaChevronLeft />
-          <span>{intl.formatMessage(messages.manage)}</span>
-        </SubMenuHeader>
-      )}
-      <ContextMenuItem onClick={() => handleContextMenuClick('kick')}>
-        {intl.formatMessage(messages.kick)}
-      </ContextMenuItem>
-      <ContextMenuItem onClick={() => handleContextMenuClick('ban')}>
-        {intl.formatMessage(messages.ban)}
-      </ContextMenuItem>
-      <ContextMenuItem onClick={() => handleContextMenuClick('muzzle')}>
-        {intl.formatMessage(messages.muzzle)}
-      </ContextMenuItem>
-      <ContextMenuItem onClick={() => handleContextMenuClick('unmuzzle')}>
-        {intl.formatMessage(messages.unmuzzle)}
-      </ContextMenuItem>
-      <ContextMenuSeparator />
-      <ContextMenuItem onClick={() => handleContextMenuClick('setlevel')}>
-        {intl.formatMessage(messages.setLevel)}
-      </ContextMenuItem>
-      <ContextMenuItem onClick={() => handleContextMenuClick('change-color')}>
-        {intl.formatMessage(messages.changeColor)}
-      </ContextMenuItem>
-      <ContextMenuItem onClick={() => handleContextMenuClick('change-flair')}>
-        {intl.formatMessage(messages.changeFlair)}
-      </ContextMenuItem>
-      <ContextMenuItem onClick={() => handleContextMenuClick('uwuify')}>
-        {intl.formatMessage(messages.uwuify)}
-      </ContextMenuItem>
-    </>
-  );
-
-  /**
-   * Renders the "Send" submenu content.
-   * Includes a "Back" button for mobile.
-   */
-  const renderSendMenu = () => (
-    <>
-      {isMobile && (
-        <SubMenuHeader onClick={() => setOpenSubMenu(null)}>
-          <FaChevronLeft />
-          <span>{intl.formatMessage(messages.send)}</span>
-        </SubMenuHeader>
-      )}
-      <ContextMenuItem onClick={() => handleContextMenuClick('send-solana')}>
-        <SiSolana />
-        <span>{intl.formatMessage(messages.sendSolana)}</span>
-      </ContextMenuItem>
-      <ContextMenuItem onClick={() => handleContextMenuClick('send-token')}>
-        <GiToken />
-        <span>{intl.formatMessage(messages.sendToken)}</span>
-      </ContextMenuItem>
-      <ContextMenuItem onClick={() => handleContextMenuClick('send-nft')}>
-        <RiNftLine />
-        <span>{intl.formatMessage(messages.sendNft)}</span>
-      </ContextMenuItem>
-    </>
-  );
-
-  /**
-   * Renders the main context menu items.
-   * Handles logic for displaying desktop submenus.
-   */
-  const renderMainMenu = () => (
-    <>
-      <ContextMenuItem onClick={() => handleContextMenuClick('mention')}>
-        {intl.formatMessage(messages.mention)}
-      </ContextMenuItem>
-      <ContextMenuItem onClick={() => handleContextMenuClick('ignore')}>
-        {intl.formatMessage(messages.ignore)}
-      </ContextMenuItem>
-      <ContextMenuItem onClick={() => handleContextMenuClick('invite')}>
-        {intl.formatMessage(messages.invite)}
-      </ContextMenuItem>
-      <ContextMenuItem onClick={() => handleContextMenuClick('whisper')}>
-        {intl.formatMessage(messages.whisper)}
-      </ContextMenuItem>
-
-      <ContextMenuSeparator />
-
-      <ContextMenuItem
-        onClick={
-          isMobile ? () => setOpenSubMenu('manage') : (e) => e.stopPropagation()
-        }
-        onMouseEnter={!isMobile ? () => setOpenSubMenu('manage') : null}
-      >
-        <FaChevronLeft />
-        <span>{intl.formatMessage(messages.manage)}</span>
-        {!isMobile && openSubMenu === 'manage' && (
-          <SubMenu>{renderManageMenu()}</SubMenu>
-        )}
-      </ContextMenuItem>
-
-      <ContextMenuItem
-        onClick={
-          isMobile ? () => setOpenSubMenu('send') : (e) => e.stopPropagation()
-        }
-        onMouseEnter={!isMobile ? () => setOpenSubMenu('send') : null}
-      >
-        <FaChevronLeft />
-        <span>{intl.formatMessage(messages.send)}</span>
-        {!isMobile && openSubMenu === 'send' && (
-          <SubMenu>{renderSendMenu()}</SubMenu>
-        )}
-      </ContextMenuItem>
-    </>
-  );
-
-  /**
-   * Main render function for the context menu.
-   * Decides which panel to show based on `isMobile` and `openSubMenu`.
-   */
-  const renderContextMenu = () => {
-    if (!contextMenu) return null;
-
-    let panelContent;
-    if (isMobile) {
-      switch (openSubMenu) {
-        case 'manage':
-          panelContent = renderManageMenu();
-          break;
-        case 'send':
-          panelContent = renderSendMenu();
-          break;
-        default:
-          panelContent = renderMainMenu();
-      }
-    } else {
-      panelContent = renderMainMenu();
-    }
-
-    return (
-      <ContextMenuOverlay
-        $isMobile={isMobile}
-        onClick={closeContextMenu}
-        onContextMenu={(e) => {
-          e.preventDefault();
-          closeContextMenu();
-        }}
-      >
-        <MenuPanel
-          $isMobile={isMobile}
-          $top={contextMenu.y}
-          $left={contextMenu.x}
-          onClick={(e) => e.stopPropagation()}
-          onMouseLeave={!isMobile ? () => setOpenSubMenu(null) : null}
-        >
-          {panelContent}
-        </MenuPanel>
-      </ContextMenuOverlay>
-    );
   };
 
   const handleCopyUrl = () => {
@@ -508,7 +275,11 @@ export function MainMenu({
         </MenuContent>
       </MenuWrapper>
 
-      {renderContextMenu()}
+      <UserContextMenu
+        contextMenu={contextMenu}
+        closeContextMenu={closeContextMenu}
+        onCommandClick={onCommandClick}
+      />
     </>
   );
 }

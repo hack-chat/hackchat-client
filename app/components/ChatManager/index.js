@@ -2,13 +2,15 @@
  * ChatManager displays the list of messages for a channel.
  */
 
-import React, { useEffect, useRef, useMemo } from 'react';
+import React, { useEffect, useRef, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import { compose } from 'redux';
 
 import { Message } from 'components/Message';
 import MessageFormatter from 'components/MessageFormatter';
+import UserContextMenu from 'components/UserContextMenu';
+import MessageContextMenu from 'components/MessageContextMenu';
 
 import Wrapper from './Wrapper';
 import messages from './messages';
@@ -23,6 +25,9 @@ export function ChatManager({
 }) {
   const scrollContainerRef = useRef(null);
   const isAtBottomRef = useRef(true);
+
+  const [contextMenu, setContextMenu] = useState(null);
+  const [messageContextMenu, setMessageContextMenu] = useState(null);
 
   const currentChannelData = useMemo(
     () => (channelData && channelData[channel]) || { users: [], messages: [] },
@@ -68,6 +73,51 @@ export function ChatManager({
     }
   };
 
+  const handleUserContextMenu = (user, event) => {
+    event.preventDefault();
+    setContextMenu({
+      user,
+      x: event.clientX,
+      y: event.clientY,
+    });
+  };
+
+  const closeUserContextMenu = () => {
+    setContextMenu(null);
+  };
+
+  const handleMessageLeftClick = (payload, user) => {
+    const username = user.username || payload.name || 'unknown';
+    const quoteText = payload.content
+      .split('\n')
+      .map((line) => `> ${line}`)
+      .join('\n');
+
+    handleMenuCommand(`${quoteText}\n\n@${username} `);
+  };
+
+  const handleMessageContextMenu = (payload, user, event) => {
+    event.preventDefault();
+    setMessageContextMenu({
+      payload,
+      user,
+      x: event.clientX,
+      y: event.clientY,
+    });
+  };
+
+  const closeMessageContextMenu = () => {
+    setMessageContextMenu(null);
+  };
+
+  const handleMessageMenuAction = (command, payload, user) => {
+    if (command === 'reply') {
+      handleMessageLeftClick(payload, user);
+    } else if (command === 'edit' && payload.id) {
+      handleMenuCommand(`/edit ${payload.id} `);
+    }
+  };
+
   const users = useMemo(() => {
     const onlineUsers = Object.values(currentChannelData.users)
       .filter((user) => user.online)
@@ -107,7 +157,7 @@ export function ChatManager({
     return currentChannelData.messages.map((msg, index, allMessages) => {
       const user =
         typeof msg.data.userid !== 'undefined'
-          ? currentChannelData.users[msg.data.userid]
+          ? currentChannelData.users[msg.data.userid] || {}
           : {};
 
       const previousMsg = allMessages[index - 1];
@@ -129,6 +179,9 @@ export function ChatManager({
           key={`msg-${index}`}
           msgForm={MessageFormatter}
           handleMention={handleMenuCommand}
+          handleContextMenu={handleUserContextMenu}
+          onMessageClick={handleMessageLeftClick}
+          onMessageContextMenu={handleMessageContextMenu}
           extended={isExtended}
           type={msg.type}
           payload={msg.data}
@@ -149,6 +202,18 @@ export function ChatManager({
     >
       {welcomeMessage}
       {messageElements}
+
+      <UserContextMenu
+        contextMenu={contextMenu}
+        closeContextMenu={closeUserContextMenu}
+        onCommandClick={handleMenuCommand}
+      />
+
+      <MessageContextMenu
+        contextMenu={messageContextMenu}
+        closeContextMenu={closeMessageContextMenu}
+        onCommandClick={handleMessageMenuAction}
+      />
     </Wrapper>
   );
 }
