@@ -62,7 +62,7 @@ if (!window.__WALLET_CACHE__) {
 
 const WALLET_CACHE = window.__WALLET_CACHE__;
 
-const RPC_URL = `https://solana-rpc.parafi.tech`;
+const RPC_URL = `https://rpc.solanatracker.io/public`;
 const connection = new Connection(RPC_URL, 'confirmed');
 
 function* connectAccountSaga({ account }) {

@@ -107,6 +107,7 @@ function initWebsocket() {
             username: userRecord.username,
             usertrip: userRecord.usertrip,
             flair: userRecord.flair,
+            effect: userRecord.effect,
           };
         }
       });
@@ -137,6 +138,7 @@ function initWebsocket() {
           username: payload.username,
           usertrip: payload.usertrip,
           flair: payload.flair,
+          effect: payload.effect,
         },
       });
 
@@ -157,6 +159,7 @@ function initWebsocket() {
           username: payload.username,
           usertrip: payload.usertrip,
           flair: payload.flair,
+          effect: payload.effect,
         },
       });
 
@@ -178,6 +181,7 @@ function initWebsocket() {
           username: payload.username,
           usertrip: payload.usertrip,
           flair: payload.flair,
+          effect: payload.effect,
         },
       });
 
@@ -259,6 +263,7 @@ function initWebsocket() {
             username: payload.from.username,
             usertrip: payload.from.usertrip,
             flair: payload.from.flair,
+            effect: payload.effect,
           },
           fromMe: payload.fromMe,
           to: {
@@ -274,6 +279,7 @@ function initWebsocket() {
             username: payload.to.username,
             usertrip: payload.to.usertrip,
             flair: payload.to.flair,
+            effect: payload.effect,
           },
         },
       });
@@ -304,6 +310,7 @@ function initWebsocket() {
           from: {
             nickColor: payload.from.nickColor,
             flair: payload.from.flair,
+            effect: payload.effect,
             userid: payload.from.userid,
             username: payload.from.username,
             usertrip: payload.from.usertrip,

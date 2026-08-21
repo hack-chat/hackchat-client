@@ -15,11 +15,14 @@ const Spoiler = ({ children }) => {
 
   return (
     <span
-      onClick={() => setIsRevealed((prev) => !prev)}
+      onClick={(e) => {
+        e.stopPropagation();
+        setIsRevealed((prev) => !prev);
+      }}
       style={{
         backgroundColor: isRevealed
-          ? 'rgba(0,0,0,0.1)'
-          : 'rgba(79, 77, 66, 0.77)',
+          ? 'rgba(0 0 0 / 10%)'
+          : 'rgba(79 77 66 / 77%)',
         color: isRevealed ? 'inherit' : 'transparent',
         borderRadius: '3px',
         cursor: 'pointer',

@@ -56,6 +56,7 @@ const Nick = ({ user, handleMention, handleContextMenu }) => {
       onClick={handleClick}
       onContextMenu={handleRightClick}
       $color={`#${user.nickColor}`}
+      $effect={user.effect}
     >
       {trip}
       {user.username}
