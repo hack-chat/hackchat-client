@@ -225,6 +225,7 @@ const communicationProviderReducer = (state = initialState, action) =>
         draft.channels[action.data.channel].messages.push({
           type: 'emote',
           data: action.data,
+          user: action.user,
         });
         break;
       case INVITE:

@@ -52,6 +52,7 @@ import {
   SIGN_MESSAGE_SUCCESS,
   SIGN_MESSAGE_FAILURE,
   INCOMING_SIGN_REQUEST,
+  DISCONNECT_WALLET,
 } from 'containers/WalletLayer/constants';
 import {
   setPendingSignRequest,
@@ -213,12 +214,27 @@ function initWebsocket() {
         },
       });
 
-    const onEmote = (payload) =>
+    const onEmote = (payload) => 
       emitter({
         type: EMOTE,
         data: {
           channel: payload.channel,
           content: payload.content,
+        },
+        user: {
+          blocked: payload.user.blocked,
+          bot: payload.user.bot,
+          mine: payload.user.mine,
+          nickColor: payload.user.nickColor,
+          online: payload.user.online,
+          permissionLevel: payload.user.permissionLevel,
+          userhash: payload.user.userhash,
+          userid: payload.user.userid,
+          userlevel: payload.user.userlevel,
+          username: payload.user.username,
+          usertrip: payload.user.usertrip,
+          flair: payload.user.flair,
+          effect: payload.user.effect,
         },
       });
 
@@ -488,6 +504,12 @@ export default function* communicationProviderSaga() {
 
   yield takeLatest(SIGN_MESSAGE_FAILURE, () => {
     waitingOnSIW = false;
+  });
+
+  yield takeLatest(DISCONNECT_WALLET, () => {
+    if (hcClient && hcClient.ws) {
+      hcClient.ws.send({ cmd: 'disconnectwallet' });
+    }
   });
 
   yield takeLatest(INCOMING_SIGN_REQUEST, handleIncomingSignRequest);

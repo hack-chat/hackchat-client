@@ -2,7 +2,7 @@
  * HomePage will
  */
 
-import React, { useEffect, useMemo, useState, memo, useRef } from 'react';
+import React, { useEffect, useMemo, useState, memo, useRef, useCallback } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
@@ -157,6 +157,11 @@ export function HomePage({
 
   const chatInputRef = useRef(null);
 
+  const channelUsersRef = useRef({});
+  useEffect(() => {
+    channelUsersRef.current = channelData?.[channel]?.users || {};
+  }, [channelData, channel]);
+
   useEffect(() => {
     setIsFocused(document.hasFocus());
 
@@ -192,25 +197,25 @@ export function HomePage({
     prevMessageCountRef.current = currentMessageCount;
   }, [currentMessageCount, isFocused, baseTitle]);
 
-  const handleExternalLinkClick = (url) => {
+  const handleExternalLinkClick = useCallback((url) => {
     if (suppressLinkWarning) {
       window.open(url, '_blank', 'noopener,noreferrer');
     } else {
       setTempSuppressCheckbox(false);
       setExternalUrlToWarn(url);
     }
-  };
+  }, [suppressLinkWarning]);
 
-  const handleTxAttemptClick = (tx) => {
+  const handleTxAttemptClick = useCallback((tx) => {
     if (suppressTxWarning) {
       onDoTransfer(tx);
     } else {
       setTempSuppressTxCheckbox(false);
       setTxToWarn(tx);
     }
-  };
+  }, [suppressTxWarning, onDoTransfer]);
 
-  const handleMenuCommand = (commandText) => {
+  const handleMenuCommand = useCallback((commandText) => {
     const mentionMatch = commandText.match(/^@\S+\s$/);
 
     if (mentionMatch) {
@@ -299,7 +304,10 @@ export function HomePage({
     }
 
     chatInputRef.current?.setCommand(commandText);
-  };
+  }, [
+    channel, onKickUser, onBanUser, onIgnoreUser, onInviteUser, 
+    onMuteUser, onUnmuteUser, onUwuifyUser
+  ]);
 
   useEffect(() => {
     if (!sessionReady) return;

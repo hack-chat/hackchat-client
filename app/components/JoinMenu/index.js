@@ -91,6 +91,10 @@ export function JoinMenu({
   const hideChannel = !!qString;
 
   useEffect(() => {
+    setChosenChannel(qString || '');
+  }, [qString, setChosenChannel]);
+
+  useEffect(() => {
     if (suggestionsRef.current) {
       const activeElement = suggestionsRef.current.querySelector('.active');
       if (activeElement) {
@@ -147,7 +151,7 @@ export function JoinMenu({
       toggleInvalidName();
     }
 
-    const chan = chosenChannel || qString;
+    const chan = qString || chosenChannel;
 
     if (!chan) {
       err = true;

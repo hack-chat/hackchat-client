@@ -2,7 +2,7 @@
  * ChatManager displays the list of messages for a channel.
  */
 
-import React, { useEffect, useRef, useMemo, useState } from 'react';
+import React, { useEffect, useRef, useMemo, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import { compose } from 'redux';
@@ -14,6 +14,8 @@ import MessageContextMenu from 'components/MessageContextMenu';
 
 import Wrapper from './Wrapper';
 import messages from './messages';
+
+const EMPTY_USER = {};
 
 export function ChatManager({
   channel,
@@ -73,20 +75,20 @@ export function ChatManager({
     }
   };
 
-  const handleUserContextMenu = (user, event) => {
+  const handleUserContextMenu = useCallback((user, event) => {
     event.preventDefault();
     setContextMenu({
       user,
       x: event.clientX,
       y: event.clientY,
     });
-  };
+  }, []);
 
   const closeUserContextMenu = () => {
     setContextMenu(null);
   };
 
-  const handleMessageLeftClick = (payload, user) => {
+  const handleMessageLeftClick = useCallback((payload, user) => {
     const username = user.username || payload.name || 'unknown';
     const quoteText = payload.content
       .split('\n')
@@ -94,9 +96,9 @@ export function ChatManager({
       .join('\n');
 
     handleMenuCommand(`${quoteText}\n\n@${username} `);
-  };
+  }, [handleMenuCommand]);
 
-  const handleMessageContextMenu = (payload, user, event) => {
+  const handleMessageContextMenu = useCallback((payload, user, event) => {
     event.preventDefault();
     setMessageContextMenu({
       payload,
@@ -104,7 +106,7 @@ export function ChatManager({
       x: event.clientX,
       y: event.clientY,
     });
-  };
+  }, []);
 
   const closeMessageContextMenu = () => {
     setMessageContextMenu(null);
@@ -150,25 +152,27 @@ export function ChatManager({
     [channel, users, intl],
   );
 
-  const messageElements = useMemo(() => {
+const messageElements = useMemo(() => {
     let lastUserId = null;
     let stripe = false;
 
     return currentChannelData.messages.map((msg, index, allMessages) => {
-      const user =
-        typeof msg.data.userid !== 'undefined'
-          ? currentChannelData.users[msg.data.userid] || {}
-          : {};
+      const currentUserId = msg.data.userid || (msg.user && msg.user.userid);
+      const user = currentUserId
+        ? currentChannelData.users[currentUserId] || msg.user || EMPTY_USER
+        : msg.user || EMPTY_USER;
 
       const previousMsg = allMessages[index - 1];
+      const previousUserId = previousMsg 
+        ? (previousMsg.data.userid || (previousMsg.user && previousMsg.user.userid)) 
+        : null;
 
       const isExtended =
         previousMsg &&
         previousMsg.type === 'chat' &&
         msg.type === 'chat' &&
-        previousMsg.data.userid === msg.data.userid;
+        previousUserId === currentUserId;
 
-      const currentUserId = msg.data.userid;
       if (currentUserId && currentUserId !== lastUserId) {
         stripe = !stripe;
         lastUserId = currentUserId;

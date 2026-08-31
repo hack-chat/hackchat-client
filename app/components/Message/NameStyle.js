@@ -110,7 +110,7 @@ const blurReveal = keyframes`
   50% { filter: blur(2px); opacity: 0.8; }
 `;
 
-const applyEffect = (effect) => {
+export const applyEffect = (effect) => {
   //if (effect !== 0) effect = 16;
   switch (effect) {
     case 1:

@@ -24,7 +24,7 @@ import LeaveStyle from './LeaveStyle';
 import EmoteStyle from './EmoteStyle';
 import ChatStyle from './ChatStyle';
 import WhisperStyle from './WhisperStyle';
-import NameStyle from './NameStyle';
+import NameStyle, { applyEffect } from './NameStyle';
 import TripStyle from './TripStyle';
 import HackStyle from './HackStyle';
 import ExpandButton from './ExpandButton';
@@ -33,6 +33,10 @@ const ExtendedMessageContent = styled(MessageContent)`
   @media (width >= 768px) {
     /* im sure we will need this at some point */
   }
+`;
+
+const EmoteNameStyle = styled.span`
+  ${(props) => applyEffect(props.$effect)}
 `;
 
 const TRUNCATION_CHAR_THRESHOLD = 450;
@@ -330,11 +334,30 @@ export const Message = memo(
         const ContentWrapper = extended
           ? ExtendedMessageContent
           : MessageContent;
+
+        let namePart = user ? `@${user.username}` : '';
+        let restPart = payload.content;
+
+        if (namePart && typeof payload.content === 'string' && payload.content.startsWith(namePart)) {
+          restPart = payload.content.substring(namePart.length);
+        } else {
+          namePart = '';
+        }
+
         return (
           <MessageContainer>
             <NickPlaceholder />
             <ContentWrapper $hasBackground={hasBackground}>
-              <EmoteStyle>{payload.content}</EmoteStyle>
+              <EmoteStyle>
+                {namePart ? (
+                  <>
+                    <EmoteNameStyle $effect={user.effect}>{namePart}</EmoteNameStyle>
+                    {restPart}
+                  </>
+                ) : (
+                  payload.content
+                )}
+              </EmoteStyle>
             </ContentWrapper>
           </MessageContainer>
         );
