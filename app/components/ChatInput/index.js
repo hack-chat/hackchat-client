@@ -65,14 +65,51 @@ const isInProtectedBlock = (text, cursorIndex) => {
   let inHighlight = false;
 
   for (const token of tokens) {
-    if (token === '```' && !inInlineCode && !inMathBlock && !inInlineMath && !inHighlight) inCodeBlock = !inCodeBlock;
-    else if (token === '`' && !inCodeBlock && !inMathBlock && !inInlineMath && !inHighlight) inInlineCode = !inInlineCode;
-    else if (token === '$$' && !inCodeBlock && !inInlineCode && !inInlineMath && !inHighlight) inMathBlock = !inMathBlock;
-    else if (token === '$' && !inCodeBlock && !inInlineCode && !inMathBlock && !inHighlight) inInlineMath = !inInlineMath;
-    else if (token === '==' && !inCodeBlock && !inInlineCode && !inMathBlock && !inInlineMath) inHighlight = !inHighlight;
+    if (
+      token === '```' &&
+      !inInlineCode &&
+      !inMathBlock &&
+      !inInlineMath &&
+      !inHighlight
+    )
+      inCodeBlock = !inCodeBlock;
+    else if (
+      token === '`' &&
+      !inCodeBlock &&
+      !inMathBlock &&
+      !inInlineMath &&
+      !inHighlight
+    )
+      inInlineCode = !inInlineCode;
+    else if (
+      token === '$$' &&
+      !inCodeBlock &&
+      !inInlineCode &&
+      !inInlineMath &&
+      !inHighlight
+    )
+      inMathBlock = !inMathBlock;
+    else if (
+      token === '$' &&
+      !inCodeBlock &&
+      !inInlineCode &&
+      !inMathBlock &&
+      !inHighlight
+    )
+      inInlineMath = !inInlineMath;
+    else if (
+      token === '==' &&
+      !inCodeBlock &&
+      !inInlineCode &&
+      !inMathBlock &&
+      !inInlineMath
+    )
+      inHighlight = !inHighlight;
   }
 
-  return inCodeBlock || inInlineCode || inMathBlock || inInlineMath || inHighlight;
+  return (
+    inCodeBlock || inInlineCode || inMathBlock || inInlineMath || inHighlight
+  );
 };
 
 const parseMessage = (text) => {
@@ -282,7 +319,10 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
         if (suggestions.length > 0) {
           evt.preventDefault();
           setActiveSuggestion((prev) => (prev > 0 ? prev - 1 : 0));
-        } else if (historyIndex !== -1 || inputRef.current.selectionStart === 0) {
+        } else if (
+          historyIndex !== -1 ||
+          inputRef.current.selectionStart === 0
+        ) {
           evt.preventDefault();
           const newIndex = Math.min(historyIndex + 1, history.length - 1);
           if (newIndex >= 0 && newIndex !== historyIndex) {
@@ -304,7 +344,10 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
           setActiveSuggestion((prev) =>
             prev < suggestions.length - 1 ? prev + 1 : prev,
           );
-        } else if (historyIndex !== -1 || inputRef.current.selectionStart === inputValue.length) {
+        } else if (
+          historyIndex !== -1 ||
+          inputRef.current.selectionStart === inputValue.length
+        ) {
           evt.preventDefault();
           const newIndex = Math.max(historyIndex - 1, -1);
           if (newIndex !== historyIndex) {
@@ -486,11 +529,17 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             onKeyUp={(e) => {
-              if (['ArrowLeft', 'ArrowRight', 'Backspace', 'Delete'].includes(e.key)) {
+              if (
+                ['ArrowLeft', 'ArrowRight', 'Backspace', 'Delete'].includes(
+                  e.key,
+                )
+              ) {
                 updateSuggestions(inputValue, e.target.selectionStart);
               }
             }}
-            onMouseUp={(e) => updateSuggestions(inputValue, e.target.selectionStart)}
+            onMouseUp={(e) =>
+              updateSuggestions(inputValue, e.target.selectionStart)
+            }
             placeholder={placeholder}
           />
         )}

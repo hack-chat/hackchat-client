@@ -355,7 +355,9 @@ export const Message = memo(
           namePart = '';
         }
 
-        const hoverTime = payload.time ? new Date(payload.time).toLocaleString() : '';
+        const hoverTime = payload.time
+          ? new Date(payload.time).toLocaleString()
+          : '';
 
         return (
           <MessageContainer>
@@ -405,7 +407,9 @@ export const Message = memo(
           </MessageContainer>
         );
       case 'join': {
-        const hoverTime = payload.time ? new Date(payload.time).toLocaleString() : '';
+        const hoverTime = payload.time
+          ? new Date(payload.time).toLocaleString()
+          : '';
         return (
           <MessageContainer>
             <NickPlaceholder />
@@ -422,7 +426,9 @@ export const Message = memo(
         );
       }
       case 'leave': {
-        const hoverTime = payload.time ? new Date(payload.time).toLocaleString() : '';
+        const hoverTime = payload.time
+          ? new Date(payload.time).toLocaleString()
+          : '';
         return (
           <MessageContainer>
             <NickPlaceholder />
