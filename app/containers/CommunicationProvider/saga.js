@@ -67,6 +67,7 @@ const hcClient = new Client({
 window.hcClient = hcClient;
 
 let waitingOnSIW = false;
+let currentSiwAddress = null;
 
 export function* handleIncomingSignRequest(action) {
   const { wallet, message } = action;
@@ -491,6 +492,11 @@ export default function* communicationProviderSaga() {
   });
 
   yield takeLatest(SET_ACCOUNT, (action) => {
+    if (currentSiwAddress === action.account.address) {
+      return;
+    }
+
+    currentSiwAddress = action.account.address;
     waitingOnSIW = true;
     hcClient.requestSiw(action.account.name, action.account.address);
   });
@@ -504,9 +510,11 @@ export default function* communicationProviderSaga() {
 
   yield takeLatest(SIGN_MESSAGE_FAILURE, () => {
     waitingOnSIW = false;
+    currentSiwAddress = null;
   });
 
   yield takeLatest(DISCONNECT_WALLET, () => {
+    currentSiwAddress = null;
     if (hcClient && hcClient.ws) {
       hcClient.ws.send({ cmd: 'disconnectwallet' });
     }

@@ -24,11 +24,11 @@ const messages = {
     defaultMessage: '{nick} left',
   },
   whisperTo: {
-    id: `${scope}.whisper`,
+    id: `${scope}.whisperTo`,
     defaultMessage: 'You whispered to {nick}:',
   },
   whisperFrom: {
-    id: `${scope}.whisper`,
+    id: `${scope}.whisperFrom`,
     defaultMessage: '{nick} whispered:',
   },
   acceptCode: {

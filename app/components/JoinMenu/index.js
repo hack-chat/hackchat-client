@@ -270,7 +270,7 @@ export function JoinMenu({
         </InputGroup>
       </AutocompleteWrapper>
 
-      <JoinButton type="submit">{joinModalBtn}</JoinButton>
+      <JoinButton type="submit" onClick={doJoin}>{joinModalBtn}</JoinButton>
     </Form>
   );
 }
