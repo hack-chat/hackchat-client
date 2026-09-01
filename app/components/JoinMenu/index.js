@@ -174,11 +174,12 @@ export function JoinMenu({
   };
 
   return (
-    <Form>
+    <Form onSubmit={doJoin}>
       <InputGroup>
         <InputGroupText>@</InputGroupText>
         <Input
-          autoComplete="on"
+          name="username"
+          autoComplete="username"
           autoFocus
           className={invalidName ? 'invalid' : ''}
           placeholder={joinModalUsername}
@@ -198,8 +199,9 @@ export function JoinMenu({
       <InputGroup>
         <InputGroupText>#</InputGroupText>
         <Input
+          name="password"
           type="password"
-          autoComplete="on"
+          autoComplete="current-password"
           placeholder={joinModalPassword}
           defaultValue={password}
           onChange={(e) => setChosenPassword(e.target.value)}
@@ -234,6 +236,7 @@ export function JoinMenu({
         <InputGroup>
           <InputGroupText>?</InputGroupText>
           <Input
+            name="channel"
             autoComplete="off"
             className={invalidChannel ? 'invalid' : ''}
             placeholder={joinModalChannel}
@@ -253,6 +256,7 @@ export function JoinMenu({
           />
           <InputGroupText id="randomButton">
             <RandomButton
+              type="button"
               title={randomButtonText}
               onClick={() => {
                 const newChan = Math.random().toString(36).substr(2, 8);
@@ -266,7 +270,7 @@ export function JoinMenu({
         </InputGroup>
       </AutocompleteWrapper>
 
-      <JoinButton onClick={(e) => doJoin(e)}>{joinModalBtn}</JoinButton>
+      <JoinButton type="submit">{joinModalBtn}</JoinButton>
     </Form>
   );
 }

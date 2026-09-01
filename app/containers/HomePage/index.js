@@ -2,7 +2,14 @@
  * HomePage will
  */
 
-import React, { useEffect, useMemo, useState, memo, useRef, useCallback } from 'react';
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+  memo,
+  useRef,
+  useCallback,
+} from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
@@ -11,6 +18,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import DOMPurify from 'dompurify';
+import styled, { keyframes } from 'styled-components';
 
 import { FaMarkdown, FaGithub } from 'react-icons/fa6';
 import { SiLatex } from 'react-icons/si';
@@ -85,6 +93,17 @@ const useUrlChannel = () => {
   const { search } = useLocation();
   return useMemo(() => search.substring(1), [search]);
 };
+
+const delayedFade = keyframes`
+  0% { opacity: 0; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+`;
+
+const FadeInContainer = styled.div`
+  animation: ${delayedFade} 0.3s ease-in forwards;
+  width: 100%;
+`;
 
 export function HomePage({
   channel,
@@ -190,6 +209,7 @@ export function HomePage({
       setMissedMessages((prev) => {
         const newMissedCount = prev + diff;
         document.title = `(${newMissedCount}) ${baseTitle}`;
+
         return newMissedCount;
       });
     }
@@ -197,117 +217,140 @@ export function HomePage({
     prevMessageCountRef.current = currentMessageCount;
   }, [currentMessageCount, isFocused, baseTitle]);
 
-  const handleExternalLinkClick = useCallback((url) => {
-    if (suppressLinkWarning) {
-      window.open(url, '_blank', 'noopener,noreferrer');
-    } else {
-      setTempSuppressCheckbox(false);
-      setExternalUrlToWarn(url);
-    }
-  }, [suppressLinkWarning]);
+  const handleExternalLinkClick = useCallback(
+    (url) => {
+      if (suppressLinkWarning) {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      } else {
+        setTempSuppressCheckbox(false);
+        setExternalUrlToWarn(url);
+      }
+    },
+    [suppressLinkWarning],
+  );
 
-  const handleTxAttemptClick = useCallback((tx) => {
-    if (suppressTxWarning) {
-      onDoTransfer(tx);
-    } else {
-      setTempSuppressTxCheckbox(false);
-      setTxToWarn(tx);
-    }
-  }, [suppressTxWarning, onDoTransfer]);
+  const handleTxAttemptClick = useCallback(
+    (tx) => {
+      if (suppressTxWarning) {
+        onDoTransfer(tx);
+      } else {
+        setTempSuppressTxCheckbox(false);
+        setTxToWarn(tx);
+      }
+    },
+    [suppressTxWarning, onDoTransfer],
+  );
 
-  const handleMenuCommand = useCallback((commandText) => {
-    const mentionMatch = commandText.match(/^@\S+\s$/);
+  const handleMenuCommand = useCallback(
+    (commandText) => {
+      const mentionMatch = commandText.match(/^@\S+\s$/);
 
-    if (mentionMatch) {
-      chatInputRef.current?.insertText(
-        commandText.substr(0, commandText.length),
-      );
-      return;
-    }
-
-    const kickMatch = commandText.match(/^\/kick @(.+)/);
-    const banMatch = commandText.match(/^\/ban @(.+)/);
-    const ignoreMatch = commandText.match(/^\/ignore @(.+)/);
-    const inviteMatch = commandText.match(/^\/invite @(.+)/);
-    const muzzleMatch = commandText.match(/^\/muzzle @(.+)/);
-    const unmuzzleMatch = commandText.match(/^\/unmuzzle @(.+)/);
-    const uwuifyMatch = commandText.match(/^\/uwuify @(.+)/);
-
-    if (
-      kickMatch ||
-      banMatch ||
-      ignoreMatch ||
-      inviteMatch ||
-      muzzleMatch ||
-      unmuzzleMatch ||
-      uwuifyMatch
-    ) {
-      const username =
-        (kickMatch && kickMatch[1]) ||
-        (banMatch && banMatch[1]) ||
-        (ignoreMatch && ignoreMatch[1]) ||
-        (inviteMatch && inviteMatch[1]) ||
-        (muzzleMatch && muzzleMatch[1]) ||
-        (unmuzzleMatch && unmuzzleMatch[1]) ||
-        (uwuifyMatch && uwuifyMatch[1]);
-
-      const users = channelData[channel]?.users;
-
-      if (!users) {
-        // eslint-disable-next-line no-console
-        console.warn('User list not available for this channel.');
+      if (mentionMatch) {
+        chatInputRef.current?.insertText(
+          commandText.substr(0, commandText.length),
+        );
         return;
       }
 
-      const targetUser = Object.values(users).find(
-        (u) => u.username === username,
-      );
+      const kickMatch = commandText.match(/^\/kick @(.+)/);
+      const banMatch = commandText.match(/^\/ban @(.+)/);
+      const ignoreMatch = commandText.match(/^\/ignore @(.+)/);
+      const inviteMatch = commandText.match(/^\/invite @(.+)/);
+      const muzzleMatch = commandText.match(/^\/muzzle @(.+)/);
+      const unmuzzleMatch = commandText.match(/^\/unmuzzle @(.+)/);
+      const uwuifyMatch = commandText.match(/^\/uwuify @(.+)/);
 
-      if (targetUser) {
-        if (kickMatch) {
+      if (
+        kickMatch ||
+        banMatch ||
+        ignoreMatch ||
+        inviteMatch ||
+        muzzleMatch ||
+        unmuzzleMatch ||
+        uwuifyMatch
+      ) {
+        const username =
+          (kickMatch && kickMatch[1]) ||
+          (banMatch && banMatch[1]) ||
+          (ignoreMatch && ignoreMatch[1]) ||
+          (inviteMatch && inviteMatch[1]) ||
+          (muzzleMatch && muzzleMatch[1]) ||
+          (unmuzzleMatch && unmuzzleMatch[1]) ||
+          (uwuifyMatch && uwuifyMatch[1]);
+
+        const users = channelData[channel]?.users;
+
+        if (!users) {
           // eslint-disable-next-line no-console
-          console.log(`Kicking user: ${username} (ID: ${targetUser.userid})`);
-          onKickUser(channel, targetUser.userid);
-        } else if (banMatch) {
-          // eslint-disable-next-line no-console
-          console.log(`Banning user: ${username} (ID: ${targetUser.userid})`);
-          onBanUser(channel, targetUser.userid);
-        } else if (ignoreMatch) {
-          // eslint-disable-next-line no-console
-          console.log(`Ignoring user: ${username} (ID: ${targetUser.userid})`);
-          onIgnoreUser(channel, targetUser.userid);
-        } else if (inviteMatch) {
-          // eslint-disable-next-line no-console
-          console.log(`Inviting user: ${username} (ID: ${targetUser.userid})`);
-          onInviteUser(channel, targetUser.userid);
-        } else if (muzzleMatch) {
-          // eslint-disable-next-line no-console
-          console.log(`Muzzling user: ${username} (ID: ${targetUser.userid})`);
-          onMuteUser(channel, targetUser.userid);
-        } else if (unmuzzleMatch) {
-          // eslint-disable-next-line no-console
-          console.log(
-            `Unmuzzling user: ${username} (ID: ${targetUser.userid})`,
-          );
-          onUnmuteUser(channel, targetUser.userid);
-        } else if (uwuifyMatch) {
-          // eslint-disable-next-line no-console
-          console.log(`Uwuifying user: ${username} (ID: ${targetUser.userid})`);
-          onUwuifyUser(channel, targetUser.userid);
+          console.warn('User list not available for this channel.');
+          return;
         }
-      } else {
-        // eslint-disable-next-line no-console
-        console.warn(`Could not find user "${username}" to perform action.`);
-        chatInputRef.current?.setCommand(commandText);
-      }
-      return;
-    }
 
-    chatInputRef.current?.setCommand(commandText);
-  }, [
-    channel, onKickUser, onBanUser, onIgnoreUser, onInviteUser, 
-    onMuteUser, onUnmuteUser, onUwuifyUser
-  ]);
+        const targetUser = Object.values(users).find(
+          (u) => u.username === username,
+        );
+
+        if (targetUser) {
+          if (kickMatch) {
+            // eslint-disable-next-line no-console
+            console.log(`Kicking user: ${username} (ID: ${targetUser.userid})`);
+            onKickUser(channel, targetUser.userid);
+          } else if (banMatch) {
+            // eslint-disable-next-line no-console
+            console.log(`Banning user: ${username} (ID: ${targetUser.userid})`);
+            onBanUser(channel, targetUser.userid);
+          } else if (ignoreMatch) {
+            // eslint-disable-next-line no-console
+            console.log(
+              `Ignoring user: ${username} (ID: ${targetUser.userid})`,
+            );
+            onIgnoreUser(channel, targetUser.userid);
+          } else if (inviteMatch) {
+            // eslint-disable-next-line no-console
+            console.log(
+              `Inviting user: ${username} (ID: ${targetUser.userid})`,
+            );
+            onInviteUser(channel, targetUser.userid);
+          } else if (muzzleMatch) {
+            // eslint-disable-next-line no-console
+            console.log(
+              `Muzzling user: ${username} (ID: ${targetUser.userid})`,
+            );
+            onMuteUser(channel, targetUser.userid);
+          } else if (unmuzzleMatch) {
+            // eslint-disable-next-line no-console
+            console.log(
+              `Unmuzzling user: ${username} (ID: ${targetUser.userid})`,
+            );
+            onUnmuteUser(channel, targetUser.userid);
+          } else if (uwuifyMatch) {
+            // eslint-disable-next-line no-console
+            console.log(
+              `Uwuifying user: ${username} (ID: ${targetUser.userid})`,
+            );
+            onUwuifyUser(channel, targetUser.userid);
+          }
+        } else {
+          // eslint-disable-next-line no-console
+          console.warn(`Could not find user "${username}" to perform action.`);
+          chatInputRef.current?.setCommand(commandText);
+        }
+        return;
+      }
+
+      chatInputRef.current?.setCommand(commandText);
+    },
+    [
+      channel,
+      onKickUser,
+      onBanUser,
+      onIgnoreUser,
+      onInviteUser,
+      onMuteUser,
+      onUnmuteUser,
+      onUwuifyUser,
+    ],
+  );
 
   useEffect(() => {
     if (!sessionReady) return;
@@ -385,7 +428,7 @@ export function HomePage({
   }
 
   const HomePageContent = (
-    <>
+    <FadeInContainer>
       <Center>
         <Banner>
           {`
@@ -464,7 +507,7 @@ export function HomePage({
           </Link>
         </Socials>
       </Center>
-    </>
+    </FadeInContainer>
   );
 
   return (

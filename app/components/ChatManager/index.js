@@ -2,7 +2,13 @@
  * ChatManager displays the list of messages for a channel.
  */
 
-import React, { useEffect, useRef, useMemo, useState, useCallback } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useMemo,
+  useState,
+  useCallback,
+} from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import { compose } from 'redux';
@@ -88,15 +94,18 @@ export function ChatManager({
     setContextMenu(null);
   };
 
-  const handleMessageLeftClick = useCallback((payload, user) => {
-    const username = user.username || payload.name || 'unknown';
-    const quoteText = payload.content
-      .split('\n')
-      .map((line) => `> ${line}`)
-      .join('\n');
+  const handleMessageLeftClick = useCallback(
+    (payload, user) => {
+      const username = user.username || payload.name || 'unknown';
+      const quoteText = payload.content
+        .split('\n')
+        .map((line) => `> ${line}`)
+        .join('\n');
 
-    handleMenuCommand(`${quoteText}\n\n@${username} `);
-  }, [handleMenuCommand]);
+      handleMenuCommand(`${quoteText}\n\n@${username} `);
+    },
+    [handleMenuCommand],
+  );
 
   const handleMessageContextMenu = useCallback((payload, user, event) => {
     event.preventDefault();
@@ -152,7 +161,7 @@ export function ChatManager({
     [channel, users, intl],
   );
 
-const messageElements = useMemo(() => {
+  const messageElements = useMemo(() => {
     let lastUserId = null;
     let stripe = false;
 
@@ -163,8 +172,9 @@ const messageElements = useMemo(() => {
         : msg.user || EMPTY_USER;
 
       const previousMsg = allMessages[index - 1];
-      const previousUserId = previousMsg 
-        ? (previousMsg.data.userid || (previousMsg.user && previousMsg.user.userid)) 
+      const previousUserId = previousMsg
+        ? previousMsg.data.userid ||
+          (previousMsg.user && previousMsg.user.userid)
         : null;
 
       const isExtended =

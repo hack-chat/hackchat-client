@@ -338,7 +338,11 @@ export const Message = memo(
         let namePart = user ? `@${user.username}` : '';
         let restPart = payload.content;
 
-        if (namePart && typeof payload.content === 'string' && payload.content.startsWith(namePart)) {
+        if (
+          namePart &&
+          typeof payload.content === 'string' &&
+          payload.content.startsWith(namePart)
+        ) {
           restPart = payload.content.substring(namePart.length);
         } else {
           namePart = '';
@@ -351,7 +355,9 @@ export const Message = memo(
               <EmoteStyle>
                 {namePart ? (
                   <>
-                    <EmoteNameStyle $effect={user.effect}>{namePart}</EmoteNameStyle>
+                    <EmoteNameStyle $effect={user.effect}>
+                      {namePart}
+                    </EmoteNameStyle>
                     {restPart}
                   </>
                 ) : (

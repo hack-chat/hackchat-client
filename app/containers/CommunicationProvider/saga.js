@@ -148,19 +148,19 @@ function initWebsocket() {
         type: USER_LEFT,
         channel: payload.channel,
         user: {
-          blocked: payload.blocked,
-          bot: payload.bot,
-          mine: payload.mine,
-          nickColor: payload.nickColor,
-          online: payload.online,
-          permissionLevel: payload.permissionLevel,
-          userhash: payload.userhash,
-          userid: payload.userid,
-          userlevel: payload.userlevel,
-          username: payload.username,
-          usertrip: payload.usertrip,
-          flair: payload.flair,
-          effect: payload.effect,
+          blocked: payload.user.blocked,
+          bot: payload.user.bot,
+          mine: payload.user.mine,
+          nickColor: payload.user.nickColor,
+          online: payload.user.online,
+          permissionLevel: payload.user.permissionLevel,
+          userhash: payload.user.userhash,
+          userid: payload.user.userid,
+          userlevel: payload.user.userlevel,
+          username: payload.user.username,
+          usertrip: payload.user.usertrip,
+          flair: payload.user.flair,
+          effect: payload.user.effect,
         },
       });
 
@@ -214,7 +214,7 @@ function initWebsocket() {
         },
       });
 
-    const onEmote = (payload) => 
+    const onEmote = (payload) =>
       emitter({
         type: EMOTE,
         data: {
