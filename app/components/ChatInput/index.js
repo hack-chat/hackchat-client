@@ -29,8 +29,34 @@ const emoji = new EmojiConvertor();
 emoji.replace_mode = 'unified';
 emoji.allow_native = true;
 
+const ALL_EMOJIS = [];
+const seenCodes = new Set();
+
+Object.keys(KAOMOJI).forEach((code) => {
+  ALL_EMOJIS.push({ code, preview: KAOMOJI[code] });
+  seenCodes.add(code);
+});
+
+if (emoji.data) {
+  Object.values(emoji.data).forEach((dataArray) => {
+    const shortcodes = dataArray[3];
+    if (shortcodes && Array.isArray(shortcodes)) {
+      shortcodes.forEach((sc) => {
+        const code = `:${sc}:`;
+        if (!seenCodes.has(code)) {
+          ALL_EMOJIS.push({ code, preview: emoji.replace_colons(code) });
+          seenCodes.add(code);
+        }
+      });
+    }
+  });
+}
+
 const isInProtectedBlock = (text, cursorIndex) => {
   const textBefore = text.substring(0, cursorIndex);
+  const tokens = textBefore.match(/(```|`|\$\$|\$|==)/g);
+
+  if (!tokens) return false;
 
   let inCodeBlock = false;
   let inInlineCode = false;
@@ -38,38 +64,15 @@ const isInProtectedBlock = (text, cursorIndex) => {
   let inInlineMath = false;
   let inHighlight = false;
 
-  for (let i = 0; i < textBefore.length; i++) {
-    const remaining = textBefore.substring(i);
-
-    if (remaining.startsWith('```')) {
-      if (!inInlineCode && !inMathBlock && !inInlineMath && !inHighlight) {
-        inCodeBlock = !inCodeBlock;
-        i += 2;
-      }
-    } else if (remaining.startsWith('`')) {
-      if (!inCodeBlock && !inMathBlock && !inInlineMath && !inHighlight) {
-        inInlineCode = !inInlineCode;
-      }
-    } else if (remaining.startsWith('$$')) {
-      if (!inCodeBlock && !inInlineCode && !inInlineMath && !inHighlight) {
-        inMathBlock = !inMathBlock;
-        i += 1;
-      }
-    } else if (remaining.startsWith('$')) {
-      if (!inCodeBlock && !inInlineCode && !inMathBlock && !inHighlight) {
-        inInlineMath = !inInlineMath;
-      }
-    } else if (remaining.startsWith('==')) {
-      if (!inCodeBlock && !inInlineCode && !inMathBlock && !inInlineMath) {
-        inHighlight = !inHighlight;
-        i += 1;
-      }
-    }
+  for (const token of tokens) {
+    if (token === '```' && !inInlineCode && !inMathBlock && !inInlineMath && !inHighlight) inCodeBlock = !inCodeBlock;
+    else if (token === '`' && !inCodeBlock && !inMathBlock && !inInlineMath && !inHighlight) inInlineCode = !inInlineCode;
+    else if (token === '$$' && !inCodeBlock && !inInlineCode && !inInlineMath && !inHighlight) inMathBlock = !inMathBlock;
+    else if (token === '$' && !inCodeBlock && !inInlineCode && !inMathBlock && !inHighlight) inInlineMath = !inInlineMath;
+    else if (token === '==' && !inCodeBlock && !inInlineCode && !inMathBlock && !inInlineMath) inHighlight = !inHighlight;
   }
 
-  return (
-    inCodeBlock || inInlineCode || inMathBlock || inInlineMath || inHighlight
-  );
+  return inCodeBlock || inInlineCode || inMathBlock || inInlineMath || inHighlight;
 };
 
 const parseMessage = (text) => {
@@ -123,12 +126,62 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
     }
   }, [activeSuggestion]);
 
-  const resizeTextarea = useCallback(() => {
-    if (inputRef.current) {
-      const el = inputRef.current;
-      el.style.height = 'auto';
-      el.style.height = `${el.scrollHeight}px`;
+  const updateSuggestions = useCallback((text, cursor) => {
+    const textBeforeCursor = text.slice(0, cursor);
+
+    if (textBeforeCursor.startsWith('/')) {
+      const commandText = textBeforeCursor.slice(1).toLowerCase();
+      const filtered = COMMANDS.filter((cmd) =>
+        cmd.command.startsWith(commandText),
+      );
+      setSuggestions(
+        filtered.map((cmd) => ({
+          label: `/${cmd.command}`,
+          subText: cmd.params.join(' '),
+          value: `/${cmd.command} `,
+          type: 'command',
+          replaceStart: 0,
+          replaceEnd: cursor,
+        })),
+      );
+      setActiveSuggestion(0);
+    } else {
+      const match = textBeforeCursor.match(/(?:^|\s)(:[^\s:]+)$/);
+      if (match) {
+        const query = match[1].toLowerCase();
+        const filtered = ALL_EMOJIS.filter((e) =>
+          e.code.toLowerCase().startsWith(query),
+        ).slice(0, 15);
+
+        if (filtered.length > 0) {
+          setSuggestions(
+            filtered.map((e) => ({
+              label: e.code,
+              subText: e.preview,
+              value: `${e.preview} `,
+              type: 'emoji',
+              replaceStart: cursor - match[1].length,
+              replaceEnd: cursor,
+            })),
+          );
+          setActiveSuggestion(0);
+        } else {
+          setSuggestions([]);
+        }
+      } else {
+        setSuggestions([]);
+      }
     }
+  }, []);
+
+  const resizeTextarea = useCallback(() => {
+    window.requestAnimationFrame(() => {
+      if (inputRef.current) {
+        const el = inputRef.current;
+        el.style.height = 'auto';
+        el.style.height = `${el.scrollHeight}px`;
+      }
+    });
   }, []);
 
   const insertTextAtCaret = (text) => {
@@ -166,19 +219,6 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
     },
   }));
 
-  useEffect(() => {
-    if (inputValue.startsWith('/')) {
-      const commandText = inputValue.slice(1).toLowerCase();
-      const filtered = COMMANDS.filter((cmd) =>
-        cmd.command.startsWith(commandText),
-      );
-      setSuggestions(filtered);
-      setActiveSuggestion(0);
-    } else {
-      setSuggestions([]);
-    }
-  }, [inputValue]);
-
   const updateHistory = useCallback(
     (text) => {
       if (!text) return;
@@ -189,6 +229,27 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
       setHistory(newHistory);
     },
     [history],
+  );
+
+  const applySuggestion = useCallback(
+    (sel) => {
+      const textBefore = inputValue.slice(0, sel.replaceStart);
+      const textAfter = inputValue.slice(sel.replaceEnd);
+      const newValue = textBefore + sel.value + textAfter;
+
+      setInputValue(newValue);
+      setSuggestions([]);
+
+      const newCursor = sel.replaceStart + sel.value.length;
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.setSelectionRange(newCursor, newCursor);
+          inputRef.current.focus();
+          resizeTextarea();
+        }
+      }, 0);
+    },
+    [inputValue, resizeTextarea],
   );
 
   const submitInput = useCallback(() => {
@@ -213,9 +274,7 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
       if (evt.key === 'Enter' && !evt.shiftKey) {
         evt.preventDefault();
         if (suggestions.length > 0 && activeSuggestion < suggestions.length) {
-          const selectedCommand = suggestions[activeSuggestion];
-          setInputValue(`/${selectedCommand.command} `);
-          setSuggestions([]);
+          applySuggestion(suggestions[activeSuggestion]);
         } else {
           submitInput();
         }
@@ -223,21 +282,20 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
         if (suggestions.length > 0) {
           evt.preventDefault();
           setActiveSuggestion((prev) => (prev > 0 ? prev - 1 : 0));
-        } else {
-          if (historyIndex !== -1 && inputRef.current.selectionStart !== 0) {
-            evt.preventDefault();
-            inputRef.current.setSelectionRange(0, 0);
-            return;
-          }
+        } else if (historyIndex !== -1 || inputRef.current.selectionStart === 0) {
+          evt.preventDefault();
+          const newIndex = Math.min(historyIndex + 1, history.length - 1);
+          if (newIndex >= 0 && newIndex !== historyIndex) {
+            setHistoryIndex(newIndex);
+            setInputValue(history[newIndex]);
 
-          if (inputRef.current.selectionStart === 0) {
-            evt.preventDefault();
-            const newIndex = Math.min(historyIndex + 1, history.length - 1);
-            if (newIndex >= 0) {
-              setHistoryIndex(newIndex);
-              setInputValue(history[newIndex]);
-              setTimeout(resizeTextarea, 0);
-            }
+            setTimeout(() => {
+              if (inputRef.current) {
+                const len = history[newIndex].length;
+                inputRef.current.setSelectionRange(len, len);
+              }
+              resizeTextarea();
+            }, 0);
           }
         }
       } else if (evt.key === 'ArrowDown') {
@@ -246,20 +304,28 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
           setActiveSuggestion((prev) =>
             prev < suggestions.length - 1 ? prev + 1 : prev,
           );
-        } else if (inputRef.current.selectionStart === inputValue.length) {
+        } else if (historyIndex !== -1 || inputRef.current.selectionStart === inputValue.length) {
           evt.preventDefault();
           const newIndex = Math.max(historyIndex - 1, -1);
-          setHistoryIndex(newIndex);
-          setInputValue(newIndex >= 0 ? history[newIndex] : '');
-          setTimeout(resizeTextarea, 0);
+          if (newIndex !== historyIndex) {
+            setHistoryIndex(newIndex);
+            const newText = newIndex >= 0 ? history[newIndex] : '';
+            setInputValue(newText);
+
+            setTimeout(() => {
+              if (inputRef.current) {
+                const len = newText.length;
+                inputRef.current.setSelectionRange(len, len);
+              }
+              resizeTextarea();
+            }, 0);
+          }
         }
       } else if (evt.key === 'Tab') {
         evt.preventDefault();
 
         if (suggestions.length > 0) {
-          const selectedCommand = suggestions[activeSuggestion];
-          setInputValue(`/${selectedCommand.command} `);
-          setSuggestions([]);
+          applySuggestion(suggestions[activeSuggestion]);
         } else {
           const cursor = inputRef.current.selectionStart;
           let mState = { ...mentionState };
@@ -324,6 +390,7 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
       resizeTextarea,
       mentionState,
       users,
+      applySuggestion,
     ],
   );
 
@@ -377,6 +444,7 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
     }
 
     setInputValue(newVal);
+    updateSuggestions(newVal, cursor);
 
     if (newVal !== evt.target.value) {
       setTimeout(() => {
@@ -394,17 +462,13 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
     <Container>
       {suggestions.length > 0 && (
         <SuggestionContainer ref={suggestionsRef}>
-          {suggestions.map((cmd, index) => (
+          {suggestions.map((item, index) => (
             <SuggestionItem
-              key={cmd.command}
+              key={item.label}
               className={index === activeSuggestion ? 'active' : ''}
-              onClick={() => {
-                setInputValue(`/${cmd.command}`);
-                setSuggestions([]);
-                inputRef.current.focus();
-              }}
+              onClick={() => applySuggestion(item)}
             >
-              /{cmd.command} <span>{cmd.params.join(' ')}</span>
+              {item.label} <span>{item.subText}</span>
             </SuggestionItem>
           ))}
         </SuggestionContainer>
@@ -421,6 +485,12 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
             value={inputValue}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
+            onKeyUp={(e) => {
+              if (['ArrowLeft', 'ArrowRight', 'Backspace', 'Delete'].includes(e.key)) {
+                updateSuggestions(inputValue, e.target.selectionStart);
+              }
+            }}
+            onMouseUp={(e) => updateSuggestions(inputValue, e.target.selectionStart)}
             placeholder={placeholder}
           />
         )}

@@ -144,6 +144,7 @@ const communicationProviderReducer = (state = initialState, action) =>
           data: {
             channel: action.channel,
             userid: action.user.userid,
+            time: Date.now(),
           },
         });
         break;
@@ -154,6 +155,7 @@ const communicationProviderReducer = (state = initialState, action) =>
           data: {
             channel: action.channel,
             userid: action.user.userid,
+            time: Date.now(),
           },
         });
         break;
@@ -224,7 +226,7 @@ const communicationProviderReducer = (state = initialState, action) =>
       case EMOTE:
         draft.channels[action.data.channel].messages.push({
           type: 'emote',
-          data: action.data,
+          data: { ...action.data, time: Date.now() },
           user: action.user,
         });
         break;
@@ -237,7 +239,7 @@ const communicationProviderReducer = (state = initialState, action) =>
       case WHISPER:
         draft.channels[action.channel].messages.push({
           type: 'whisper',
-          data: action.data,
+          data: { ...action.data, time: Date.now() },
         });
         break;
       case MESSAGE:
@@ -248,6 +250,7 @@ const communicationProviderReducer = (state = initialState, action) =>
             name: action.data.name,
             content: action.data.content,
             id: action.data.id,
+            time: Date.now(),
           },
         });
         break;

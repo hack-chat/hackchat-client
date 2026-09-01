@@ -101,8 +101,9 @@ export function ChatManager({
         .split('\n')
         .map((line) => `> ${line}`)
         .join('\n');
+      const mention = user.mine ? '' : `@${username} `;
 
-      handleMenuCommand(`${quoteText}\n\n@${username} `);
+      handleMenuCommand(`${quoteText}\n\n${mention}`);
     },
     [handleMenuCommand],
   );

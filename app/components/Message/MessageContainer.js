@@ -1,5 +1,9 @@
 /**
  * Exports a styled html div
+ * 
+ * @todo add perf option, enabling and disabling:
+ * content-visibility: auto;
+ * contain-intrinsic-size: auto 24px;
  */
 
 import styled from 'styled-components';

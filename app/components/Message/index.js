@@ -41,7 +41,7 @@ const EmoteNameStyle = styled.span`
 
 const TRUNCATION_CHAR_THRESHOLD = 450;
 
-const Nick = ({ user, handleMention, handleContextMenu }) => {
+const Nick = ({ user, handleMention, handleContextMenu, time }) => {
   const handleClick = () => {
     handleMention(`@${user.username} `);
   };
@@ -54,9 +54,11 @@ const Nick = ({ user, handleMention, handleContextMenu }) => {
   };
 
   const trip = <TripStyle $flair={user.flair}>{user.usertrip}</TripStyle>;
+  const hoverTime = time ? new Date(time).toLocaleString() : '';
 
   return (
     <NameStyle
+      title={hoverTime}
       onClick={handleClick}
       onContextMenu={handleRightClick}
       $color={`#${user.nickColor}`}
@@ -114,6 +116,7 @@ const ChatMessage = ({
           handleMention={handleMention}
           handleContextMenu={handleContextMenu}
           user={user}
+          time={payload.time}
         />
       ) : (
         <NickPlaceholder />
@@ -165,14 +168,18 @@ const WhisperMessage = ({ payload, msgForm, intl }) => {
     : messages.whisperFrom.defaultMessage;
   const nick = showTo ? to.username : from.username;
 
+  const hoverTime = payload.time ? new Date(payload.time).toLocaleString() : '';
+
   return (
     <>
       <WhisperStyle $canExpand={isLongMessage} $isExpanded={isExpanded}>
-        <FormattedMessage
-          id={id}
-          defaultMessage={defaultMessage}
-          values={{ nick }}
-        />{' '}
+        <span title={hoverTime}>
+          <FormattedMessage
+            id={id}
+            defaultMessage={defaultMessage}
+            values={{ nick }}
+          />
+        </span>{' '}
         {msgForm.render(payload.content)}
       </WhisperStyle>
       {isLongMessage && (
@@ -348,6 +355,8 @@ export const Message = memo(
           namePart = '';
         }
 
+        const hoverTime = payload.time ? new Date(payload.time).toLocaleString() : '';
+
         return (
           <MessageContainer>
             <NickPlaceholder />
@@ -355,7 +364,7 @@ export const Message = memo(
               <EmoteStyle>
                 {namePart ? (
                   <>
-                    <EmoteNameStyle $effect={user.effect}>
+                    <EmoteNameStyle title={hoverTime} $effect={user.effect}>
                       {namePart}
                     </EmoteNameStyle>
                     {restPart}
@@ -395,12 +404,13 @@ export const Message = memo(
             </MessageContent>
           </MessageContainer>
         );
-      case 'join':
+      case 'join': {
+        const hoverTime = payload.time ? new Date(payload.time).toLocaleString() : '';
         return (
           <MessageContainer>
             <NickPlaceholder />
             <MessageContent $hasBackground={hasBackground}>
-              <JoinStyle>
+              <JoinStyle title={hoverTime}>
                 <FormattedMessage
                   id={messages.joined.id}
                   defaultMessage={messages.joined.defaultMessage}
@@ -410,12 +420,14 @@ export const Message = memo(
             </MessageContent>
           </MessageContainer>
         );
-      case 'leave':
+      }
+      case 'leave': {
+        const hoverTime = payload.time ? new Date(payload.time).toLocaleString() : '';
         return (
           <MessageContainer>
             <NickPlaceholder />
             <MessageContent $hasBackground={hasBackground}>
-              <LeaveStyle>
+              <LeaveStyle title={hoverTime}>
                 <FormattedMessage
                   id={messages.left.id}
                   defaultMessage={messages.left.defaultMessage}
@@ -425,6 +437,7 @@ export const Message = memo(
             </MessageContent>
           </MessageContainer>
         );
+      }
       case 'welcome':
         return (
           <MessageContainer>
