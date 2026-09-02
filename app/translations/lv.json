@@ -148,6 +148,7 @@
   "hcclient.containers.SettingsPage.clearHistoryText": "CL34R H1570RY ({count} CH4NN3L5)",
   "hcclient.containers.SettingsPage.currentThemeText": "CURR3N7 7H3M3: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "H19HL19H7 M3N710N5",
+  "hcclient.containers.SettingsPage.enableNotificationsText": "3n4bl3 N071f1c4710n5",
   "hcclient.containers.SettingsPage.header": "CL13N7 53771N95",
   "hcclient.containers.SettingsPage.menuPosText": "L3F7 M3NU 8U770N",
   "hcclient.containers.SettingsPage.reconnectText": "R3C0NN3C7 N0W",

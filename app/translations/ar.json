@@ -148,6 +148,7 @@
   "hcclient.containers.SettingsPage.clearHistoryText": "مسح السجل ({count} قنوات)",
   "hcclient.containers.SettingsPage.currentThemeText": "المظهر الحالي: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "تظليل الإشارات (Mentions)",
+  "hcclient.containers.SettingsPage.enableNotificationsText": "تمكين الإشعارات",
   "hcclient.containers.SettingsPage.header": "إعدادات العميل",
   "hcclient.containers.SettingsPage.menuPosText": "زر القائمة على الجانب الأيسر",
   "hcclient.containers.SettingsPage.reconnectText": "أعد الاتصال الآن",

@@ -118,6 +118,23 @@ export function MainMenu({
     });
   };
 
+  useEffect(() => {
+    const handleSwitchChannel = (e) => {
+      const targetChannel = e.detail?.channel;
+      if (targetChannel) {
+        navigate(`/?${targetChannel}`);
+
+        if (isMobile && !isPinned) {
+          setIsOpen(false);
+        }
+      }
+    };
+
+    window.addEventListener('app:switch-channel', handleSwitchChannel);
+    return () =>
+      window.removeEventListener('app:switch-channel', handleSwitchChannel);
+  }, [navigate, isMobile, isPinned]);
+
   return (
     <>
       <MenuToggle onClick={() => setIsOpen(!isOpen)}>

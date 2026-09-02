@@ -87,4 +87,8 @@ export default defineMessages({
     id: `hcclient.Generic.back.text`,
     defaultMessage: 'Back',
   },
+  enableNotificationsText: {
+    id: `${scope}.enableNotificationsText`,
+    defaultMessage: 'Enable Notifications',
+  },
 });

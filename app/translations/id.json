@@ -148,6 +148,7 @@
   "hcclient.containers.SettingsPage.clearHistoryText": "Hapus Riwayat ({count} Saluran)",
   "hcclient.containers.SettingsPage.currentThemeText": "Tema Saat Ini: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "Sorot Sebutan",
+  "hcclient.containers.SettingsPage.enableNotificationsText": "Aktifkan Notifikasi",
   "hcclient.containers.SettingsPage.header": "Pengaturan Klien",
   "hcclient.containers.SettingsPage.menuPosText": "Tombol Menu Sisi Kiri",
   "hcclient.containers.SettingsPage.reconnectText": "Sambung Ulang Sekarang",

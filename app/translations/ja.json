@@ -148,6 +148,7 @@
   "hcclient.containers.SettingsPage.clearHistoryText": "履歴を消去 ({count} チャンネル)",
   "hcclient.containers.SettingsPage.currentThemeText": "現在のテーマ: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "メンションをハイライト",
+  "hcclient.containers.SettingsPage.enableNotificationsText": "通知を有効にする",
   "hcclient.containers.SettingsPage.header": "クライアント設定",
   "hcclient.containers.SettingsPage.menuPosText": "メニューボタンを左に配置",
   "hcclient.containers.SettingsPage.reconnectText": "今すぐ再接続",

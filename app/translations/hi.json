@@ -148,6 +148,7 @@
   "hcclient.containers.SettingsPage.clearHistoryText": "इतिहास साफ़ करें ({count} चैनल)",
   "hcclient.containers.SettingsPage.currentThemeText": "वर्तमान थीम: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "मेंशन (Mentions) हाइलाइट करें",
+  "hcclient.containers.SettingsPage.enableNotificationsText": "सूचनाएं सक्षम करें",
   "hcclient.containers.SettingsPage.header": "क्लाइंट सेटिंग्स",
   "hcclient.containers.SettingsPage.menuPosText": "बायीं ओर मेनू बटन",
   "hcclient.containers.SettingsPage.reconnectText": "अभी पुन: कनेक्ट करें",

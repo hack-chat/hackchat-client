@@ -103,6 +103,15 @@ const makeSelectCachedAutoconnect = () =>
 const makeSelectCachedWsPath = () =>
   createSelector(selectSettingsPageDomain, (substate) => substate.wsPath);
 
+/**
+ * Allow notifications
+ */
+const makeSelectCachedNotifyEnabled = () =>
+  createSelector(
+    selectSettingsPageDomain,
+    (substate) => substate.notifyEnabled,
+  );
+
 export {
   selectSettingsPageDomain,
   makeSelectCachedUsername,
@@ -119,4 +128,5 @@ export {
   makeSelectCachedHighlightMentions,
   makeSelectCachedAutoconnect,
   makeSelectCachedWsPath,
+  makeSelectCachedNotifyEnabled,
 };

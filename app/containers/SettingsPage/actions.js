@@ -32,6 +32,8 @@ import {
   HIGHLIGHTMENTIONS_LSLABEL,
   AUTOCONNECT_LSLABEL,
   WSPATH_LSLABEL,
+  SET_NOTIFY,
+  NOTIFY_LSLABEL,
 } from './constants';
 
 /**
@@ -245,5 +247,25 @@ export function setWsPath(wsPath) {
   return {
     type: SET_WSPATH,
     wsPath,
+  };
+}
+
+/**
+ * Updates the notify setting
+ * @param  {string} enabled Is enabled true/false
+ * @return {object} An action object with a type of SET_NOTIFY
+ */
+export function setNotify(enabled) {
+  localStorage.setItem(NOTIFY_LSLABEL, JSON.stringify(enabled));
+
+  if (enabled) {
+    import('utils/NotificationService').then((module) =>
+      module.requestNotificationPermission(),
+    );
+  }
+
+  return {
+    type: SET_NOTIFY,
+    enabled,
   };
 }

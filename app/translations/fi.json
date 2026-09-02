@@ -148,6 +148,7 @@
   "hcclient.containers.SettingsPage.clearHistoryText": "Tyhjennä historia ({count} kanavaa)",
   "hcclient.containers.SettingsPage.currentThemeText": "Nykyinen teema: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "Korosta maininnat",
+  "hcclient.containers.SettingsPage.enableNotificationsText": "Ota ilmoitukset käyttöön",
   "hcclient.containers.SettingsPage.header": "Asiakasasetukset",
   "hcclient.containers.SettingsPage.menuPosText": "Valikkopainike vasemmalla",
   "hcclient.containers.SettingsPage.reconnectText": "Yhdistä nyt",

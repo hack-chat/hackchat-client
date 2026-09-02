@@ -65,6 +65,7 @@ import {
   setDoHighlight,
   setAutoConnect,
   setWsPath,
+  setNotify,
 } from './actions';
 
 import {
@@ -82,6 +83,7 @@ import {
   makeSelectCachedHighlightMentions,
   makeSelectCachedAutoconnect,
   makeSelectCachedWsPath,
+  makeSelectCachedNotifyEnabled,
 } from './selectors';
 
 import reducer from './reducer';
@@ -103,6 +105,7 @@ export function SettingsPage({
   cachedDoHighlight,
   cachedDoAutoconnect,
   cachedWsPath,
+  cachedNotifyEnabled,
   isLocaleModalOpen,
   onCloseLocaleModal,
   onOpenLocaleModal,
@@ -160,6 +163,8 @@ export function SettingsPage({
   const [chosenDoAutoconnect, setChosenDoAutoconnect] =
     useStateIfMounted(cachedDoAutoconnect);
   const [chosenWsPath, setChosenWsPath] = useStateIfMounted(cachedWsPath);
+  const [chosenNotify, setChosenNotify] =
+    useStateIfMounted(cachedNotifyEnabled);
 
   const headerText = intl.formatMessage(messages.header);
   const usernameText = intl.formatMessage(messages.usernameText);
@@ -172,6 +177,9 @@ export function SettingsPage({
   const menuPosText = intl.formatMessage(messages.menuPosText);
   const doHighlightsText = intl.formatMessage(messages.doHighlightsText);
   const autoReconnectText = intl.formatMessage(messages.autoReconnectText);
+  const enableNotificationsText = intl.formatMessage(
+    messages.enableNotificationsText,
+  );
   const languageText = intl.formatMessage(messages.languageText);
   const backBtnText = intl.formatMessage(messages.backBtnText);
   const rememberText = intl.formatMessage(messages.rememberText);
@@ -338,6 +346,16 @@ export function SettingsPage({
             <LabelText>{autoReconnectText}</LabelText>
             <BooleanSwitch checked={chosenDoAutoconnect} />
           </SwitchRow>
+
+          <SwitchRow
+            onClick={() => {
+              setChosenNotify(!chosenNotify);
+              dispatch(setNotify(!chosenNotify));
+            }}
+          >
+            <LabelText>{enableNotificationsText}</LabelText>
+            <BooleanSwitch checked={chosenNotify} />
+          </SwitchRow>
         </SettingsGroup>
 
         <SettingsGroup>
@@ -412,6 +430,7 @@ SettingsPage.propTypes = {
   cachedDoHighlight: PropTypes.bool,
   cachedDoAutoconnect: PropTypes.bool,
   cachedWsPath: PropTypes.string,
+  cachedNotifyEnabled: PropTypes.bool,
   isLocaleModalOpen: PropTypes.bool,
   onOpenLocaleModal: PropTypes.func,
   onCloseLocaleModal: PropTypes.func,
@@ -435,6 +454,7 @@ const mapStateToProps = createStructuredSelector({
   cachedDoHighlight: makeSelectCachedHighlightMentions(),
   cachedDoAutoconnect: makeSelectCachedAutoconnect(),
   cachedWsPath: makeSelectCachedWsPath(),
+  cachedNotifyEnabled: makeSelectCachedNotifyEnabled(),
   isLocaleModalOpen: makeSelectIsLocaleModalOpen(),
   channelData: makeSelectChannelData(),
 });

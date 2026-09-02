@@ -89,6 +89,13 @@ module.exports = options => {
             },
           },
         },
+        {
+          test: /\.(mp3|wav|ogg)$/i,
+          type: 'asset/resource',
+          generator: {
+            filename: 'audio/[name].[hash][ext]',
+          },
+        },
       ],
     },
     plugins: options.plugins.concat([

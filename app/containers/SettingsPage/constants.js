@@ -18,6 +18,7 @@ export const SET_MENUBTNPOS = 'app/SettingsPage/SET_MENUBTNPOS';
 export const SET_HIGHLIGHTMENTIONS = 'app/SettingsPage/SET_HIGHLIGHTMENTIONS';
 export const SET_AUTOCONNECT = 'app/SettingsPage/SET_AUTOCONNECT';
 export const SET_WSPATH = 'app/SettingsPage/SET_WSPATH';
+export const SET_NOTIFY = 'app/Settings/SET_NOTIFY';
 
 /**
  * SettingsPage localStorage labels
@@ -37,3 +38,4 @@ export const MENUBTNPOS_LSLABEL = 'app/Settings/MENUBTNPOS_LSLABEL';
 export const HIGHLIGHTMENTIONS_LSLABEL = 'app/Settings/HIGHLIGHTMENTIONS_LABEL';
 export const AUTOCONNECT_LSLABEL = 'app/Settings/AUTOCONNECT_LSLABEL';
 export const WSPATH_LSLABEL = 'app/Settings/WSPATH_LSLABEL';
+export const NOTIFY_LSLABEL = 'app/Settings/NOTIFY_LSLABEL';

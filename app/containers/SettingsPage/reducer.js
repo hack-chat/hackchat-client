@@ -34,6 +34,8 @@ import {
   HIGHLIGHTMENTIONS_LSLABEL,
   AUTOCONNECT_LSLABEL,
   WSPATH_LSLABEL,
+  SET_NOTIFY,
+  NOTIFY_LSLABEL,
 } from './constants';
 
 const randomRGB = () => {
@@ -72,6 +74,7 @@ export const settingsInitialState = {
     JSON.parse(localStorage.getItem(HIGHLIGHTMENTIONS_LSLABEL)) || true,
   autoConnect: JSON.parse(localStorage.getItem(AUTOCONNECT_LSLABEL)) || true,
   wsPath: JSON.parse(localStorage.getItem(WSPATH_LSLABEL)) || '',
+  notifyEnabled: JSON.parse(localStorage.getItem(NOTIFY_LSLABEL)) !== false,
 };
 
 const settingsPageReducer = (state = settingsInitialState, action) =>
@@ -121,6 +124,9 @@ const settingsPageReducer = (state = settingsInitialState, action) =>
         break;
       case SET_WSPATH:
         draft.wsPath = action.wsPath;
+        break;
+      case SET_NOTIFY:
+        draft.notifyEnabled = action.enabled;
         break;
     }
   });

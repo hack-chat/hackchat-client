@@ -148,6 +148,7 @@
   "hcclient.containers.SettingsPage.clearHistoryText": "Clear History ( {count} Channels )",
   "hcclient.containers.SettingsPage.currentThemeText": "Current Theme: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "Highlight Mentions",
+  "hcclient.containers.SettingsPage.enableNotificationsText": "Enable Notifications",
   "hcclient.containers.SettingsPage.header": "Client Settings",
   "hcclient.containers.SettingsPage.menuPosText": "Leftside Menu Button",
   "hcclient.containers.SettingsPage.reconnectText": "Reconnect Now",

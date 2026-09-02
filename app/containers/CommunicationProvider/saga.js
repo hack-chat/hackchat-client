@@ -4,7 +4,15 @@
  */
 
 import { eventChannel } from 'redux-saga';
-import { take, call, put, takeLatest, takeEvery } from 'redux-saga/effects';
+import {
+  take,
+  call,
+  put,
+  takeLatest,
+  takeEvery,
+  select,
+} from 'redux-saga/effects';
+import { pushNotification } from 'utils/NotificationService';
 
 import { Client } from 'hackchat-engine';
 
@@ -68,6 +76,10 @@ window.hcClient = hcClient;
 
 let waitingOnSIW = false;
 let currentSiwAddress = null;
+
+let cachedUsernameForRegex = null;
+let mentionRegex = null;
+const escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 export function* handleIncomingSignRequest(action) {
   const { wallet, message } = action;
@@ -521,6 +533,60 @@ export default function* communicationProviderSaga() {
   });
 
   yield takeLatest(INCOMING_SIGN_REQUEST, handleIncomingSignRequest);
+
+  yield takeEvery([MESSAGE, WHISPER, INVITE], function* (action) {
+    const payload = action.data || action.user || {};
+    const actionChannel = payload.channel || action.channel;
+
+    const state = yield select();
+    const { notifyEnabled } = state.settings;
+
+    const usersArray = Array.from(hcClient.users.values());
+    const currentUser = usersArray.find((user) => user.mine);
+    const username = currentUser ? currentUser.username : null;
+
+    const activeChannel = state.communicationProvider?.channel;
+
+    if (!notifyEnabled || !username) return;
+
+    if (username !== cachedUsernameForRegex) {
+      cachedUsernameForRegex = username;
+      mentionRegex = new RegExp(`(?:^|\\s)@${escapeRegExp(username)}(?!\\w)`);
+    }
+
+    const isFocused = document.hasFocus();
+    const isCurrentChannel = activeChannel === actionChannel;
+
+    if (isFocused && isCurrentChannel) return;
+
+    let shouldNotify = false;
+    let title = '';
+    let body = '';
+
+    const messageContent = payload.content;
+    const senderName = payload.name || payload.from;
+
+    if (action.type === MESSAGE && mentionRegex.test(messageContent)) {
+      shouldNotify = true;
+      title = `💬 ?${actionChannel}`;
+      body = `${senderName}: ${messageContent}`;
+    } else if (action.type === WHISPER) {
+      shouldNotify = true;
+      title = `✉️ @${senderName}`;
+      body = messageContent || payload.text;
+    } else if (action.type === INVITE) {
+      shouldNotify = true;
+      title = `🤝 ${senderName}`;
+      body = `👉 ?${actionChannel}`;
+    }
+
+    if (shouldNotify) {
+      pushNotification(title, body, true, actionChannel).catch((err) => {
+        // eslint-disable-next-line no-console
+        console.error('Notification error:', err);
+      });
+    }
+  });
 
   while (true) {
     const action = yield take(client);

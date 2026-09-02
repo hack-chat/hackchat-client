@@ -148,6 +148,7 @@
   "hcclient.containers.SettingsPage.clearHistoryText": "清除历史记录（{count} 个频道）",
   "hcclient.containers.SettingsPage.currentThemeText": "当前主题: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "高亮提及",
+  "hcclient.containers.SettingsPage.enableNotificationsText": "启用通知",
   "hcclient.containers.SettingsPage.header": "客户端设置",
   "hcclient.containers.SettingsPage.menuPosText": "左侧菜单按钮",
   "hcclient.containers.SettingsPage.reconnectText": "立即重新连接",

@@ -148,6 +148,7 @@
   "hcclient.containers.SettingsPage.clearHistoryText": "Cancella cronologia ({count} canali)",
   "hcclient.containers.SettingsPage.currentThemeText": "Tema attuale: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "Evidenzia menzioni",
+  "hcclient.containers.SettingsPage.enableNotificationsText": "Abilita notifiche",
   "hcclient.containers.SettingsPage.header": "Impostazioni client",
   "hcclient.containers.SettingsPage.menuPosText": "Pulsante del menu a sinistra",
   "hcclient.containers.SettingsPage.reconnectText": "Riconnettiti ora",

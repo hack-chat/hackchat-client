@@ -148,6 +148,7 @@
   "hcclient.containers.SettingsPage.clearHistoryText": "پاک کردن تاریخچه ({count} کانال)",
   "hcclient.containers.SettingsPage.currentThemeText": "تم فعلی: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "برجسته‌سازی منشن‌ها",
+  "hcclient.containers.SettingsPage.enableNotificationsText": "فعال کردن اعلان‌ها",
   "hcclient.containers.SettingsPage.header": "تنظیمات کلاینت",
   "hcclient.containers.SettingsPage.menuPosText": "دکمه منو سمت چپ",
   "hcclient.containers.SettingsPage.reconnectText": "اتصال مجدد اکنون",

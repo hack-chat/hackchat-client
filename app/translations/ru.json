@@ -148,6 +148,7 @@
   "hcclient.containers.SettingsPage.clearHistoryText": "Очистить историю ({count} каналов)",
   "hcclient.containers.SettingsPage.currentThemeText": "Текущая тема: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "Подсвечивать упоминания",
+  "hcclient.containers.SettingsPage.enableNotificationsText": "Включить уведомления",
   "hcclient.containers.SettingsPage.header": "Настройки клиента",
   "hcclient.containers.SettingsPage.menuPosText": "Кнопка меню слева",
   "hcclient.containers.SettingsPage.reconnectText": "Переподключиться",

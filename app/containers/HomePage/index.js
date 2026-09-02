@@ -217,6 +217,11 @@ export function HomePage({
     prevMessageCountRef.current = currentMessageCount;
   }, [currentMessageCount, isFocused, baseTitle]);
 
+  useEffect(() => {
+    setMissedMessages(0);
+    prevMessageCountRef.current = channelData?.[channel]?.messages?.length || 0;
+  }, [channel]);
+
   const handleExternalLinkClick = useCallback(
     (url) => {
       if (suppressLinkWarning) {
