@@ -17,11 +17,11 @@ const MessageContent = styled.div`
     `
     background-color: rgb(0 0 0 / 5%);
   `}
-  padding-left: 1.5em;
+  padding-inline-start: 1.5em;
 
   @media (width >= 768px) {
-    padding-left: 1em;
-    border-left: 1px solid rgb(125 122 104 / 50%);
+    padding-inline-start: 1em;
+    border-inline-start: 1px solid rgb(125 122 104 / 50%);
   }
 
   & p,
@@ -70,7 +70,7 @@ const MessageContent = styled.div`
 
   & ul,
   & ol {
-    padding-left: 2em;
+    padding-inline-start: 2em;
     margin-bottom: 1em;
   }
 
@@ -127,9 +127,9 @@ const MessageContent = styled.div`
   }
 
   & blockquote {
-    border-left: 3px solid rgb(125 122 104 / 50%);
-    margin-left: 0;
-    padding-left: 1em;
+    border-inline-start: 3px solid rgb(125 122 104 / 50%);
+    margin-inline-start: 0;
+    padding-inline-start: 1em;
     opacity: 0.85;
   }
 

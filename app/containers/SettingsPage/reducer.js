@@ -55,6 +55,27 @@ const randomRGB = () => {
   return `#${r}${g}${b}`;
 };
 
+const checkDefaultRtl = () => {
+  if (typeof navigator === 'undefined') return false;
+  const rtlLangs = [
+    'ar',
+    'he',
+    'fa',
+    'ur',
+    'ps',
+    'syr',
+    'dv',
+    'ku',
+    'yi',
+    'ug',
+  ];
+  const userLang = (navigator.language || '').split('-')[0].toLowerCase();
+
+  return rtlLangs.includes(userLang);
+};
+
+const savedLtr = JSON.parse(localStorage.getItem(LTR_LSLABEL));
+
 export const settingsInitialState = {
   username: JSON.parse(localStorage.getItem(USERNAME_LSLABEL)) || '',
   password: JSON.parse(localStorage.getItem(PASSWORD_LSLABEL)) || '',
@@ -68,7 +89,7 @@ export const settingsInitialState = {
     JSON.parse(localStorage.getItem(ALLOWMARKDOWN_LSLABEL)) || true,
   allowExternalCode:
     JSON.parse(localStorage.getItem(ALLOWEXTCODE_LSLABEL)) || false,
-  ltr: JSON.parse(localStorage.getItem(LTR_LSLABEL)) || true,
+  ltr: savedLtr !== null ? savedLtr : !checkDefaultRtl(),
   menuLeft: JSON.parse(localStorage.getItem(MENUBTNPOS_LSLABEL)) || true,
   highlightMentions:
     JSON.parse(localStorage.getItem(HIGHLIGHTMENTIONS_LSLABEL)) || true,

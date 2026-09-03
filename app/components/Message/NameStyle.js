@@ -253,8 +253,8 @@ const NameStyle = styled.div`
   @media (width >= 768px) {
     flex-shrink: 0;
     width: 220px;
-    text-align: right;
-    margin-right: 1em;
+    text-align: end;
+    margin-inline-end: 1em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

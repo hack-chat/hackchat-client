@@ -149,6 +149,7 @@ export function HomePage({
   onSignMessageRequest,
   onDoTransfer,
   sessionReady,
+  cachedLtr,
   /*
   cachedUsername,
   cachedPassword,
@@ -159,7 +160,6 @@ export function HomePage({
   cachedAllowKatex,
   cachedAllowMarkdown,
   cachedAllowExtCode,
-  cachedLtr,
   cachedMenuBtnPos,
   cachedDoHighlight,
   cachedDoAutoconnect,
@@ -601,7 +601,7 @@ export function HomePage({
       )}
 
       {showChat ? (
-        <ChatLayout>
+        <ChatLayout dir={cachedLtr ? 'ltr' : 'rtl'}>
           <ChatManager
             channel={channel}
             channelData={channelData}

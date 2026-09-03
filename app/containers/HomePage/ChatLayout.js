@@ -14,5 +14,9 @@ export default styled.div`
 
   @media (width >= 768px) {
     transform: translate(-110px, 0);
+
+    &[dir='rtl'] {
+      transform: translate(110px, 0);
+    }
   }
 `;

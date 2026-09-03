@@ -15,7 +15,7 @@ export default styled.textarea`
   box-sizing: border-box;
   border: none;
   border-top: 1px solid rgb(125 122 104 / 50%);
-  border-left: 1px solid rgb(125 122 104 / 50%);
+  border-inline-start: 1px solid rgb(125 122 104 / 50%);
   background-color: transparent;
   color: #f5f5f7;
   scrollbar-width: none;
@@ -33,7 +33,7 @@ export default styled.textarea`
   }
 
   @media (width <= 767px) {
-    border-left: none;
+    border-inline-start: none;
     max-width: 100%;
     padding: 0.75em 0.5em;
   }

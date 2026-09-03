@@ -97,7 +97,7 @@ const GlobalStyle = createGlobalStyle`
 
   ul ul,
   ol ol {
-    padding-left: 2em;
+    padding-inline-start: 2em;
   }
 
   ul li {
@@ -184,7 +184,7 @@ const GlobalStyle = createGlobalStyle`
   blockquote {
     padding: 3px 10px;
     margin: 3px;
-    border-left: 5px solid #4e4e4e;
+    border-inline-start: 5px solid #4e4e4e;
   }
 
   hr {
@@ -218,17 +218,17 @@ const GlobalStyle = createGlobalStyle`
 
   .message {
     padding-bottom: 1em;
-    border-left: 1px solid rgb(125 122 104 / 50%);
+    border-inline-start: 1px solid rgb(125 122 104 / 50%);
   }
 
   .refmessage {
     padding-bottom: 1em;
-    border-left: 1px solid rgb(125 122 104 / 100%);
+    border-inline-start: 1px solid rgb(125 122 104 / 100%);
   }
 
   .text {
     margin: 0;
-    margin-left: 1em;
+    margin-inline-start: 1em;
   }
 
   .text p {
@@ -324,7 +324,7 @@ const GlobalStyle = createGlobalStyle`
     bottom: 0;
     right: 0;
     padding: 1em;
-    border-left: solid 1px;
+    border-inline-start: solid 1px;
     overflow-y: auto;
     background: #292824;
     border-color: #7d7a68;
