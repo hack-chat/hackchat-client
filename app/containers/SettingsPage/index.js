@@ -166,6 +166,21 @@ export function SettingsPage({
   const [chosenNotify, setChosenNotify] =
     useStateIfMounted(cachedNotifyEnabled);
 
+  useEffect(() => {
+    if (cachedUsername !== chosenUsername)
+      setChosenUsername(cachedUsername || '');
+  }, [cachedUsername]);
+
+  useEffect(() => {
+    if (cachedPassword !== chosenPassword)
+      setChosenPassword(cachedPassword || '');
+  }, [cachedPassword]);
+
+  useEffect(() => {
+    if (cachedWsPath !== chosenWsPath)
+      setChosenWsPath(cachedWsPath || 'wss://hack.chat/chat-ws');
+  }, [cachedWsPath]);
+
   const headerText = intl.formatMessage(messages.header);
   const usernameText = intl.formatMessage(messages.usernameText);
   const passwordText = intl.formatMessage(messages.passwordText);
@@ -203,61 +218,65 @@ export function SettingsPage({
         <h4>{headerText}</h4>
 
         <SettingsGroup>
-          <InputRow>
-            <InputIcon>
-              <IoPerson />
-            </InputIcon>
-            <ColorInputWrapper>
-              <UsernameGroup>
-                <UsernameInput
-                  autoFocus
-                  className={invalidName ? 'is-invalid' : ''}
-                  placeholder={usernameText}
-                  onFocus={clearInvalidName}
-                  defaultValue={chosenUsername}
-                  onChange={(e) => {
-                    setChosenUsername(e.target.value);
-                    dispatch(setUsername(e.target.value));
-                  }}
-                />
-                <ColorSquare>
-                  <ColorPicker
-                    title={usernameColorText}
-                    initColor={currentColor}
-                    onChangeComplete={(color) => {
-                      setCurrentColor(color.hex);
-                      dispatch(setColor(color.hex));
+          <form onSubmit={(e) => e.preventDefault()}>
+            <InputRow>
+              <InputIcon>
+                <IoPerson />
+              </InputIcon>
+              <ColorInputWrapper>
+                <UsernameGroup>
+                  <UsernameInput
+                    autoFocus
+                    className={invalidName ? 'is-invalid' : ''}
+                    placeholder={usernameText}
+                    autoComplete="username"
+                    onFocus={clearInvalidName}
+                    value={chosenUsername}
+                    onChange={(e) => {
+                      setChosenUsername(e.target.value);
+                      dispatch(setUsername(e.target.value));
                     }}
                   />
-                </ColorSquare>
-              </UsernameGroup>
-            </ColorInputWrapper>
-          </InputRow>
+                  <ColorSquare>
+                    <ColorPicker
+                      title={usernameColorText}
+                      initColor={currentColor}
+                      onChangeComplete={(color) => {
+                        setCurrentColor(color.hex);
+                        dispatch(setColor(color.hex));
+                      }}
+                    />
+                  </ColorSquare>
+                </UsernameGroup>
+              </ColorInputWrapper>
+            </InputRow>
 
-          <InputRow>
-            <InputIcon>
-              <IoKey />
-            </InputIcon>
-            <StyledInput
-              type="password"
-              placeholder={passwordText}
-              defaultValue={chosenPassword}
-              onChange={(e) => {
-                setChosenPassword(e.target.value);
-                dispatch(setPassword(e.target.value));
+            <InputRow>
+              <InputIcon>
+                <IoKey />
+              </InputIcon>
+              <StyledInput
+                type="password"
+                placeholder={passwordText}
+                autoComplete="current-password"
+                value={chosenPassword}
+                onChange={(e) => {
+                  setChosenPassword(e.target.value);
+                  dispatch(setPassword(e.target.value));
+                }}
+              />
+            </InputRow>
+
+            <SwitchRow
+              onClick={() => {
+                setChosenDoStore(!chosenDoStore);
+                dispatch(setStoreChannelsFlag(!chosenDoStore));
               }}
-            />
-          </InputRow>
-
-          <SwitchRow
-            onClick={() => {
-              setChosenDoStore(!chosenDoStore);
-              dispatch(setStoreChannelsFlag(!chosenDoStore));
-            }}
-          >
-            <LabelText>{rememberText}</LabelText>
-            <BooleanSwitch checked={chosenDoStore} />
-          </SwitchRow>
+            >
+              <LabelText>{rememberText}</LabelText>
+              <BooleanSwitch checked={chosenDoStore} />
+            </SwitchRow>
+          </form>
         </SettingsGroup>
 
         <SettingsGroup>
@@ -267,7 +286,7 @@ export function SettingsPage({
             </InputIcon>
             <StyledInput
               placeholder={wsPathText}
-              defaultValue={chosenWsPath}
+              value={chosenWsPath}
               onChange={(e) => {
                 setChosenWsPath(e.target.value);
                 dispatch(setWsPath(e.target.value));

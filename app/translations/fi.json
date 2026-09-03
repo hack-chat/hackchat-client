@@ -101,6 +101,7 @@
   "hcclient.components.WalletMenu.selectAccountLabel": "Valitse tili",
   "hcclient.components.WalletMenu.signInWithLabel": "Kirjaudu sisään",
   "hcclient.containers.HomePage.channelInfo": "Julkista kanavaluetteloa ei ole, joten salaista kanavanimeä voidaan käyttää yksityisiin keskusteluihin.",
+  "hcclient.containers.HomePage.connectionSlowText": "Yhdistäminen kestää kauemmin kuin yleensä. . .",
   "hcclient.containers.HomePage.createOrJoinLabel": "Luo kanava tai liity kanavalle",
   "hcclient.containers.HomePage.currentGithub": "Nykyinen Github",
   "hcclient.containers.HomePage.externalLinkWarning": "Olet siirtymässä ulkoiseen linkkiin. Tämä voi vaarantaa turvallisuutesi ja yksityisyytesi. Ole varovainen!",

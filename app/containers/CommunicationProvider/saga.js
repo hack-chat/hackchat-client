@@ -11,6 +11,7 @@ import {
   takeLatest,
   takeEvery,
   select,
+  delay,
 } from 'redux-saga/effects';
 import { pushNotification } from 'utils/NotificationService';
 
@@ -67,9 +68,20 @@ import {
   signMessageRequest,
 } from 'containers/WalletLayer/actions';
 
+import { WSPATH_LSLABEL, SET_WSPATH } from 'containers/SettingsPage/constants';
+
+const savedWsPath = JSON.parse(localStorage.getItem(WSPATH_LSLABEL));
+const initialGateway =
+  savedWsPath && savedWsPath.trim() !== ''
+    ? savedWsPath
+    : 'wss://hack.chat/chat-ws';
+
 const hcClient = new Client({
   isBot: false,
   session: JSON.parse(localStorage.getItem(SESSION_LS)) || false,
+  ws: {
+    gateway: initialGateway,
+  },
 });
 
 window.hcClient = hcClient;
@@ -585,6 +597,29 @@ export default function* communicationProviderSaga() {
         // eslint-disable-next-line no-console
         console.error('Notification error:', err);
       });
+    }
+  });
+
+  yield takeLatest(SET_WSPATH, function* (action) {
+    yield delay(1500);
+
+    const newPath =
+      action.wsPath && action.wsPath.trim() !== ''
+        ? action.wsPath
+        : 'wss://hack.chat/chat-ws';
+
+    if (hcClient.options.ws.gateway !== newPath) {
+      hcClient.options.ws.gateway = newPath;
+
+      if (hcClient.ws) {
+        hcClient.ws.destroy();
+
+        if (hcClient.ws.connection) {
+          hcClient.ws.connection.connect(newPath, 0, true);
+        } else {
+          hcClient.ws.connect(newPath);
+        }
+      }
     }
   });
 

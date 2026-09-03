@@ -101,6 +101,7 @@
   "hcclient.components.WalletMenu.selectAccountLabel": "Pilih Akun",
   "hcclient.components.WalletMenu.signInWithLabel": "Masuk dengan",
   "hcclient.containers.HomePage.channelInfo": "Tidak ada daftar saluran publik, jadi nama saluran rahasia dapat digunakan untuk diskusi pribadi.",
+  "hcclient.containers.HomePage.connectionSlowText": "Menghubungkan membutuhkan waktu lebih lama dari biasanya. . .",
   "hcclient.containers.HomePage.createOrJoinLabel": "Buat atau gabung saluran",
   "hcclient.containers.HomePage.currentGithub": "Github Saat Ini",
   "hcclient.containers.HomePage.externalLinkWarning": "Anda akan mengunjungi tautan eksternal. Ini dapat membahayakan keamanan dan privasi Anda. Harap berhati-hati!",

@@ -101,6 +101,7 @@
   "hcclient.components.WalletMenu.selectAccountLabel": "アカウントを選択",
   "hcclient.components.WalletMenu.signInWithLabel": "サインイン",
   "hcclient.containers.HomePage.channelInfo": "公開チャンネルリストはありません。秘密のチャンネル名を使ってプライベートな会話が可能です。",
+  "hcclient.containers.HomePage.connectionSlowText": "接続に通常より時間がかかっています. . .",
   "hcclient.containers.HomePage.createOrJoinLabel": "チャンネルを作成または参加",
   "hcclient.containers.HomePage.currentGithub": "現在のGithub",
   "hcclient.containers.HomePage.externalLinkWarning": "外部リンクにアクセスしようとしています。これによりセキュリティとプライバシーが損なわれる可能性があります。ご注意ください！",

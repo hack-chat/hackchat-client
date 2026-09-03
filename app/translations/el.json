@@ -101,6 +101,7 @@
   "hcclient.components.WalletMenu.selectAccountLabel": "Επιλέξτε έναν λογαριασμό",
   "hcclient.components.WalletMenu.signInWithLabel": "Σύνδεση με",
   "hcclient.containers.HomePage.channelInfo": "Δεν υπάρχουν δημόσιες λίστες καναλιών, επομένως μπορεί να χρησιμοποιηθεί ένα μυστικό όνομα καναλιού για ιδιωτικές συζητήσεις.",
+  "hcclient.containers.HomePage.connectionSlowText": "Η σύνδεση διαρκεί περισσότερο από το κανονικό. . .",
   "hcclient.containers.HomePage.createOrJoinLabel": "Δημιουργία ή συμμετοχή σε κανάλι",
   "hcclient.containers.HomePage.currentGithub": "Τρέχον Github",
   "hcclient.containers.HomePage.externalLinkWarning": "Πρόκειται να επισκεφθείτε έναν εξωτερικό σύνδεσμο. Αυτό μπορεί να θέσει σε κίνδυνο την ασφάλεια και το απόρρητό σας. Παρακαλώ να είστε προσεκτικοί!",

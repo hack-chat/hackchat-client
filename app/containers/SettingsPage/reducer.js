@@ -72,8 +72,10 @@ export const settingsInitialState = {
   menuLeft: JSON.parse(localStorage.getItem(MENUBTNPOS_LSLABEL)) || true,
   highlightMentions:
     JSON.parse(localStorage.getItem(HIGHLIGHTMENTIONS_LSLABEL)) || true,
-  autoConnect: JSON.parse(localStorage.getItem(AUTOCONNECT_LSLABEL)) || true,
-  wsPath: JSON.parse(localStorage.getItem(WSPATH_LSLABEL)) || '',
+  autoConnect: JSON.parse(localStorage.getItem(AUTOCONNECT_LSLABEL)) !== false,
+  wsPath:
+    JSON.parse(localStorage.getItem(WSPATH_LSLABEL)) ||
+    'wss://hack.chat/chat-ws',
   notifyEnabled: JSON.parse(localStorage.getItem(NOTIFY_LSLABEL)) !== false,
 };
 

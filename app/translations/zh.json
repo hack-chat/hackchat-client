@@ -101,6 +101,7 @@
   "hcclient.components.WalletMenu.selectAccountLabel": "選擇一個帳戶",
   "hcclient.components.WalletMenu.signInWithLabel": "登入方式",
   "hcclient.containers.HomePage.channelInfo": "沒有公開頻道列表，因此您可以使用秘密頻道名稱進行私人討論。",
+  "hcclient.containers.HomePage.connectionSlowText": "連線時間比平常長. . .",
   "hcclient.containers.HomePage.createOrJoinLabel": "建立或加入頻道",
   "hcclient.containers.HomePage.currentGithub": "目前 Github",
   "hcclient.containers.HomePage.externalLinkWarning": "您即將造訪外部連結。這可能會危及您的安全與隱私。請小心！",

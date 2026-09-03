@@ -101,6 +101,7 @@
   "hcclient.components.WalletMenu.selectAccountLabel": "یک حساب کاربری انتخاب کنید",
   "hcclient.components.WalletMenu.signInWithLabel": "ورود با",
   "hcclient.containers.HomePage.channelInfo": "هیچ لیست کانال عمومی وجود ندارد، بنابراین می‌توان از یک نام کانال مخفی برای بحث‌های خصوصی استفاده کرد.",
+  "hcclient.containers.HomePage.connectionSlowText": "اتصال بیشتر از حد معمول طول می‌کشد. . .",
   "hcclient.containers.HomePage.createOrJoinLabel": "ایجاد یا پیوستن به کانال",
   "hcclient.containers.HomePage.currentGithub": "گیت‌هاب فعلی",
   "hcclient.containers.HomePage.externalLinkWarning": "شما در حال بازدید از یک پیوند خارجی هستید. این ممکن است امنیت و حریم خصوصی شما را به خطر بیندازد. لطفا مراقب باشید!",

@@ -104,4 +104,8 @@ export default defineMessages({
     id: `${scope}.txSignAndSend`,
     defaultMessage: 'Sign & Send',
   },
+  connectionSlowText: {
+    id: `${scope}.connectionSlowText`,
+    defaultMessage: 'Connecting is taking longer than usual. . .',
+  },
 });

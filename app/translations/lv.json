@@ -101,6 +101,7 @@
   "hcclient.components.WalletMenu.selectAccountLabel": "53L3C7 4CC0UN7",
   "hcclient.components.WalletMenu.signInWithLabel": "519N 1N W17",
   "hcclient.containers.HomePage.channelInfo": "N0 CH4NN3L L1575 H3R3, 50 U53 4 53CR37 N4M3 PH0R PR1V473 CH475.",
+  "hcclient.containers.HomePage.connectionSlowText": "C0nn3c71n9 15 74k1n9 l0n93r 7h4n u5u4l. . .",
   "hcclient.containers.HomePage.createOrJoinLabel": "CR3473 0R J01N 4 CH4NN3L",
   "hcclient.containers.HomePage.currentGithub": "CURR3N7 917HU8",
   "hcclient.containers.HomePage.externalLinkWarning": "Y0u r 4b0ut 2 v151t 4n 3xt3rn4l l1nk. Th15 m4y c0mpr0m153 ur 53cur1ty & pr1v4cy. Plz b c4r3ful!",

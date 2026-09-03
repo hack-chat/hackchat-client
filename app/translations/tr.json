@@ -101,6 +101,7 @@
   "hcclient.components.WalletMenu.selectAccountLabel": "Bir Hesap Seçin",
   "hcclient.components.WalletMenu.signInWithLabel": "Şununla oturum açın:",
   "hcclient.containers.HomePage.channelInfo": "Halka açık kanal listesi yoktur, bu nedenle özel tartışmalar için gizli bir kanal adı kullanılabilir.",
+  "hcclient.containers.HomePage.connectionSlowText": "Bağlanmak normalden uzun sürüyor. . .",
   "hcclient.containers.HomePage.createOrJoinLabel": "Bir kanal oluşturun veya katılın",
   "hcclient.containers.HomePage.currentGithub": "Mevcut Github",
   "hcclient.containers.HomePage.externalLinkWarning": "Dış bir bağlantıyı ziyaret etmek üzeresiniz. Bu, güvenliğinizi ve gizliliğinizi tehlikeye atabilir. Lütfen dikkatli olun!",

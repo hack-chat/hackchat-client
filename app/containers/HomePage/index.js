@@ -61,6 +61,24 @@ import {
   makeSelectPendingSignRequest,
 } from 'containers/WalletLayer/selectors';
 
+import {
+  makeSelectCachedUsername,
+  makeSelectCachedPassword,
+  makeSelectCachedColor,
+  makeSelectCachedStoreChannels,
+  makeSelectCachedPrevChannels,
+  makeSelectCachedTheme,
+  makeSelectCachedAllowKatex,
+  makeSelectCachedAllowMarkdown,
+  makeSelectCachedAllowExtCode,
+  makeSelectCachedLTR,
+  makeSelectCachedMenuBtnPos,
+  makeSelectCachedHighlightMentions,
+  makeSelectCachedAutoconnect,
+  makeSelectCachedWsPath,
+  makeSelectCachedNotifyEnabled,
+} from 'containers/SettingsPage/selectors';
+
 import LoadingIndicator from 'components/LoadingIndicator';
 import ChatManager from 'components/ChatManager';
 import ChatInput from 'components/ChatInput';
@@ -88,6 +106,7 @@ import ModalActions from './ModalActions';
 import CodeBox from './CodeBox';
 import CodeText from './CodeText';
 import CodeAction from './CodeAction';
+import ResetButton from './ResetButton';
 
 const useUrlChannel = () => {
   const { search } = useLocation();
@@ -130,6 +149,23 @@ export function HomePage({
   onSignMessageRequest,
   onDoTransfer,
   sessionReady,
+  /*
+  cachedUsername,
+  cachedPassword,
+  cachedColor,
+  cachedDoStore,
+  cachedPreviousChannels,
+  cachedTheme,
+  cachedAllowKatex,
+  cachedAllowMarkdown,
+  cachedAllowExtCode,
+  cachedLtr,
+  cachedMenuBtnPos,
+  cachedDoHighlight,
+  cachedDoAutoconnect,
+  cachedWsPath,
+  cachedNotifyEnabled,
+  */
 }) {
   const navigate = useNavigate();
   const channelFromUrl = useUrlChannel();
@@ -147,6 +183,10 @@ export function HomePage({
 
   const [isFocused, setIsFocused] = useState(true);
   const [missedMessages, setMissedMessages] = useState(0);
+
+  const [showSlowWarning, setShowSlowWarning] = useState(false);
+  const [showResetButton, setShowResetButton] = useState(false);
+
   const currentMessageCount = channelData?.[channel]?.messages?.length || 0;
   const prevMessageCountRef = useRef(currentMessageCount);
   const baseTitle = channelFromUrl ? `?${channelFromUrl}` : 'hack.chat';
@@ -168,6 +208,7 @@ export function HomePage({
   const txWarningBody = intl.formatMessage(messages.txWarningBody);
   const txCopy = intl.formatMessage(messages.txCopy);
   const txSignAndSend = intl.formatMessage(messages.txSignAndSend);
+  const connectionSlowText = intl.formatMessage(messages.connectionSlowText);
 
   const joinedChannels = useMemo(
     () => (channelData ? Object.keys(channelData) : []),
@@ -177,6 +218,7 @@ export function HomePage({
   const chatInputRef = useRef(null);
 
   const channelUsersRef = useRef({});
+
   useEffect(() => {
     channelUsersRef.current = channelData?.[channel]?.users || {};
   }, [channelData, channel]);
@@ -221,6 +263,24 @@ export function HomePage({
     setMissedMessages(0);
     prevMessageCountRef.current = channelData?.[channel]?.messages?.length || 0;
   }, [channel]);
+
+  useEffect(() => {
+    let warningTimer;
+    let resetTimer;
+
+    if (channelFromUrl && !sessionReady) {
+      warningTimer = setTimeout(() => setShowSlowWarning(true), 5000);
+      resetTimer = setTimeout(() => setShowResetButton(true), 10000);
+    } else {
+      setShowSlowWarning(false);
+      setShowResetButton(false);
+    }
+
+    return () => {
+      clearTimeout(warningTimer);
+      clearTimeout(resetTimer);
+    };
+  }, [sessionReady, channelFromUrl]);
 
   const handleExternalLinkClick = useCallback(
     (url) => {
@@ -560,7 +620,36 @@ export function HomePage({
       ) : (
         <LandingPageContents>
           {!!channelFromUrl && !sessionReady ? (
-            <LoadingIndicator />
+            <Center
+              style={{
+                flexDirection: 'column',
+                gap: '1rem',
+                marginTop: '2rem',
+              }}
+            >
+              <LoadingIndicator />
+              {showSlowWarning && (
+                <div
+                  style={{
+                    marginTop: '1rem',
+                    opacity: 0.8,
+                    textAlign: 'center',
+                  }}
+                >
+                  {connectionSlowText}
+                </div>
+              )}
+              {showResetButton && (
+                <ResetButton
+                  onClick={() => {
+                    localStorage.clear();
+                    window.location.reload();
+                  }}
+                >
+                  🧽✨🔄
+                </ResetButton>
+              )}
+            </Center>
           ) : isJoinModalOpen && !!channelFromUrl ? null : (
             HomePageContent
           )}
@@ -707,6 +796,21 @@ HomePage.propTypes = {
   sessionReady: PropTypes.bool,
   onDoTransfer: PropTypes.func,
   onClearChannel: PropTypes.func,
+  cachedUsername: PropTypes.string,
+  cachedPassword: PropTypes.string,
+  cachedColor: PropTypes.string,
+  cachedDoStore: PropTypes.bool,
+  cachedPreviousChannels: PropTypes.array,
+  cachedTheme: PropTypes.string,
+  cachedAllowKatex: PropTypes.bool,
+  cachedAllowMarkdown: PropTypes.bool,
+  cachedAllowExtCode: PropTypes.bool,
+  cachedLtr: PropTypes.bool,
+  cachedMenuBtnPos: PropTypes.bool,
+  cachedDoHighlight: PropTypes.bool,
+  cachedDoAutoconnect: PropTypes.bool,
+  cachedWsPath: PropTypes.string,
+  cachedNotifyEnabled: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -718,6 +822,21 @@ const mapStateToProps = createStructuredSelector({
   connectedAccount: makeSelectConnectedAccount(),
   pendingSignRequest: makeSelectPendingSignRequest(),
   sessionReady: makeSelectSessionReady(),
+  cachedUsername: makeSelectCachedUsername(),
+  cachedPassword: makeSelectCachedPassword(),
+  cachedColor: makeSelectCachedColor(),
+  cachedDoStore: makeSelectCachedStoreChannels(),
+  cachedPreviousChannels: makeSelectCachedPrevChannels(),
+  cachedTheme: makeSelectCachedTheme(),
+  cachedAllowKatex: makeSelectCachedAllowKatex(),
+  cachedAllowMarkdown: makeSelectCachedAllowMarkdown(),
+  cachedAllowExtCode: makeSelectCachedAllowExtCode(),
+  cachedLtr: makeSelectCachedLTR(),
+  cachedMenuBtnPos: makeSelectCachedMenuBtnPos(),
+  cachedDoHighlight: makeSelectCachedHighlightMentions(),
+  cachedDoAutoconnect: makeSelectCachedAutoconnect(),
+  cachedWsPath: makeSelectCachedWsPath(),
+  cachedNotifyEnabled: makeSelectCachedNotifyEnabled(),
 });
 
 export function mapDispatchToProps(dispatch) {

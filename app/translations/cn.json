@@ -101,6 +101,7 @@
   "hcclient.components.WalletMenu.selectAccountLabel": "选择一个帐户",
   "hcclient.components.WalletMenu.signInWithLabel": "登录方式",
   "hcclient.containers.HomePage.channelInfo": "没有公共频道列表，因此您可以使用秘密频道名称进行私人讨论。",
+  "hcclient.containers.HomePage.connectionSlowText": "连接时间比平时长. . .",
   "hcclient.containers.HomePage.createOrJoinLabel": "创建或加入频道",
   "hcclient.containers.HomePage.currentGithub": "当前 Github",
   "hcclient.containers.HomePage.externalLinkWarning": "您即将访问外部链接。这可能会危及您的安全和隐私。请小心！",

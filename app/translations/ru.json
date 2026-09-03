@@ -101,6 +101,7 @@
   "hcclient.components.WalletMenu.selectAccountLabel": "Выберите учетную запись",
   "hcclient.components.WalletMenu.signInWithLabel": "Войти с помощью",
   "hcclient.containers.HomePage.channelInfo": "Списки публичных каналов отсутствуют, поэтому для приватных обсуждений можно использовать секретное имя канала.",
+  "hcclient.containers.HomePage.connectionSlowText": "Подключение занимает больше времени, чем обычно. . .",
   "hcclient.containers.HomePage.createOrJoinLabel": "Создайте канал или присоединитесь к нему",
   "hcclient.containers.HomePage.currentGithub": "Текущий Github",
   "hcclient.containers.HomePage.externalLinkWarning": "Вы собираетесь перейти по внешней ссылке. Это может поставить под угрозу вашу безопасность и конфиденциальность. Пожалуйста, будьте осторожны!",

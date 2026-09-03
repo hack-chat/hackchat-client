@@ -101,6 +101,7 @@
   "hcclient.components.WalletMenu.selectAccountLabel": "حدد حسابًا",
   "hcclient.components.WalletMenu.signInWithLabel": "تسجيل الدخول باستخدام",
   "hcclient.containers.HomePage.channelInfo": "لا توجد قوائم قنوات عامة، لذلك يمكن استخدام اسم قناة سري للمناقشات الخاصة.",
+  "hcclient.containers.HomePage.connectionSlowText": "يستغرق الاتصال وقتاً أطول من المعتاد. . .",
   "hcclient.containers.HomePage.createOrJoinLabel": "إنشاء أو الانضمام إلى قناة",
   "hcclient.containers.HomePage.currentGithub": "Github الحالي",
   "hcclient.containers.HomePage.externalLinkWarning": "أنت على وشك زيارة رابط خارجي. قد يعرض هذا أمنك وخصوصيتك للخطر. يرجى توخي الحذر!",

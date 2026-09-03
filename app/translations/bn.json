@@ -101,6 +101,7 @@
   "hcclient.components.WalletMenu.selectAccountLabel": "একটি অ্যাকাউন্ট নির্বাচন করুন",
   "hcclient.components.WalletMenu.signInWithLabel": "সাইন ইন করুন",
   "hcclient.containers.HomePage.channelInfo": "কোনো পাবলিক চ্যানেল তালিকা নেই, তাই ব্যক্তিগত আলোচনার জন্য গোপন চ্যানেলের নাম ব্যবহার করা যেতে পারে।",
+  "hcclient.containers.HomePage.connectionSlowText": "সংযোগ হতে সাধারণের চেয়ে বেশি সময় লাগছে. . .",
   "hcclient.containers.HomePage.createOrJoinLabel": "একটি চ্যানেল তৈরি করুন বা যোগদান করুন",
   "hcclient.containers.HomePage.currentGithub": "বর্তমান Github",
   "hcclient.containers.HomePage.externalLinkWarning": "আপনি একটি বাহ্যিক লিঙ্কে প্রবেশ করতে যাচ্ছেন। এটি আপনার নিরাপত্তা এবং গোপনীয়তার সাথে আপস করতে পারে। অনুগ্রহ করে সতর্ক থাকুন!",

@@ -101,6 +101,7 @@
   "hcclient.components.WalletMenu.selectAccountLabel": "Sélectionnez un compte",
   "hcclient.components.WalletMenu.signInWithLabel": "Se connecter avec",
   "hcclient.containers.HomePage.channelInfo": "Il n'y a pas de liste de canaux publics, donc un nom de canal secret peut être utilisé pour des discussions privées.",
+  "hcclient.containers.HomePage.connectionSlowText": "La connexion prend plus de temps que d'habitude. . .",
   "hcclient.containers.HomePage.createOrJoinLabel": "Créer ou rejoindre un canal",
   "hcclient.containers.HomePage.currentGithub": "Github Actuel",
   "hcclient.containers.HomePage.externalLinkWarning": "Vous êtes sur le point de visiter un lien externe. Cela peut compromettre votre sécurité et votre confidentialité. Soyez prudent !",
