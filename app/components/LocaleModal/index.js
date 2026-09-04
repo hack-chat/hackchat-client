@@ -33,9 +33,7 @@ export function LocaleModal({ doToggle, onLocaleToggle, locale, intl }) {
         doToggle();
       }}
     >
-      {messages[lang]
-        ? intl.formatMessage(messages[lang])
-        : messages[lang].defaultMessage}
+      {messages[lang] ? intl.formatMessage(messages[lang]) : lang}
     </LanguageButton>
   ));
 

@@ -22,11 +22,6 @@ import * as trTranslationMessages from './translations/tr.json';
 import * as zhTranslationMessages from './translations/zh.json';
 import * as cnTranslationMessages from './translations/cn.json';
 
-export let DEFAULT_LOCALE = 'en';
-if (navigator && navigator.language) {
-  [DEFAULT_LOCALE] = navigator.language.split(/[-_]/);
-}
-
 // prettier-ignore
 export const appLocales = [
   'ar',
@@ -47,17 +42,34 @@ export const appLocales = [
   'ru',
   'tr',
   'zh',
-  'cn',
+  'zh-CN',
 ];
+
+export let DEFAULT_LOCALE = 'en';
+
+if (navigator && navigator.language) {
+  const browserLocale = navigator.language;
+  const baseLocale = browserLocale.split(/[-_]/)[0];
+  const exactMatch = appLocales.find(
+    (l) => l.toLowerCase() === browserLocale.toLowerCase(),
+  );
+
+  if (exactMatch) {
+    DEFAULT_LOCALE = exactMatch;
+  } else if (appLocales.includes(baseLocale)) {
+    DEFAULT_LOCALE = baseLocale;
+  }
+}
 
 const formatTranslationMessages = (locale, messages) => {
   const defaultFormattedMessages =
-    locale !== DEFAULT_LOCALE
-      ? formatTranslationMessages(DEFAULT_LOCALE, enTranslationMessages)
+    locale !== 'en'
+      ? formatTranslationMessages('en', enTranslationMessages)
       : {};
+
   const flattenFormattedMessages = (formattedMessages, key) => {
     const formattedMessage =
-      !messages[key] && locale !== DEFAULT_LOCALE
+      !messages[key] && locale !== 'en'
         ? defaultFormattedMessages[key]
         : messages[key];
     return Object.assign(formattedMessages, { [key]: formattedMessage });
@@ -66,6 +78,7 @@ const formatTranslationMessages = (locale, messages) => {
 };
 
 export const translationMessages = {
+  en: formatTranslationMessages('en', enTranslationMessages),
   ar: formatTranslationMessages('ar', arTranslationMessages),
   bn: formatTranslationMessages('bn', bnTranslationMessages),
   de: formatTranslationMessages('de', deTranslationMessages),
@@ -83,5 +96,5 @@ export const translationMessages = {
   ru: formatTranslationMessages('ru', ruTranslationMessages),
   tr: formatTranslationMessages('tr', trTranslationMessages),
   zh: formatTranslationMessages('zh', zhTranslationMessages),
-  cn: formatTranslationMessages('cn', cnTranslationMessages),
+  'zh-CN': formatTranslationMessages('zh-CN', cnTranslationMessages),
 };

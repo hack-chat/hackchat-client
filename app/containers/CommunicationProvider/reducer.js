@@ -92,7 +92,14 @@ const communicationProviderReducer = (state = initialState, action) =>
         draft.sessionReady = true;
 
         if (action.data.restored === true) {
+          const restoredChannels = action.data.channels || [];
+
           Object.keys(draft.channels).forEach((chanName) => {
+            if (!restoredChannels.includes(chanName)) {
+              delete draft.channels[chanName];
+              return;
+            }
+
             const channelMessages = draft.channels[chanName].messages;
             const lastMsg =
               channelMessages.length > 0

@@ -12,6 +12,15 @@ import {
 } from './constants';
 import { DEFAULT_LOCALE } from '../../i18n';
 
+/**
+ * @todo remove this block, old localstorage caches may contain 'cn', this upgrades them
+ */
+let savedLocale = JSON.parse(localStorage.getItem(PREVLANG_LSLABEL));
+if (savedLocale === 'cn') {
+  savedLocale = 'zh-CN';
+  localStorage.setItem(PREVLANG_LSLABEL, JSON.stringify('zh-CN'));
+}
+
 export const initialState = {
   locale: JSON.parse(localStorage.getItem(PREVLANG_LSLABEL)) || DEFAULT_LOCALE,
   isLocaleModalOpen: false,

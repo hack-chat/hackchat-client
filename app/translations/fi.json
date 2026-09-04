@@ -124,7 +124,7 @@
   "hcclient.containers.HomePage.understoodText": "Ymmärretty",
   "hcclient.containers.LocaleToggle.ar": "العربية",
   "hcclient.containers.LocaleToggle.bn": "বাংলা",
-  "hcclient.containers.LocaleToggle.cn": "简体中文",
+  "hcclient.containers.LocaleToggle.zh-CN": "简体中文",
   "hcclient.containers.LocaleToggle.de": "Deutsch",
   "hcclient.containers.LocaleToggle.el": "ελληνικά",
   "hcclient.containers.LocaleToggle.en": "English",
