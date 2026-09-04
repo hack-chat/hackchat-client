@@ -97,4 +97,6 @@ export const COMMANDS = [
   { command: 'sendsol', params: ['username', 'amount'] },
   { command: 'leave', params: [] },
   { command: 'clear', params: [] },
+  { command: 'setpassword', params: ['password'] },
+  { command: 'clearpassword', params: [] },
 ];

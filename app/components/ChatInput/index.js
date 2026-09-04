@@ -308,6 +308,13 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
         setMentionState((prev) => ({ ...prev, isCycling: false }));
       }
 
+      if (evt.key === 'Escape') {
+        if (suggestions.length > 0) {
+          evt.preventDefault();
+          setSuggestions([]);
+        }
+      }
+
       if (evt.key === 'Enter' && !evt.shiftKey) {
         evt.preventDefault();
         if (suggestions.length > 0 && activeSuggestion < suggestions.length) {

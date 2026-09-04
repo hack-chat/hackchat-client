@@ -36,12 +36,15 @@ import {
   uwuifyUser,
   leaveChannel,
   clearChannel,
+  clearAuthReqs,
 } from 'containers/CommunicationProvider/actions';
 import {
   makeSelectChannel,
   makeSelectChannelData,
   makeSelectMeta,
   makeSelectSessionReady,
+  makeSelectPendingCaptcha,
+  makeSelectPendingPasswordReq,
 } from 'containers/CommunicationProvider/selectors';
 
 import { makeSelectIsLocaleModalOpen } from 'containers/LanguageProvider/selectors';
@@ -107,6 +110,7 @@ import CodeBox from './CodeBox';
 import CodeText from './CodeText';
 import CodeAction from './CodeAction';
 import ResetButton from './ResetButton';
+import CaptchaText from './CaptchaText';
 
 const useUrlChannel = () => {
   const { search } = useLocation();
@@ -148,7 +152,10 @@ export function HomePage({
   pendingSignRequest,
   onSignMessageRequest,
   onDoTransfer,
+  onClearAuthReqs,
   sessionReady,
+  pendingCaptcha,
+  pendingPasswordReq,
   cachedLtr,
   /*
   cachedUsername,
@@ -186,6 +193,11 @@ export function HomePage({
 
   const [showSlowWarning, setShowSlowWarning] = useState(false);
   const [showResetButton, setShowResetButton] = useState(false);
+
+  const [challengeCaptcha, setChallengeCaptcha] = useState('');
+  const [challengePassword, setChallengePassword] = useState('');
+  const captchaInputRef = useRef(null);
+  const passwordInputRef = useRef(null);
 
   const currentMessageCount = channelData?.[channel]?.messages?.length || 0;
   const prevMessageCountRef = useRef(currentMessageCount);
@@ -420,6 +432,11 @@ export function HomePage({
   useEffect(() => {
     if (!sessionReady) return;
 
+    if (pendingCaptcha || pendingPasswordReq) {
+      setJoinModalOpen(false);
+      return;
+    }
+
     if (channelFromUrl) {
       const isAlreadyMember = channelData && channelData[channelFromUrl];
 
@@ -443,7 +460,21 @@ export function HomePage({
     onChangeChannel,
     navigate,
     sessionReady,
+    pendingCaptcha,
+    pendingPasswordReq,
   ]);
+
+  useEffect(() => {
+    if (pendingCaptcha && captchaInputRef.current) {
+      setTimeout(() => captchaInputRef.current.focus(), 100);
+    }
+  }, [pendingCaptcha]);
+
+  useEffect(() => {
+    if (pendingPasswordReq && passwordInputRef.current) {
+      setTimeout(() => passwordInputRef.current.focus(), 100);
+    }
+  }, [pendingPasswordReq]);
 
   const handleCopyTx = async () => {
     if (txToWarn) {
@@ -485,7 +516,13 @@ export function HomePage({
     });
   }, [meta.channels]);
 
-  const showChat = sessionReady && channel && channel === channelFromUrl;
+  const showChat = Boolean(
+    sessionReady &&
+    channel &&
+    channel === channelFromUrl &&
+    channelData &&
+    channelData[channelFromUrl],
+  );
 
   let homepageTitle = baseTitle;
   if (missedMessages > 0) {
@@ -765,6 +802,90 @@ export function HomePage({
         </ModalActions>
       </Modal>
 
+      <Modal isOpen={!!pendingCaptcha} doToggle={onClearAuthReqs}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (challengeCaptcha.trim() !== '') {
+              onSendMessage(pendingCaptcha.channel, challengeCaptcha.trim());
+              setChallengeCaptcha('');
+              onClearAuthReqs();
+            }
+          }}
+        >
+          <ModalHeader style={{ textAlign: 'center', fontSize: '1.5rem' }}>
+            🛡️ ?{pendingCaptcha?.channel} 🤖
+          </ModalHeader>
+          <ModalBody>
+            <CaptchaText>{pendingCaptcha?.text}</CaptchaText>
+          </ModalBody>
+          <Center>
+            <input
+              ref={captchaInputRef}
+              type="text"
+              autoComplete="off"
+              placeholder="🔤 . . ."
+              value={challengeCaptcha}
+              onChange={(e) => setChallengeCaptcha(e.target.value)}
+              style={{
+                padding: '0.5rem',
+                width: '80%',
+                margin: '1rem 0 2rem 0',
+                fontFamily: 'monospace',
+                textAlign: 'center',
+                fontSize: '1.25rem',
+              }}
+            />
+          </Center>
+          <input type="submit" style={{ display: 'none' }} />
+        </form>
+      </Modal>
+
+      <Modal isOpen={!!pendingPasswordReq} doToggle={onClearAuthReqs}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (challengePassword !== '') {
+              onSendMessage(pendingPasswordReq.channel, challengePassword);
+              setChallengePassword('');
+              onClearAuthReqs();
+            }
+          }}
+        >
+          <ModalHeader style={{ textAlign: 'center', fontSize: '1.5rem' }}>
+            🔐 ?{pendingPasswordReq?.channel} ❗
+          </ModalHeader>
+
+          <Center>
+            <input
+              type="text"
+              autoComplete="username"
+              value="room_guest"
+              style={{ display: 'none' }}
+              readOnly
+            />
+
+            <input
+              ref={passwordInputRef}
+              type="password"
+              autoComplete="current-password"
+              placeholder="🗝️ . . ."
+              value={challengePassword}
+              onChange={(e) => setChallengePassword(e.target.value)}
+              style={{
+                padding: '0.5rem',
+                width: '80%',
+                margin: '2rem 0',
+                fontFamily: 'monospace',
+                textAlign: 'center',
+                fontSize: '1.25rem',
+              }}
+            />
+          </Center>
+          <input type="submit" style={{ display: 'none' }} />
+        </form>
+      </Modal>
+
       <WalletMenu isOpen={isWalletModalOpen} doToggle={setWalletModalOpen} />
     </MainContainer>
   );
@@ -794,7 +915,10 @@ HomePage.propTypes = {
   pendingSignRequest: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
   onSignMessageRequest: PropTypes.func,
   sessionReady: PropTypes.bool,
+  pendingCaptcha: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+  pendingPasswordReq: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
   onDoTransfer: PropTypes.func,
+  onClearAuthReqs: PropTypes.func,
   onClearChannel: PropTypes.func,
   cachedUsername: PropTypes.string,
   cachedPassword: PropTypes.string,
@@ -822,6 +946,8 @@ const mapStateToProps = createStructuredSelector({
   connectedAccount: makeSelectConnectedAccount(),
   pendingSignRequest: makeSelectPendingSignRequest(),
   sessionReady: makeSelectSessionReady(),
+  pendingCaptcha: makeSelectPendingCaptcha(),
+  pendingPasswordReq: makeSelectPendingPasswordReq(),
   cachedUsername: makeSelectCachedUsername(),
   cachedPassword: makeSelectCachedPassword(),
   cachedColor: makeSelectCachedColor(),
@@ -867,6 +993,7 @@ export function mapDispatchToProps(dispatch) {
     onSignMessageRequest: (wallet, message) =>
       dispatch(signMessageRequest(wallet, message)),
     onDoTransfer: (tx) => dispatch(doTransfer(tx)),
+    onClearAuthReqs: () => dispatch(clearAuthReqs()),
   };
 }
 

@@ -21,6 +21,7 @@ import {
   UNMUTE_USER,
   UWUIFY_USER,
   CLEAR_CHANNEL,
+  CLEAR_AUTH_REQS,
 } from './constants';
 
 /**
@@ -263,5 +264,15 @@ export function clearChannel(channel) {
   return {
     type: CLEAR_CHANNEL,
     channel,
+  };
+}
+
+/**
+ * Clear authorization flags
+ * @return {object} An action object with a type of CLEAR_AUTH_REQS
+ */
+export function clearAuthReqs() {
+  return {
+    type: CLEAR_AUTH_REQS,
   };
 }

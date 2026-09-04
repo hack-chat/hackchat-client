@@ -29,6 +29,8 @@ import {
   SESSION_LS,
   LEAVE_CHANNEL,
   CLEAR_CHANNEL,
+  GOT_PASSWORD_REQ,
+  CLEAR_AUTH_REQS,
 } from './constants';
 
 export const initialState = {
@@ -42,6 +44,8 @@ export const initialState = {
   },
   sessionReady: false,
   lastSession: false,
+  pendingCaptcha: false,
+  pendingPasswordReq: false,
 };
 
 const communicationProviderReducer = (state = initialState, action) =>
@@ -125,15 +129,19 @@ const communicationProviderReducer = (state = initialState, action) =>
         });
         break;
       case JOINED_CHANNEL:
-        if (typeof draft.channels[action.data.channel] === 'undefined') {
-          draft.channels[action.data.channel] = {
-            users: action.data.users,
-            messages: [],
-          };
-        } else {
-          draft.channels[action.data.channel].users = action.data.users;
-        }
-        break;
+        return produce(state, (draft) => {
+          draft.pendingCaptcha = false;
+          draft.pendingPasswordReq = false;
+
+          if (typeof draft.channels[action.data.channel] === 'undefined') {
+            draft.channels[action.data.channel] = {
+              users: action.data.users,
+              messages: [],
+            };
+          } else {
+            draft.channels[action.data.channel].users = action.data.users;
+          }
+        });
       case DEBUG:
         //
         break;
@@ -192,8 +200,18 @@ const communicationProviderReducer = (state = initialState, action) =>
         }
         break;
       case GOT_CAPTCHA:
-        // @todo add captcha support
-        break;
+        return produce(state, (draft) => {
+          draft.pendingCaptcha = {
+            channel: action.data.channel,
+            text: action.data.text,
+          };
+        });
+      case GOT_PASSWORD_REQ:
+        return produce(state, (draft) => {
+          draft.pendingPasswordReq = {
+            channel: action.data.channel,
+          };
+        });
       case INFORMATION:
         if (action.data.channel && draft.channels[action.data.channel]) {
           draft.channels[action.data.channel].messages.push({
@@ -325,6 +343,11 @@ const communicationProviderReducer = (state = initialState, action) =>
         draft.channels[action.channel].messages = [];
         break;
       }
+      case CLEAR_AUTH_REQS:
+        return produce(state, (draft) => {
+          draft.pendingCaptcha = false;
+          draft.pendingPasswordReq = false;
+        });
     }
   });
 

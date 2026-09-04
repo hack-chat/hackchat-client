@@ -43,10 +43,30 @@ const makeSelectSessionReady = () =>
     (substate) => substate.sessionReady,
   );
 
+/**
+ * Get the pendingCaptcha data
+ */
+const makeSelectPendingCaptcha = () =>
+  createSelector(
+    selectCommunicationProviderDomain,
+    (substate) => substate.pendingCaptcha,
+  );
+
+/**
+ * Get the pendingPasswordReq data
+ */
+const makeSelectPendingPasswordReq = () =>
+  createSelector(
+    selectCommunicationProviderDomain,
+    (substate) => substate.pendingPasswordReq,
+  );
+
 export {
   selectCommunicationProviderDomain,
   makeSelectChannel,
   makeSelectChannelData,
   makeSelectMeta,
   makeSelectSessionReady,
+  makeSelectPendingCaptcha,
+  makeSelectPendingPasswordReq,
 };

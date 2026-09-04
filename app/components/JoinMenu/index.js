@@ -119,7 +119,13 @@ export function JoinMenu({
   };
 
   const handleKeyDown = (evt) => {
-    if (suggestions.length === 0) return;
+    if (suggestions.length === 0) {
+      if (evt.key === 'Enter') {
+        evt.preventDefault();
+        doJoin(evt);
+      }
+      return;
+    }
 
     if (evt.key === 'ArrowDown') {
       evt.preventDefault();
@@ -186,6 +192,12 @@ export function JoinMenu({
           onFocus={clearInvalidName}
           defaultValue={username}
           onChange={(e) => setChosenUsername(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              doJoin(e);
+            }
+          }}
         />
         <InputGroupText>
           <NickColor
@@ -205,6 +217,12 @@ export function JoinMenu({
           placeholder={joinModalPassword}
           defaultValue={password}
           onChange={(e) => setChosenPassword(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              doJoin(e);
+            }
+          }}
         />
         <InputGroupText>
           <RememberBox

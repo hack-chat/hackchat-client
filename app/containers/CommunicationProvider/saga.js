@@ -54,6 +54,7 @@ import {
   NEW_TX_REQUEST,
   UPDATE_MSG,
   SESSION_LS,
+  GOT_PASSWORD_REQ,
 } from './constants';
 
 import {
@@ -396,6 +397,14 @@ function initWebsocket() {
         },
       });
 
+    const onGotPasswordReq = (payload) =>
+      emitter({
+        type: GOT_PASSWORD_REQ,
+        data: {
+          channel: payload.passwordReqData.channel,
+        },
+      });
+
     hcClient.on('error', onError);
     hcClient.on('connected', onConnected);
     hcClient.on('session', onSession);
@@ -415,6 +424,7 @@ function initWebsocket() {
     hcClient.on('signMessage', onSignMessage);
     hcClient.on('signTransaction', onSignTransaction);
     hcClient.on('updateMessage', onUpdateMessage);
+    hcClient.on('gotPasswordReq', onGotPasswordReq);
 
     return () => {
       hcClient.removeListener('error', onError);
@@ -436,6 +446,7 @@ function initWebsocket() {
       hcClient.removeListener('signMessage', onSignMessage);
       hcClient.removeListener('signTransaction', onSignTransaction);
       hcClient.removeListener('updateMessage', onUpdateMessage);
+      hcClient.removeListener('gotPasswordReq', onGotPasswordReq);
     };
   });
 }

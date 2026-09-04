@@ -187,6 +187,10 @@ const GlobalStyle = createGlobalStyle`
     border-inline-start: 5px solid #4e4e4e;
   }
 
+  blockquote > p {
+    margin: 0;
+  }
+
   hr {
     margin-top: 20px;
     margin-bottom: 20px;
