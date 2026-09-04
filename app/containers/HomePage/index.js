@@ -429,6 +429,10 @@ export function HomePage({
     ],
   );
 
+  const handleInsertText = useCallback((text) => {
+    chatInputRef.current?.insertText(text);
+  }, []);
+
   useEffect(() => {
     if (!sessionReady) return;
 
@@ -643,6 +647,7 @@ export function HomePage({
             channel={channel}
             channelData={channelData}
             handleMenuCommand={handleMenuCommand}
+            handleInsertText={handleInsertText}
             onExternalLinkClick={handleExternalLinkClick}
             onTxAttemptClick={handleTxAttemptClick}
             intl={intl}

@@ -27,6 +27,7 @@ export function ChatManager({
   channel,
   channelData,
   handleMenuCommand,
+  handleInsertText,
   onExternalLinkClick,
   onTxAttemptClick,
   intl,
@@ -102,10 +103,13 @@ export function ChatManager({
         .map((line) => `> ${line}`)
         .join('\n');
       const mention = user.mine ? '' : `@${username} `;
+      const replyString = `${quoteText}\n\n${mention}`;
 
-      handleMenuCommand(`${quoteText}\n\n${mention}`);
+      if (handleInsertText) {
+        handleInsertText(replyString);
+      }
     },
-    [handleMenuCommand],
+    [handleInsertText],
   );
 
   const handleMessageContextMenu = useCallback((payload, user, event) => {
@@ -237,6 +241,7 @@ ChatManager.propTypes = {
   channel: PropTypes.string,
   channelData: PropTypes.object,
   handleMenuCommand: PropTypes.func,
+  handleInsertText: PropTypes.func,
   onExternalLinkClick: PropTypes.func,
   intl: PropTypes.object.isRequired,
   onTxAttemptClick: PropTypes.func,
