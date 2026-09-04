@@ -7,8 +7,16 @@ import { defineMessages } from 'react-intl';
 export const scope = 'hcclient.components.ChatInput';
 
 export default defineMessages({
-  MainInput: {
-    id: `${scope}.MainInput`,
+  inputTitle: {
+    id: `${scope}.inputTitle`,
     defaultMessage: 'Your Message',
+  },
+  previewTitle: {
+    id: `${scope}.previewTitle`,
+    defaultMessage: 'Preview Message',
+  },
+  sendTitle: {
+    id: `${scope}.sendTitle`,
+    defaultMessage: 'Send Message',
   },
 });

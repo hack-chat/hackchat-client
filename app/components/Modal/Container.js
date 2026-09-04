@@ -10,7 +10,7 @@ export default styled.div`
   display: flex;
   flex-direction: column;
   width: 90vw;
-  max-width: 500px;
+  max-width: ${({ $wide }) => ($wide ? '731px' : '500px')};
   max-height: 90vh;
   min-height: 150px;
   background-color: #2a2a2a;

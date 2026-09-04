@@ -3,6 +3,7 @@
  */
 
 import React, { useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import Backdrop from './Backdrop';
 import Container from './Container';
@@ -17,6 +18,7 @@ const Modal = ({
   title,
   onCloseFunction,
   children,
+  wide,
 }) => {
   const toggle = useCallback(() => {
     doToggle(!isOpen);
@@ -45,9 +47,13 @@ const Modal = ({
     evt.stopPropagation();
   };
 
-  return (
+  if (typeof document === 'undefined') {
+    return null;
+  }
+
+  return createPortal(
     <Backdrop onClick={toggle} hidden={!isOpen}>
-      <Container onClick={handleContainerClick}>
+      <Container onClick={handleContainerClick} $wide={wide}>
         <CloseButton onClick={toggle}>&times;</CloseButton>
 
         {title && (
@@ -59,7 +65,8 @@ const Modal = ({
 
         <Body>{children}</Body>
       </Container>
-    </Backdrop>
+    </Backdrop>,
+    document.body,
   );
 };
 
@@ -70,6 +77,7 @@ Modal.propTypes = {
   title: PropTypes.string,
   children: PropTypes.node.isRequired,
   onCloseFunction: PropTypes.func,
+  wide: PropTypes.bool,
 };
 
 export default Modal;

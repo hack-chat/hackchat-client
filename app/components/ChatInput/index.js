@@ -13,9 +13,11 @@ import React, {
   forwardRef,
 } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 import EmojiConvertor from 'emoji-js';
-import { FaPaperPlane } from 'react-icons/fa';
+import { FaPaperPlane, FaEye } from 'react-icons/fa';
+
+import Modal from 'components/Modal';
 
 import { COMMANDS, MAX_MSG_HISTORY, KAOMOJI } from './constants';
 import messages from './messages';
@@ -24,6 +26,8 @@ import Container from './Container';
 import UserInput from './UserInput';
 import SendButton from './SendButton';
 import { SuggestionContainer, SuggestionItem } from './SuggestionBox';
+import PreviewButton from './PreviewButton';
+import PreviewModal from './PreviewModal';
 
 const emoji = new EmojiConvertor();
 emoji.replace_mode = 'unified';
@@ -135,11 +139,18 @@ const parseMessage = (text) => {
 };
 
 function ChatInput({ channel, users, onSendMessage }, ref) {
+  const intl = useIntl();
+
+  const inputTitle = intl.formatMessage(messages.inputTitle);
+  const previewTitle = intl.formatMessage(messages.previewTitle);
+  const sendTitle = intl.formatMessage(messages.sendTitle);
+
   const [inputValue, setInputValue] = useState('');
   const [history, setHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [suggestions, setSuggestions] = useState([]);
   const [activeSuggestion, setActiveSuggestion] = useState(0);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
   const [mentionState, setMentionState] = useState({
     isCycling: false,
@@ -523,37 +534,50 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
           ))}
         </SuggestionContainer>
       )}
-      <FormattedMessage
-        id={messages.MainInput.id}
-        defaultMessage={messages.MainInput.defaultMessage}
-      >
-        {(placeholder) => (
-          <UserInput
-            ref={inputRef}
-            autoFocus
-            rows="1"
-            value={inputValue}
-            onChange={handleInputChange}
-            onKeyDown={handleKeyDown}
-            onKeyUp={(e) => {
-              if (
-                ['ArrowLeft', 'ArrowRight', 'Backspace', 'Delete'].includes(
-                  e.key,
-                )
-              ) {
-                updateSuggestions(inputValue, e.target.selectionStart);
-              }
-            }}
-            onMouseUp={(e) =>
-              updateSuggestions(inputValue, e.target.selectionStart)
-            }
-            placeholder={placeholder}
-          />
-        )}
-      </FormattedMessage>
-      <SendButton onClick={submitInput}>
+
+      <UserInput
+        ref={inputRef}
+        autoFocus
+        rows="1"
+        value={inputValue}
+        onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
+        onKeyUp={(e) => {
+          if (
+            ['ArrowLeft', 'ArrowRight', 'Backspace', 'Delete'].includes(e.key)
+          ) {
+            updateSuggestions(inputValue, e.target.selectionStart);
+          }
+        }}
+        onMouseUp={(e) =>
+          updateSuggestions(inputValue, e.target.selectionStart)
+        }
+        placeholder={inputTitle}
+      />
+
+      {inputValue.trim().length > 0 && (
+        <PreviewButton
+          title={previewTitle}
+          onClick={() => setIsPreviewOpen(true)}
+        >
+          <FaEye />
+        </PreviewButton>
+      )}
+
+      <SendButton onClick={submitInput} title={sendTitle}>
         <FaPaperPlane />
       </SendButton>
+
+      <Modal
+        isOpen={isPreviewOpen}
+        doToggle={() => setIsPreviewOpen(false)}
+        wide
+      >
+        <PreviewModal
+          text={parseMessage(inputValue.trim())}
+          title={previewTitle}
+        />
+      </Modal>
     </Container>
   );
 }

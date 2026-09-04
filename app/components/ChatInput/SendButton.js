@@ -12,7 +12,7 @@ export default styled.button.attrs({
   cursor: pointer;
   color: #a6a28c;
   font-size: 1.2em;
-  padding: 5px;
+  padding: 5px 12px;
   border-top: 1px solid rgb(125 122 104 / 50%);
 
   &:focus {
