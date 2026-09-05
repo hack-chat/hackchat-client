@@ -153,6 +153,8 @@
   "hcclient.containers.SettingsPage.doHighlightsText": "Bahsetmeleri Vurgula",
   "hcclient.containers.SettingsPage.enableNotificationsText": "Bildirimleri Etkinleştir",
   "hcclient.containers.SettingsPage.header": "İstemci Ayarları",
+  "hcclient.containers.SettingsPage.loadSafeImagesText": "Güvenli Resimleri Yükle",
+  "hcclient.containers.SettingsPage.loadUnsafeImagesText": "Güvenli Olmayan Resimleri Yükle",
   "hcclient.containers.SettingsPage.menuPosText": "Sol Taraftaki Menü Düğmesi",
   "hcclient.containers.SettingsPage.reconnectText": "Şimdi Yeniden Bağlan",
   "hcclient.containers.SettingsPage.themeNoticeText": "Tema seçimi yakında geliyor",

@@ -112,6 +112,24 @@ const makeSelectCachedNotifyEnabled = () =>
     (substate) => substate.notifyEnabled,
   );
 
+/**
+ * Safe image load setting
+ */
+const makeSelectCachedLoadSafeImages = () =>
+  createSelector(
+    selectSettingsPageDomain,
+    (substate) => substate.loadSafeImages,
+  );
+
+/**
+ * Unsafe image load setting
+ */
+const makeSelectCachedLoadUnsafeImages = () =>
+  createSelector(
+    selectSettingsPageDomain,
+    (substate) => substate.loadUnsafeImages,
+  );
+
 export {
   selectSettingsPageDomain,
   makeSelectCachedUsername,
@@ -129,4 +147,6 @@ export {
   makeSelectCachedAutoconnect,
   makeSelectCachedWsPath,
   makeSelectCachedNotifyEnabled,
+  makeSelectCachedLoadSafeImages,
+  makeSelectCachedLoadUnsafeImages,
 };

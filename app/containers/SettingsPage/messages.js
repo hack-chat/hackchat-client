@@ -91,4 +91,12 @@ export default defineMessages({
     id: `${scope}.enableNotificationsText`,
     defaultMessage: 'Enable Notifications',
   },
+  loadSafeImagesText: {
+    id: `${scope}.loadSafeImagesText`,
+    defaultMessage: 'Load Safe Images',
+  },
+  loadUnsafeImagesText: {
+    id: `${scope}.loadUnsafeImagesText`,
+    defaultMessage: 'Load Unsafe Images',
+  },
 });

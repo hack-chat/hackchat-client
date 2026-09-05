@@ -153,6 +153,8 @@
   "hcclient.containers.SettingsPage.doHighlightsText": "Επισήμανση Αναφορών",
   "hcclient.containers.SettingsPage.enableNotificationsText": "Ενεργοποίηση ειδοποιήσεων",
   "hcclient.containers.SettingsPage.header": "Ρυθμίσεις πελάτη",
+  "hcclient.containers.SettingsPage.loadSafeImagesText": "Φόρτωση ασφαλών εικόνων",
+  "hcclient.containers.SettingsPage.loadUnsafeImagesText": "Φόρτωση μη ασφαλών εικόνων",
   "hcclient.containers.SettingsPage.menuPosText": "Κουμπί μενού αριστερά",
   "hcclient.containers.SettingsPage.reconnectText": "Επανασύνδεση τώρα",
   "hcclient.containers.SettingsPage.themeNoticeText": "Η επιλογή θέματος έρχεται σύντομα",

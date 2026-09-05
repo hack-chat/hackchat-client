@@ -153,6 +153,8 @@
   "hcclient.containers.SettingsPage.doHighlightsText": "Подсвечивать упоминания",
   "hcclient.containers.SettingsPage.enableNotificationsText": "Включить уведомления",
   "hcclient.containers.SettingsPage.header": "Настройки клиента",
+  "hcclient.containers.SettingsPage.loadSafeImagesText": "Загружать безопасные изображения",
+  "hcclient.containers.SettingsPage.loadUnsafeImagesText": "Загружать небезопасные изображения",
   "hcclient.containers.SettingsPage.menuPosText": "Кнопка меню слева",
   "hcclient.containers.SettingsPage.reconnectText": "Переподключиться",
   "hcclient.containers.SettingsPage.themeNoticeText": "Выбор темы скоро будет доступен",

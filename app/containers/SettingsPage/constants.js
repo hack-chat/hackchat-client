@@ -19,6 +19,8 @@ export const SET_HIGHLIGHTMENTIONS = 'app/SettingsPage/SET_HIGHLIGHTMENTIONS';
 export const SET_AUTOCONNECT = 'app/SettingsPage/SET_AUTOCONNECT';
 export const SET_WSPATH = 'app/SettingsPage/SET_WSPATH';
 export const SET_NOTIFY = 'app/Settings/SET_NOTIFY';
+export const SET_LOAD_SAFE_IMAGES = 'app/Settings/SET_LOAD_SAFE_IMAGES';
+export const SET_LOAD_UNSAFE_IMAGES = 'app/Settings/SET_LOAD_UNSAFE_IMAGES';
 
 /**
  * SettingsPage localStorage labels
@@ -39,3 +41,6 @@ export const HIGHLIGHTMENTIONS_LSLABEL = 'app/Settings/HIGHLIGHTMENTIONS_LABEL';
 export const AUTOCONNECT_LSLABEL = 'app/Settings/AUTOCONNECT_LSLABEL';
 export const WSPATH_LSLABEL = 'app/Settings/WSPATH_LSLABEL';
 export const NOTIFY_LSLABEL = 'app/Settings/NOTIFY_LSLABEL';
+export const LOAD_SAFE_IMAGES_LSLABEL = 'app/Settings/LOAD_SAFE_IMAGES_LSLABEL';
+export const LOAD_UNSAFE_IMAGES_LSLABEL =
+  'app/Settings/LOAD_UNSAFE_IMAGES_LSLABEL';

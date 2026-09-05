@@ -153,6 +153,8 @@
   "hcclient.containers.SettingsPage.doHighlightsText": "高亮提及",
   "hcclient.containers.SettingsPage.enableNotificationsText": "启用通知",
   "hcclient.containers.SettingsPage.header": "客户端设置",
+  "hcclient.containers.SettingsPage.loadSafeImagesText": "加载安全图片",
+  "hcclient.containers.SettingsPage.loadUnsafeImagesText": "加载不安全图片",
   "hcclient.containers.SettingsPage.menuPosText": "左侧菜单按钮",
   "hcclient.containers.SettingsPage.reconnectText": "立即重新连接",
   "hcclient.containers.SettingsPage.themeNoticeText": "主题选择即将推出",

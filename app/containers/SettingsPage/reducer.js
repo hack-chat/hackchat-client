@@ -36,6 +36,10 @@ import {
   WSPATH_LSLABEL,
   SET_NOTIFY,
   NOTIFY_LSLABEL,
+  SET_LOAD_SAFE_IMAGES,
+  LOAD_SAFE_IMAGES_LSLABEL,
+  SET_LOAD_UNSAFE_IMAGES,
+  LOAD_UNSAFE_IMAGES_LSLABEL,
 } from './constants';
 
 const randomRGB = () => {
@@ -98,6 +102,10 @@ export const settingsInitialState = {
     JSON.parse(localStorage.getItem(WSPATH_LSLABEL)) ||
     'wss://hack.chat/chat-ws',
   notifyEnabled: JSON.parse(localStorage.getItem(NOTIFY_LSLABEL)) !== false,
+  loadSafeImages:
+    JSON.parse(localStorage.getItem(LOAD_SAFE_IMAGES_LSLABEL)) ?? true,
+  loadUnsafeImages:
+    JSON.parse(localStorage.getItem(LOAD_UNSAFE_IMAGES_LSLABEL)) ?? false,
 };
 
 const settingsPageReducer = (state = settingsInitialState, action) =>
@@ -150,6 +158,12 @@ const settingsPageReducer = (state = settingsInitialState, action) =>
         break;
       case SET_NOTIFY:
         draft.notifyEnabled = action.enabled;
+        break;
+      case SET_LOAD_SAFE_IMAGES:
+        draft.loadSafeImages = action.enabled;
+        break;
+      case SET_LOAD_UNSAFE_IMAGES:
+        draft.loadUnsafeImages = action.enabled;
         break;
     }
   });

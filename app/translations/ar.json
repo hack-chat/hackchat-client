@@ -153,6 +153,8 @@
   "hcclient.containers.SettingsPage.doHighlightsText": "تظليل الإشارات (Mentions)",
   "hcclient.containers.SettingsPage.enableNotificationsText": "تمكين الإشعارات",
   "hcclient.containers.SettingsPage.header": "إعدادات العميل",
+  "hcclient.containers.SettingsPage.loadSafeImagesText": "تحميل الصور الآمنة",
+  "hcclient.containers.SettingsPage.loadUnsafeImagesText": "تحميل الصور غير الآمنة",
   "hcclient.containers.SettingsPage.menuPosText": "زر القائمة على الجانب الأيسر",
   "hcclient.containers.SettingsPage.reconnectText": "أعد الاتصال الآن",
   "hcclient.containers.SettingsPage.themeNoticeText": "اختيار المظهر قريباً",

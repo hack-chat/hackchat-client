@@ -1,5 +1,12 @@
+/**
+ * MessageFormatter configures the Remarkable rendering engine to parse and
+ * transform raw chat messages into secure React components. It handles Markdown,
+ * KaTeX math, syntax highlighting, spoiler tags, and image rendering, while
+ * hooking into Redux to dynamically toggle these features based on user settings.
+ */
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { Remarkable } from 'remarkable';
 import RemarkableReactRenderer from 'remarkable-react';
 import { linkify } from 'remarkable/linkify';
@@ -7,6 +14,8 @@ import DOMPurify from 'dompurify';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 import { InlineMath, BlockMath } from 'react-katex';
+
+import { selectSettingsPageDomain } from '../../containers/SettingsPage/selectors';
 
 hljs.registerLanguage('javascript', javascript);
 
@@ -51,6 +60,138 @@ const MessageFormatter = new Remarkable('full', {
 MessageFormatter.core.ruler.disable(['abbr']);
 MessageFormatter.inline.ruler.disable(['sup']);
 
+const MarkdownImage = ({ alt, src, title }) => {
+  const loadSafe = useSelector(
+    (state) => selectSettingsPageDomain(state).loadSafeImages ?? true,
+  );
+  const loadUnsafe = useSelector(
+    (state) => selectSettingsPageDomain(state).loadUnsafeImages ?? false,
+  );
+
+  let isSafeHost = false;
+  try {
+    const url = new URL(src);
+    const host = url.hostname;
+    const whitelist = [
+      'i.imgur.com',
+      'imgur.com',
+      'share.lyka.pro',
+      'cdn.discordapp.com',
+      'i.gyazo.com',
+      'i.postimg.cc',
+      'i.ytimg.com',
+      'i.ibb.co',
+      'giphy.com',
+    ];
+
+    if (whitelist.includes(host) || host.endsWith('.giphy.com')) {
+      isSafeHost = true;
+    }
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log('url error:', e);
+    isSafeHost = false;
+  }
+
+  const shouldRenderImage = loadUnsafe || (loadSafe && isSafeHost);
+
+  if (shouldRenderImage) {
+    const html = `<a href="${src}" target="_blank" title="${
+      title || alt
+    }" rel="noopener noreferrer"><img src="${src}" alt="${alt}" referrerpolicy="no-referrer" /></a>`;
+    return (
+      <span
+        dangerouslySetInnerHTML={{
+          __html: DOMPurify.sanitize(html, {
+            ADD_ATTR: ['target', 'referrerpolicy'],
+          }),
+        }}
+      />
+    );
+  }
+
+  const fallbackText = alt || src;
+  const html = `<a href="${src}" target="_blank" title="${
+    title || fallbackText
+  }" rel="noopener noreferrer">${src}</a>`;
+
+  return (
+    <span
+      dangerouslySetInnerHTML={{
+        __html: DOMPurify.sanitize(html, { ADD_ATTR: ['target'] }),
+      }}
+    />
+  );
+};
+
+const KatexInlineComponent = ({ content }) => {
+  const allowKatex = useSelector(
+    (state) => selectSettingsPageDomain(state).allowKatex ?? true,
+  );
+  if (!allowKatex) return <span>${content}$</span>;
+  return <InlineMath>{content}</InlineMath>;
+};
+
+const KatexBlockComponent = ({ content }) => {
+  const allowKatex = useSelector(
+    (state) => selectSettingsPageDomain(state).allowKatex ?? true,
+  );
+  if (!allowKatex) return <span>$${content}$$</span>;
+  return <BlockMath>{content}</BlockMath>;
+};
+
+const ExternalCodeComponent = ({ content, params: language }) => {
+  if (language && hljs.getLanguage(language)) {
+    try {
+      return (
+        <pre
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(
+              hljs.highlight(content, { language }).value,
+            ),
+          }}
+        />
+      );
+    } catch (__) {
+      // eslint-disable-next-line no-console
+      console.log(__);
+    }
+  }
+
+  try {
+    return (
+      <pre
+        dangerouslySetInnerHTML={{
+          __html: DOMPurify.sanitize(hljs.highlightAuto(content).value),
+        }}
+      />
+    );
+  } catch (__) {
+    // eslint-disable-next-line no-console
+    console.log(__);
+  }
+
+  return '';
+};
+
+const MarkdownElement = ({ tag: Tag, prefix = '', suffix = '', children }) => {
+  const allowMarkdown = useSelector(
+    (state) => selectSettingsPageDomain(state).allowMarkdown ?? true,
+  );
+
+  if (!allowMarkdown) {
+    return (
+      <span>
+        {prefix}
+        {children}
+        {suffix}
+      </span>
+    );
+  }
+
+  return <Tag>{children}</Tag>;
+};
+
 MessageFormatter.renderer = new RemarkableReactRenderer({
   components: {
     a: ({ href, title, children }) => {
@@ -64,48 +205,32 @@ MessageFormatter.renderer = new RemarkableReactRenderer({
         />
       );
     },
-    img: ({ alt, src, title }) => {
-      let isGiphy = false;
-
-      try {
-        const url = new URL(src);
-
-        if (
-          url.hostname === 'giphy.com' ||
-          url.hostname.endsWith('.giphy.com')
-        ) {
-          isGiphy = true;
-        }
-      } catch {
-        isGiphy = false;
-      }
-
-      if (isGiphy) {
-        const html = `<a href="${src}" target="_blank" title="${
-          title || alt
-        }" rel="noopener noreferrer"><img src="${src}" alt="${alt}" /></a>`;
-
-        return (
-          <span
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(html, { ADD_ATTR: ['target'] }),
-            }}
-          />
-        );
-      }
-
-      const html = `<a href="${src}" target="_blank" title="${
-        title || alt
-      }" rel="noopener noreferrer">${src}</a>`;
-
-      return (
-        <span
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(html, { ADD_ATTR: ['target'] }),
-          }}
-        />
-      );
-    },
+    img: MarkdownImage,
+    pre: ExternalCodeComponent,
+    katex_block: KatexBlockComponent,
+    katex_inline: KatexInlineComponent,
+    spoiler: ({ content }) => <Spoiler>{content}</Spoiler>,
+    strong: (props) => (
+      <MarkdownElement tag="strong" prefix="**" suffix="**" {...props} />
+    ),
+    em: (props) => (
+      <MarkdownElement tag="em" prefix="*" suffix="*" {...props} />
+    ),
+    del: (props) => (
+      <MarkdownElement tag="del" prefix="~~" suffix="~~" {...props} />
+    ),
+    h1: (props) => <MarkdownElement tag="h1" prefix="# " {...props} />,
+    h2: (props) => <MarkdownElement tag="h2" prefix="## " {...props} />,
+    h3: (props) => <MarkdownElement tag="h3" prefix="### " {...props} />,
+    h4: (props) => <MarkdownElement tag="h4" prefix="#### " {...props} />,
+    h5: (props) => <MarkdownElement tag="h5" prefix="##### " {...props} />,
+    h6: (props) => <MarkdownElement tag="h6" prefix="###### " {...props} />,
+    blockquote: (props) => (
+      <MarkdownElement tag="blockquote" prefix="> " {...props} />
+    ),
+    code: (props) => (
+      <MarkdownElement tag="code" prefix="`" suffix="`" {...props} />
+    ),
     p: ({ children }) => {
       const alteredChildren = [];
       for (let i = 0, j = children.length; i < j; i += 1) {
@@ -140,40 +265,6 @@ MessageFormatter.renderer = new RemarkableReactRenderer({
 
       return <p>{alteredChildren}</p>;
     },
-    pre: ({ content, params: language }) => {
-      if (hljs.getLanguage(language)) {
-        try {
-          return (
-            <pre
-              dangerouslySetInnerHTML={{
-                __html: hljs.highlight(content, { language }).value,
-              }}
-            />
-          );
-        } catch (__) {
-          // eslint-disable-next-line no-console
-          console.log(__);
-        }
-      }
-
-      try {
-        return (
-          <pre
-            dangerouslySetInnerHTML={{
-              __html: hljs.highlightAuto(content).value,
-            }}
-          />
-        );
-      } catch (__) {
-        // eslint-disable-next-line no-console
-        console.log(__);
-      }
-
-      return '';
-    },
-    katex_block: (token) => <BlockMath>{token.content}</BlockMath>,
-    katex_inline: (token) => <InlineMath>{token.content}</InlineMath>,
-    spoiler: (token) => <Spoiler>{token.content}</Spoiler>,
   },
 });
 

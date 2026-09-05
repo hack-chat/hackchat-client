@@ -153,6 +153,8 @@
   "hcclient.containers.SettingsPage.doHighlightsText": "Sorot Sebutan",
   "hcclient.containers.SettingsPage.enableNotificationsText": "Aktifkan Notifikasi",
   "hcclient.containers.SettingsPage.header": "Pengaturan Klien",
+  "hcclient.containers.SettingsPage.loadSafeImagesText": "Muat Gambar Aman",
+  "hcclient.containers.SettingsPage.loadUnsafeImagesText": "Muat Gambar Tidak Aman",
   "hcclient.containers.SettingsPage.menuPosText": "Tombol Menu Sisi Kiri",
   "hcclient.containers.SettingsPage.reconnectText": "Sambung Ulang Sekarang",
   "hcclient.containers.SettingsPage.themeNoticeText": "Pilihan tema akan segera hadir",

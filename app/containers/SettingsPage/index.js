@@ -1,6 +1,9 @@
 /**
  * SettingsPage allows the user to change application settings
- * @todo Some elements are not implemented yet
+ * @todo Wire up:
+ * - Leftside Menu Button
+ * - Automatic Reconnect
+ * - Current Theme
  */
 
 import React, { useMemo, useEffect, useCallback } from 'react';
@@ -66,6 +69,8 @@ import {
   setAutoConnect,
   setWsPath,
   setNotify,
+  setLoadSafeImages,
+  setLoadUnsafeImages,
 } from './actions';
 
 import {
@@ -84,6 +89,8 @@ import {
   makeSelectCachedAutoconnect,
   makeSelectCachedWsPath,
   makeSelectCachedNotifyEnabled,
+  makeSelectCachedLoadSafeImages,
+  makeSelectCachedLoadUnsafeImages,
 } from './selectors';
 
 import reducer from './reducer';
@@ -106,6 +113,8 @@ export function SettingsPage({
   cachedDoAutoconnect,
   cachedWsPath,
   cachedNotifyEnabled,
+  cachedLoadSafeImages,
+  cachedLoadUnsafeImages,
   isLocaleModalOpen,
   onCloseLocaleModal,
   onOpenLocaleModal,
@@ -165,6 +174,11 @@ export function SettingsPage({
   const [chosenWsPath, setChosenWsPath] = useStateIfMounted(cachedWsPath);
   const [chosenNotify, setChosenNotify] =
     useStateIfMounted(cachedNotifyEnabled);
+  const [chosenLoadSafe, setChosenLoadSafe] =
+    useStateIfMounted(cachedLoadSafeImages);
+  const [chosenLoadUnsafe, setChosenLoadUnsafe] = useStateIfMounted(
+    cachedLoadUnsafeImages,
+  );
 
   useEffect(() => {
     if (cachedUsername !== chosenUsername)
@@ -194,6 +208,10 @@ export function SettingsPage({
   const autoReconnectText = intl.formatMessage(messages.autoReconnectText);
   const enableNotificationsText = intl.formatMessage(
     messages.enableNotificationsText,
+  );
+  const loadSafeImagesText = intl.formatMessage(messages.loadSafeImagesText);
+  const loadUnsafeImagesText = intl.formatMessage(
+    messages.loadUnsafeImagesText,
   );
   const languageText = intl.formatMessage(messages.languageText);
   const backBtnText = intl.formatMessage(messages.backBtnText);
@@ -314,6 +332,38 @@ export function SettingsPage({
           >
             <LabelText>{allowMarkdownText}</LabelText>
             <BooleanSwitch checked={chosenAllowMarkdown} />
+          </SwitchRow>
+
+          <SwitchRow
+            style={{
+              opacity: chosenAllowMarkdown ? 1 : 0.4,
+              pointerEvents: chosenAllowMarkdown ? 'auto' : 'none',
+              transition: 'opacity 0.2s ease',
+            }}
+            onClick={() => {
+              if (!chosenAllowMarkdown) return;
+              setChosenLoadSafe(!chosenLoadSafe);
+              dispatch(setLoadSafeImages(!chosenLoadSafe));
+            }}
+          >
+            <LabelText>{loadSafeImagesText}</LabelText>
+            <BooleanSwitch checked={chosenLoadSafe} />
+          </SwitchRow>
+
+          <SwitchRow
+            style={{
+              opacity: chosenAllowMarkdown ? 1 : 0.4,
+              pointerEvents: chosenAllowMarkdown ? 'auto' : 'none',
+              transition: 'opacity 0.2s ease',
+            }}
+            onClick={() => {
+              if (!chosenAllowMarkdown) return;
+              setChosenLoadUnsafe(!chosenLoadUnsafe);
+              dispatch(setLoadUnsafeImages(!chosenLoadUnsafe));
+            }}
+          >
+            <LabelText>{loadUnsafeImagesText}</LabelText>
+            <BooleanSwitch checked={chosenLoadUnsafe} />
           </SwitchRow>
 
           <SwitchRow
@@ -450,6 +500,8 @@ SettingsPage.propTypes = {
   cachedDoAutoconnect: PropTypes.bool,
   cachedWsPath: PropTypes.string,
   cachedNotifyEnabled: PropTypes.bool,
+  cachedLoadSafeImages: PropTypes.bool,
+  cachedLoadUnsafeImages: PropTypes.bool,
   isLocaleModalOpen: PropTypes.bool,
   onOpenLocaleModal: PropTypes.func,
   onCloseLocaleModal: PropTypes.func,
@@ -474,6 +526,8 @@ const mapStateToProps = createStructuredSelector({
   cachedDoAutoconnect: makeSelectCachedAutoconnect(),
   cachedWsPath: makeSelectCachedWsPath(),
   cachedNotifyEnabled: makeSelectCachedNotifyEnabled(),
+  cachedLoadSafeImages: makeSelectCachedLoadSafeImages(),
+  cachedLoadUnsafeImages: makeSelectCachedLoadUnsafeImages(),
   isLocaleModalOpen: makeSelectIsLocaleModalOpen(),
   channelData: makeSelectChannelData(),
 });

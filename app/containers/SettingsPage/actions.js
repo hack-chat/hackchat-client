@@ -34,6 +34,10 @@ import {
   WSPATH_LSLABEL,
   SET_NOTIFY,
   NOTIFY_LSLABEL,
+  SET_LOAD_SAFE_IMAGES,
+  LOAD_SAFE_IMAGES_LSLABEL,
+  SET_LOAD_UNSAFE_IMAGES,
+  LOAD_UNSAFE_IMAGES_LSLABEL,
 } from './constants';
 
 /**
@@ -266,6 +270,32 @@ export function setNotify(enabled) {
 
   return {
     type: SET_NOTIFY,
+    enabled,
+  };
+}
+
+/**
+ * Updates the safe image load setting
+ * @param  {string} enabled Is enabled true/false
+ * @return {object} An action object with a type of SET_LOAD_SAFE_IMAGES
+ */
+export function setLoadSafeImages(enabled) {
+  localStorage.setItem(LOAD_SAFE_IMAGES_LSLABEL, JSON.stringify(enabled));
+  return {
+    type: SET_LOAD_SAFE_IMAGES,
+    enabled,
+  };
+}
+
+/**
+ * Updates the unsafe image load setting
+ * @param  {string} enabled Is enabled true/false
+ * @return {object} An action object with a type of SET_LOAD_UNSAFE_IMAGES
+ */
+export function setLoadUnsafeImages(enabled) {
+  localStorage.setItem(LOAD_UNSAFE_IMAGES_LSLABEL, JSON.stringify(enabled));
+  return {
+    type: SET_LOAD_UNSAFE_IMAGES,
     enabled,
   };
 }

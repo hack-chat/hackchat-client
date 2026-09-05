@@ -153,6 +153,8 @@
   "hcclient.containers.SettingsPage.doHighlightsText": "برجسته‌سازی منشن‌ها",
   "hcclient.containers.SettingsPage.enableNotificationsText": "فعال کردن اعلان‌ها",
   "hcclient.containers.SettingsPage.header": "تنظیمات کلاینت",
+  "hcclient.containers.SettingsPage.loadSafeImagesText": "بارگیری تصاویر امن",
+  "hcclient.containers.SettingsPage.loadUnsafeImagesText": "بارگیری تصاویر ناامن",
   "hcclient.containers.SettingsPage.menuPosText": "دکمه منو سمت چپ",
   "hcclient.containers.SettingsPage.reconnectText": "اتصال مجدد اکنون",
   "hcclient.containers.SettingsPage.themeNoticeText": "انتخاب پوسته به‌زودی اضافه می‌شود",

@@ -5,9 +5,12 @@
 import React, { memo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import DOMPurify from 'dompurify';
 import styled from 'styled-components';
+
+import { selectSettingsPageDomain } from '../../containers/SettingsPage/selectors';
 
 import messages, { ERROR_ID } from './messages';
 
@@ -86,6 +89,32 @@ const ChatMessage = ({
   const isLongMessage = payload.content.length > TRUNCATION_CHAR_THRESHOLD;
   const ContentWrapper = extended ? ExtendedMessageContent : MessageContent;
 
+  const doHighlight = useSelector(
+    (state) => selectSettingsPageDomain(state).highlightMentions ?? true,
+  );
+  const myUsername = useSelector(
+    (state) => selectSettingsPageDomain(state).username ?? '',
+  );
+
+  let isMentioned = false;
+  if (doHighlight && myUsername && payload.content) {
+    const escapedName = myUsername.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const mentionRegex = new RegExp(
+      `(?:^|\\s)(@?${escapedName})(?=\\s|$|[.,!?])`,
+      'i',
+    );
+    isMentioned = mentionRegex.test(payload.content);
+  }
+
+  let highlightStyle = {};
+
+  if (isMentioned) {
+    highlightStyle = {
+      borderInlineStartColor: '#e67e22',
+      backgroundColor: 'rgba(230, 126, 34, 0.1)',
+    };
+  }
+
   const handleChatClick = (e) => {
     if (
       e.target.closest('a') ||
@@ -121,7 +150,7 @@ const ChatMessage = ({
       ) : (
         <NickPlaceholder />
       )}
-      <ContentWrapper $hasBackground={hasBackground}>
+      <ContentWrapper $hasBackground={hasBackground} style={highlightStyle}>
         <ChatStyle
           $canExpand={isLongMessage}
           $isExpanded={isExpanded}
@@ -227,6 +256,14 @@ const InviteMessage = ({ payload }) => {
 InviteMessage.propTypes = { payload: PropTypes.object };
 
 const HackAttemptMessage = ({ payload, intl }) => {
+  const allowExtCode = useSelector(
+    (state) => selectSettingsPageDomain(state).allowExternalCode ?? false,
+  );
+
+  if (!allowExtCode) {
+    return null;
+  }
+
   const acceptCode = intl.formatMessage(messages.acceptCode);
   const confirmWarningText = intl.formatMessage(messages.confirmWarningText);
   const codeSuggestText = intl.formatMessage(messages.codeSuggestText);

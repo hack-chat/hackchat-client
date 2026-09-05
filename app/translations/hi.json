@@ -153,6 +153,8 @@
   "hcclient.containers.SettingsPage.doHighlightsText": "मेंशन (Mentions) हाइलाइट करें",
   "hcclient.containers.SettingsPage.enableNotificationsText": "सूचनाएं सक्षम करें",
   "hcclient.containers.SettingsPage.header": "क्लाइंट सेटिंग्स",
+  "hcclient.containers.SettingsPage.loadSafeImagesText": "सुरक्षित चित्र लोड करें",
+  "hcclient.containers.SettingsPage.loadUnsafeImagesText": "असुरक्षित चित्र लोड करें",
   "hcclient.containers.SettingsPage.menuPosText": "बायीं ओर मेनू बटन",
   "hcclient.containers.SettingsPage.reconnectText": "अभी पुन: कनेक्ट करें",
   "hcclient.containers.SettingsPage.themeNoticeText": "थीम चयन जल्द ही आ रहा है",

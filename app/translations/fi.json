@@ -153,6 +153,8 @@
   "hcclient.containers.SettingsPage.doHighlightsText": "Korosta maininnat",
   "hcclient.containers.SettingsPage.enableNotificationsText": "Ota ilmoitukset käyttöön",
   "hcclient.containers.SettingsPage.header": "Asiakasasetukset",
+  "hcclient.containers.SettingsPage.loadSafeImagesText": "Lataa turvalliset kuvat",
+  "hcclient.containers.SettingsPage.loadUnsafeImagesText": "Lataa turvattomat kuvat",
   "hcclient.containers.SettingsPage.menuPosText": "Valikkopainike vasemmalla",
   "hcclient.containers.SettingsPage.reconnectText": "Yhdistä nyt",
   "hcclient.containers.SettingsPage.themeNoticeText": "Teeman valinta tulossa pian",

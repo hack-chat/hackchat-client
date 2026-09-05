@@ -153,6 +153,8 @@
   "hcclient.containers.SettingsPage.doHighlightsText": "Evidenzia menzioni",
   "hcclient.containers.SettingsPage.enableNotificationsText": "Abilita notifiche",
   "hcclient.containers.SettingsPage.header": "Impostazioni client",
+  "hcclient.containers.SettingsPage.loadSafeImagesText": "Carica immagini sicure",
+  "hcclient.containers.SettingsPage.loadUnsafeImagesText": "Carica immagini non sicure",
   "hcclient.containers.SettingsPage.menuPosText": "Pulsante del menu a sinistra",
   "hcclient.containers.SettingsPage.reconnectText": "Riconnettiti ora",
   "hcclient.containers.SettingsPage.themeNoticeText": "Selezione tema in arrivo",

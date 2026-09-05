@@ -153,6 +153,8 @@
   "hcclient.containers.SettingsPage.doHighlightsText": "H19HL19H7 M3N710N5",
   "hcclient.containers.SettingsPage.enableNotificationsText": "3n4bl3 N071f1c4710n5",
   "hcclient.containers.SettingsPage.header": "CL13N7 53771N95",
+  "hcclient.containers.SettingsPage.loadSafeImagesText": "L04D 54F3 1M4G35",
+  "hcclient.containers.SettingsPage.loadUnsafeImagesText": "L04D UN54F3 1M4G35",
   "hcclient.containers.SettingsPage.menuPosText": "L3F7 M3NU 8U770N",
   "hcclient.containers.SettingsPage.reconnectText": "R3C0NN3C7 N0W",
   "hcclient.containers.SettingsPage.themeNoticeText": "7H3M3 53L3C710N C0M1N9 500N",
