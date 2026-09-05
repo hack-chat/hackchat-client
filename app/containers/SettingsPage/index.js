@@ -245,7 +245,7 @@ export function SettingsPage({
                 <UsernameGroup>
                   <UsernameInput
                     autoFocus
-                    className={invalidName ? 'is-invalid' : ''}
+                    $invalid={invalidName}
                     placeholder={usernameText}
                     autoComplete="username"
                     onFocus={clearInvalidName}
@@ -313,7 +313,7 @@ export function SettingsPage({
           </InputRow>
         </SettingsGroup>
 
-        <SettingsGroup style={{ marginTop: '20px' }}>
+        <SettingsGroup $marginTop="20px">
           <SwitchRow
             onClick={() => {
               setChosenAllowKatex(!chosenAllowKatex);
@@ -335,11 +335,7 @@ export function SettingsPage({
           </SwitchRow>
 
           <SwitchRow
-            style={{
-              opacity: chosenAllowMarkdown ? 1 : 0.4,
-              pointerEvents: chosenAllowMarkdown ? 'auto' : 'none',
-              transition: 'opacity 0.2s ease',
-            }}
+            $disabled={!chosenAllowMarkdown}
             onClick={() => {
               if (!chosenAllowMarkdown) return;
               setChosenLoadSafe(!chosenLoadSafe);
@@ -351,11 +347,7 @@ export function SettingsPage({
           </SwitchRow>
 
           <SwitchRow
-            style={{
-              opacity: chosenAllowMarkdown ? 1 : 0.4,
-              pointerEvents: chosenAllowMarkdown ? 'auto' : 'none',
-              transition: 'opacity 0.2s ease',
-            }}
+            $disabled={!chosenAllowMarkdown}
             onClick={() => {
               if (!chosenAllowMarkdown) return;
               setChosenLoadUnsafe(!chosenLoadUnsafe);

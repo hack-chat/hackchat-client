@@ -18,7 +18,6 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import DOMPurify from 'dompurify';
-import styled, { keyframes } from 'styled-components';
 
 import { FaMarkdown, FaGithub } from 'react-icons/fa6';
 import { SiLatex } from 'react-icons/si';
@@ -111,22 +110,17 @@ import CodeText from './CodeText';
 import CodeAction from './CodeAction';
 import ResetButton from './ResetButton';
 import CaptchaText from './CaptchaText';
+import FadeInContainer from './FadeInContainer';
+import LoadingContainer from './LoadingContainer';
+import SlowWarningText from './SlowWarningText';
+import AuthModalHeader from './AuthModalHeader';
+import AuthInput from './AuthInput';
+import HiddenInput from './HiddenInput';
 
 const useUrlChannel = () => {
   const { search } = useLocation();
   return useMemo(() => search.substring(1), [search]);
 };
-
-const delayedFade = keyframes`
-  0% { opacity: 0; }
-  50% { opacity: 0; }
-  100% { opacity: 1; }
-`;
-
-const FadeInContainer = styled.div`
-  animation: ${delayedFade} 0.3s ease-in forwards;
-  width: 100%;
-`;
 
 export function HomePage({
   channel,
@@ -549,10 +543,7 @@ export function HomePage({
         <ChannelButton
           onClick={() => setJoinModalOpen(true)}
           disabled={!sessionReady}
-          style={{
-            opacity: !sessionReady ? 0.5 : 1,
-            cursor: !sessionReady ? 'not-allowed' : 'pointer',
-          }}
+          $isDisabled={!sessionReady}
         >
           {createOrJoinLabel}
         </ChannelButton>
@@ -662,24 +653,10 @@ export function HomePage({
       ) : (
         <LandingPageContents>
           {!!channelFromUrl && !sessionReady ? (
-            <Center
-              style={{
-                flexDirection: 'column',
-                gap: '1rem',
-                marginTop: '2rem',
-              }}
-            >
+            <LoadingContainer>
               <LoadingIndicator />
               {showSlowWarning && (
-                <div
-                  style={{
-                    marginTop: '1rem',
-                    opacity: 0.8,
-                    textAlign: 'center',
-                  }}
-                >
-                  {connectionSlowText}
-                </div>
+                <SlowWarningText>{connectionSlowText}</SlowWarningText>
               )}
               {showResetButton && (
                 <ResetButton
@@ -691,7 +668,7 @@ export function HomePage({
                   🧽✨🔄
                 </ResetButton>
               )}
-            </Center>
+            </LoadingContainer>
           ) : isJoinModalOpen && !!channelFromUrl ? null : (
             HomePageContent
           )}
@@ -818,31 +795,21 @@ export function HomePage({
             }
           }}
         >
-          <ModalHeader style={{ textAlign: 'center', fontSize: '1.5rem' }}>
-            🛡️ ?{pendingCaptcha?.channel} 🤖
-          </ModalHeader>
+          <AuthModalHeader>🛡️ ?{pendingCaptcha?.channel} 🤖</AuthModalHeader>
           <ModalBody>
             <CaptchaText>{pendingCaptcha?.text}</CaptchaText>
           </ModalBody>
           <Center>
-            <input
+            <AuthInput
               ref={captchaInputRef}
               type="text"
               autoComplete="off"
               placeholder="🔤 . . ."
               value={challengeCaptcha}
               onChange={(e) => setChallengeCaptcha(e.target.value)}
-              style={{
-                padding: '0.5rem',
-                width: '80%',
-                margin: '1rem 0 2rem 0',
-                fontFamily: 'monospace',
-                textAlign: 'center',
-                fontSize: '1.25rem',
-              }}
             />
           </Center>
-          <input type="submit" style={{ display: 'none' }} />
+          <HiddenInput type="submit" />
         </form>
       </Modal>
 
@@ -857,37 +824,29 @@ export function HomePage({
             }
           }}
         >
-          <ModalHeader style={{ textAlign: 'center', fontSize: '1.5rem' }}>
-            🔐 ?{pendingPasswordReq?.channel} ❗
-          </ModalHeader>
+          <AuthModalHeader>
+            🔐 ?{pendingPasswordReq?.channel} ❓
+          </AuthModalHeader>
 
           <Center>
-            <input
+            <HiddenInput
               type="text"
               autoComplete="username"
               value="room_guest"
-              style={{ display: 'none' }}
               readOnly
             />
 
-            <input
+            <AuthInput
+              $margin="2rem 0"
               ref={passwordInputRef}
               type="password"
               autoComplete="current-password"
               placeholder="🗝️ . . ."
               value={challengePassword}
               onChange={(e) => setChallengePassword(e.target.value)}
-              style={{
-                padding: '0.5rem',
-                width: '80%',
-                margin: '2rem 0',
-                fontFamily: 'monospace',
-                textAlign: 'center',
-                fontSize: '1.25rem',
-              }}
             />
           </Center>
-          <input type="submit" style={{ display: 'none' }} />
+          <HiddenInput type="submit" />
         </form>
       </Modal>
 

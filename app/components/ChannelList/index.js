@@ -11,6 +11,8 @@ import { IoClose } from 'react-icons/io5';
 
 import ListWrapper from './ListWrapper';
 import ChannelRow from './ChannelRow';
+import ChannelInfo from './ChannelInfo';
+import ChannelName from './ChannelName';
 import LeaveButton from './LeaveButton';
 
 import messages from './messages';
@@ -32,17 +34,19 @@ function ChannelList({ channels, onLeaveChannel }) {
     onLeaveChannel(channel);
   };
 
+  const leaveChannel = intl.formatMessage(messages.leaveChannel);
+
   return (
     <ListWrapper>
       {channels.map((channel) => (
         <ChannelRow key={channel} onClick={() => handleRowClick(channel)}>
-          <div className="channel-info">
+          <ChannelInfo>
             <FaHashtag />
-            <span>{channel}</span>
-          </div>
+            <ChannelName>{channel}</ChannelName>
+          </ChannelInfo>
           <LeaveButton
             onClick={(e) => handleLeaveClick(e, channel)}
-            title={intl.formatMessage(messages.leaveChannel)}
+            title={leaveChannel}
           >
             <IoClose />
           </LeaveButton>

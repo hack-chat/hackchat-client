@@ -31,7 +31,6 @@ import {
   LOCK_CHANNEL,
   UNLOCK_CHANNEL,
   INVITE_USER,
-  WHISPER_USER,
   IGNORE_USER,
   KICK_USER,
   BAN_USER,
@@ -495,11 +494,6 @@ export default function* communicationProviderSaga() {
     const targetUser = hcClient.users.get(action.userid);
     if (targetUser) targetUser.sendInvite(action.channel);
   });
-
-  yield takeLatest(WHISPER_USER, (action) =>
-    // @todo
-    hcClient.say(action.channel, 'I wish the developer wasnt so lazy. . .'),
-  );
 
   yield takeLatest(IGNORE_USER, (action) => {
     const targetUser = hcClient.users.get(action.userid);

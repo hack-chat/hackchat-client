@@ -15,7 +15,6 @@ import {
   FaTimes,
   FaPlusCircle,
   FaLanguage,
-  FaUser,
 } from 'react-icons/fa';
 import { MdOutlinePushPin, MdPushPin, MdOutlineLogout } from 'react-icons/md';
 import { BsPaperclip } from 'react-icons/bs';
@@ -24,12 +23,18 @@ import UserContextMenu from 'components/UserContextMenu';
 
 import CurrentChannelInfo from './CurrentChannelInfo';
 import MenuFooter from './MenuFooter';
-import { MenuWrapper, MenuContent } from './MenuWrapper';
+import MenuWrapper from './MenuWrapper';
+import MenuContent from './MenuContent';
 import MenuToggle from './MenuToggle';
 import PinButton from './PinButton';
 import MenuLeaveButton from './MenuLeaveButton';
 import MenuCopyButton from './MenuCopyButton';
-import { ItemList, Item } from './Section';
+import ItemList from './ItemList';
+import Item from './Item';
+import Divider from './Divider';
+import UserColorIndicator from './UserColorIndicator';
+import UserFlair from './UserFlair';
+import UserIcon from './UserIcon';
 
 import messages from './messages';
 
@@ -141,7 +146,7 @@ export function MainMenu({
         {isOpen ? <FaTimes /> : <FaBars />}
       </MenuToggle>
 
-      <MenuWrapper className={isMenuForcedOpen ? 'open' : ''}>
+      <MenuWrapper $isOpen={isMenuForcedOpen}>
         {allowPinning && (
           <PinButton
             onClick={() => setIsPinned(!isPinned)}
@@ -185,7 +190,7 @@ export function MainMenu({
             {joinedChannels.map((ch) => (
               <Item
                 key={ch}
-                className={ch === channel ? 'active' : ''}
+                $isActive={ch === channel}
                 onClick={() => {
                   navigate(`/?${ch}`);
                   if (isMobile && !isPinned) {
@@ -197,9 +202,7 @@ export function MainMenu({
               </Item>
             ))}
             <Item
-              style={{
-                marginTop: '0.5rem',
-              }}
+              $marginTop="0.5rem"
               onClick={() => {
                 onJoinOrCreateClick();
                 if (!isPinned) setIsOpen(false);
@@ -207,15 +210,8 @@ export function MainMenu({
             >
               <FaPlusCircle /> {intl.formatMessage(messages.joinOrCreate)}
             </Item>
-            <div
-              style={{
-                borderBottom: '1px solid #444',
-                marginTop: '0.5rem',
-                marginBottom: '0.5rem',
-              }}
-            >
-              {' '}
-            </div>
+
+            <Divider />
           </ItemList>
           <ItemList>
             {onlineUsers.map((user) => (
@@ -225,29 +221,14 @@ export function MainMenu({
                 onContextMenu={(e) => handleUserClick(user, e)}
                 title={user.usertrip || ''}
               >
-                <span
-                  style={{
-                    display: 'inline-block',
-                    width: '8px',
-                    height: '1rem',
-                    backgroundColor: `#${user.nickColor || 'fff'}`,
-                    marginRight: '0.5em',
-                    verticalAlign: 'middle',
-                    boxShadow: `0 0 5px #${user.nickColor || 'fff'}`,
-                    borderRadius: '2px',
-                  }}
+                <UserColorIndicator
+                  $color={`#${user.nickColor || 'fff'}`}
                   title={`#${user.nickColor}`}
                 />
                 {user.flair ? (
-                  <span
-                    style={{ marginRight: '0.5em', verticalAlign: 'middle' }}
-                  >
-                    {user.flair}
-                  </span>
+                  <UserFlair>{user.flair}</UserFlair>
                 ) : (
-                  <FaUser
-                    style={{ marginRight: '0.5em', verticalAlign: 'middle' }}
-                  />
+                  <UserIcon />
                 )}
                 {user.username}
               </Item>

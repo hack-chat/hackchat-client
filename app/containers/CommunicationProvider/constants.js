@@ -16,7 +16,6 @@ export const LOCK_CHANNEL = 'app/CommunicationProvider/LOCK_CHANNEL';
 export const UNLOCK_CHANNEL = 'app/CommunicationProvider/UNLOCK_CHANNEL';
 
 export const INVITE_USER = 'app/CommunicationProvider/INVITE_USER';
-export const WHISPER_USER = 'app/CommunicationProvider/WHISPER_USER';
 export const IGNORE_USER = 'app/CommunicationProvider/IGNORE_USER';
 export const KICK_USER = 'app/CommunicationProvider/KICK_USER';
 export const BAN_USER = 'app/CommunicationProvider/BAN_USER';

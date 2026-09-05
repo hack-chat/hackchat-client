@@ -11,21 +11,18 @@ export default styled.input`
   background-color: transparent;
   color: #f5f5f7;
   font-family: monospace;
-  border: 1px solid rgba(125 122 104 / 50%);
+  border: 1px solid
+    ${(props) => (props.$invalid ? '#ff6b6b' : 'rgba(125 122 104 / 50%)')};
   border-radius: 4px;
   margin-bottom: 12px;
   transition: border-color 0.2s;
 
   &:focus {
     outline: none;
-    border-color: #a6a28c;
+    border-color: ${(props) => (props.$invalid ? '#ff6b6b' : '#a6a28c')};
   }
 
   &::placeholder {
     color: #8a8a8a;
-  }
-
-  &.is-invalid {
-    border-color: #ff6b6b;
   }
 `;

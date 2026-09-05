@@ -1,7 +1,6 @@
 /**
  * Exports a styled html div
  */
-
 import styled from 'styled-components';
 
 const MessageContent = styled.div`
@@ -12,17 +11,25 @@ const MessageContent = styled.div`
   padding-top: 0.25em;
   padding-bottom: 0.25em;
   min-width: 0;
+  padding-inline-start: 1.5em;
+
   ${({ $hasBackground }) =>
     $hasBackground &&
     `
     background-color: rgb(0 0 0 / 5%);
   `}
-  padding-inline-start: 1.5em;
 
   @media (width >= 768px) {
     padding-inline-start: 1em;
     border-inline-start: 1px solid rgb(125 122 104 / 50%);
   }
+
+  ${({ $isMentioned }) =>
+    $isMentioned &&
+    `
+    border-inline-start-color: #e67e22 !important;
+    background-color: rgba(230, 126, 34, 0.1) !important;
+  `}
 
   & p,
   & h1,

@@ -11,24 +11,19 @@ export default styled.div`
   width: 24px;
   height: 24px;
   cursor: pointer;
-  background: #2a2a2a;
-  border: 1px solid #555;
+  background-color: ${(props) => (props.$isChecked ? '#a6a28c' : '#2a2a2a')};
+  border: 1px solid ${(props) => (props.$isChecked ? '#a6a28c' : '#555')};
   border-radius: 4px;
   color: #ddd;
   font-size: 1.25em;
   transition: all 0.2s ease;
 
   &:hover {
-    border-color: #888;
+    border-color: ${(props) => (props.$isChecked ? '#a6a28c' : '#888')};
   }
 
-  &.checked {
-    background-color: #a6a28c;
-    border-color: #a6a28c;
-  }
-
-  &.checked::after {
-    content: '✔';
+  &::after {
+    content: '${(props) => (props.$isChecked ? '\\2714' : '')}';
     color: #1e1e1e;
   }
 `;

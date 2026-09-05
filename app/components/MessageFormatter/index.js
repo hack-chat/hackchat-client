@@ -17,32 +17,24 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 import { selectSettingsPageDomain } from '../../containers/SettingsPage/selectors';
 
+import SpoilerWrapper from './SpoilerWrapper';
+
 hljs.registerLanguage('javascript', javascript);
 
 const Spoiler = ({ children }) => {
   const [isRevealed, setIsRevealed] = useState(false);
 
   return (
-    <span
+    <SpoilerWrapper
       onClick={(e) => {
         e.stopPropagation();
         setIsRevealed((prev) => !prev);
       }}
-      style={{
-        backgroundColor: isRevealed
-          ? 'rgba(0 0 0 / 10%)'
-          : 'rgba(79 77 66 / 77%)',
-        color: isRevealed ? 'inherit' : 'transparent',
-        borderRadius: '3px',
-        cursor: 'pointer',
-        padding: '0 2px',
-        userSelect: isRevealed ? 'text' : 'none',
-        transition: 'all 0.2s ease',
-      }}
+      $isRevealed={isRevealed}
       title={isRevealed ? '' : '👀'} /* lazy or genius? */
     >
       {children}
-    </span>
+    </SpoilerWrapper>
   );
 };
 
@@ -229,7 +221,7 @@ MessageFormatter.renderer = new RemarkableReactRenderer({
       <MarkdownElement tag="blockquote" prefix="> " {...props} />
     ),
     code: (props) => (
-      <MarkdownElement tag="code" prefix="`" suffix="`" {...props} />
+      <MarkdownElement tag="code" prefix="\`" suffix="\`" {...props} />
     ),
     p: ({ children }) => {
       const alteredChildren = [];

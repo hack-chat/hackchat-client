@@ -1,10 +1,10 @@
 /**
- * Exports styled divs
+ * Exports a styled div
  */
 
 import styled from 'styled-components';
 
-export const SuggestionContainer = styled.div`
+export default styled.div`
   position: absolute;
   bottom: 100%;
   background-color: #1e1e1e;
@@ -22,21 +22,5 @@ export const SuggestionContainer = styled.div`
   @media (width <= 767px) {
     left: calc(220px + 1em);
     right: auto;
-  }
-`;
-
-export const SuggestionItem = styled.div`
-  padding: 0.5rem 1rem;
-  color: #ddd;
-  cursor: pointer;
-
-  &:hover,
-  &.active {
-    background-color: #151513;
-  }
-
-  & > span {
-    color: #8a8a8a;
-    margin-left: 0.5rem;
   }
 `;

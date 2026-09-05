@@ -1,10 +1,8 @@
-/* eslint indent: 0 */
-
 /**
  * Exports the style for the loading indicator
  */
 
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 
 const circleFadeDelay = keyframes`
   0%,
@@ -18,21 +16,32 @@ const circleFadeDelay = keyframes`
   }
 `;
 
-const Circle = styled.div`
+const getRotation = (props) => {
+  if (typeof props.$rotate === 'number') {
+    return css`
+      transform: rotate(${props.$rotate}deg);
+    `;
+  }
+  return '';
+};
+
+const getAnimationDelay = (props) => {
+  if (typeof props.$delay === 'number') {
+    return css`
+      animation-delay: ${props.$delay}s;
+    `;
+  }
+  return '';
+};
+
+export default styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
   left: 0;
   top: 0;
-  ${(props) =>
-    props.$rotate
-      ? props.$rotate &&
-        `
-    -webkit-transform: rotate(${props.$rotate}deg);
-    -ms-transform: rotate(${props.$rotate}deg);
-    transform: rotate(${props.$rotate}deg);
-  `
-      : ''}
+
+  ${getRotation}
 
   &::before {
     content: '';
@@ -43,15 +52,7 @@ const Circle = styled.div`
     background-color: #999;
     border-radius: 100%;
     animation: ${circleFadeDelay} 1.2s infinite ease-in-out both;
-    ${(props) =>
-      props.$delay
-        ? props.$delay &&
-          `
-      -webkit-animation-delay: ${props.$delay}s;
-      animation-delay: ${props.$delay}s;
-    `
-        : ''};
+
+    ${getAnimationDelay}
   }
 `;
-
-export { Circle };

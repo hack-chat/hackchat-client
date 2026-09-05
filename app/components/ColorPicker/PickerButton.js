@@ -12,7 +12,6 @@ export default styled.button.attrs({
   justify-content: center;
   background-color: #2a2a2a;
   border: none;
-  color: #ddd;
   width: 100%;
   height: 100%;
   padding: 0;
@@ -20,6 +19,8 @@ export default styled.button.attrs({
   font-size: 1.25em;
   border-radius: 0;
   transition: all 0.2s ease;
+  color: ${(props) => props.$color || '#ddd'};
+  text-shadow: #000 0 0 2px;
 
   &:hover {
     background-color: #444 !important;

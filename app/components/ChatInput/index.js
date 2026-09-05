@@ -25,7 +25,9 @@ import messages from './messages';
 import Container from './Container';
 import UserInput from './UserInput';
 import SendButton from './SendButton';
-import { SuggestionContainer, SuggestionItem } from './SuggestionBox';
+import SuggestionContainer from './SuggestionContainer';
+import SuggestionItem from './SuggestionItem';
+import SuggestionSubText from './SuggestionSubText';
 import PreviewButton from './PreviewButton';
 import PreviewModal from './PreviewModal';
 
@@ -526,10 +528,10 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
           {suggestions.map((item, index) => (
             <SuggestionItem
               key={item.label}
-              className={index === activeSuggestion ? 'active' : ''}
+              $isActive={index === activeSuggestion}
               onClick={() => applySuggestion(item)}
             >
-              {item.label} <span>{item.subText}</span>
+              {item.label} <SuggestionSubText>{item.subText}</SuggestionSubText>
             </SuggestionItem>
           ))}
         </SuggestionContainer>

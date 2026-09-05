@@ -9,6 +9,8 @@ import { ColorPicker, useColor } from 'react-color-palette';
 import { MdFormatColorFill } from 'react-icons/md';
 
 import PickerButton from './PickerButton';
+import Cover from './Cover';
+import Popover from './Popover';
 
 import 'react-color-palette/css';
 
@@ -49,42 +51,21 @@ export function ColorChanger({ title, initColor, onChangeComplete }) {
     setOpen(false);
   };
 
-  const popover = {
-    position: 'fixed',
-    zIndex: '13',
-    ...popoverPosition,
-    transform: 'translateX(-50%)',
-  };
-
-  const cover = {
-    position: 'fixed',
-    padding: '0',
-    margin: '0',
-    top: '0',
-    left: '0',
-    zIndex: '12',
-    width: '100%',
-    height: '100%',
-  };
-
   return (
     <>
       <PickerButton
         ref={buttonRef}
         title={title}
         onClick={handleClick}
-        style={{
-          color: color.hex,
-          textShadow: '#000 0 0 2px',
-        }}
+        $color={color.hex}
       >
         <MdFormatColorFill />
       </PickerButton>
       {open &&
         createPortal(
           <>
-            <div style={cover} onClick={handleClose} />
-            <div style={popover}>
+            <Cover onClick={handleClose} />
+            <Popover $top={popoverPosition.top} $left={popoverPosition.left}>
               <ColorPicker
                 hideAlpha={true}
                 hideInput={['rgb', 'hsv']}
@@ -92,7 +73,7 @@ export function ColorChanger({ title, initColor, onChangeComplete }) {
                 onChange={setColor}
                 onChangeComplete={onChangeComplete}
               />
-            </div>
+            </Popover>
           </>,
           document.body,
         )}

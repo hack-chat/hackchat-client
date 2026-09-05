@@ -8,27 +8,27 @@ import PropTypes from 'prop-types';
 import MessageFormatter from 'components/MessageFormatter';
 import MessageContainer from 'components/Message/MessageContainer';
 import MessageContent from 'components/Message/MessageContent';
-import ChatStyle from 'components/Message/ChatStyle';
+
+import PreviewContainer from './PreviewContainer';
+import PreviewTitle from './PreviewTitle';
+import PreviewChatStyle from './PreviewChatStyle';
 
 export default function PreviewModal({ text, title }) {
   return (
-    <div style={{ padding: '1rem', width: '100%', margin: '0 auto' }}>
-      <h1>{title}</h1>
+    <PreviewContainer>
+      <PreviewTitle>{title}</PreviewTitle>
       <MessageContainer>
         <MessageContent $hasBackground={false}>
-          <ChatStyle
-            $canExpand={false}
-            $isExpanded={true}
-            style={{ cursor: 'arrow' }}
-          >
+          <PreviewChatStyle $canExpand={false} $isExpanded={true}>
             {MessageFormatter.render(text)}
-          </ChatStyle>
+          </PreviewChatStyle>
         </MessageContent>
       </MessageContainer>
-    </div>
+    </PreviewContainer>
   );
 }
 
 PreviewModal.propTypes = {
   text: PropTypes.string.isRequired,
+  title: PropTypes.string,
 };

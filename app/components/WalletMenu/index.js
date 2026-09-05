@@ -70,7 +70,7 @@ export function WalletMenu({
     return (
       <Item
         key={i}
-        className={isDisabled ? 'disabled' : ''}
+        $isDisabled={isDisabled}
         onClick={() => {
           if (!isConnected && !isDisabled) {
             onConnectWallet(wallet.name);

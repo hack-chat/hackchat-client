@@ -1,13 +1,42 @@
 /**
  * Exports a styled html button
  */
-
 import styled from 'styled-components';
+
+const getBgColor = (props) => {
+  if (props.$active) return '#a6a28c';
+  return '#555';
+};
+
+const getColor = (props) => {
+  if (props.$active) return '#1e1e1e';
+  return '#ddd';
+};
+
+const getHoverBgColor = (props) => {
+  if (props.$active) return '#b7b39d';
+  if (props.$isDisabled) return '#333';
+  return '#666';
+};
+
+const getCursor = (props) => {
+  if (props.$isDisabled) return 'not-allowed';
+  return 'pointer';
+};
+
+const getOpacity = (props) => {
+  if (props.$isDisabled) return 0.5;
+  return 1;
+};
+
+const getPointerEvents = (props) => {
+  if (props.$isDisabled) return 'none';
+  return 'auto';
+};
 
 export default styled.button.attrs({
   type: 'button',
 })`
-  cursor: pointer;
   font-family: monospace;
   min-height: 46px;
   padding-left: 23px;
@@ -16,14 +45,13 @@ export default styled.button.attrs({
   border: 1px solid transparent;
   background: #333;
   margin-top: 0.75rem;
-  background-color: ${(props) => (props.$active ? '#a6a28c' : '#555')};
-  color: ${(props) => (props.$active ? '#1e1e1e' : '#ddd')};
-  border-color: ${(props) => (props.$active ? '#a6a28c' : '#555')};
   transition: all 0.2s ease;
-
-  &.disabled {
-    pointer-events: none;
-  }
+  background-color: ${getBgColor};
+  color: ${getColor};
+  border-color: ${getBgColor};
+  cursor: ${getCursor};
+  opacity: ${getOpacity};
+  pointer-events: ${getPointerEvents};
 
   & > svg {
     margin-left: 12px;
@@ -31,8 +59,8 @@ export default styled.button.attrs({
   }
 
   &:hover {
-    background-color: ${(props) => (props.$active ? '#b7b39d' : '#666')};
-    border-color: ${(props) => (props.$active ? '#b7b39d' : '#666')};
-    color: ${(props) => (props.$active ? '#1e1e1e' : '#ddd')};
+    background-color: ${getHoverBgColor};
+    border-color: ${getHoverBgColor};
+    color: ${getColor};
   }
 `;

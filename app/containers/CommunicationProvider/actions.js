@@ -13,7 +13,6 @@ import {
   LOCK_CHANNEL,
   UNLOCK_CHANNEL,
   INVITE_USER,
-  WHISPER_USER,
   IGNORE_USER,
   KICK_USER,
   BAN_USER,
@@ -154,20 +153,6 @@ export function inviteUser(channel, userid) {
     type: INVITE_USER,
     channel,
     userid,
-  };
-}
-
-/**
- * Prefill a whisper command for target user
- * @param  {string} channel Channel to unlock
- * @param  {number} user Target user to whisper
- * @return {object} An action object with a type of WHISPER_USER
- */
-export function whisperUser(channel, user) {
-  return {
-    type: WHISPER_USER,
-    channel,
-    user,
   };
 }
 

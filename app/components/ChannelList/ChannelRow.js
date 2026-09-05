@@ -8,13 +8,11 @@ export default styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 0;
+  padding: 12px 1em;
   border-bottom: 1px solid rgb(125 122 104 / 20%);
   font-family: monospace;
   color: #f5f5f7;
   cursor: pointer;
-  padding-left: 1em;
-  padding-right: 1em;
 
   &:nth-child(even) {
     background-color: #2a2a2a;
@@ -26,15 +24,5 @@ export default styled.div`
 
   &:last-child {
     border-bottom: none;
-  }
-
-  div.channel-info {
-    display: flex;
-    align-items: center;
-
-    svg {
-      margin-right: 12px;
-      color: #a6a28c;
-    }
   }
 `;

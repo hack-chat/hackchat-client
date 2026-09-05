@@ -1,10 +1,30 @@
 /**
- * Exports styled html divs
+ * Exports a styled html div
  */
 
 import styled from 'styled-components';
 
-export const MenuWrapper = styled.div`
+const getTransform = (props) => {
+  if (props.$isOpen) return 'translateX(0)';
+  return 'translateX(100%)';
+};
+
+const getMediaTransform = (props) => {
+  if (props.$isOpen) return 'translateX(0)';
+  return 'translateX(calc(100% - 40px))';
+};
+
+const getMediaFilter = (props) => {
+  if (props.$isOpen) return 'grayscale(0%)';
+  return 'grayscale(70%)';
+};
+
+const getMediaOpacity = (props) => {
+  if (props.$isOpen) return '1';
+  return '0.5';
+};
+
+export default styled.div`
   position: fixed;
   top: 0;
   right: 0;
@@ -12,7 +32,7 @@ export const MenuWrapper = styled.div`
   width: 280px;
   background-color: #1e1e1e;
   border-left: 1px solid #444;
-  transform: translateX(100%);
+  transform: ${getTransform};
   transition: transform 0.3s ease-in-out;
   z-index: 9;
   display: flex;
@@ -20,23 +40,18 @@ export const MenuWrapper = styled.div`
   scrollbar-width: thin;
   scrollbar-color: #4f4d42 #1e1e1e;
 
-  &.open {
-    transform: translateX(0);
-  }
-
   @media (width >= 768px) {
-    transform: translateX(calc(100% - 40px));
+    transform: ${getMediaTransform};
 
     & > * {
       transition:
         filter 0.3s ease-in-out,
         opacity 0.3s ease-in-out;
-      filter: grayscale(70%);
-      opacity: 0.5;
+      filter: ${getMediaFilter};
+      opacity: ${getMediaOpacity};
     }
 
-    &:hover,
-    &.open {
+    &:hover {
       transform: translateX(0);
 
       & > * {
@@ -45,12 +60,4 @@ export const MenuWrapper = styled.div`
       }
     }
   }
-`;
-
-export const MenuContent = styled.div`
-  padding: 1rem;
-  overflow-y: auto;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
 `;

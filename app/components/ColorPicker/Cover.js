@@ -5,9 +5,12 @@
 import styled from 'styled-components';
 
 export default styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
+  position: fixed;
+  padding: 0;
+  margin: 0;
+  top: 0;
+  left: 0;
+  z-index: 12;
   width: 100%;
-  margin-top: ${(props) => props.$marginTop || '0'};
+  height: 100%;
 `;

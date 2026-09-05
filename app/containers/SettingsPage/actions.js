@@ -105,7 +105,7 @@ export function addPrevChannel(newChannel) {
   let prevChannelList =
     JSON.parse(localStorage.getItem(PREVCHANNELS_LSLABEL)) || [];
 
-  if (prevChannelList.indexOf(newChannel) !== -1) return { type: 'NO_OP' }; // @todo lazy
+  if (prevChannelList.indexOf(newChannel) !== -1) return { type: 'NO_OP' };
 
   prevChannelList.push(newChannel);
   localStorage.setItem(PREVCHANNELS_LSLABEL, JSON.stringify(prevChannelList));

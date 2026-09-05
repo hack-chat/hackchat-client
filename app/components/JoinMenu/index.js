@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import styled from 'styled-components';
 import { GiRollingDices } from 'react-icons/gi';
 
 import { joinChannel } from 'containers/CommunicationProvider/actions';
@@ -40,16 +39,9 @@ import NickColor from './NickColor';
 import RememberBox from './RememberBox';
 import RandomButton from './RandomButton';
 import JoinButton from './JoinButton';
-import { SuggestionContainer, SuggestionItem } from './SuggestionBox';
-
-const AutocompleteWrapper = styled.div`
-  position: relative;
-  width: 100%;
-
-  &.hide {
-    display: none;
-  }
-`;
+import SuggestionContainer from './SuggestionContainer';
+import SuggestionItem from './SuggestionItem';
+import AutocompleteWrapper from './AutocompleteWrapper';
 
 export function JoinMenu({
   doToggle,
@@ -187,7 +179,7 @@ export function JoinMenu({
           name="username"
           autoComplete="username"
           autoFocus
-          className={invalidName ? 'invalid' : ''}
+          $invalid={invalidName}
           placeholder={joinModalUsername}
           onFocus={clearInvalidName}
           defaultValue={username}
@@ -227,19 +219,19 @@ export function JoinMenu({
         <InputGroupText>
           <RememberBox
             title={rememberText}
-            className={rememberMe === true ? 'checked' : 'unchecked'}
+            $isChecked={rememberMe}
             onClick={() => toggleRememberMe()}
           />
         </InputGroupText>
       </InputGroup>
 
-      <AutocompleteWrapper className={hideChannel ? 'hide' : ''}>
+      <AutocompleteWrapper $hide={hideChannel}>
         {suggestions.length > 0 && (
           <SuggestionContainer ref={suggestionsRef}>
             {suggestions.map((chan, index) => (
               <SuggestionItem
                 key={chan}
-                className={index === activeSuggestion ? 'active' : ''}
+                $isActive={index === activeSuggestion}
                 onMouseDown={() => {
                   setChosenChannel(chan);
                   setSuggestions([]);
@@ -256,7 +248,7 @@ export function JoinMenu({
           <Input
             name="channel"
             autoComplete="off"
-            className={invalidChannel ? 'invalid' : ''}
+            $invalid={invalidChannel}
             placeholder={joinModalChannel}
             value={chosenChannel}
             onFocus={() => {

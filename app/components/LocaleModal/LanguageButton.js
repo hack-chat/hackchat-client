@@ -20,10 +20,7 @@ export default styled.button.attrs({
   color: ${(props) => (props.$active ? '#1e1e1e' : '#ddd')};
   border-color: ${(props) => (props.$active ? '#a6a28c' : '#555')};
   transition: all 0.2s ease;
-
-  &.disabled {
-    pointer-events: none;
-  }
+  pointer-events: ${(props) => (props.$disabled ? 'none' : 'auto')};
 
   & > svg {
     margin-left: 12px;
