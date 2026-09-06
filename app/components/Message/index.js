@@ -252,15 +252,10 @@ const HackAttemptMessage = ({ payload, intl }) => {
 
   const handleAccept = () => {
     if (window.confirm(confirmWarningText)) {
-      fetch(payload.url)
-        .then((response) => response.text())
-        .then((script) => {
-          eval(script);
-        })
-        .catch((error) => {
-          // eslint-disable-next-line no-console
-          console.error(`Error loading script from ${payload.url}:`, error);
-        });
+      // Never fetch-and-eval remote script content: doing so lets any chat
+      // participant force arbitrary code execution in another user's
+      // browser. Open the URL instead so the user can inspect it themselves.
+      window.open(payload.url, '_blank', 'noopener,noreferrer');
     }
   };
 
