@@ -1,14 +1,14 @@
 /**
- * Exports a styled html div
+ * Exports a styled div
  */
 
 import styled from 'styled-components';
 
 export default styled.div`
-  color: #a6a28c;
+  color: ${({ theme }) => theme.palette.text.secondary};
   font-size: 1.2em;
   font-weight: bold;
-  border-bottom: 1px solid #444;
+  border-bottom: 1px solid ${({ theme }) => theme.palette.border.main};
   padding: 1rem;
   padding-right: 3rem;
   display: flex;

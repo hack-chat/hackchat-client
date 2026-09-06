@@ -1,8 +1,28 @@
 /**
- * Exports a styled html div
+ * Exports a styled div
  */
 
 import styled from 'styled-components';
+
+const getBgColor = (props) => {
+  if (props.$isChecked) return props.theme.palette.accent.main;
+  return props.theme.palette.background.alt;
+};
+
+const getBorderColor = (props) => {
+  if (props.$isChecked) return props.theme.palette.accent.main;
+  return props.theme.palette.border.light;
+};
+
+const getHoverBorderColor = (props) => {
+  if (props.$isChecked) return props.theme.palette.accent.main;
+  return props.theme.palette.text.muted;
+};
+
+const getContent = (props) => {
+  if (props.$isChecked) return '\\2714';
+  return '';
+};
 
 export default styled.div`
   display: flex;
@@ -11,19 +31,19 @@ export default styled.div`
   width: 24px;
   height: 24px;
   cursor: pointer;
-  background-color: ${(props) => (props.$isChecked ? '#a6a28c' : '#2a2a2a')};
-  border: 1px solid ${(props) => (props.$isChecked ? '#a6a28c' : '#555')};
+  background-color: ${getBgColor};
+  border: 1px solid ${getBorderColor};
   border-radius: 4px;
-  color: #ddd;
+  color: ${({ theme }) => theme.palette.text.primary};
   font-size: 1.25em;
   transition: all 0.2s ease;
 
   &:hover {
-    border-color: ${(props) => (props.$isChecked ? '#a6a28c' : '#888')};
+    border-color: ${getHoverBorderColor};
   }
 
   &::after {
-    content: '${(props) => (props.$isChecked ? '\\2714' : '')}';
-    color: #1e1e1e;
+    content: '${getContent}';
+    color: ${({ theme }) => theme.palette.text.inverse};
   }
 `;

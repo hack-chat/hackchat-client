@@ -7,8 +7,8 @@ import styled from 'styled-components';
 export default styled.div`
   position: absolute;
   bottom: 100%;
-  background-color: #1e1e1e;
-  border: 1px solid #444;
+  background-color: ${({ theme }) => theme.palette.background.menu};
+  border: 1px solid ${({ theme }) => theme.palette.border.main};
   border-bottom: none;
   max-height: 200px;
   overflow-y: auto;
@@ -17,7 +17,8 @@ export default styled.div`
   width: 100%;
   right: 0;
   scrollbar-width: thin;
-  scrollbar-color: #4f4d42 #20201d;
+  scrollbar-color: ${({ theme }) => theme.palette.scrollbar.menuThumb}
+    ${({ theme }) => theme.palette.scrollbar.track};
 
   @media (width <= 767px) {
     left: calc(220px + 1em);

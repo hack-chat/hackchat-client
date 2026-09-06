@@ -1,5 +1,5 @@
 /**
- * Exports a styled html div
+ * Exports a styled div
  */
 
 import styled from 'styled-components';
@@ -9,6 +9,6 @@ export default styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 10px 0;
-  border-bottom: 1px solid rgba(125 122 104 / 20%);
+  border-bottom: 1px solid ${({ theme }) => theme.palette.border.subtle};
   margin-bottom: 20px;
 `;

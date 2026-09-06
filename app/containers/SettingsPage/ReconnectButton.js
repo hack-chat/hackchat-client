@@ -1,5 +1,5 @@
 /**
- * Exports a styled html button
+ * Exports a styled button
  */
 
 import styled from 'styled-components';

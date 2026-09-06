@@ -1,5 +1,5 @@
 /**
- * Exports a styled html span
+ * Exports a styled span
  */
 import styled from 'styled-components';
 

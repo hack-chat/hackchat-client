@@ -1,5 +1,5 @@
 /**
- * Exports a styled html button
+ * Exports a styled button
  */
 
 import styled from 'styled-components';
@@ -13,7 +13,7 @@ export default styled.button.attrs({
   right: 0.75rem;
   background: transparent;
   border: none;
-  color: #aaa;
+  color: ${({ theme }) => theme.palette.text.muted};
   cursor: pointer;
   font-size: 1.75rem;
   font-weight: bold;
@@ -22,7 +22,7 @@ export default styled.button.attrs({
   z-index: 12;
 
   &:hover {
-    color: #fff;
+    color: ${({ theme }) => theme.palette.text.white};
   }
 
   @media (width >= 768px) {

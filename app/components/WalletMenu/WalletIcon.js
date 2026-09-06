@@ -1,5 +1,5 @@
 /**
- * Exports a styled img element
+ * Exports a styled img
  */
 
 import styled from 'styled-components';

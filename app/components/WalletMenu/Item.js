@@ -1,5 +1,5 @@
 /**
- * Exports a styled li element
+ * Exports a styled li
  */
 
 import styled from 'styled-components';
@@ -15,7 +15,7 @@ const getOpacity = (props) => {
 };
 
 const getBgColor = (props) => {
-  if (props.$isActive) return '#333';
+  if (props.$isActive) return props.theme.palette.background.element;
   return 'transparent';
 };
 
@@ -26,12 +26,12 @@ const getFontWeight = (props) => {
 
 const getHoverBgColor = (props) => {
   if (props.$isDisabled) return 'transparent';
-  return '#333';
+  return props.theme.palette.background.element;
 };
 
 export default styled.li`
   padding: 0.8rem 0.5rem;
-  color: #ddd;
+  color: ${({ theme }) => theme.palette.text.primary};
   border-radius: 4px;
   display: flex;
   align-items: center;

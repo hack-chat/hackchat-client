@@ -1,11 +1,11 @@
 /**
- * Exports a styled html div
+ * Exports a styled div
  */
 
 import styled from 'styled-components';
 
 const InfoStyle = styled.div`
-  color: #60ac39;
+  color: ${({ theme }) => theme.palette.status.info};
   font-family: 'DejaVu Sans Mono', monospace;
   padding-top: 0.25em;
   padding-bottom: 0.25em;
@@ -18,7 +18,7 @@ const InfoStyle = styled.div`
   & > a,
   & > p > a,
   & > p > span > a {
-    color: #a6a28c;
+    color: ${({ theme }) => theme.palette.accent.main};
   }
 `;
 

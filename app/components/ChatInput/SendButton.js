@@ -1,5 +1,5 @@
 /**
- * Exports a styled html button
+ * Exports a styled button
  */
 
 import styled from 'styled-components';
@@ -10,10 +10,10 @@ export default styled.button.attrs({
   background-color: transparent;
   border: 0;
   cursor: pointer;
-  color: #a6a28c;
+  color: ${({ theme }) => theme.palette.text.secondary};
   font-size: 1.2em;
   padding: 5px 12px;
-  border-top: 1px solid rgb(125 122 104 / 50%);
+  border-top: 1px solid ${({ theme }) => theme.palette.border.divider};
 
   &:focus {
     outline: none;
@@ -21,7 +21,7 @@ export default styled.button.attrs({
   }
 
   &:hover {
-    color: #f5f5f7;
+    color: ${({ theme }) => theme.palette.text.primary};
   }
 
   & > svg {

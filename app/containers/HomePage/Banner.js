@@ -1,12 +1,16 @@
 /**
- * Exports a styled html pre
+ * Exports a styled pre
  */
 
 import styled from 'styled-components';
 
 const Banner = styled.pre`
-  background: #a6a28c;
-  background: linear-gradient(45deg, #a6a28c 0%, #292820ff 100%);
+  background: ${({ theme }) => theme.palette.accent.main};
+  background: linear-gradient(
+    45deg,
+    ${({ theme }) => theme.palette.accent.main} 0%,
+    ${({ theme }) => theme.palette.accent.logoDark} 100%
+  );
   -webkit-background-clip: text; /* stylelint-disable-line */
   -webkit-text-fill-color: transparent;
   font-weight: bold;
@@ -14,7 +18,7 @@ const Banner = styled.pre`
   text-align: left;
   margin: 0 auto;
   justify-content: space-between;
-  color: #a6a28c;
+  color: ${({ theme }) => theme.palette.accent.main};
   text-shadow: 1px 1px 0 #000;
   border: none;
 `;

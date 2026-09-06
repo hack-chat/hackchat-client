@@ -1,5 +1,5 @@
 /**
- * Exports a styled html div
+ * Exports a styled div
  */
 
 import styled from 'styled-components';
@@ -11,12 +11,12 @@ export default styled.div`
   height: 100dvh;
   width: 100vw;
   background-color: transparent;
-  color: #f5f5f7;
+  color: ${({ theme }) => theme.palette.text.primary};
   overflow: hidden;
 
   h4 {
     margin-bottom: 24px;
-    color: #a6a28c;
+    color: ${({ theme }) => theme.palette.text.secondary};
     text-align: center;
     font-weight: bold;
     text-transform: uppercase;

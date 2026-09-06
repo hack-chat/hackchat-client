@@ -1,5 +1,5 @@
 /**
- * Exports a styled html div
+ * Exports a styled div
  */
 
 import styled from 'styled-components';
@@ -10,5 +10,5 @@ export default styled.div`
   white-space: nowrap;
   margin-right: 15px;
   font-family: monospace;
-  color: #a8b2c1;
+  color: ${({ theme }) => theme.palette.text.code};
 `;

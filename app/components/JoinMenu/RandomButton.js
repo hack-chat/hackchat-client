@@ -1,5 +1,5 @@
 /**
- * Exports a styled html button
+ * Exports a styled button
  */
 
 import styled from 'styled-components';
@@ -12,7 +12,7 @@ export default styled.button.attrs({
   justify-content: center;
   background: transparent;
   border: none;
-  color: #ddd;
+  color: ${({ theme }) => theme.palette.text.primary};
   width: 100%;
   height: 100%;
   padding: 0;
@@ -22,6 +22,6 @@ export default styled.button.attrs({
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: #444;
+    background-color: ${({ theme }) => theme.palette.background.elementHover};
   }
 `;

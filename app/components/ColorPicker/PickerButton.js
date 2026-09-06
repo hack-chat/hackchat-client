@@ -1,8 +1,18 @@
 /**
- * Exports a styled html button
+ * Exports a styled button
  */
 
 import styled from 'styled-components';
+
+const getBgColor = (props) => props.theme.palette.background.alt;
+const getColor = (props) => props.$color || props.theme.palette.text.primary;
+const getHoverBgColor = (props) => props.theme.palette.background.elementHover;
+
+const svgFilter =
+  'drop-shadow(-1px -1px 0 rgb(0 0 0 / 50%)) ' +
+  'drop-shadow(1px -1px 0 rgb(0 0 0 / 50%)) ' +
+  'drop-shadow(1px 1px 0 rgb(0 0 0 / 50%)) ' +
+  'drop-shadow(-1px 1px 0 rgb(0 0 0 / 50%))';
 
 export default styled.button.attrs({
   type: 'button',
@@ -10,7 +20,7 @@ export default styled.button.attrs({
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #2a2a2a;
+  background-color: ${getBgColor};
   border: none;
   width: 100%;
   height: 100%;
@@ -19,17 +29,14 @@ export default styled.button.attrs({
   font-size: 1.25em;
   border-radius: 0;
   transition: all 0.2s ease;
-  color: ${(props) => props.$color || '#ddd'};
+  color: ${getColor};
   text-shadow: #000 0 0 2px;
 
   &:hover {
-    background-color: #444 !important;
+    background-color: ${getHoverBgColor} !important;
   }
 
   & > svg {
-    filter: drop-shadow(-1px -1px 0 rgb(0 0 0 / 50%))
-      drop-shadow(1px -1px 0 rgb(0 0 0 / 50%))
-      drop-shadow(1px 1px 0 rgb(0 0 0 / 50%))
-      drop-shadow(-1px 1px 0 rgb(0 0 0 / 50%));
+    filter: ${svgFilter};
   }
 `;

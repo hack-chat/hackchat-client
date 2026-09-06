@@ -1,5 +1,5 @@
 /**
- * Exports a styled html div
+ * Exports a styled div
  *
  * @todo add perf option, enabling and disabling:
  * content-visibility: auto;

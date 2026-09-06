@@ -1,5 +1,5 @@
 /**
- * Exports a styled html div
+ * Exports a styled div
  */
 
 import styled from 'styled-components';
@@ -10,6 +10,6 @@ export default styled.div`
 
   svg {
     margin-right: 12px;
-    color: #a6a28c;
+    color: ${({ theme }) => theme.palette.text.secondary};
   }
 `;

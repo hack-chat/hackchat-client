@@ -1,5 +1,5 @@
 /**
- * Exports a styled html label
+ * Exports a styled label
  */
 
 import styled from 'styled-components';

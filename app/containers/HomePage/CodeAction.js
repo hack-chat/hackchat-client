@@ -1,5 +1,5 @@
 /**
- * Exports a styled html link
+ * Exports a styled link
  */
 
 import styled from 'styled-components';
@@ -11,6 +11,6 @@ export default styled.a`
   font-weight: bold;
 
   &:hover {
-    color: #fff;
+    color: ${({ theme }) => theme.palette.text.white};
   }
 `;

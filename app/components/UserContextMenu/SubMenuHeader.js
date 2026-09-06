@@ -7,9 +7,9 @@ import ContextMenuItem from './ContextMenuItem';
 
 export default styled(ContextMenuItem)`
   font-weight: bold;
-  border-bottom: 1px solid #444;
+  border-bottom: 1px solid ${({ theme }) => theme.palette.border.main};
 
   &:hover {
-    background-color: #444;
+    background-color: ${({ theme }) => theme.palette.background.elementHover};
   }
 `;

@@ -16,14 +16,14 @@ export default styled.div`
   margin: 0;
   font-family: monospace;
   font-size: 1.1em;
-  background-color: #2a2a2a;
-  color: #a6a28c;
+  background-color: ${({ theme }) => theme.palette.background.alt};
+  color: ${({ theme }) => theme.palette.text.secondary};
 
   ${InputGroup} > &:first-child {
-    border-right: 1px solid #444;
+    border-right: 1px solid ${({ theme }) => theme.palette.border.main};
   }
 
   ${InputGroup} > &:last-child {
-    border-left: 1px solid #444;
+    border-left: 1px solid ${({ theme }) => theme.palette.border.main};
   }
 `;

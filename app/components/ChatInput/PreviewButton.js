@@ -1,5 +1,5 @@
 /**
- * Exports a styled html button
+ * Exports a styled button
  */
 import styled from 'styled-components';
 
@@ -9,10 +9,10 @@ export default styled.button.attrs({
   position: absolute;
   inset-inline-end: 15px;
   top: -44px;
-  background-color: rgb(42 42 42 / 85%);
-  border: 1px solid #555;
+  background-color: ${({ theme }) => theme.palette.background.modal};
+  border: 1px solid ${({ theme }) => theme.palette.border.light};
   border-radius: 20px;
-  color: #a6a28c;
+  color: ${({ theme }) => theme.palette.text.secondary};
   font-size: 1.5em;
   padding: 4px 14px;
   cursor: pointer;
@@ -30,10 +30,10 @@ export default styled.button.attrs({
   }
 
   &:hover {
-    color: #fff;
-    border-color: #777;
+    color: ${({ theme }) => theme.palette.text.white};
+    border-color: ${({ theme }) => theme.palette.border.main};
     transform: translateY(-2px);
-    background-color: rgb(60 60 60 / 95%);
+    background-color: ${({ theme }) => theme.palette.background.elementHover};
   }
 
   @media (width <= 320px) {

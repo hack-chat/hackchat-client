@@ -1,5 +1,5 @@
 /**
- * Exports a styled form element
+ * Exports a styled form
  */
 
 import styled from 'styled-components';

@@ -1,5 +1,5 @@
 /**
- * Exports a styled div element
+ * Exports a styled div
  */
 
 import styled from 'styled-components';

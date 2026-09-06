@@ -1,12 +1,12 @@
 /**
- * Exports a styled html div
+ * Exports a styled div
  */
 
 import styled from 'styled-components';
 
 export default styled.div`
   padding: 0.5rem 1rem;
-  color: #ddd;
+  color: ${({ theme }) => theme.palette.text.primary};
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -14,7 +14,7 @@ export default styled.div`
   position: relative;
 
   &:hover {
-    background-color: #151513;
+    background-color: ${({ theme }) => theme.palette.background.hover};
   }
 
   > svg:first-child:not(:last-child) {

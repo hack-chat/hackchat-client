@@ -1,5 +1,5 @@
 /**
- * Exports a styled ul element
+ * Exports a styled ul
  */
 
 import styled from 'styled-components';

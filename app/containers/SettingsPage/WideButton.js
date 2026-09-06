@@ -1,5 +1,5 @@
 /**
- * Exports a styled html button
+ * Exports a styled button
  */
 
 import styled from 'styled-components';
@@ -12,9 +12,9 @@ export default styled.button.attrs({
   min-height: 46px;
   margin-top: 12px;
   margin-bottom: 12px;
-  background-color: #333;
-  color: #ddd;
-  border: 1px solid #555;
+  background-color: ${({ theme }) => theme.palette.background.element};
+  color: ${({ theme }) => theme.palette.text.primary};
+  border: 1px solid ${({ theme }) => theme.palette.border.light};
   border-radius: 4px;
   font-family: monospace;
   font-weight: bold;
@@ -24,13 +24,13 @@ export default styled.button.attrs({
   align-items: center;
 
   &:hover {
-    background-color: #4d4d4d;
-    color: #fff;
-    border-color: #a6a28c;
+    background-color: ${({ theme }) => theme.palette.background.tertiary};
+    color: ${({ theme }) => theme.palette.text.white};
+    border-color: ${({ theme }) => theme.palette.border.focus};
   }
 
   &:active {
-    background-color: #a6a28c;
-    color: #1e1e1e;
+    background-color: ${({ theme }) => theme.palette.accent.main};
+    color: ${({ theme }) => theme.palette.text.inverse};
   }
 `;

@@ -11,7 +11,7 @@ export default styled.div`
   justify-content: center;
   margin-bottom: 1rem;
   background-color: transparent;
-  border: 1px solid #555;
+  border: 1px solid ${({ theme }) => theme.palette.border.light};
   border-radius: 4px;
   overflow: hidden;
   min-height: 42px;
@@ -21,7 +21,7 @@ export default styled.div`
   }
 
   &:focus-within {
-    border-color: #a6a28c;
-    box-shadow: 0 0 0 1px #a6a28c;
+    border-color: ${({ theme }) => theme.palette.border.focus};
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.palette.border.focus};
   }
 `;

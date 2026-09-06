@@ -1,12 +1,12 @@
 /**
- * Exports a styled div element
+ * Exports a styled div
  */
 
 import styled from 'styled-components';
 
 export default styled.div`
   padding: 1rem;
-  background-color: #2e2e2e;
-  color: #ddd;
+  background-color: ${({ theme }) => theme.palette.background.modal};
+  color: ${({ theme }) => theme.palette.text.primary};
   min-width: 300px;
 `;

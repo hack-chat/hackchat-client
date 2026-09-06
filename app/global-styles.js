@@ -13,31 +13,27 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    --sb-track-color: #20201d;
-    --sb-thumb-color: #909090;
-    --sb-size: 10px;
-
-    background: #20201d;
-    color: #a6a28c;
+    background: ${({ theme }) => theme.palette.background.main};
+    color: ${({ theme }) => theme.palette.text.secondary};
   }
 
   body::-webkit-scrollbar {
-    width: var(--sb-size);
+    width: 10px;
   }
 
   body::-webkit-scrollbar-track {
-    background: var(--sb-track-color);
+    background: ${({ theme }) => theme.palette.scrollbar.track};
     border-radius: 3px;
   }
 
   body::-webkit-scrollbar-thumb {
-    background: var(--sb-thumb-color);
+    background: ${({ theme }) => theme.palette.scrollbar.thumb};
     border-radius: 3px;
   }
 
   @supports not selector(::-webkit-scrollbar) {
     body {
-      scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+      scrollbar-color: ${({ theme }) => theme.palette.scrollbar.thumb} ${({ theme }) => theme.palette.scrollbar.track};
     }
   }
 
@@ -55,15 +51,10 @@ const GlobalStyle = createGlobalStyle`
     border: none;
     outline: none;
     resize: none;
-    color: #a6a28c;
+    color: ${({ theme }) => theme.palette.text.secondary};
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  h1, h2, h3, h4, h5, h6 {
     margin: 3px;
     margin-top: 0;
   }
@@ -84,8 +75,7 @@ const GlobalStyle = createGlobalStyle`
     text-decoration: underline;
   }
 
-  ul,
-  ol {
+  ul, ol {
     display: block;
     margin: 0;
     padding: 0;
@@ -95,8 +85,7 @@ const GlobalStyle = createGlobalStyle`
     padding-inline-start: 40px;
   }
 
-  ul ul,
-  ol ol {
+  ul ul, ol ol {
     padding-inline-start: 2em;
   }
 
@@ -105,7 +94,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   table {
-    color: #ddd;
+    color: ${({ theme }) => theme.palette.text.primary};
     background-color: transparent;
     width: 100%;
     max-width: 100%;
@@ -118,8 +107,7 @@ const GlobalStyle = createGlobalStyle`
     text-align: left;
   }
 
-  td,
-  th {
+  td, th {
     padding: 0;
   }
 
@@ -132,17 +120,17 @@ const GlobalStyle = createGlobalStyle`
     padding: 8px;
     line-height: 1.4286;
     vertical-align: top;
-    border-top: 1px solid #4e4e4e;
+    border-top: 1px solid ${({ theme }) => theme.palette.background.tertiary};
   }
 
   table > thead > tr > th {
     vertical-align: bottom;
-    border-bottom: 2px solid #4e4e4e;
+    border-bottom: 2px solid ${({ theme }) => theme.palette.background.tertiary};
   }
 
   table > tbody > tr:nth-child(odd) > td,
   table > tbody > tr:nth-child(odd) > th {
-    background-color: #4e4e4e;
+    background-color: ${({ theme }) => theme.palette.background.tertiary};
   }
 
   table > caption + thead > tr:first-child > th,
@@ -166,7 +154,7 @@ const GlobalStyle = createGlobalStyle`
     white-space: pre-wrap;
     word-break: break-all;
     word-wrap: break-word;
-    background-color: #4e4e4e;
+    background-color: ${({ theme }) => theme.palette.background.tertiary};
     border: 1px solid #000;
     border-radius: 4px;
     color: #797979;
@@ -177,14 +165,14 @@ const GlobalStyle = createGlobalStyle`
     padding: 2px 4px;
     font-size: 90%;
     color: #000;
-    background-color: #4e4e4e;
+    background-color: ${({ theme }) => theme.palette.background.tertiary};
     border-radius: 4px;
   }
 
   blockquote {
     padding: 3px 10px;
     margin: 3px;
-    border-inline-start: 5px solid #4e4e4e;
+    border-inline-start: 5px solid ${({ theme }) => theme.palette.background.tertiary};
   }
 
   blockquote > p {
@@ -195,156 +183,16 @@ const GlobalStyle = createGlobalStyle`
     margin-top: 20px;
     margin-bottom: 20px;
     border: 0;
-    border-top: 1px solid #4e4e4e;
+    border-top: 1px solid ${({ theme }) => theme.palette.background.tertiary};
   }
 
   mark {
-    background-color: #60ac39;
+    background-color: ${({ theme }) => theme.palette.status.info};
     color: black;
   }
 
   label {
     vertical-align: 3px;
-  }
-
-  .hidden {
-    display: none;
-  }
-
-  .expand {
-    height: 100%;
-  }
-
-  .container {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  .message {
-    padding-bottom: 1em;
-    border-inline-start: 1px solid rgb(125 122 104 / 50%);
-  }
-
-  .refmessage {
-    padding-bottom: 1em;
-    border-inline-start: 1px solid rgb(125 122 104 / 100%);
-  }
-
-  .text {
-    margin: 0;
-    margin-inline-start: 1em;
-  }
-
-  .text p {
-    margin: 0;
-  }
-
-  .text a {
-    color: #e8e4cf;
-  }
-
-  .message .text {
-    word-wrap: break-word;
-  }
-
-  .nick {
-    float: left;
-    width: 16em;
-    margin-left: -17em;
-    margin-right: 1em;
-    text-align: right;
-    white-space: nowrap;
-    overflow: hidden;
-    color: #6684e1;
-  }
-
-  .trip {
-    font-size: 10px;
-    color: #6e6b5e;
-  }
-
-  .admin .nick {
-    color: #d73737;
-  }
-
-  .mod .nick {
-    color: #1fad83;
-  }
-
-  .me .nick {
-    color: #b854d4;
-  }
-
-  .info .nick,
-  .info .text {
-    color: #60ac39;
-  }
-
-  .warn .nick,
-  .warn .text {
-    color: #cfb017;
-  }
-
-  .jebbed {
-    background: linear-gradient(to right, #66f, #09f, #0f0, #f39, #66f);
-    background-clip: text;
-    color: transparent;
-    animation: rainbow-animation 6s ease-in-out infinite;
-    background-size: 400% 100%;
-  }
-
-  #app {
-    height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  #messages {
-    padding-top: 2em;
-  }
-
-  #footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: #20201d;
-  }
-
-  #chatform {
-    border-top: 1px solid;
-    border-color: #7d7a68;
-  }
-
-  #chatinput {
-    width: 100%;
-    padding: 1em;
-    box-sizing: border-box;
-  }
-
-  #sidebar {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    padding: 1em;
-    border-inline-start: solid 1px;
-    overflow-y: auto;
-    background: #292824;
-    border-color: #7d7a68;
-  }
-
-  #sidebar-content {
-    width: 180px;
-    padding-bottom: 10%;
-  }
-
-  #sidebar-content ul {
-    padding-inline-start: 20px;
-  }
-
-  #sidebar-content ul li {
-    list-style: disc outside none;
   }
 
   @keyframes rainbow-animation {
@@ -355,35 +203,6 @@ const GlobalStyle = createGlobalStyle`
 
     50% {
       background-position: 100% 0;
-    }
-  }
-
-  @media only screen and (width <= 600px) {
-    #messages {
-      border: none;
-      padding: 0.5em;
-    }
-
-    .message {
-      padding-bottom: 0.5em;
-    }
-
-    .nick {
-      margin: 0;
-      float: none;
-      text-align: left;
-      display: inline;
-    }
-
-    .text {
-      display: inline;
-    }
-
-    #sidebar {
-      top: 0.5em;
-      bottom: auto;
-      right: 0.5em;
-      border: none;
     }
   }
 `;

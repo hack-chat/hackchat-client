@@ -1,16 +1,16 @@
 /**
- * Exports a styled html div
+ * Exports a styled div
  */
 
 import styled from 'styled-components';
 
-const InfoStyle = styled.div`
-  color: #60ac39;
+const HackStyle = styled.div`
+  color: ${({ theme }) => theme.palette.status.info};
   font-family: 'DejaVu Sans Mono', monospace;
 
   a {
-    color: #a6a28c;
+    color: ${({ theme }) => theme.palette.accent.main};
   }
 `;
 
-export default InfoStyle;
+export default HackStyle;

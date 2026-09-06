@@ -1,8 +1,23 @@
 /**
- * Exports a styled html button
+ * Exports a styled button
  */
 
 import styled from 'styled-components';
+
+const getBgColor = (props) => {
+  if (props.$active) return props.theme.palette.accent.main;
+  return props.theme.palette.border.light;
+};
+
+const getColor = (props) => {
+  if (props.$active) return props.theme.palette.text.inverse;
+  return props.theme.palette.text.primary;
+};
+
+const getHoverBgColor = (props) => {
+  if (props.$active) return props.theme.palette.accent.hover;
+  return props.theme.palette.border.main;
+};
 
 export default styled.button.attrs({
   type: 'button',
@@ -16,11 +31,11 @@ export default styled.button.attrs({
   border: 1px solid transparent;
   width: 100%;
   margin-top: 0.75rem;
-  background-color: ${(props) => (props.$active ? '#a6a28c' : '#555')};
-  color: ${(props) => (props.$active ? '#1e1e1e' : '#ddd')};
-  border-color: ${(props) => (props.$active ? '#a6a28c' : '#555')};
   transition: all 0.2s ease;
   pointer-events: ${(props) => (props.$disabled ? 'none' : 'auto')};
+  background-color: ${getBgColor};
+  color: ${getColor};
+  border-color: ${getBgColor};
 
   & > svg {
     margin-left: 12px;
@@ -28,8 +43,8 @@ export default styled.button.attrs({
   }
 
   &:hover {
-    background-color: ${(props) => (props.$active ? '#b7b39d' : '#666')};
-    border-color: ${(props) => (props.$active ? '#b7b39d' : '#666')};
-    color: ${(props) => (props.$active ? '#1e1e1e' : '#ddd')};
+    background-color: ${getHoverBgColor};
+    border-color: ${getHoverBgColor};
+    color: ${getColor};
   }
 `;

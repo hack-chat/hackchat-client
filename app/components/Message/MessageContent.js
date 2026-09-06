@@ -1,7 +1,18 @@
 /**
- * Exports a styled html div
+ * Exports a styled div
  */
 import styled from 'styled-components';
+
+const getBackground = (props) => {
+  if (props.$isMentioned) return props.theme.palette.status.mentionBg;
+  if (props.$hasBackground) return props.theme.palette.background.alt;
+  return 'transparent';
+};
+
+const getBorderColor = (props) => {
+  if (props.$isMentioned) return props.theme.palette.status.mentionBorder;
+  return props.theme.palette.border.divider;
+};
 
 const MessageContent = styled.div`
   display: flex;
@@ -12,24 +23,12 @@ const MessageContent = styled.div`
   padding-bottom: 0.25em;
   min-width: 0;
   padding-inline-start: 1.5em;
-
-  ${({ $hasBackground }) =>
-    $hasBackground &&
-    `
-    background-color: rgb(0 0 0 / 5%);
-  `}
+  background-color: ${getBackground} !important;
 
   @media (width >= 768px) {
     padding-inline-start: 1em;
-    border-inline-start: 1px solid rgb(125 122 104 / 50%);
+    border-inline-start: 1px solid ${getBorderColor} !important;
   }
-
-  ${({ $isMentioned }) =>
-    $isMentioned &&
-    `
-    border-inline-start-color: #e67e22 !important;
-    background-color: rgba(230, 126, 34, 0.1) !important;
-  `}
 
   & p,
   & h1,
@@ -67,7 +66,7 @@ const MessageContent = styled.div`
   }
 
   & a {
-    color: #fff;
+    color: ${({ theme }) => theme.palette.text.white};
     text-decoration: none;
 
     &:hover {
@@ -98,23 +97,23 @@ const MessageContent = styled.div`
     height: 1px;
     background-image: linear-gradient(
       to right,
-      rgb(125 122 104 / 0%),
-      rgb(125 122 104 / 75%),
-      rgb(125 122 104 / 0%)
+      transparent,
+      ${({ theme }) => theme.palette.border.divider},
+      transparent
     );
     margin: 1.5em 0;
   }
 
   & code {
-    background-color: rgb(0 0 0 / 20%);
+    background-color: ${({ theme }) => theme.palette.background.tertiary};
     padding: 0.2em 0.4em;
     font-size: 0.85em;
     border-radius: 3px;
-    color: #ddd;
+    color: ${({ theme }) => theme.palette.text.primary};
   }
 
   & pre {
-    background-color: rgb(0 0 0 / 20%);
+    background-color: ${({ theme }) => theme.palette.background.tertiary};
     border-radius: 4px;
     padding: 1em;
     overflow-x: auto;
@@ -128,13 +127,14 @@ const MessageContent = styled.div`
 
   & mark {
     background-color: transparent;
-    color: #ddd;
+    color: ${({ theme }) => theme.palette.text.primary};
     padding: 0;
     text-shadow: 1px 1px 3px #37ff00;
   }
 
   & blockquote {
-    border-inline-start: 3px solid rgb(125 122 104 / 50%);
+    border-inline-start: 3px solid
+      ${({ theme }) => theme.palette.border.divider};
     margin-inline-start: 0;
     padding-inline-start: 1em;
     opacity: 0.85;
@@ -144,7 +144,7 @@ const MessageContent = styled.div`
     width: 100%;
     border-collapse: collapse;
     margin: 1em 0;
-    border: 1px solid rgb(125 122 104 / 20%);
+    border: 1px solid ${({ theme }) => theme.palette.border.subtle};
     border-radius: 4px;
     overflow: hidden;
     font-size: 0.9em;
@@ -153,17 +153,17 @@ const MessageContent = styled.div`
   & th,
   & td {
     padding: 0.75em;
-    border-bottom: 1px solid rgb(125 122 104 / 20%);
+    border-bottom: 1px solid ${({ theme }) => theme.palette.border.subtle};
   }
 
   & thead {
-    background-color: rgb(0 0 0 / 15%);
-    color: #ddd;
+    background-color: ${({ theme }) => theme.palette.background.tertiary};
+    color: ${({ theme }) => theme.palette.text.primary};
     font-weight: 600;
   }
 
   & tbody tr:nth-child(even) {
-    background-color: rgb(0 0 0 / 5%);
+    background-color: ${({ theme }) => theme.palette.background.alt};
   }
 
   & tbody tr:last-child td {

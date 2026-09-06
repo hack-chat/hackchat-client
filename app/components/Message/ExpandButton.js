@@ -1,5 +1,5 @@
 /**
- * Exports a styled button element
+ * Exports a styled button
  */
 
 import styled from 'styled-components';
@@ -7,7 +7,7 @@ import styled from 'styled-components';
 const ExpandButton = styled.button`
   background: none;
   border: none;
-  color: #8a8a8a;
+  color: ${({ theme }) => theme.palette.text.muted};
   cursor: pointer;
   padding: 4px 0 0;
   font-size: 0.9em;
@@ -15,7 +15,7 @@ const ExpandButton = styled.button`
   text-decoration: underline;
 
   &:hover {
-    color: #b0b0b0;
+    color: ${({ theme }) => theme.palette.text.primary};
   }
 `;
 

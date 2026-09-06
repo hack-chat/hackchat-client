@@ -49,7 +49,7 @@ export default styled.div`
     margin: 0 auto;
     width: 15%;
     height: 15%;
-    background-color: #999;
+    background-color: ${({ theme }) => theme.palette.text.muted};
     border-radius: 100%;
     animation: ${circleFadeDelay} 1.2s infinite ease-in-out both;
 

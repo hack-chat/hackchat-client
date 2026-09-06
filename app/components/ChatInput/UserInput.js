@@ -14,10 +14,10 @@ export default styled.textarea`
   padding: 0.75em 1em;
   box-sizing: border-box;
   border: none;
-  border-top: 1px solid rgb(125 122 104 / 50%);
-  border-inline-start: 1px solid rgb(125 122 104 / 50%);
+  border-top: 1px solid ${({ theme }) => theme.palette.border.divider};
+  border-inline-start: 1px solid ${({ theme }) => theme.palette.border.divider};
   background-color: transparent;
-  color: #f5f5f7;
+  color: ${({ theme }) => theme.palette.text.primary};
   scrollbar-width: none;
 
   &::-webkit-scrollbar {
@@ -29,7 +29,7 @@ export default styled.textarea`
   }
 
   &::placeholder {
-    color: #8a8a8a;
+    color: ${({ theme }) => theme.palette.text.muted};
   }
 
   @media (width <= 767px) {

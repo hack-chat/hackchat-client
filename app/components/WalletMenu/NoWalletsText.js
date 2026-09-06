@@ -1,5 +1,5 @@
 /**
- * Exports a styled div element
+ * Exports a styled div
  */
 
 import styled from 'styled-components';
@@ -7,5 +7,5 @@ import styled from 'styled-components';
 export default styled.div`
   padding: 1rem;
   text-align: center;
-  color: #aaa;
+  color: ${({ theme }) => theme.palette.text.muted};
 `;

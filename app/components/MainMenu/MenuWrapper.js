@@ -1,5 +1,5 @@
 /**
- * Exports a styled html div
+ * Exports a styled div
  */
 
 import styled from 'styled-components';
@@ -30,15 +30,16 @@ export default styled.div`
   right: 0;
   bottom: 0;
   width: 280px;
-  background-color: #1e1e1e;
-  border-left: 1px solid #444;
+  background-color: ${({ theme }) => theme.palette.background.menu};
+  border-left: 1px solid ${({ theme }) => theme.palette.border.main};
   transform: ${getTransform};
   transition: transform 0.3s ease-in-out;
   z-index: 9;
   display: flex;
   flex-direction: column;
   scrollbar-width: thin;
-  scrollbar-color: #4f4d42 #1e1e1e;
+  scrollbar-color: ${({ theme }) => theme.palette.scrollbar.menuThumb}
+    ${({ theme }) => theme.palette.background.menu};
 
   @media (width >= 768px) {
     transform: ${getMediaTransform};

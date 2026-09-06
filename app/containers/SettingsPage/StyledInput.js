@@ -1,28 +1,37 @@
 /**
- * Exports a styled html input
+ * Exports a styled input
  */
 
 import styled from 'styled-components';
+
+const getBorderColor = (props) => {
+  if (props.$invalid) return props.theme.palette.status.danger;
+  return props.theme.palette.border.divider;
+};
+
+const getFocusBorderColor = (props) => {
+  if (props.$invalid) return props.theme.palette.status.danger;
+  return props.theme.palette.border.focus;
+};
 
 export default styled.input`
   width: 100%;
   min-height: 46px;
   padding: 0 16px;
   background-color: transparent;
-  color: #f5f5f7;
+  color: ${({ theme }) => theme.palette.text.primary};
   font-family: monospace;
-  border: 1px solid
-    ${(props) => (props.$invalid ? '#ff6b6b' : 'rgba(125 122 104 / 50%)')};
+  border: 1px solid ${getBorderColor};
   border-radius: 4px;
   margin-bottom: 12px;
   transition: border-color 0.2s;
 
   &:focus {
     outline: none;
-    border-color: ${(props) => (props.$invalid ? '#ff6b6b' : '#a6a28c')};
+    border-color: ${getFocusBorderColor};
   }
 
   &::placeholder {
-    color: #8a8a8a;
+    color: ${({ theme }) => theme.palette.text.muted};
   }
 `;

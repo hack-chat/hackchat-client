@@ -1,5 +1,5 @@
 /**
- * Exports a styled html div
+ * Exports a styled div
  */
 
 import styled from 'styled-components';
@@ -9,20 +9,21 @@ export default styled.div`
   overflow-y: auto;
   padding: 1rem;
   scrollbar-width: thin;
-  scrollbar-color: #4f4d42 #20201d;
+  scrollbar-color: ${({ theme }) => theme.palette.scrollbar.menuThumb}
+    ${({ theme }) => theme.palette.scrollbar.track};
 
   &::-webkit-scrollbar {
     width: 8px;
   }
 
   &::-webkit-scrollbar-track {
-    background: #20201d;
-    border-left: 1px solid #4f4d42;
+    background: ${({ theme }) => theme.palette.scrollbar.track};
+    border-left: 1px solid ${({ theme }) => theme.palette.scrollbar.menuThumb};
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #4f4d42;
+    background-color: ${({ theme }) => theme.palette.scrollbar.menuThumb};
     border-radius: 4px;
-    border: 2px solid #20201d;
+    border: 2px solid ${({ theme }) => theme.palette.scrollbar.track};
   }
 `;

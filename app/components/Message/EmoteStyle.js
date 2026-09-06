@@ -1,11 +1,11 @@
 /**
- * Exports a styled html div
+ * Exports a styled div
  */
 
 import styled from 'styled-components';
 
 const EmoteStyle = styled.div`
-  color: #7e00b0;
+  color: ${({ theme }) => theme.palette.status.emote};
   font-family: 'DejaVu Sans Mono', monospace;
 `;
 

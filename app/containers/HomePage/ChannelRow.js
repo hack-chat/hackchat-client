@@ -1,5 +1,5 @@
 /**
- * Exports a styled html div
+ * Exports a styled div
  */
 
 import styled from 'styled-components';
@@ -26,6 +26,6 @@ export default styled.div`
 
   & > div > a:hover {
     text-decoration: none;
-    color: #fff;
+    color: ${({ theme }) => theme.palette.text.white};
   }
 `;

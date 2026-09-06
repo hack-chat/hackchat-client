@@ -4,6 +4,16 @@
 
 import styled from 'styled-components';
 
+const getColor = (props) => {
+  if (props.$invalid) return props.theme.palette.status.error;
+  return props.theme.palette.text.primary;
+};
+
+const getPlaceholderColor = (props) => {
+  if (props.$invalid) return props.theme.palette.status.errorAlpha;
+  return props.theme.palette.text.muted;
+};
+
 export default styled.input`
   flex-grow: 1;
   background: transparent;
@@ -12,9 +22,9 @@ export default styled.input`
   padding: 0.5rem 1rem;
   font-size: 1em;
   min-width: 0;
-  color: ${(props) => (props.$invalid ? '#f44336' : '#ddd')};
+  color: ${getColor};
 
   &::placeholder {
-    color: ${(props) => (props.$invalid ? '#f44336a0' : '#888')};
+    color: ${getPlaceholderColor};
   }
 `;

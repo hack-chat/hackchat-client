@@ -1,5 +1,5 @@
 /**
- * Exports a styled html a tag for interactive actions
+ * Exports a styled link
  */
 import styled from 'styled-components';
 

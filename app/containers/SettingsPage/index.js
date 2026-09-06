@@ -3,7 +3,6 @@
  * @todo Wire up:
  * - Leftside Menu Button
  * - Automatic Reconnect
- * - Current Theme
  */
 
 import React, { useMemo, useEffect, useCallback } from 'react';
@@ -22,8 +21,6 @@ import {
   openLocaleModal,
 } from 'containers/LanguageProvider/actions';
 import { makeSelectIsLocaleModalOpen } from 'containers/LanguageProvider/selectors';
-
-import { SHOW_TOAST } from 'containers/ToastNotifier/constants';
 
 import { leaveChannel } from 'containers/CommunicationProvider/actions';
 import { makeSelectChannelData } from 'containers/CommunicationProvider/selectors';
@@ -50,8 +47,10 @@ import UsernameInput from './UsernameInput';
 import ColorSquare from './ColorSquare';
 import SwitchRow from './SwitchRow';
 import ThemeRow from './ThemeRow';
-import ThemeButton from './ThemeButton';
 import FooterSection from './FooterSection';
+import ThemeSelect from './ThemeSelect';
+
+const AVAILABLE_THEMES = ['default', 'light', 'hacker'];
 
 import {
   setUsername,
@@ -59,7 +58,7 @@ import {
   setColor,
   setStoreChannelsFlag,
   clearPrevChannels,
-  // setTheme,
+  setTheme,
   setAllowKatex,
   setAllowMarkdown,
   setAllowExternalCode,
@@ -103,7 +102,7 @@ export function SettingsPage({
   cachedColor,
   cachedDoStore,
   cachedPreviousChannels,
-  // cachedTheme,
+  cachedTheme,
   cachedAllowKatex,
   cachedAllowMarkdown,
   cachedAllowExtCode,
@@ -157,7 +156,7 @@ export function SettingsPage({
   const [chosenPassword, setChosenPassword] = useStateIfMounted(cachedPassword);
   const [currentColor, setCurrentColor] = useStateIfMounted(cachedColor);
   const [chosenDoStore, setChosenDoStore] = useStateIfMounted(cachedDoStore);
-  // const [chosenTheme, setChosenTheme] = useStateIfMounted(cachedTheme);
+  const [chosenTheme, setChosenTheme] = useStateIfMounted(cachedTheme);
   const [chosenAllowKatex, setChosenAllowKatex] =
     useStateIfMounted(cachedAllowKatex);
   const [chosenAllowMarkdown, setChosenAllowMarkdown] =
@@ -217,8 +216,6 @@ export function SettingsPage({
   const backBtnText = intl.formatMessage(messages.backBtnText);
   const rememberText = intl.formatMessage(messages.rememberText);
   const usernameColorText = intl.formatMessage(messages.usernameColorText);
-  const changeThemeText = intl.formatMessage(messages.changeThemeText);
-  const themeNoticeText = intl.formatMessage(messages.themeNoticeText);
 
   const joinedChannels = useMemo(
     () => (channelData ? Object.keys(channelData) : []),
@@ -425,22 +422,23 @@ export function SettingsPage({
               <FormattedMessage
                 id={messages.currentThemeText.id}
                 defaultMessage={messages.currentThemeText.defaultMessage}
-                values={{ themeName: /* chosenTheme */ 'default' }}
+                values={{ themeName: '' }}
               />
             </LabelText>
-            <ThemeButton
-              onClick={() => {
-                dispatch({
-                  type: SHOW_TOAST,
-                  payload: {
-                    message: themeNoticeText,
-                    type: 'warning',
-                  },
-                });
+            <ThemeSelect
+              value={chosenTheme}
+              onChange={(e) => {
+                const newTheme = e.target.value;
+                setChosenTheme(newTheme);
+                dispatch(setTheme(newTheme));
               }}
             >
-              {changeThemeText}
-            </ThemeButton>
+              {AVAILABLE_THEMES.map((themeName) => (
+                <option key={themeName} value={themeName}>
+                  {themeName}
+                </option>
+              ))}
+            </ThemeSelect>
           </ThemeRow>
         </SettingsGroup>
 

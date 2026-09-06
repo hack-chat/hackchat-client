@@ -1,5 +1,5 @@
 /**
- * Exports a styled `ColorChanger` Button
+ * Exports a styled ColorChanger component
  */
 
 import styled from 'styled-components';
@@ -28,7 +28,7 @@ export default styled(ColorChanger)`
     transition: background-color 0.2s ease;
 
     &:hover {
-      background-color: #444;
+      background-color: ${({ theme }) => theme.palette.background.elementHover};
     }
   }
 `;

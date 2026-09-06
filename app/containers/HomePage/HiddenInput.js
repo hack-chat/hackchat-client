@@ -1,5 +1,5 @@
 /**
- * Exports a styled html input
+ * Exports a styled input
  */
 import styled from 'styled-components';
 

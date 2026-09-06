@@ -1,8 +1,23 @@
 /**
- * Exports a styled html input
+ * Exports a styled input
  */
 
 import styled from 'styled-components';
+
+const getBgColor = (props) => {
+  if (props.checked) return props.theme.palette.accent.main;
+  return 'transparent';
+};
+
+const getKnobLeft = (props) => {
+  if (props.checked) return '25px';
+  return '3px';
+};
+
+const getKnobBgColor = (props) => {
+  if (props.checked) return props.theme.palette.text.inverse;
+  return props.theme.palette.text.muted;
+};
 
 export default styled.button.attrs({
   type: 'button',
@@ -11,24 +26,24 @@ export default styled.button.attrs({
   width: 50px;
   height: 28px;
   border-radius: 14px;
-  border: 1px solid rgba(125 122 104 / 50%);
+  border: 1px solid ${({ theme }) => theme.palette.border.divider};
   position: relative;
   transition: all 0.2s ease;
-  background-color: ${(props) => (props.checked ? '#a6a28c' : 'transparent')};
+  background-color: ${getBgColor};
 
   &::after {
     content: '';
     position: absolute;
     top: 3px;
-    left: ${(props) => (props.checked ? '25px' : '3px')};
+    left: ${getKnobLeft};
     width: 20px;
     height: 20px;
-    background-color: ${(props) => (props.checked ? '#1e1e1e' : '#8a8a8a')};
+    background-color: ${getKnobBgColor};
     border-radius: 50%;
     transition: all 0.2s ease;
   }
 
   &:hover {
-    border-color: #a6a28c;
+    border-color: ${({ theme }) => theme.palette.border.focus};
   }
 `;

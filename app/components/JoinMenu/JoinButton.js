@@ -1,5 +1,5 @@
 /**
- * Exports a styled html button
+ * Exports a styled button
  */
 
 import styled from 'styled-components';
@@ -7,8 +7,8 @@ import styled from 'styled-components';
 export default styled.button.attrs({
   type: 'button',
 })`
-  color: #ddd;
-  background-color: #333;
+  color: ${({ theme }) => theme.palette.text.primary};
+  background-color: ${({ theme }) => theme.palette.background.element};
   min-height: 42px;
   width: 100%;
   padding: 0.5rem 1rem;
@@ -20,7 +20,7 @@ export default styled.button.attrs({
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: #444;
-    color: #fff;
+    background-color: ${({ theme }) => theme.palette.background.elementHover};
+    color: ${({ theme }) => theme.palette.text.white};
   }
 `;

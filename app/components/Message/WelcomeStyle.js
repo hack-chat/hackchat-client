@@ -1,11 +1,11 @@
 /**
- * Exports a styled html div
+ * Exports a styled div
  */
 
 import styled from 'styled-components';
 
 const WelcomeStyle = styled.div`
-  color: #60ac39;
+  color: ${({ theme }) => theme.palette.status.info};
   font-family: 'DejaVu Sans Mono', monospace;
 `;
 

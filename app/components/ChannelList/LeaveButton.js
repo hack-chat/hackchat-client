@@ -1,5 +1,5 @@
 /**
- * Exports a styled html button
+ * Exports a styled button
  */
 
 import styled from 'styled-components';
@@ -8,8 +8,8 @@ export default styled.button.attrs({
   type: 'button',
 })`
   background: transparent;
-  border: 1px solid rgb(125 122 104 / 50%);
-  color: #ff6b6b;
+  border: 1px solid ${({ theme }) => theme.palette.border.divider};
+  color: ${({ theme }) => theme.palette.status.danger};
   border-radius: 4px;
   padding: 4px 8px;
   cursor: pointer;
@@ -18,8 +18,8 @@ export default styled.button.attrs({
   transition: all 0.2s ease;
 
   &:hover {
-    background: rgb(255 107 107 / 10%);
-    border-color: #ff6b6b;
+    background: ${({ theme }) => theme.palette.status.dangerBg};
+    border-color: ${({ theme }) => theme.palette.status.danger};
   }
 
   svg {
