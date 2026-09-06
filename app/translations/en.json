@@ -146,7 +146,6 @@
   "hcclient.containers.SettingsPage.allowExtCodeText": "Allow 3rd Party Code",
   "hcclient.containers.SettingsPage.allowKatexText": "Allow KaTeX",
   "hcclient.containers.SettingsPage.allowMarkdownText": "Allow Markdown",
-  "hcclient.containers.SettingsPage.autoReconnectText": "Automatic Reconnect",
   "hcclient.containers.SettingsPage.clearHistoryText": "Clear History ( {count} Channels )",
   "hcclient.containers.SettingsPage.currentThemeText": "Current Theme: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "Highlight Mentions",

@@ -146,7 +146,6 @@
   "hcclient.containers.SettingsPage.allowExtCodeText": "तृतीय पक्ष कोड की अनुमति दें",
   "hcclient.containers.SettingsPage.allowKatexText": "KaTeX की अनुमति दें",
   "hcclient.containers.SettingsPage.allowMarkdownText": "मार्कडाउन की अनुमति दें",
-  "hcclient.containers.SettingsPage.autoReconnectText": "स्वचालित पुन: कनेक्ट",
   "hcclient.containers.SettingsPage.clearHistoryText": "इतिहास साफ़ करें ({count} चैनल)",
   "hcclient.containers.SettingsPage.currentThemeText": "वर्तमान थीम: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "मेंशन (Mentions) हाइलाइट करें",

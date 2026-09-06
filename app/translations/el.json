@@ -146,7 +146,6 @@
   "hcclient.containers.SettingsPage.allowExtCodeText": "Να επιτρέπεται κώδικας τρίτων",
   "hcclient.containers.SettingsPage.allowKatexText": "Να επιτρέπεται το KaTeX",
   "hcclient.containers.SettingsPage.allowMarkdownText": "Να επιτρέπεται το Markdown",
-  "hcclient.containers.SettingsPage.autoReconnectText": "Αυτόματη επανασύνδεση",
   "hcclient.containers.SettingsPage.clearHistoryText": "Εκκαθάριση ιστορικού ({count} κανάλια)",
   "hcclient.containers.SettingsPage.currentThemeText": "Τρέχον θέμα: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "Επισήμανση Αναφορών",

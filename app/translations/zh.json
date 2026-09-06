@@ -146,7 +146,6 @@
   "hcclient.containers.SettingsPage.allowExtCodeText": "允許第三方代碼",
   "hcclient.containers.SettingsPage.allowKatexText": "允許 KaTeX",
   "hcclient.containers.SettingsPage.allowMarkdownText": "允許 Markdown",
-  "hcclient.containers.SettingsPage.autoReconnectText": "自動重新連線",
   "hcclient.containers.SettingsPage.clearHistoryText": "清除歷史記錄（{count} 個頻道）",
   "hcclient.containers.SettingsPage.currentThemeText": "目前主題: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "突顯提及",

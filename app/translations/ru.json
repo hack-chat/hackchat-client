@@ -146,7 +146,6 @@
   "hcclient.containers.SettingsPage.allowExtCodeText": "Разрешить сторонний код",
   "hcclient.containers.SettingsPage.allowKatexText": "Разрешить KaTeX",
   "hcclient.containers.SettingsPage.allowMarkdownText": "Разрешить Markdown",
-  "hcclient.containers.SettingsPage.autoReconnectText": "Автоматическое переподключение",
   "hcclient.containers.SettingsPage.clearHistoryText": "Очистить историю ({count} каналов)",
   "hcclient.containers.SettingsPage.currentThemeText": "Текущая тема: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "Подсвечивать упоминания",

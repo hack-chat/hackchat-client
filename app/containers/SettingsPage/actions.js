@@ -16,7 +16,6 @@ import {
   SET_LTR,
   SET_MENUBTNPOS,
   SET_HIGHLIGHTMENTIONS,
-  SET_AUTOCONNECT,
   SET_WSPATH,
   USERNAME_LSLABEL,
   PASSWORD_LSLABEL,
@@ -30,7 +29,6 @@ import {
   LTR_LSLABEL,
   MENUBTNPOS_LSLABEL,
   HIGHLIGHTMENTIONS_LSLABEL,
-  AUTOCONNECT_LSLABEL,
   WSPATH_LSLABEL,
   SET_NOTIFY,
   NOTIFY_LSLABEL,
@@ -223,20 +221,6 @@ export function setDoHighlight(doHighlight) {
   return {
     type: SET_HIGHLIGHTMENTIONS,
     doHighlight,
-  };
-}
-
-/**
- * Allow or disallow auto reconnecting
- * @param  {boolean} allowed New setting
- * @return {object} An action object with a type of SET_AUTOCONNECT
- */
-export function setAutoConnect(allowed) {
-  localStorage.setItem(AUTOCONNECT_LSLABEL, JSON.stringify(allowed));
-
-  return {
-    type: SET_AUTOCONNECT,
-    allowed,
   };
 }
 

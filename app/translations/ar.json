@@ -146,7 +146,6 @@
   "hcclient.containers.SettingsPage.allowExtCodeText": "السماح بأكواد خارجية",
   "hcclient.containers.SettingsPage.allowKatexText": "السماح بـ KaTeX",
   "hcclient.containers.SettingsPage.allowMarkdownText": "السماح بـ Markdown",
-  "hcclient.containers.SettingsPage.autoReconnectText": "إعادة الاتصال التلقائي",
   "hcclient.containers.SettingsPage.clearHistoryText": "مسح السجل ({count} قنوات)",
   "hcclient.containers.SettingsPage.currentThemeText": "المظهر الحالي: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "تظليل الإشارات (Mentions)",

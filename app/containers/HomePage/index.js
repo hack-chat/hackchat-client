@@ -64,21 +64,8 @@ import {
 } from 'containers/WalletLayer/selectors';
 
 import {
-  makeSelectCachedUsername,
-  makeSelectCachedPassword,
-  makeSelectCachedColor,
-  makeSelectCachedStoreChannels,
-  makeSelectCachedPrevChannels,
-  makeSelectCachedTheme,
-  makeSelectCachedAllowKatex,
-  makeSelectCachedAllowMarkdown,
-  makeSelectCachedAllowExtCode,
   makeSelectCachedLTR,
   makeSelectCachedMenuBtnPos,
-  makeSelectCachedHighlightMentions,
-  makeSelectCachedAutoconnect,
-  makeSelectCachedWsPath,
-  makeSelectCachedNotifyEnabled,
 } from 'containers/SettingsPage/selectors';
 
 import LoadingIndicator from 'components/LoadingIndicator';
@@ -152,21 +139,6 @@ export function HomePage({
   pendingPasswordReq,
   cachedLtr,
   cachedMenuBtnPos,
-  /*
-  cachedUsername,
-  cachedPassword,
-  cachedColor,
-  cachedDoStore,
-  cachedPreviousChannels,
-  cachedTheme,
-  cachedAllowKatex,
-  cachedAllowMarkdown,
-  cachedAllowExtCode,
-  cachedDoHighlight,
-  cachedDoAutoconnect,
-  cachedWsPath,
-  cachedNotifyEnabled,
-  */
 }) {
   const navigate = useNavigate();
   const channelFromUrl = useUrlChannel();
@@ -885,22 +857,8 @@ HomePage.propTypes = {
   pendingPasswordReq: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
   onDoTransfer: PropTypes.func,
   onClearAuthReqs: PropTypes.func,
-  onClearChannel: PropTypes.func,
-  cachedUsername: PropTypes.string,
-  cachedPassword: PropTypes.string,
-  cachedColor: PropTypes.string,
-  cachedDoStore: PropTypes.bool,
-  cachedPreviousChannels: PropTypes.array,
-  cachedTheme: PropTypes.string,
-  cachedAllowKatex: PropTypes.bool,
-  cachedAllowMarkdown: PropTypes.bool,
-  cachedAllowExtCode: PropTypes.bool,
   cachedLtr: PropTypes.bool,
   cachedMenuBtnPos: PropTypes.bool,
-  cachedDoHighlight: PropTypes.bool,
-  cachedDoAutoconnect: PropTypes.bool,
-  cachedWsPath: PropTypes.string,
-  cachedNotifyEnabled: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -914,21 +872,8 @@ const mapStateToProps = createStructuredSelector({
   sessionReady: makeSelectSessionReady(),
   pendingCaptcha: makeSelectPendingCaptcha(),
   pendingPasswordReq: makeSelectPendingPasswordReq(),
-  cachedUsername: makeSelectCachedUsername(),
-  cachedPassword: makeSelectCachedPassword(),
-  cachedColor: makeSelectCachedColor(),
-  cachedDoStore: makeSelectCachedStoreChannels(),
-  cachedPreviousChannels: makeSelectCachedPrevChannels(),
-  cachedTheme: makeSelectCachedTheme(),
-  cachedAllowKatex: makeSelectCachedAllowKatex(),
-  cachedAllowMarkdown: makeSelectCachedAllowMarkdown(),
-  cachedAllowExtCode: makeSelectCachedAllowExtCode(),
   cachedLtr: makeSelectCachedLTR(),
   cachedMenuBtnPos: makeSelectCachedMenuBtnPos(),
-  cachedDoHighlight: makeSelectCachedHighlightMentions(),
-  cachedDoAutoconnect: makeSelectCachedAutoconnect(),
-  cachedWsPath: makeSelectCachedWsPath(),
-  cachedNotifyEnabled: makeSelectCachedNotifyEnabled(),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -944,7 +889,6 @@ export function mapDispatchToProps(dispatch) {
         dispatch(sendChat(channel, message));
       }
     },
-    onClearChannel: (channel) => dispatch(clearChannel(channel)),
     onKickUser: (channel, user) => dispatch(kickUser(channel, user)),
     onBanUser: (channel, user) => dispatch(banUser(channel, user)),
     onIgnoreUser: (channel, userid) => dispatch(ignoreUser(channel, userid)),

@@ -146,7 +146,6 @@
   "hcclient.containers.SettingsPage.allowExtCodeText": "Salli kolmannen osapuolen koodi",
   "hcclient.containers.SettingsPage.allowKatexText": "Salli KaTeX",
   "hcclient.containers.SettingsPage.allowMarkdownText": "Salli Markdown",
-  "hcclient.containers.SettingsPage.autoReconnectText": "Automaattinen uudelleenyhdistäminen",
   "hcclient.containers.SettingsPage.clearHistoryText": "Tyhjennä historia ({count} kanavaa)",
   "hcclient.containers.SettingsPage.currentThemeText": "Nykyinen teema: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "Korosta maininnat",

@@ -92,12 +92,6 @@ const makeSelectCachedHighlightMentions = () =>
   );
 
 /**
- * Websocket auto connect flag
- */
-const makeSelectCachedAutoconnect = () =>
-  createSelector(selectSettingsPageDomain, (substate) => substate.autoConnect);
-
-/**
  * Websocket path setting
  */
 const makeSelectCachedWsPath = () =>
@@ -144,7 +138,6 @@ export {
   makeSelectCachedLTR,
   makeSelectCachedMenuBtnPos,
   makeSelectCachedHighlightMentions,
-  makeSelectCachedAutoconnect,
   makeSelectCachedWsPath,
   makeSelectCachedNotifyEnabled,
   makeSelectCachedLoadSafeImages,

@@ -146,7 +146,6 @@
   "hcclient.containers.SettingsPage.allowExtCodeText": "থার্ড-পার্টি কোড চালু করুন",
   "hcclient.containers.SettingsPage.allowKatexText": "KaTeX চালু করুন",
   "hcclient.containers.SettingsPage.allowMarkdownText": "Markdown চালু করুন",
-  "hcclient.containers.SettingsPage.autoReconnectText": "স্বয়ংক্রিয় পুনঃসংযোগ",
   "hcclient.containers.SettingsPage.clearHistoryText": "ইতিহাস মুছে ফেলুন ({count} চ্যানেল)",
   "hcclient.containers.SettingsPage.currentThemeText": "বর্তমান থিম: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "মেনশন হাইলাইট করুন",

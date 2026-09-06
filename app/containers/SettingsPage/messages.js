@@ -43,10 +43,6 @@ export default defineMessages({
     id: `${scope}.doHighlightsText`,
     defaultMessage: 'Highlight Mentions',
   },
-  autoReconnectText: {
-    id: `${scope}.autoReconnectText`,
-    defaultMessage: 'Automatic Reconnect',
-  },
   wsPathText: {
     id: `${scope}.wsPathText`,
     defaultMessage: 'server path',

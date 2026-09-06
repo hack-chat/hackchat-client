@@ -146,7 +146,6 @@
   "hcclient.containers.SettingsPage.allowExtCodeText": "Izinkan Kode Pihak Ketiga",
   "hcclient.containers.SettingsPage.allowKatexText": "Izinkan KaTeX",
   "hcclient.containers.SettingsPage.allowMarkdownText": "Izinkan Markdown",
-  "hcclient.containers.SettingsPage.autoReconnectText": "Sambung Ulang Otomatis",
   "hcclient.containers.SettingsPage.clearHistoryText": "Hapus Riwayat ({count} Saluran)",
   "hcclient.containers.SettingsPage.currentThemeText": "Tema Saat Ini: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "Sorot Sebutan",

@@ -146,7 +146,6 @@
   "hcclient.containers.SettingsPage.allowExtCodeText": "允许第三方代码",
   "hcclient.containers.SettingsPage.allowKatexText": "允许 KaTeX",
   "hcclient.containers.SettingsPage.allowMarkdownText": "允许 Markdown",
-  "hcclient.containers.SettingsPage.autoReconnectText": "自动重新连接",
   "hcclient.containers.SettingsPage.clearHistoryText": "清除历史记录（{count} 个频道）",
   "hcclient.containers.SettingsPage.currentThemeText": "当前主题: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "高亮提及",

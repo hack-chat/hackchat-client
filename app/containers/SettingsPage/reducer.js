@@ -18,7 +18,6 @@ import {
   SET_LTR,
   SET_MENUBTNPOS,
   SET_HIGHLIGHTMENTIONS,
-  SET_AUTOCONNECT,
   SET_WSPATH,
   USERNAME_LSLABEL,
   PASSWORD_LSLABEL,
@@ -32,7 +31,6 @@ import {
   LTR_LSLABEL,
   MENUBTNPOS_LSLABEL,
   HIGHLIGHTMENTIONS_LSLABEL,
-  AUTOCONNECT_LSLABEL,
   WSPATH_LSLABEL,
   SET_NOTIFY,
   NOTIFY_LSLABEL,
@@ -97,7 +95,6 @@ export const settingsInitialState = {
   menuLeft: JSON.parse(localStorage.getItem(MENUBTNPOS_LSLABEL)) ?? false,
   highlightMentions:
     JSON.parse(localStorage.getItem(HIGHLIGHTMENTIONS_LSLABEL)) ?? true,
-  autoConnect: JSON.parse(localStorage.getItem(AUTOCONNECT_LSLABEL)) !== false,
   wsPath:
     JSON.parse(localStorage.getItem(WSPATH_LSLABEL)) ||
     'wss://hack.chat/chat-ws',
@@ -149,9 +146,6 @@ const settingsPageReducer = (state = settingsInitialState, action) =>
         break;
       case SET_HIGHLIGHTMENTIONS:
         draft.highlightMentions = action.doHighlight;
-        break;
-      case SET_AUTOCONNECT:
-        draft.autoConnect = action.allowed;
         break;
       case SET_WSPATH:
         draft.wsPath = action.wsPath;

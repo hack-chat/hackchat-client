@@ -146,7 +146,6 @@
   "hcclient.containers.SettingsPage.allowExtCodeText": "3. Taraf Koduna İzin Ver",
   "hcclient.containers.SettingsPage.allowKatexText": "KaTeX'e İzin Ver",
   "hcclient.containers.SettingsPage.allowMarkdownText": "Markdown'a İzin Ver",
-  "hcclient.containers.SettingsPage.autoReconnectText": "Otomatik Yeniden Bağlanma",
   "hcclient.containers.SettingsPage.clearHistoryText": "Geçmişi Temizle ({count} Kanal)",
   "hcclient.containers.SettingsPage.currentThemeText": "Güncel Tema: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "Bahsetmeleri Vurgula",

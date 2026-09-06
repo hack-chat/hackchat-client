@@ -146,7 +146,6 @@
   "hcclient.containers.SettingsPage.allowExtCodeText": "サードパーティコードを許可",
   "hcclient.containers.SettingsPage.allowKatexText": "KaTeX を許可",
   "hcclient.containers.SettingsPage.allowMarkdownText": "Markdown を許可",
-  "hcclient.containers.SettingsPage.autoReconnectText": "自動再接続",
   "hcclient.containers.SettingsPage.clearHistoryText": "履歴を消去 ({count} チャンネル)",
   "hcclient.containers.SettingsPage.currentThemeText": "現在のテーマ: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "メンションをハイライト",

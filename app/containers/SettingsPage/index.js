@@ -1,7 +1,5 @@
 /**
  * SettingsPage allows the user to change application settings
- * @todo Wire up:
- * - Automatic Reconnect
  */
 
 import React, { useMemo, useEffect, useCallback } from 'react';
@@ -64,7 +62,6 @@ import {
   setLtr,
   setMenuBtnPos,
   setDoHighlight,
-  setAutoConnect,
   setWsPath,
   setNotify,
   setLoadSafeImages,
@@ -84,7 +81,6 @@ import {
   makeSelectCachedLTR,
   makeSelectCachedMenuBtnPos,
   makeSelectCachedHighlightMentions,
-  makeSelectCachedAutoconnect,
   makeSelectCachedWsPath,
   makeSelectCachedNotifyEnabled,
   makeSelectCachedLoadSafeImages,
@@ -108,7 +104,6 @@ export function SettingsPage({
   cachedLtr,
   cachedMenuBtnPos,
   cachedDoHighlight,
-  cachedDoAutoconnect,
   cachedWsPath,
   cachedNotifyEnabled,
   cachedLoadSafeImages,
@@ -167,8 +162,6 @@ export function SettingsPage({
     useStateIfMounted(cachedMenuBtnPos);
   const [chosenDoHighlight, setChosenDoHighlight] =
     useStateIfMounted(cachedDoHighlight);
-  const [chosenDoAutoconnect, setChosenDoAutoconnect] =
-    useStateIfMounted(cachedDoAutoconnect);
   const [chosenWsPath, setChosenWsPath] = useStateIfMounted(cachedWsPath);
   const [chosenNotify, setChosenNotify] =
     useStateIfMounted(cachedNotifyEnabled);
@@ -203,7 +196,6 @@ export function SettingsPage({
   const useLtrText = intl.formatMessage(messages.useLtrText);
   const menuPosText = intl.formatMessage(messages.menuPosText);
   const doHighlightsText = intl.formatMessage(messages.doHighlightsText);
-  const autoReconnectText = intl.formatMessage(messages.autoReconnectText);
   const enableNotificationsText = intl.formatMessage(
     messages.enableNotificationsText,
   );
@@ -396,16 +388,6 @@ export function SettingsPage({
 
           <SwitchRow
             onClick={() => {
-              setChosenDoAutoconnect(!chosenDoAutoconnect);
-              dispatch(setAutoConnect(!chosenDoAutoconnect));
-            }}
-          >
-            <LabelText>{autoReconnectText}</LabelText>
-            <BooleanSwitch checked={chosenDoAutoconnect} />
-          </SwitchRow>
-
-          <SwitchRow
-            onClick={() => {
               setChosenNotify(!chosenNotify);
               dispatch(setNotify(!chosenNotify));
             }}
@@ -486,7 +468,6 @@ SettingsPage.propTypes = {
   cachedLtr: PropTypes.bool,
   cachedMenuBtnPos: PropTypes.bool,
   cachedDoHighlight: PropTypes.bool,
-  cachedDoAutoconnect: PropTypes.bool,
   cachedWsPath: PropTypes.string,
   cachedNotifyEnabled: PropTypes.bool,
   cachedLoadSafeImages: PropTypes.bool,
@@ -512,7 +493,6 @@ const mapStateToProps = createStructuredSelector({
   cachedLtr: makeSelectCachedLTR(),
   cachedMenuBtnPos: makeSelectCachedMenuBtnPos(),
   cachedDoHighlight: makeSelectCachedHighlightMentions(),
-  cachedDoAutoconnect: makeSelectCachedAutoconnect(),
   cachedWsPath: makeSelectCachedWsPath(),
   cachedNotifyEnabled: makeSelectCachedNotifyEnabled(),
   cachedLoadSafeImages: makeSelectCachedLoadSafeImages(),

@@ -146,7 +146,6 @@
   "hcclient.containers.SettingsPage.allowExtCodeText": "Permitir código de terceiros",
   "hcclient.containers.SettingsPage.allowKatexText": "Permitir KaTeX",
   "hcclient.containers.SettingsPage.allowMarkdownText": "Permitir Markdown",
-  "hcclient.containers.SettingsPage.autoReconnectText": "Reconexão automática",
   "hcclient.containers.SettingsPage.clearHistoryText": "Limpar histórico ({count} canais)",
   "hcclient.containers.SettingsPage.currentThemeText": "Tema atual: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "Destacar menções",

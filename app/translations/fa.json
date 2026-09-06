@@ -146,7 +146,6 @@
   "hcclient.containers.SettingsPage.allowExtCodeText": "اجازه دادن به کد شخص ثالث",
   "hcclient.containers.SettingsPage.allowKatexText": "اجازه دادن به KaTeX",
   "hcclient.containers.SettingsPage.allowMarkdownText": "اجازه دادن به Markdown",
-  "hcclient.containers.SettingsPage.autoReconnectText": "اتصال مجدد خودکار",
   "hcclient.containers.SettingsPage.clearHistoryText": "پاک کردن تاریخچه ({count} کانال)",
   "hcclient.containers.SettingsPage.currentThemeText": "تم فعلی: {themeName}",
   "hcclient.containers.SettingsPage.doHighlightsText": "برجسته‌سازی منشن‌ها",
