@@ -70,6 +70,8 @@ export function MainMenu({
   channel,
   channelData,
   intl,
+  menuLeft = false,
+  isLtr = true,
   allowPinning = true,
   onJoinOrCreateClick = () => {},
   onCommandClick = () => {},
@@ -142,11 +144,15 @@ export function MainMenu({
 
   return (
     <>
-      <MenuToggle onClick={() => setIsOpen(!isOpen)}>
+      <MenuToggle $menuLeft={menuLeft} onClick={() => setIsOpen(!isOpen)}>
         {isOpen ? <FaTimes /> : <FaBars />}
       </MenuToggle>
 
-      <MenuWrapper $isOpen={isMenuForcedOpen}>
+      <MenuWrapper
+        $isOpen={isMenuForcedOpen}
+        $menuLeft={menuLeft}
+        dir={isLtr ? 'ltr' : 'rtl'}
+      >
         {allowPinning && (
           <PinButton
             onClick={() => setIsPinned(!isPinned)}

@@ -2,14 +2,28 @@
  * Exports a styled button
  */
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+const getPosition = (props) => {
+  if (props.$menuLeft) {
+    return css`
+      left: 0.25em;
+      right: auto;
+    `;
+  }
+
+  return css`
+    right: 0.25em;
+    left: auto;
+  `;
+};
 
 export default styled.button.attrs({
   type: 'button',
 })`
   position: fixed;
   top: 1.5rem;
-  right: 0.25em;
+  ${getPosition}
   z-index: 10;
   background: none;
   border: none;

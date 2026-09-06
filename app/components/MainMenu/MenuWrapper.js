@@ -2,16 +2,31 @@
  * Exports a styled div
  */
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+const getAlignment = (props) => {
+  if (props.$menuLeft) {
+    return css`
+      left: 0;
+      border-right: 1px solid ${({ theme }) => theme.palette.border.main};
+    `;
+  }
+  return css`
+    right: 0;
+    border-left: 1px solid ${({ theme }) => theme.palette.border.main};
+  `;
+};
 
 const getTransform = (props) => {
   if (props.$isOpen) return 'translateX(0)';
-  return 'translateX(100%)';
+  return props.$menuLeft ? 'translateX(-100%)' : 'translateX(100%)';
 };
 
 const getMediaTransform = (props) => {
   if (props.$isOpen) return 'translateX(0)';
-  return 'translateX(calc(100% - 40px))';
+  return props.$menuLeft
+    ? 'translateX(calc(-100% + 40px))'
+    : 'translateX(calc(100% - 40px))';
 };
 
 const getMediaFilter = (props) => {
@@ -27,11 +42,10 @@ const getMediaOpacity = (props) => {
 export default styled.div`
   position: fixed;
   top: 0;
-  right: 0;
   bottom: 0;
   width: 280px;
   background-color: ${({ theme }) => theme.palette.background.menu};
-  border-left: 1px solid ${({ theme }) => theme.palette.border.main};
+  ${getAlignment}
   transform: ${getTransform};
   transition: transform 0.3s ease-in-out;
   z-index: 9;

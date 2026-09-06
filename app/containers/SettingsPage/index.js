@@ -1,7 +1,6 @@
 /**
  * SettingsPage allows the user to change application settings
  * @todo Wire up:
- * - Leftside Menu Button
  * - Automatic Reconnect
  */
 

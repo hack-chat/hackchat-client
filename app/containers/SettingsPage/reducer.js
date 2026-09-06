@@ -94,9 +94,9 @@ export const settingsInitialState = {
   allowExternalCode:
     JSON.parse(localStorage.getItem(ALLOWEXTCODE_LSLABEL)) || false,
   ltr: savedLtr !== null ? savedLtr : !checkDefaultRtl(),
-  menuLeft: JSON.parse(localStorage.getItem(MENUBTNPOS_LSLABEL)) || true,
+  menuLeft: JSON.parse(localStorage.getItem(MENUBTNPOS_LSLABEL)) ?? false,
   highlightMentions:
-    JSON.parse(localStorage.getItem(HIGHLIGHTMENTIONS_LSLABEL)) || true,
+    JSON.parse(localStorage.getItem(HIGHLIGHTMENTIONS_LSLABEL)) ?? true,
   autoConnect: JSON.parse(localStorage.getItem(AUTOCONNECT_LSLABEL)) !== false,
   wsPath:
     JSON.parse(localStorage.getItem(WSPATH_LSLABEL)) ||

@@ -151,6 +151,7 @@ export function HomePage({
   pendingCaptcha,
   pendingPasswordReq,
   cachedLtr,
+  cachedMenuBtnPos,
   /*
   cachedUsername,
   cachedPassword,
@@ -161,7 +162,6 @@ export function HomePage({
   cachedAllowKatex,
   cachedAllowMarkdown,
   cachedAllowExtCode,
-  cachedMenuBtnPos,
   cachedDoHighlight,
   cachedDoAutoconnect,
   cachedWsPath,
@@ -621,6 +621,8 @@ export function HomePage({
         <MainMenu
           channel={channel}
           channelData={channelData}
+          menuLeft={cachedMenuBtnPos}
+          isLtr={cachedLtr}
           onJoinOrCreateClick={toggleJoinModal}
           onCommandClick={handleMenuCommand}
           onOpenLocaleModal={onOpenLocaleModal}
