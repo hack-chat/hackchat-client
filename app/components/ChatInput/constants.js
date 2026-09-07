@@ -76,7 +76,7 @@ export const COMMANDS = [
   { command: 'ping', params: [] },
   { command: 'session', params: [] },
   { command: 'stats', params: [] },
-  { command: 'updateMessage', params: ['id', 'type', 'newData'] },
+  { command: 'edit', params: ['id', 'text'] },
   { command: 'whisper', params: ['username', 'text'] },
   { command: 'disconnect', params: [] },
   { command: 'socketreply', params: [] },

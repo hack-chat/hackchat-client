@@ -315,10 +315,10 @@ const communicationProviderReducer = (state = initialState, action) =>
         if (!targetChannel) break;
 
         const targetMessage = targetChannel.messages.find(
-          (msg) => msg.data && msg.data.id === action.customId,
+          (msg) => msg.data && String(msg.data.id) === String(action.customId),
         );
 
-        if (targetMessage) {
+        if (targetMessage && targetMessage.data.userid === action.userid) {
           switch (action.mode) {
             case 'overwrite':
               targetMessage.data.content = action.text;
@@ -333,6 +333,11 @@ const communicationProviderReducer = (state = initialState, action) =>
             default:
               break;
           }
+        } else if (targetMessage) {
+          // eslint-disable-next-line no-console
+          console.log(
+            `User ${action.userid} attempted to edit a message owned by ${targetMessage.data.userid}`,
+          );
         }
         break;
       }

@@ -130,7 +130,7 @@ export function ChatManager({
     if (command === 'reply') {
       handleMessageLeftClick(payload, user);
     } else if (command === 'edit' && payload.id) {
-      handleMenuCommand(`/edit ${payload.id} `);
+      handleMenuCommand(`/edit ${payload.id} ${payload.content}`);
     }
   };
 

@@ -122,7 +122,7 @@ function initWebsocket() {
         if (userRecord.channels.has(payload.channel)) {
           userList[key] = {
             blocked: userRecord.blocked,
-            bot: userRecord.bot,
+            isBot: userRecord.isBot,
             mine: userRecord.mine,
             nickColor: userRecord.nickColor,
             online: userRecord.online,
@@ -153,7 +153,7 @@ function initWebsocket() {
         channel: payload.channel,
         user: {
           blocked: payload.blocked,
-          bot: payload.bot,
+          isBot: payload.isBot,
           mine: payload.mine,
           nickColor: payload.nickColor,
           online: payload.online,
@@ -174,7 +174,7 @@ function initWebsocket() {
         channel: payload.channel,
         user: {
           blocked: payload.user.blocked,
-          bot: payload.user.bot,
+          isBot: payload.user.isBot,
           mine: payload.user.mine,
           nickColor: payload.user.nickColor,
           online: payload.user.online,
@@ -196,7 +196,7 @@ function initWebsocket() {
         userid: payload.userid,
         user: {
           blocked: payload.blocked,
-          bot: payload.bot,
+          isBot: payload.isBot,
           mine: payload.mine,
           nickColor: payload.nickColor,
           online: payload.online,
@@ -248,7 +248,7 @@ function initWebsocket() {
         },
         user: {
           blocked: payload.user.blocked,
-          bot: payload.user.bot,
+          isBot: payload.user.isBot,
           mine: payload.user.mine,
           nickColor: payload.user.nickColor,
           online: payload.user.online,
@@ -293,7 +293,7 @@ function initWebsocket() {
           content: payload.content,
           from: {
             blocked: payload.from.blocked,
-            bot: payload.from.bot,
+            isBot: payload.from.isBot,
             mine: payload.from.mine,
             nickColor: payload.from.nickColor,
             online: payload.from.online,
@@ -304,12 +304,12 @@ function initWebsocket() {
             username: payload.from.username,
             usertrip: payload.from.usertrip,
             flair: payload.from.flair,
-            effect: payload.effect,
+            effect: payload.to.effect,
           },
           fromMe: payload.fromMe,
           to: {
             blocked: payload.to.blocked,
-            bot: payload.to.bot,
+            isBot: payload.to.isBot,
             mine: payload.to.mine,
             nickColor: payload.to.nickColor,
             online: payload.to.online,
@@ -320,7 +320,7 @@ function initWebsocket() {
             username: payload.to.username,
             usertrip: payload.to.usertrip,
             flair: payload.to.flair,
-            effect: payload.effect,
+            effect: payload.to.effect,
           },
         },
       });
@@ -334,6 +334,21 @@ function initWebsocket() {
           name: payload.user.name,
           content: payload.content,
           id: payload.id || 0,
+        },
+        user: {
+          blocked: payload.user.blocked,
+          isBot: payload.user.isBot,
+          mine: payload.user.userid === hcClient.myUser.userid,
+          nickColor: payload.user.nickColor,
+          online: payload.user.online,
+          permissionLevel: payload.user.permissionLevel,
+          userhash: payload.user.userhash,
+          userid: payload.user.userid,
+          userlevel: payload.user.userlevel,
+          username: payload.user.username,
+          usertrip: payload.user.usertrip,
+          flair: payload.user.flair,
+          effect: payload.user.effect,
         },
       });
 

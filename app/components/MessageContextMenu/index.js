@@ -111,8 +111,7 @@ export function MessageContextMenu({
         <ContextMenuItem onClick={() => handleContextMenuClick('reply')}>
           {intl.formatMessage(messages.reply)}
         </ContextMenuItem>
-
-        {contextMenu.payload.id && (
+        {contextMenu.payload.id && contextMenu.user.mine && (
           <ContextMenuItem onClick={() => handleContextMenuClick('edit')}>
             {intl.formatMessage(messages.edit)}
           </ContextMenuItem>
