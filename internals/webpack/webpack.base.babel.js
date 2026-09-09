@@ -52,7 +52,10 @@ module.exports = options => {
         },
         {
           test: /\.(eot|otf|ttf|woff|woff2)$/,
-          use: 'file-loader',
+          type: 'asset/resource',
+          generator: {
+            filename: 'fonts/[hash][ext][query]',
+          },
         },
         {
           test: /\.(jpe?g|png|gif|svg)$/i,
@@ -82,11 +85,14 @@ module.exports = options => {
         },
         {
           test: /\.(mp4|webm)$/,
-          use: {
-            loader: 'url-loader',
-            options: {
-              limit: 10000,
+          type: 'asset',
+          parser: {
+            dataUrlCondition: {
+              maxSize: 10000,
             },
+          },
+          generator: {
+            filename: 'media/[hash][ext][query]',
           },
         },
         {
