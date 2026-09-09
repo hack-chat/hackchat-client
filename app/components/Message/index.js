@@ -11,7 +11,7 @@ import DOMPurify from 'dompurify';
 
 import { selectSettingsPageDomain } from '../../containers/SettingsPage/selectors';
 
-import messages, { ERROR_ID } from './messages';
+import messages, { ERROR_ID, INFO_ID } from './messages';
 
 // Import all layout and style components
 import MessageContainer from './MessageContainer';
@@ -398,7 +398,17 @@ export const Message = memo(
           <MessageContainer>
             <NickPlaceholder />
             <MessageContent $hasBackground={hasBackground}>
-              <InfoStyle>{msgForm.render(payload.text)}</InfoStyle>
+              {payload.id && INFO_ID[payload.id] ? (
+                <InfoStyle>
+                  <FormattedMessage
+                    id={INFO_ID[payload.id].id}
+                    defaultMessage={INFO_ID[payload.id].defaultMessage}
+                    values={payload.args || {}}
+                  />
+                </InfoStyle>
+              ) : (
+                <InfoStyle>{msgForm.render(payload.text)}</InfoStyle>
+              )}
             </MessageContent>
           </MessageContainer>
         );
@@ -412,6 +422,7 @@ export const Message = memo(
                   <FormattedMessage
                     id={ERROR_ID[payload.id].id}
                     defaultMessage={ERROR_ID[payload.id].defaultMessage}
+                    values={payload.args || {}}
                   />
                 </WarnStyle>
               ) : (

@@ -218,6 +218,7 @@ function initWebsocket() {
           channel: payload.channel,
           id: payload.id,
           text: payload.text,
+          args: payload.args,
         },
       });
 
@@ -236,6 +237,8 @@ function initWebsocket() {
         data: {
           channel: payload.channel,
           text: payload.text,
+          id: payload.id,
+          args: payload.args,
         },
       });
 
