@@ -61,6 +61,7 @@
   "hcclient.components.Message.codeSuggestText": " предлагает вам запустить следующий код",
   "hcclient.components.Message.confirmWarningText": "Внимание: нажатие 'ОК' загрузит неизвестный сторонний код. Это может привести к множеству плохих последствий, включая (но не ограничиваясь) раскрытие местоположения, кражу трип-кода и злонамеренный троллинг",
   "hcclient.components.Message.dcError": "Потеряно соединение с сервером. . .",
+  "hcclient.components.Message.blockedNotice": "Ваша скорость отправки ограничена, либо вы заблокированы",
   "hcclient.components.Message.err.Captcha.BAD_CAPTCHA": "Неверная капча",
   "hcclient.components.Message.err.Captcha.MUST_SOLVE": "Введите следующее (с учетом регистра)",
   "hcclient.components.Message.err.Captcha.NO_REJOIN": "Не удалось автоматически переподключиться к ?{channel}. Канал требует проверки капчи",

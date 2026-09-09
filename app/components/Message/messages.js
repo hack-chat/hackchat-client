@@ -99,6 +99,11 @@ const messages = {
     id: `${scope}.txPreview`,
     defaultMessage: 'Preview Transaction',
   },
+
+  blockedNotice: {
+    id: `${scope}.blockedNotice`,
+    defaultMessage: 'You are being rate-limited or blocked',
+  },
   dcError: {
     id: `${scope}.dcError`,
     defaultMessage: 'Lost connection to server. . .',
@@ -619,6 +624,7 @@ export const INFO_ID = [];
 // System Errors
 ERROR_ID[987654321] = messages.dcError;
 ERROR_ID[987654322] = messages.rcWarning;
+ERROR_ID[987654323] = messages.blockedNotice;
 
 // Global Errors
 ERROR_ID[11] = messages.errGlobalRatelimit;

@@ -61,6 +61,7 @@
   "hcclient.components.Message.codeSuggestText": " 15 5U993571N9 U RUN 7H3 C0D3:",
   "hcclient.components.Message.confirmWarningText": "W4RN1N6, H1771N6 0K4Y W1LL L04D UNKN0WN 3RD P4R7Y C0D3, 7H15 C0ULD R35UL7 1N M4NY B4D 7H1N65 H4PP3N1N6- 1NCLUD1N6 (BU7 N07 L1M173D 2) L0C4710N D15CL05UR3, 7R1P C0D3 7H3F7, M4L1C10U5 7R0LL1N6",
   "hcclient.components.Message.dcError": "L057 C0NN3C710N 2 53RV3R. . .",
+  "hcclient.components.Message.blockedNotice": "J00 R B31N6 R473-L1M173D 0R BL0CK3D",
   "hcclient.components.Message.err.Captcha.BAD_CAPTCHA": "1NC0RR3C7 C4P7CH4",
   "hcclient.components.Message.err.Captcha.MUST_SOLVE": "3N73R 7H3 F0LL0W1N6 (C453-53N5171V3)",
   "hcclient.components.Message.err.Captcha.NO_REJOIN": "C0ULD N07 4U70-R3J01N ?{channel}. 7H3 CH4NN3L R3QU1R35 C4P7CH4 V3R1F1C4710N",

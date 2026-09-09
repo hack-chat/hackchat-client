@@ -61,6 +61,7 @@
   "hcclient.components.Message.codeSuggestText": " پیشنهاد می‌کند کد زیر را اجرا کنید",
   "hcclient.components.Message.confirmWarningText": "هشدار، با زدن دکمه تایید، کد ناشناس شخص ثالث بارگیری می‌شود که می‌تواند منجر به اتفاقات بد بسیاری شود- از جمله (اما نه محدود به) افشای مکان، سرقت کد تریپ (trip code)، و ترولینگ مخرب",
   "hcclient.components.Message.dcError": "ارتباط با سرور قطع شد. . .",
+  "hcclient.components.Message.blockedNotice": "شما با محدودیت سرعت مواجه شده یا مسدود شده‌اید",
   "hcclient.components.Message.err.Captcha.BAD_CAPTCHA": "کپچای نامعتبر",
   "hcclient.components.Message.err.Captcha.MUST_SOLVE": "موارد زیر را وارد کنید (حساس به حروف کوچک و بزرگ)",
   "hcclient.components.Message.err.Captcha.NO_REJOIN": "پیوستن مجدد خودکار به ?{channel} امکان‌پذیر نیست. این کانال نیاز به تایید کپچا دارد",

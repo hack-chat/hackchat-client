@@ -61,6 +61,7 @@
   "hcclient.components.Message.codeSuggestText": " 建议您运行以下代码",
   "hcclient.components.Message.confirmWarningText": "警告，点击确定将加载未知的第三方代码，这可能会导致许多不良后果 - 包括（但不限于）位置泄露、识别码（trip code）被盗、以及恶意骚扰",
   "hcclient.components.Message.dcError": "与服务器失去连接...",
+  "hcclient.components.Message.blockedNotice": "您正受到速率限制或已被封禁",
   "hcclient.components.Message.err.Captcha.BAD_CAPTCHA": "验证码不正确",
   "hcclient.components.Message.err.Captcha.MUST_SOLVE": "请输入以下内容（区分大小写）",
   "hcclient.components.Message.err.Captcha.NO_REJOIN": "无法自动重新加入 ?{channel}。该频道需要验证码验证",

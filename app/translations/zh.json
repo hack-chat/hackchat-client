@@ -61,6 +61,7 @@
   "hcclient.components.Message.codeSuggestText": " 建議您執行以下代碼",
   "hcclient.components.Message.confirmWarningText": "警告，按下確定將載入未知的第三方代碼，這可能導致許多糟糕的事情發生——包括（但不限於）位置洩露、trip code 遭竊、惡意肉搜/干擾",
   "hcclient.components.Message.dcError": "與伺服器失去連線. . .",
+  "hcclient.components.Message.blockedNotice": "您正受到速率限制或已被封鎖",
   "hcclient.components.Message.err.Captcha.BAD_CAPTCHA": "驗證碼不正確",
   "hcclient.components.Message.err.Captcha.MUST_SOLVE": "請輸入以下內容（區分大小寫）",
   "hcclient.components.Message.err.Captcha.NO_REJOIN": "無法自動重新加入 ?{channel}。該頻道需要驗證碼驗證",

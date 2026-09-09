@@ -61,6 +61,7 @@
   "hcclient.components.Message.codeSuggestText": " يقترح عليك تشغيل الكود التالي",
   "hcclient.components.Message.confirmWarningText": "تحذير، سيؤدي النقر على موافق إلى تحميل كود جهة خارجية غير معروف، وقد يؤدي ذلك إلى حدوث أشياء سيئة كثيرة - بما في ذلك (على سبيل المثال لا الحصر) الكشف عن الموقع، وسرقة رمز المرور (trip code)، والتصيد الخبيث",
   "hcclient.components.Message.dcError": "فقدت الاتصال بالخادم...",
+  "hcclient.components.Message.blockedNotice": "يتم تقييد معدل إرسالك أو حظرك",
   "hcclient.components.Message.err.Captcha.BAD_CAPTCHA": "رمز التحقق (captcha) غير صحيح",
   "hcclient.components.Message.err.Captcha.MUST_SOLVE": "أدخل ما يلي (حساس لحالة الأحرف)",
   "hcclient.components.Message.err.Captcha.NO_REJOIN": "تعذر إعادة الانضمام التلقائي إلى ?{channel}. تتطلب القناة التحقق من رمز (captcha)",

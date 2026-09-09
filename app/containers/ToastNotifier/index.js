@@ -1,7 +1,6 @@
 /**
  * ToastNotifier bridges toast notification events from Redux to the UI.
  * It listens for state changes and triggers toasts using react-toastify.
- *
  */
 
 import { useEffect, useRef } from 'react';
@@ -19,10 +18,21 @@ import {
   makeSelectToastMessage,
   makeSelectToastType,
   makeSelectToastTrigger,
+  makeSelectToastId,
+  makeSelectToastArgs,
 } from './selectors';
+
 import reducer from './reducer';
 
-export function ToastNotifier({ toastMessage, toastType, toastTrigger }) {
+import { ERROR_ID, INFO_ID } from 'components/Message/messages';
+
+export function ToastNotifier({
+  toastMessage,
+  toastType,
+  toastTrigger,
+  toastId,
+  toastArgs,
+}) {
   const intl = useIntl();
   useInjectReducer({ key: 'toast', reducer });
 
@@ -32,15 +42,24 @@ export function ToastNotifier({ toastMessage, toastType, toastTrigger }) {
     if (toastMessage && toastTrigger !== previousTriggerRef.current) {
       previousTriggerRef.current = toastTrigger;
 
-      const formattedMessage =
-        typeof toastMessage === 'object' && toastMessage.id
-          ? intl.formatMessage(toastMessage)
-          : toastMessage;
+      let finalMessage = toastMessage;
+
+      if (toastId) {
+        const translationMap =
+          toastType === 'error' || toastType === 'warn' ? ERROR_ID : INFO_ID;
+        const translationDef = translationMap[toastId];
+
+        if (translationDef) {
+          finalMessage = intl.formatMessage(translationDef, toastArgs || {});
+        }
+      } else if (typeof toastMessage === 'object' && toastMessage.id) {
+        finalMessage = intl.formatMessage(toastMessage);
+      }
 
       const toastMethod = toast[toastType] || toast.info;
-      toastMethod(formattedMessage);
+      toastMethod(finalMessage);
     }
-  }, [toastMessage, toastType, toastTrigger, intl]);
+  }, [toastMessage, toastType, toastTrigger, toastId, toastArgs, intl]);
 
   return null;
 }
@@ -49,6 +68,8 @@ const mapStateToProps = createStructuredSelector({
   toastMessage: makeSelectToastMessage(),
   toastType: makeSelectToastType(),
   toastTrigger: makeSelectToastTrigger(),
+  toastId: makeSelectToastId(),
+  toastArgs: makeSelectToastArgs(),
 });
 
 function mapDispatchToProps(dispatch) {

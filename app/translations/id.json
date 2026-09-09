@@ -61,6 +61,7 @@
   "hcclient.components.Message.codeSuggestText": " menyarankan agar Anda menjalankan kode berikut",
   "hcclient.components.Message.confirmWarningText": "Peringatan, menekan oke akan memuat kode pihak ketiga yang tidak dikenal, ini bisa mengakibatkan banyak hal buruk terjadi - termasuk (namun tidak terbatas pada) pengungkapan lokasi, pencurian kode trip, dan trolling berbahaya",
   "hcclient.components.Message.dcError": "Koneksi ke server terputus. . .",
+  "hcclient.components.Message.blockedNotice": "Tingkat pengiriman Anda sedang dibatasi atau Anda telah diblokir",
   "hcclient.components.Message.err.Captcha.BAD_CAPTCHA": "Captcha salah",
   "hcclient.components.Message.err.Captcha.MUST_SOLVE": "Masukkan yang berikut ini (peka huruf besar/kecil)",
   "hcclient.components.Message.err.Captcha.NO_REJOIN": "Tidak dapat bergabung kembali secara otomatis ke ?{channel}. Saluran ini memerlukan verifikasi captcha",

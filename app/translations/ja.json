@@ -61,6 +61,7 @@
   "hcclient.components.Message.codeSuggestText": " が次のコードの実行を提案しています",
   "hcclient.components.Message.confirmWarningText": "警告：OKを押すと未知のサードパーティコードが読み込まれます。これにより、位置情報の漏洩、トリップコードの盗難、悪意のある荒らしなど（これらに限定されません）、多くの悪影響が生じる可能性があります。",
   "hcclient.components.Message.dcError": "サーバーとの接続が切れました...",
+  "hcclient.components.Message.blockedNotice": "レート制限を受けているか、ブロックされています",
   "hcclient.components.Message.err.Captcha.BAD_CAPTCHA": "CAPTCHAが間違っています",
   "hcclient.components.Message.err.Captcha.MUST_SOLVE": "以下を入力してください（大文字・小文字を区別）",
   "hcclient.components.Message.err.Captcha.NO_REJOIN": "?{channel} に自動再参加できませんでした。このチャンネルはCAPTCHA認証が必要です",

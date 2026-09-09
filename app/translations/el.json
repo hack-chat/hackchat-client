@@ -61,6 +61,7 @@
   "hcclient.components.Message.codeSuggestText": " προτείνει να εκτελέσετε τον ακόλουθο κώδικα",
   "hcclient.components.Message.confirmWarningText": "Προειδοποίηση, πατώντας το OK θα φορτωθεί άγνωστος κώδικας τρίτων, αυτό θα μπορούσε να οδηγήσει σε πολλά άσχημα πράγματα - συμπεριλαμβανομένων (ενδεικτικά αλλά όχι περιοριστικά) αποκάλυψη τοποθεσίας, κλοπή κωδικού trip, κακόβουλο trolling",
   "hcclient.components.Message.dcError": "Η σύνδεση με τον διακομιστή χάθηκε. . .",
+  "hcclient.components.Message.blockedNotice": "Ο ρυθμός σας περιορίζεται ή έχετε αποκλειστεί",
   "hcclient.components.Message.err.Captcha.BAD_CAPTCHA": "Λανθασμένο captcha",
   "hcclient.components.Message.err.Captcha.MUST_SOLVE": "Εισαγάγετε τα παρακάτω (με διάκριση πεζών/κεφαλαίων)",
   "hcclient.components.Message.err.Captcha.NO_REJOIN": "Αδυναμία αυτόματης επανασύνδεσης στο ?{channel}. Το κανάλι απαιτεί επαλήθευση captcha",

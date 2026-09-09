@@ -17,7 +17,7 @@ import { pushNotification } from 'utils/NotificationService';
 
 import { Client } from 'hackchat-engine';
 
-import { SHOW_TOAST } from 'containers/ToastNotifier/constants';
+import { showToast } from 'containers/ToastNotifier/actions';
 
 import {
   CONNECTION_ERROR,
@@ -651,17 +651,18 @@ export default function* communicationProviderSaga() {
     yield put(action);
 
     if (
-      action.type === WARNING &&
+      (action.type === WARNING || action.type === INFORMATION) &&
       action.data &&
       action.data.channel === false
     ) {
-      yield put({
-        type: SHOW_TOAST,
-        payload: {
-          message: action.data.text,
-          type: 'error',
-        },
-      });
+      yield put(
+        showToast(
+          action.data.text,
+          action.type === WARNING ? 'error' : 'info',
+          action.data.id,
+          action.data.args || {},
+        ),
+      );
     }
   }
 }

@@ -61,6 +61,7 @@
   "hcclient.components.Message.codeSuggestText": " is suggesting that you run the following code",
   "hcclient.components.Message.confirmWarningText": "Warning, hitting okay will load unknown 3rd party code, this could result in many bad things happening- including (but not limited to) location disclosure, trip code theft, malicious trolling",
   "hcclient.components.Message.dcError": "Lost connection to server. . .",
+  "hcclient.components.Message.blockedNotice": "You are being rate-limited or blocked",
   "hcclient.components.Message.err.Captcha.BAD_CAPTCHA": "Incorrect captcha",
   "hcclient.components.Message.err.Captcha.MUST_SOLVE": "Enter the following (case-sensitive)",
   "hcclient.components.Message.err.Captcha.NO_REJOIN": "Could not auto-rejoin ?{channel}. The channel requires captcha verification",

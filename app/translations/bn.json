@@ -61,6 +61,7 @@
   "hcclient.components.Message.codeSuggestText": " আপনাকে নিম্নলিখিত কোড চালানোর পরামর্শ দিচ্ছে",
   "hcclient.components.Message.confirmWarningText": "সতর্কতা, 'ওকে' চাপলে অজানা 3rd party কোড লোড হবে, এর ফলে অনেক খারাপ কিছু ঘটতে পারে- যার মধ্যে অবস্থান প্রকাশ, ট্রিপ কোড চুরি, ক্ষতিকারক ট্রোলিং অন্তর্ভুক্ত (তবে এর মধ্যেই সীমাবদ্ধ নয়)",
   "hcclient.components.Message.dcError": "সার্ভারের সাথে সংযোগ বিচ্ছিন্ন হয়ে গেছে. . .",
+  "hcclient.components.Message.blockedNotice": "আপনার রেট-লিমিট করা হচ্ছে বা ব্লক করা হয়েছে",
   "hcclient.components.Message.err.Captcha.BAD_CAPTCHA": "ক্যাপচা সঠিক নয়",
   "hcclient.components.Message.err.Captcha.MUST_SOLVE": "নিম্নলিখিতগুলি লিখুন (অক্ষরের ছাঁদ সংবেদনশীল বা case-sensitive)",
   "hcclient.components.Message.err.Captcha.NO_REJOIN": "?{channel}-এ স্বয়ংক্রিয়ভাবে পুনরায় যোগ দেওয়া যায়নি। চ্যানেলটির ক্যাপচা যাচাইকরণ প্রয়োজন",

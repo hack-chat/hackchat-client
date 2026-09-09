@@ -61,6 +61,7 @@
   "hcclient.components.Message.codeSuggestText": " sugiere que ejecutes el siguiente código",
   "hcclient.components.Message.confirmWarningText": "Advertencia, al presionar aceptar se cargará código de terceros desconocido, esto podría causar muchas cosas malas, incluyendo (pero no limitado a) la divulgación de tu ubicación, el robo de tu código de viaje (trip code) y el troleo malicioso",
   "hcclient.components.Message.dcError": "Se perdió la conexión con el servidor. . .",
+  "hcclient.components.Message.blockedNotice": "Tu tasa de solicitudes está siendo limitada o has sido bloqueado",
   "hcclient.components.Message.err.Captcha.BAD_CAPTCHA": "Captcha incorrecto",
   "hcclient.components.Message.err.Captcha.MUST_SOLVE": "Introduce lo siguiente (distingue mayúsculas y minúsculas)",
   "hcclient.components.Message.err.Captcha.NO_REJOIN": "No se pudo volver a unir automáticamente a ?{channel}. El canal requiere verificación por captcha",

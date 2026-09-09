@@ -61,6 +61,7 @@
   "hcclient.components.Message.codeSuggestText": " aşağıdaki kodu çalıştırmanızı öneriyor",
   "hcclient.components.Message.confirmWarningText": "Uyarı, tamam'a tıklamak bilinmeyen 3. taraf kodlarını yükleyecektir, bu birçok kötü şeye neden olabilir - konumun ifşa olması, trip kodu hırsızlığı ve kötü niyetli trolleme dahil (ancak bunlarla sınırlı olmamak üzere)",
   "hcclient.components.Message.dcError": "Sunucuyla bağlantı kesildi. . .",
+  "hcclient.components.Message.blockedNotice": "Hız sınırına takıldınız veya engellendiniz",
   "hcclient.components.Message.err.Captcha.BAD_CAPTCHA": "Hatalı captcha",
   "hcclient.components.Message.err.Captcha.MUST_SOLVE": "Aşağıdakini girin (büyük/küçük harf duyarlı)",
   "hcclient.components.Message.err.Captcha.NO_REJOIN": "?{channel} kanalına otomatik olarak yeniden katılınamadı. Kanal captcha doğrulaması gerektiriyor",

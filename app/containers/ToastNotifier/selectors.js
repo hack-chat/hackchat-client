@@ -24,5 +24,23 @@ const makeSelectToastType = () =>
 const makeSelectToastTrigger = () =>
   createSelector(selectToastDomain, (substate) => substate.trigger);
 
+/**
+ * Get toast translation id
+ */
+const makeSelectToastId = () =>
+  createSelector(selectToastDomain, (substate) => substate.id);
+
+/**
+ * Get toast translation args
+ */
+const makeSelectToastArgs = () =>
+  createSelector(selectToastDomain, (substate) => substate.args);
+
 export default makeSelectToastMessage;
-export { makeSelectToastMessage, makeSelectToastType, makeSelectToastTrigger };
+export {
+  makeSelectToastMessage,
+  makeSelectToastType,
+  makeSelectToastTrigger,
+  makeSelectToastId,
+  makeSelectToastArgs,
+};

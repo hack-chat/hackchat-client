@@ -61,6 +61,7 @@
   "hcclient.components.Message.codeSuggestText": " ehdottaa, että suoritat seuraavan koodin",
   "hcclient.components.Message.confirmWarningText": "Varoitus, OK:n painaminen lataa tuntematonta kolmannen osapuolen koodia. Tämä voi johtaa moniin huonoihin asioihin - mukaan lukien (mutta ei rajoittuen) sijainnin paljastumiseen, trip-koodin varkauteen ja haitalliseen trollaukseen",
   "hcclient.components.Message.dcError": "Yhteys palvelimeen katkesi. . .",
+  "hcclient.components.Message.blockedNotice": "Nopeuttasi rajoitetaan tai sinut on estetty",
   "hcclient.components.Message.err.Captcha.BAD_CAPTCHA": "Virheellinen captcha",
   "hcclient.components.Message.err.Captcha.MUST_SOLVE": "Syötä seuraava (huomioi kirjainkoko)",
   "hcclient.components.Message.err.Captcha.NO_REJOIN": "Automaattinen uudelleenliittyminen kanavalle ?{channel} epäonnistui. Kanava vaatii captcha-vahvistuksen",

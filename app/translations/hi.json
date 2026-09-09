@@ -61,6 +61,7 @@
   "hcclient.components.Message.codeSuggestText": " सुझाव दे रहा है कि आप निम्नलिखित कोड चलाएँ",
   "hcclient.components.Message.confirmWarningText": "चेतावनी, 'ओके' दबाने पर अज्ञात थर्ड-पार्टी कोड लोड हो जाएगा, जिसके परिणामस्वरूप कई बुरी चीजें हो सकती हैं- जिनमें (लेकिन इन्हीं तक सीमित नहीं) लोकेशन उजागर होना, ट्रिप कोड की चोरी, और दुर्भावनापूर्ण ट्रोलिंग शामिल हैं",
   "hcclient.components.Message.dcError": "सर्वर से कनेक्शन टूट गया. . .",
+  "hcclient.components.Message.blockedNotice": "आपको रेट-लिमिट किया जा रहा है या ब्लॉक कर दिया गया है",
   "hcclient.components.Message.err.Captcha.BAD_CAPTCHA": "गलत कैप्चा",
   "hcclient.components.Message.err.Captcha.MUST_SOLVE": "निम्नलिखित दर्ज करें (केस-सेंसिटिव)",
   "hcclient.components.Message.err.Captcha.NO_REJOIN": "?{channel} में ऑटो-रिजॉइन नहीं हो सका। चैनल के लिए कैप्चा वेरिफिकेशन आवश्यक है",

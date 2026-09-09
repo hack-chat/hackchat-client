@@ -8,6 +8,8 @@ import { SHOW_TOAST } from './constants';
 export const initialState = {
   message: null,
   type: 'info',
+  id: null,
+  args: {},
   trigger: null,
 };
 
@@ -17,6 +19,8 @@ const ToastNotifierReducer = (state = initialState, action) =>
       case SHOW_TOAST:
         draft.message = action.payload.message;
         draft.type = action.payload.type;
+        draft.id = action.payload.id || null;
+        draft.args = action.payload.args || {};
         draft.trigger = new Date().getTime();
         break;
     }

@@ -61,6 +61,7 @@
   "hcclient.components.Message.codeSuggestText": " suggère d'exécuter le code suivant",
   "hcclient.components.Message.confirmWarningText": "Attention, cliquer sur OK chargera du code tiers inconnu, ce qui pourrait entraîner de nombreux problèmes - y compris (sans s'y limiter) la divulgation de l'emplacement, le vol de code de voyage (trip code) et le trolling malveillant",
   "hcclient.components.Message.dcError": "Connexion au serveur perdue. . .",
+  "hcclient.components.Message.blockedNotice": "Votre débit est limité ou vous avez été bloqué",
   "hcclient.components.Message.err.Captcha.BAD_CAPTCHA": "Captcha incorrect",
   "hcclient.components.Message.err.Captcha.MUST_SOLVE": "Saisissez ce qui suit (sensible à la casse)",
   "hcclient.components.Message.err.Captcha.NO_REJOIN": "Impossible de rejoindre automatiquement ?{channel}. Le canal nécessite une vérification par captcha",

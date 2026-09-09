@@ -61,6 +61,7 @@
   "hcclient.components.Message.codeSuggestText": " suggerisce di eseguire il seguente codice",
   "hcclient.components.Message.confirmWarningText": "Attenzione, premendo OK verrà caricato codice di terze parti sconosciuto, questo potrebbe causare molti problemi - inclusi (ma non limitati a) divulgazione della posizione, furto del trip code e trolling dannoso",
   "hcclient.components.Message.dcError": "Connessione al server persa. . .",
+  "hcclient.components.Message.blockedNotice": "Il tuo tasso di richieste è limitato o sei stato bloccato",
   "hcclient.components.Message.err.Captcha.BAD_CAPTCHA": "Captcha errato",
   "hcclient.components.Message.err.Captcha.MUST_SOLVE": "Inserisci quanto segue (distingue maiuscole/minuscole)",
   "hcclient.components.Message.err.Captcha.NO_REJOIN": "Impossibile rientrare automaticamente in ?{channel}. Il canale richiede la verifica tramite captcha",

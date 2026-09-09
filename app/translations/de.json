@@ -61,6 +61,7 @@
   "hcclient.components.Message.codeSuggestText": " schlägt vor, folgenden Code auszuführen",
   "hcclient.components.Message.confirmWarningText": "Warnung: Ein Klick auf OK lädt unbekannten Code von Drittanbietern. Dies kann schwerwiegende Folgen haben - einschließlich (aber nicht beschränkt auf) Standortweitergabe, Diebstahl des Tripcodes und böswilliges Trolling",
   "hcclient.components.Message.dcError": "Verbindung zum Server verloren. . .",
+  "hcclient.components.Message.blockedNotice": "Deine Anfragen werden limitiert oder du wurdest blockiert",
   "hcclient.components.Message.err.Captcha.BAD_CAPTCHA": "Falsches Captcha",
   "hcclient.components.Message.err.Captcha.MUST_SOLVE": "Geben Sie Folgendes ein (Groß-/Kleinschreibung beachten)",
   "hcclient.components.Message.err.Captcha.NO_REJOIN": "Automatischer Wiedereintritt in ?{channel} fehlgeschlagen. Der Kanal erfordert eine Captcha-Verifizierung",
