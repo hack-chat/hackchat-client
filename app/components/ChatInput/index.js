@@ -428,13 +428,13 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
             const textBefore = inputValue.slice(0, mState.startIndex);
             const textAfter = inputValue.slice(inputRef.current.selectionEnd);
 
-            const newValue = textBefore + matchName + textAfter;
+            const newValue = textBefore + matchName + ' ' + textAfter;
             setInputValue(newValue);
             setMentionState(mState);
 
             setTimeout(() => {
               if (inputRef.current) {
-                const newCursor = mState.startIndex + matchName.length;
+                const newCursor = mState.startIndex + matchName.length + 1;
                 inputRef.current.setSelectionRange(newCursor, newCursor);
                 resizeTextarea();
               }
