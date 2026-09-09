@@ -29,4 +29,8 @@ export default styled.div`
     border-radius: 4px;
     border: 2px solid ${({ theme }) => theme.palette.scrollbar.track};
   }
+
+  & > div:last-child > div:last-child {
+    padding-bottom: 1.5em;
+  }
 `;

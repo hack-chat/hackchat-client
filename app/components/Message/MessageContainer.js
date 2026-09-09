@@ -12,6 +12,11 @@ const MessageContainer = styled.div`
   display: flex;
   flex-direction: column;
 
+  & > div:last-child {
+    padding-top: 0.5em;
+    padding-bottom: 0.4em;
+  }
+
   @media (width >= 768px) {
     flex-direction: row;
   }
