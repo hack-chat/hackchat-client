@@ -46,6 +46,7 @@ export function UserContextMenu({
   closeContextMenu,
   onCommandClick,
   intl,
+  myPermissionLevel = 0,
 }) {
   const [openSubMenu, setOpenSubMenu] = useState(null);
   const [pos, setPos] = useState({ x: 0, y: 0 });
@@ -238,6 +239,10 @@ export function UserContextMenu({
     </>
   );
 
+  const targetPermissionLevel = contextMenu.user.permissionLevel || 0;
+  const canManageUser =
+    myPermissionLevel >= 9999 && myPermissionLevel > targetPermissionLevel;
+
   const renderMainMenu = () => (
     <>
       <ContextMenuItem onClick={() => handleContextMenuClick('mention')}>
@@ -255,20 +260,24 @@ export function UserContextMenu({
 
       <ContextMenuSeparator />
 
-      <ContextMenuItem
-        onClick={
-          isMobile ? () => setOpenSubMenu('manage') : (e) => e.stopPropagation()
-        }
-        onMouseEnter={!isMobile ? () => setOpenSubMenu('manage') : null}
-      >
-        <FaChevronLeft />
-        <span>{intl.formatMessage(messages.manage)}</span>
-        {!isMobile && openSubMenu === 'manage' && (
-          <SubMenu ref={subMenuRef} $openRight={isMenuOnLeft}>
-            {renderManageMenu()}
-          </SubMenu>
-        )}
-      </ContextMenuItem>
+      {canManageUser && (
+        <ContextMenuItem
+          onClick={
+            isMobile
+              ? () => setOpenSubMenu('manage')
+              : (e) => e.stopPropagation()
+          }
+          onMouseEnter={!isMobile ? () => setOpenSubMenu('manage') : null}
+        >
+          <FaChevronLeft />
+          <span>{intl.formatMessage(messages.manage)}</span>
+          {!isMobile && openSubMenu === 'manage' && (
+            <SubMenu ref={subMenuRef} $openRight={isMenuOnLeft}>
+              {renderManageMenu()}
+            </SubMenu>
+          )}
+        </ContextMenuItem>
+      )}
 
       <ContextMenuItem
         onClick={
@@ -336,6 +345,7 @@ UserContextMenu.propTypes = {
   closeContextMenu: PropTypes.func.isRequired,
   onCommandClick: PropTypes.func.isRequired,
   intl: PropTypes.object.isRequired,
+  myPermissionLevel: PropTypes.number,
 };
 
 export default compose(injectIntl)(UserContextMenu);

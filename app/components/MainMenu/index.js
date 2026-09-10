@@ -101,6 +101,14 @@ export function MainMenu({
       .sort((a, b) => a.username.localeCompare(b.username));
   }, [channelData, channel]);
 
+  const myPermissionLevel = useMemo(() => {
+    if (!channelData[channel]) return 0;
+    const me = Object.values(channelData[channel].users).find(
+      (user) => user.mine,
+    );
+    return me ? me.permissionLevel : 0;
+  }, [channelData, channel]);
+
   const currentUserCount = onlineUsers.length;
   const isMenuForcedOpen = isOpen || isPinned || !!contextMenu;
 
@@ -283,6 +291,7 @@ export function MainMenu({
         contextMenu={contextMenu}
         closeContextMenu={closeContextMenu}
         onCommandClick={onCommandClick}
+        myPermissionLevel={myPermissionLevel}
       />
     </>
   );

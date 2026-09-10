@@ -19,8 +19,6 @@ const MessageContent = styled.div`
   flex-direction: column;
   align-items: flex-start;
   flex-grow: 1;
-  padding-top: 0.25em;
-  padding-bottom: 0.25em;
   min-width: 0;
   padding-inline-start: 1.5em;
   background-color: ${getBackground} !important;

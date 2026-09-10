@@ -13,8 +13,8 @@ const MessageContainer = styled.div`
   flex-direction: column;
 
   & > div:last-child {
-    padding-top: 0.5em;
-    padding-bottom: 0.4em;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
   }
 
   @media (width >= 768px) {

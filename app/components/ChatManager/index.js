@@ -213,6 +213,13 @@ export function ChatManager({
     });
   }, [currentChannelData.messages, currentChannelData.users, intl]);
 
+  const myPermissionLevel = useMemo(() => {
+    const me = Object.values(currentChannelData.users).find(
+      (user) => user.mine,
+    );
+    return me ? me.permissionLevel : 0;
+  }, [currentChannelData.users]);
+
   return (
     <Wrapper
       ref={scrollContainerRef}
@@ -226,6 +233,7 @@ export function ChatManager({
         contextMenu={contextMenu}
         closeContextMenu={closeUserContextMenu}
         onCommandClick={handleMenuCommand}
+        myPermissionLevel={myPermissionLevel}
       />
 
       <MessageContextMenu
