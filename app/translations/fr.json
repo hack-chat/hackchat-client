@@ -198,6 +198,7 @@
   "hcclient.components.UserContextMenu.sendSolana": "Solana",
   "hcclient.components.UserContextMenu.sendToken": "Jeton",
   "hcclient.components.UserContextMenu.setLevel": "Définir le niveau",
+  "hcclient.components.UserContextMenu.unignore": "Ne plus ignorer",
   "hcclient.components.UserContextMenu.unmuzzle": "Démuseler",
   "hcclient.components.UserContextMenu.uwuify": "Uwuifier",
   "hcclient.components.UserContextMenu.whisper": "Chuchoter",

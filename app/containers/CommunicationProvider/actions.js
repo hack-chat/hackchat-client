@@ -14,6 +14,7 @@ import {
   UNLOCK_CHANNEL,
   INVITE_USER,
   IGNORE_USER,
+  UNIGNORE_USER,
   KICK_USER,
   BAN_USER,
   MUTE_USER,
@@ -25,7 +26,7 @@ import {
 
 /**
  * Alters the current channel the UI is displaying
- * @param  {string} channel New target channel name
+ * @param  {string} channel Target channel
  * @return {object} An action object with a type of CHANGE_USERNAME
  */
 export function changeChannel(channel) {
@@ -39,7 +40,7 @@ export function changeChannel(channel) {
  * Informs the server of a new channel subscription
  * @param  {string} username Name to join with
  * @param  {string} password Password to join with
- * @param  {string} channel Target channel name
+ * @param  {string} channel Target channel
  * @return {object} An action object with a type of START_JOIN
  */
 export function joinChannel(username, password, channel, color) {
@@ -54,7 +55,7 @@ export function joinChannel(username, password, channel, color) {
 
 /**
  * Unsubscribe from target channel
- * @param  {string} channel Target channel name
+ * @param  {string} channel Target channel
  * @return {object} An action object with a type of LEAVE_CHANNEL
  */
 export function leaveChannel(channel) {
@@ -67,7 +68,7 @@ export function leaveChannel(channel) {
 /**
  * Sends a `changecolor` command to the chat server
  * @param  {string} color HTML color code
- * @param  {string} channel Target channel name
+ * @param  {string} channel Target channel
  * @return {object} An action object with a type of CHANGE_COLOR
  */
 export function changeColor(color, channel) {
@@ -80,7 +81,7 @@ export function changeColor(color, channel) {
 
 /**
  * Sends a `chat` command to the chat server
- * @param  {string} channel Channel to send `message` to
+ * @param  {string} channel Target channel
  * @param  {string} message `chat` text
  * @return {object} An action object with a type of SEND_CHAT
  */
@@ -94,7 +95,7 @@ export function sendChat(channel, message) {
 
 /**
  * Enable the captcha on target channel
- * @param  {string} channel Channel to enable captcha on
+ * @param  {string} channel Target channel
  * @return {object} An action object with a type of SEND_CHAT
  */
 export function enableCaptcha(channel) {
@@ -106,7 +107,7 @@ export function enableCaptcha(channel) {
 
 /**
  * Disables the captcha on target channel
- * @param  {string} channel Channel to disable captcha on
+ * @param  {string} channel Target channel
  * @return {object} An action object with a type of DISABLE_CAPTCHA
  */
 export function disableCaptcha(channel) {
@@ -118,7 +119,7 @@ export function disableCaptcha(channel) {
 
 /**
  * Lock the target channel
- * @param  {string} channel Channel to lock
+ * @param  {string} channel Target channel
  * @return {object} An action object with a type of LOCK_CHANNEL
  */
 export function lockChannel(channel) {
@@ -130,7 +131,7 @@ export function lockChannel(channel) {
 
 /**
  * Unlock the target channel
- * @param  {string} channel Channel to unlock
+ * @param  {string} channel Target channel
  * @return {object} An action object with a type of UNLOCK_CHANNEL
  */
 export function unlockChannel(channel) {
@@ -144,7 +145,7 @@ export function unlockChannel(channel) {
 
 /**
  * Invite user to private channel
- * @param  {string} channel Channel to unlock
+ * @param  {string} channel Target channel
  * @param  {Object} user Target user to invite
  * @return {object} An action object with a type of INVITE_USER
  */
@@ -158,7 +159,7 @@ export function inviteUser(channel, userid) {
 
 /**
  * Ignore target user
- * @param  {string} channel Channel to unlock
+ * @param  {string} channel Target channel
  * @param  {number} user Target user to ignore
  * @return {object} An action object with a type of IGNORE_USER
  */
@@ -171,8 +172,22 @@ export function ignoreUser(channel, userid) {
 }
 
 /**
+ * Unignore target user
+ * @param  {string} channel Target channel
+ * @param  {number} user Target user to unignore
+ * @return {object} An action object with a type of UNIGNORE_USER
+ */
+export function unignoreUser(channel, userid) {
+  return {
+    type: UNIGNORE_USER,
+    channel,
+    userid,
+  };
+}
+
+/**
  * Kick target user
- * @param  {string} channel Channel to unlock
+ * @param  {string} channel Target channel
  * @param  {number} user Target user to kick
  * @return {object} An action object with a type of KICK_USER
  */
@@ -186,7 +201,7 @@ export function kickUser(channel, user) {
 
 /**
  * Ban target user
- * @param  {string} channel Channel to unlock
+ * @param  {string} channel Target channel
  * @param  {number} user Target user to ban
  * @return {object} An action object with a type of BAN_USER
  */
@@ -200,7 +215,7 @@ export function banUser(channel, user) {
 
 /**
  * Mute target user
- * @param  {string} channel Channel to unlock
+ * @param  {string} channel Target channel
  * @param  {number} user Target user to mute
  * @return {object} An action object with a type of MUTE_USER
  */
@@ -214,7 +229,7 @@ export function muteUser(channel, user) {
 
 /**
  * Unmute target user
- * @param  {string} channel Channel to unlock
+ * @param  {string} channel Target channel
  * @param  {number} user Target user to unmute
  * @return {object} An action object with a type of UNMUTE_USER
  */
@@ -228,7 +243,7 @@ export function unmuteUser(channel, user) {
 
 /**
  * Uwuify target user
- * @param  {string} channel Channel
+ * @param  {string} channel Target channel
  * @param  {number} user Target user to uwuify
  * @return {object} An action object with a type of UWUIFY_USER
  */
@@ -242,7 +257,7 @@ export function uwuifyUser(channel, user) {
 
 /**
  * Clear target channel messages
- * @param  {string} channel Channel
+ * @param  {string} channel Target channel
  * @return {object} An action object with a type of CLEAR_CHANNEL
  */
 export function clearChannel(channel) {

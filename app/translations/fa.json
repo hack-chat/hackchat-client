@@ -198,6 +198,7 @@
   "hcclient.components.UserContextMenu.sendSolana": "Solana",
   "hcclient.components.UserContextMenu.sendToken": "توکن",
   "hcclient.components.UserContextMenu.setLevel": "تنظیم سطح",
+  "hcclient.components.UserContextMenu.unignore": "لغو نادیده گرفتن",
   "hcclient.components.UserContextMenu.unmuzzle": "لغو سکوت",
   "hcclient.components.UserContextMenu.uwuify": "Uwuify",
   "hcclient.components.UserContextMenu.whisper": "پیام خصوصی",

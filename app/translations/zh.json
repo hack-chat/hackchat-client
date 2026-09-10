@@ -198,6 +198,7 @@
   "hcclient.components.UserContextMenu.sendSolana": "Solana",
   "hcclient.components.UserContextMenu.sendToken": "代幣",
   "hcclient.components.UserContextMenu.setLevel": "設定等級",
+  "hcclient.components.UserContextMenu.unignore": "取消忽略",
   "hcclient.components.UserContextMenu.unmuzzle": "解除禁言",
   "hcclient.components.UserContextMenu.uwuify": "賣萌化",
   "hcclient.components.UserContextMenu.whisper": "私訊",

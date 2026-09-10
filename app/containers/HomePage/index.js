@@ -29,6 +29,7 @@ import {
   kickUser,
   banUser,
   ignoreUser,
+  unignoreUser,
   inviteUser,
   muteUser,
   unmuteUser,
@@ -118,6 +119,7 @@ export function HomePage({
   onKickUser,
   onBanUser,
   onIgnoreUser,
+  onUnignoreUser,
   onInviteUser,
   onMuteUser,
   onUnmuteUser,
@@ -298,6 +300,7 @@ export function HomePage({
       const kickMatch = commandText.match(/^\/kick @(.+)/);
       const banMatch = commandText.match(/^\/ban @(.+)/);
       const ignoreMatch = commandText.match(/^\/ignore @(.+)/);
+      const unignoreMatch = commandText.match(/^\/unignore @(.+)/);
       const inviteMatch = commandText.match(/^\/invite @(.+)/);
       const muzzleMatch = commandText.match(/^\/muzzle @(.+)/);
       const unmuzzleMatch = commandText.match(/^\/unmuzzle @(.+)/);
@@ -307,6 +310,7 @@ export function HomePage({
         kickMatch ||
         banMatch ||
         ignoreMatch ||
+        unignoreMatch ||
         inviteMatch ||
         muzzleMatch ||
         unmuzzleMatch ||
@@ -316,6 +320,7 @@ export function HomePage({
           (kickMatch && kickMatch[1]) ||
           (banMatch && banMatch[1]) ||
           (ignoreMatch && ignoreMatch[1]) ||
+          (unignoreMatch && unignoreMatch[1]) ||
           (inviteMatch && inviteMatch[1]) ||
           (muzzleMatch && muzzleMatch[1]) ||
           (unmuzzleMatch && unmuzzleMatch[1]) ||
@@ -348,6 +353,12 @@ export function HomePage({
               `Ignoring user: ${username} (ID: ${targetUser.userid})`,
             );
             onIgnoreUser(channel, targetUser.userid);
+          } else if (unignoreMatch) {
+            // eslint-disable-next-line no-console
+            console.log(
+              `Unignoring user: ${username} (ID: ${targetUser.userid})`,
+            );
+            onUnignoreUser(channel, targetUser.userid);
           } else if (inviteMatch) {
             // eslint-disable-next-line no-console
             console.log(
@@ -388,6 +399,7 @@ export function HomePage({
       onKickUser,
       onBanUser,
       onIgnoreUser,
+      onUnignoreUser,
       onInviteUser,
       onMuteUser,
       onUnmuteUser,
@@ -838,6 +850,7 @@ HomePage.propTypes = {
   onKickUser: PropTypes.func,
   onBanUser: PropTypes.func,
   onIgnoreUser: PropTypes.func,
+  onUnignoreUser: PropTypes.func,
   onInviteUser: PropTypes.func,
   onMuteUser: PropTypes.func,
   onUnmuteUser: PropTypes.func,
@@ -892,6 +905,8 @@ export function mapDispatchToProps(dispatch) {
     onKickUser: (channel, user) => dispatch(kickUser(channel, user)),
     onBanUser: (channel, user) => dispatch(banUser(channel, user)),
     onIgnoreUser: (channel, userid) => dispatch(ignoreUser(channel, userid)),
+    onUnignoreUser: (channel, userid) =>
+      dispatch(unignoreUser(channel, userid)),
     onInviteUser: (channel, userid) => dispatch(inviteUser(channel, userid)),
     onMuteUser: (channel, user) => dispatch(muteUser(channel, user)),
     onUnmuteUser: (channel, user) => dispatch(unmuteUser(channel, user)),

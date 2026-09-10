@@ -198,6 +198,7 @@
   "hcclient.components.UserContextMenu.sendSolana": "Solana",
   "hcclient.components.UserContextMenu.sendToken": "Token",
   "hcclient.components.UserContextMenu.setLevel": "Ορισμός επιπέδου",
+  "hcclient.components.UserContextMenu.unignore": "Κατάργηση αγνόησης",
   "hcclient.components.UserContextMenu.unmuzzle": "Άρση φίμωσης",
   "hcclient.components.UserContextMenu.uwuify": "Uwuify",
   "hcclient.components.UserContextMenu.whisper": "Ψίθυρος",

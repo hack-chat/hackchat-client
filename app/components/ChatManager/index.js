@@ -83,6 +83,15 @@ export function ChatManager({
   };
 
   const handleUserContextMenu = useCallback((user, event) => {
+    const selection = window.getSelection();
+    if (
+      selection &&
+      !selection.isCollapsed &&
+      selection.containsNode(event.target, true)
+    ) {
+      return;
+    }
+
     event.preventDefault();
     setContextMenu({
       user,
@@ -113,6 +122,15 @@ export function ChatManager({
   );
 
   const handleMessageContextMenu = useCallback((payload, user, event) => {
+    const selection = window.getSelection();
+    if (
+      selection &&
+      !selection.isCollapsed &&
+      selection.containsNode(event.target, true)
+    ) {
+      return;
+    }
+
     event.preventDefault();
     setMessageContextMenu({
       payload,

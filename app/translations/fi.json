@@ -198,6 +198,7 @@
   "hcclient.components.UserContextMenu.sendSolana": "Solana",
   "hcclient.components.UserContextMenu.sendToken": "Token",
   "hcclient.components.UserContextMenu.setLevel": "Aseta taso",
+  "hcclient.components.UserContextMenu.unignore": "Lopeta huomiotta jättäminen",
   "hcclient.components.UserContextMenu.unmuzzle": "Poista hiljennys",
   "hcclient.components.UserContextMenu.uwuify": "Uwuify",
   "hcclient.components.UserContextMenu.whisper": "Kuiskaa",

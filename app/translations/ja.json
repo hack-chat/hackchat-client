@@ -198,6 +198,7 @@
   "hcclient.components.UserContextMenu.sendSolana": "Solana",
   "hcclient.components.UserContextMenu.sendToken": "トークン",
   "hcclient.components.UserContextMenu.setLevel": "レベル設定",
+  "hcclient.components.UserContextMenu.unignore": "無視を解除",
   "hcclient.components.UserContextMenu.unmuzzle": "発言禁止を解除",
   "hcclient.components.UserContextMenu.uwuify": "Uwuify",
   "hcclient.components.UserContextMenu.whisper": "ささやき",

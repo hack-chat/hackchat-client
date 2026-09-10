@@ -198,6 +198,7 @@
   "hcclient.components.UserContextMenu.sendSolana": "Solana",
   "hcclient.components.UserContextMenu.sendToken": "Token",
   "hcclient.components.UserContextMenu.setLevel": "Seviye Ayarla",
+  "hcclient.components.UserContextMenu.unignore": "Yok saymayı kaldır",
   "hcclient.components.UserContextMenu.unmuzzle": "Susturmayı Kaldır",
   "hcclient.components.UserContextMenu.uwuify": "Uwuify",
   "hcclient.components.UserContextMenu.whisper": "Fısılda",

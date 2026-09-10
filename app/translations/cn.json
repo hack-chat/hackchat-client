@@ -198,6 +198,7 @@
   "hcclient.components.UserContextMenu.sendSolana": "Solana",
   "hcclient.components.UserContextMenu.sendToken": "Token",
   "hcclient.components.UserContextMenu.setLevel": "设置级别",
+  "hcclient.components.UserContextMenu.unignore": "取消忽略",
   "hcclient.components.UserContextMenu.unmuzzle": "解除禁言",
   "hcclient.components.UserContextMenu.uwuify": "卖萌化",
   "hcclient.components.UserContextMenu.whisper": "私聊",

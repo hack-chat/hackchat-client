@@ -198,6 +198,7 @@
   "hcclient.components.UserContextMenu.sendSolana": "Solana",
   "hcclient.components.UserContextMenu.sendToken": "Token",
   "hcclient.components.UserContextMenu.setLevel": "Atur Level",
+  "hcclient.components.UserContextMenu.unignore": "Batal abaikan",
   "hcclient.components.UserContextMenu.unmuzzle": "Buka Bungkaman",
   "hcclient.components.UserContextMenu.uwuify": "Uwuify",
   "hcclient.components.UserContextMenu.whisper": "Bisikkan",

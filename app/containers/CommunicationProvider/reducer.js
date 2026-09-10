@@ -15,6 +15,7 @@ import {
   USER_LEFT,
   USER_UPDATE,
   IGNORE_USER,
+  UNIGNORE_USER,
   WARNING,
   GOT_CAPTCHA,
   INFORMATION,
@@ -280,6 +281,27 @@ const communicationProviderReducer = (state = initialState, action) =>
         });
         break;
       case IGNORE_USER:
+        if (draft.channels[action.channel].users[action.userid].blocked) {
+          draft.channels[action.channel].users[action.userid].blocked = false;
+          draft.channels[action.channel].messages.push({
+            type: 'info',
+            data: {
+              // yes, this is lazy af
+              text: `👁️ @${draft.channels[action.channel].users[action.userid].username}`,
+            },
+          });
+        } else {
+          draft.channels[action.channel].users[action.userid].blocked = true;
+          draft.channels[action.channel].messages.push({
+            type: 'info',
+            data: {
+              // yes, this is also lazy af
+              text: `🚫 @${draft.channels[action.channel].users[action.userid].username}`,
+            },
+          });
+        }
+        break;
+      case UNIGNORE_USER:
         if (draft.channels[action.channel].users[action.userid].blocked) {
           draft.channels[action.channel].users[action.userid].blocked = false;
           draft.channels[action.channel].messages.push({

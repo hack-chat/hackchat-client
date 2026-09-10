@@ -198,6 +198,7 @@
   "hcclient.components.UserContextMenu.sendSolana": "Solana",
   "hcclient.components.UserContextMenu.sendToken": "Token",
   "hcclient.components.UserContextMenu.setLevel": "تعيين المستوى",
+  "hcclient.components.UserContextMenu.unignore": "إلغاء التجاهل",
   "hcclient.components.UserContextMenu.unmuzzle": "إلغاء التكميم",
   "hcclient.components.UserContextMenu.uwuify": "Uwuify",
   "hcclient.components.UserContextMenu.whisper": "همس",

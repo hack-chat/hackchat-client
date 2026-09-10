@@ -31,6 +31,10 @@ const messages = {
     id: `${scope}.ignore`,
     defaultMessage: 'Ignore',
   },
+  unignore: {
+    id: `${scope}.unignore`,
+    defaultMessage: 'Unignore',
+  },
   setLevel: {
     id: `${scope}.setLevel`,
     defaultMessage: 'Set Level',

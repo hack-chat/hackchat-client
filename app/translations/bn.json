@@ -198,6 +198,7 @@
   "hcclient.components.UserContextMenu.sendSolana": "Solana পাঠান",
   "hcclient.components.UserContextMenu.sendToken": "Token পাঠান",
   "hcclient.components.UserContextMenu.setLevel": "লেভেল সেট করুন",
+  "hcclient.components.UserContextMenu.unignore": "উপেক্ষা বাতিল করুন",
   "hcclient.components.UserContextMenu.unmuzzle": "মুখবন্ধ খুলুন",
   "hcclient.components.UserContextMenu.uwuify": "Uwuify",
   "hcclient.components.UserContextMenu.whisper": "গোপন বার্তা",

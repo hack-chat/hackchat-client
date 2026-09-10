@@ -43,7 +43,6 @@ const Nick = ({ user, handleMention, handleContextMenu, time }) => {
 
   const handleRightClick = (e) => {
     if (handleContextMenu) {
-      e.preventDefault();
       handleContextMenu(user, e);
     }
   };
@@ -116,7 +115,6 @@ const ChatMessage = ({
       return;
     }
     if (onMessageContextMenu) {
-      e.preventDefault();
       onMessageContextMenu(payload, user, e);
     }
   };

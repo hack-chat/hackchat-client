@@ -154,6 +154,9 @@ export function UserContextMenu({
       case 'ignore':
         commandString = `/ignore @${username}`;
         break;
+      case 'unignore':
+        commandString = `/unignore @${username}`;
+        break;
       case 'setlevel':
         commandString = `/setlevel @${username} `;
         break;
@@ -243,58 +246,71 @@ export function UserContextMenu({
   const canManageUser =
     myPermissionLevel >= 9999 && myPermissionLevel > targetPermissionLevel;
 
-  const renderMainMenu = () => (
-    <>
-      <ContextMenuItem onClick={() => handleContextMenuClick('mention')}>
-        {intl.formatMessage(messages.mention)}
-      </ContextMenuItem>
-      <ContextMenuItem onClick={() => handleContextMenuClick('ignore')}>
-        {intl.formatMessage(messages.ignore)}
-      </ContextMenuItem>
-      <ContextMenuItem onClick={() => handleContextMenuClick('invite')}>
-        {intl.formatMessage(messages.invite)}
-      </ContextMenuItem>
-      <ContextMenuItem onClick={() => handleContextMenuClick('whisper')}>
-        {intl.formatMessage(messages.whisper)}
-      </ContextMenuItem>
+  const renderMainMenu = () => {
+    const isBlocked = contextMenu.user.blocked;
 
-      <ContextMenuSeparator />
+    return (
+      <>
+        <ContextMenuItem onClick={() => handleContextMenuClick('mention')}>
+          {intl.formatMessage(messages.mention)}
+        </ContextMenuItem>
 
-      {canManageUser && (
+        <ContextMenuItem
+          onClick={() =>
+            handleContextMenuClick(isBlocked ? 'unignore' : 'ignore')
+          }
+        >
+          {isBlocked
+            ? intl.formatMessage(messages.unignore)
+            : intl.formatMessage(messages.ignore)}
+        </ContextMenuItem>
+
+        <ContextMenuItem onClick={() => handleContextMenuClick('invite')}>
+          {intl.formatMessage(messages.invite)}
+        </ContextMenuItem>
+
+        <ContextMenuItem onClick={() => handleContextMenuClick('whisper')}>
+          {intl.formatMessage(messages.whisper)}
+        </ContextMenuItem>
+
+        <ContextMenuSeparator />
+
+        {canManageUser && (
+          <ContextMenuItem
+            onClick={
+              isMobile
+                ? () => setOpenSubMenu('manage')
+                : (e) => e.stopPropagation()
+            }
+            onMouseEnter={!isMobile ? () => setOpenSubMenu('manage') : null}
+          >
+            <FaChevronLeft />
+            <span>{intl.formatMessage(messages.manage)}</span>
+            {!isMobile && openSubMenu === 'manage' && (
+              <SubMenu ref={subMenuRef} $openRight={isMenuOnLeft}>
+                {renderManageMenu()}
+              </SubMenu>
+            )}
+          </ContextMenuItem>
+        )}
+
         <ContextMenuItem
           onClick={
-            isMobile
-              ? () => setOpenSubMenu('manage')
-              : (e) => e.stopPropagation()
+            isMobile ? () => setOpenSubMenu('send') : (e) => e.stopPropagation()
           }
-          onMouseEnter={!isMobile ? () => setOpenSubMenu('manage') : null}
+          onMouseEnter={!isMobile ? () => setOpenSubMenu('send') : null}
         >
           <FaChevronLeft />
-          <span>{intl.formatMessage(messages.manage)}</span>
-          {!isMobile && openSubMenu === 'manage' && (
+          <span>{intl.formatMessage(messages.send)}</span>
+          {!isMobile && openSubMenu === 'send' && (
             <SubMenu ref={subMenuRef} $openRight={isMenuOnLeft}>
-              {renderManageMenu()}
+              {renderSendMenu()}
             </SubMenu>
           )}
         </ContextMenuItem>
-      )}
-
-      <ContextMenuItem
-        onClick={
-          isMobile ? () => setOpenSubMenu('send') : (e) => e.stopPropagation()
-        }
-        onMouseEnter={!isMobile ? () => setOpenSubMenu('send') : null}
-      >
-        <FaChevronLeft />
-        <span>{intl.formatMessage(messages.send)}</span>
-        {!isMobile && openSubMenu === 'send' && (
-          <SubMenu ref={subMenuRef} $openRight={isMenuOnLeft}>
-            {renderSendMenu()}
-          </SubMenu>
-        )}
-      </ContextMenuItem>
-    </>
-  );
+      </>
+    );
+  };
 
   let panelContent;
   if (isMobile) {

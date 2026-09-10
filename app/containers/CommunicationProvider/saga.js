@@ -471,17 +471,16 @@ function initWebsocket() {
 export default function* communicationProviderSaga() {
   const client = yield call(initWebsocket);
 
-  // Channel Actions
   yield takeLatest(START_JOIN, (action) => {
-    hcClient.color = action.color;
-    hcClient.join(action.username, action.password, action.channel);
+    hcClient.join(
+      action.username,
+      action.password,
+      action.channel,
+      action.color,
+    );
   });
 
   yield takeLatest(LEAVE_CHANNEL, (action) => hcClient.leave(action.channel));
-
-  yield takeLatest(JOINED_CHANNEL, (action) => {
-    if (hcClient.color) hcClient.changeColor(hcClient.color, action.channel);
-  });
 
   yield takeEvery(SEND_CHAT, (action) =>
     hcClient.say(action.channel, action.message),

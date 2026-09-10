@@ -198,6 +198,7 @@
   "hcclient.components.UserContextMenu.sendSolana": "Solana",
   "hcclient.components.UserContextMenu.sendToken": "Token",
   "hcclient.components.UserContextMenu.setLevel": "स्तर निर्धारित करें",
+  "hcclient.components.UserContextMenu.unignore": "अनदेखा करना बंद करें",
   "hcclient.components.UserContextMenu.unmuzzle": "मौन हटाएँ",
   "hcclient.components.UserContextMenu.uwuify": "Uwuify",
   "hcclient.components.UserContextMenu.whisper": "फुसफुसाएं",

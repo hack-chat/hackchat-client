@@ -198,6 +198,7 @@
   "hcclient.components.UserContextMenu.sendSolana": "Solana",
   "hcclient.components.UserContextMenu.sendToken": "Token",
   "hcclient.components.UserContextMenu.setLevel": "Set Level",
+  "hcclient.components.UserContextMenu.unignore": "Unignore",
   "hcclient.components.UserContextMenu.unmuzzle": "Unmuzzle",
   "hcclient.components.UserContextMenu.uwuify": "Uwuify",
   "hcclient.components.UserContextMenu.whisper": "Whisper",
