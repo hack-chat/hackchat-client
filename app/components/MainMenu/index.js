@@ -2,6 +2,7 @@
  * MainMenu provides navigation for channels, a user list for the current
  * channel, and global actions like settings.
  */
+
 import React, { useState, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';

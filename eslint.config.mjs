@@ -35,15 +35,23 @@ export default [
       },
     },
     languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
       parser: babelParser,
+      ecmaVersion: 'latest',
+      sourceType: "module",
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      globals: {
+        ...globals.jest,
+        ...globals.browser,
+        ...globals.node,
+        BigInt: "readonly",
+      },
     },
     rules: {
       'react/jsx-uses-react': 'error',
-      'no-unused-vars': 'off',
-      'import/no-dynamic-require': 'warn',
-      'import/no-nodejs-modules': 'warn',
       "prettier/prettier": ["error", {
         printWidth: 80,
         tabWidth: 2,
@@ -52,29 +60,25 @@ export default [
         singleQuote: true,
         trailingComma: "all",
       }],
-
       "arrow-body-style": [2, "as-needed"],
       "class-methods-use-this": 0,
       "import/imports-first": 0,
       "import/newline-after-import": 0,
       "import/no-dynamic-require": 0,
+      "import/no-nodejs-modules": 1,
       "import/no-extraneous-dependencies": 0,
       "import/no-named-as-default": 0,
       "import/no-unresolved": 2,
       "import/no-webpack-loader-syntax": 0,
       "import/prefer-default-export": 0,
-
       indent: [2, 2, {
         SwitchCase: 1,
       }],
-
       "jsx-a11y/aria-props": 2,
       "jsx-a11y/heading-has-content": 0,
-
       "jsx-a11y/label-has-associated-control": [2, {
         controlComponents: ["Input"],
       }],
-
       "jsx-a11y/label-has-for": 0,
       "jsx-a11y/mouse-events-have-key-events": 2,
       "jsx-a11y/role-has-required-aria-props": 2,
@@ -83,7 +87,7 @@ export default [
       "newline-per-chained-call": 0,
       "no-confusing-arrow": 0,
       "no-console": 1,
-      "no-unused-vars": 2,
+      "no-unused-vars": 2, 
       "no-use-before-define": 0,
       "prefer-template": 2,
       "react/destructuring-assignment": 0,
@@ -101,23 +105,6 @@ export default [
       "redux-saga/no-yield-in-race": 2,
       "redux-saga/yield-effects": 2,
       "require-yield": 0,
-    },
-    languageOptions: {
-      globals: {
-        ...globals.jest,
-        ...globals.browser,
-        ...globals.node,
-      },
-
-      parser: babelParser,
-      ecmaVersion: 6,
-      sourceType: "module",
-
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
-        },
-      },
     },
   },
   {

@@ -1,6 +1,7 @@
 /**
  * Shared context menu for message actions (Reply, Edit)
  */
+
 import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';

@@ -1,6 +1,7 @@
 /**
  * User context menu is, of course, the context menu for user interactions
  */
+
 import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';

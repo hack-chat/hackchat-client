@@ -80,8 +80,6 @@ const communicationProviderReducer = (state = initialState, action) =>
         });
         break;
       case CHANGE_CHANNEL:
-        draft.channel = action.channel;
-        break;
       case START_JOIN:
         draft.channel = action.channel;
         break;
@@ -137,19 +135,31 @@ const communicationProviderReducer = (state = initialState, action) =>
         });
         break;
       case JOINED_CHANNEL:
-        return produce(state, (draft) => {
-          draft.pendingCaptcha = false;
-          draft.pendingPasswordReq = false;
+        draft.pendingCaptcha = false;
+        draft.pendingPasswordReq = false;
 
-          if (typeof draft.channels[action.data.channel] === 'undefined') {
-            draft.channels[action.data.channel] = {
-              users: action.data.users,
-              messages: [],
+        if (typeof draft.channels[action.data.channel] === 'undefined') {
+          draft.channels[action.data.channel] = {
+            users: action.data.users,
+            messages: [],
+          };
+        } else {
+          const existingUsers = draft.channels[action.data.channel].users;
+          const newUsers = action.data.users;
+
+          Object.keys(existingUsers).forEach((userid) => {
+            existingUsers[userid].online = false;
+          });
+
+          Object.keys(newUsers).forEach((userid) => {
+            existingUsers[userid] = {
+              ...existingUsers[userid],
+              ...newUsers[userid],
+              online: true,
             };
-          } else {
-            draft.channels[action.data.channel].users = action.data.users;
-          }
-        });
+          });
+        }
+        break;
       case DEBUG:
         //
         break;
@@ -165,7 +175,10 @@ const communicationProviderReducer = (state = initialState, action) =>
         });
         break;
       case USER_LEFT:
-        draft.channels[action.channel].users[action.user.userid].online = false;
+        if (draft.channels[action.channel]?.users[action.user.userid]) {
+          draft.channels[action.channel].users[action.user.userid].online =
+            false;
+        }
         draft.channels[action.channel].messages.push({
           type: 'leave',
           data: {
@@ -208,18 +221,16 @@ const communicationProviderReducer = (state = initialState, action) =>
         }
         break;
       case GOT_CAPTCHA:
-        return produce(state, (draft) => {
-          draft.pendingCaptcha = {
-            channel: action.data.channel,
-            text: action.data.text,
-          };
-        });
+        draft.pendingCaptcha = {
+          channel: action.data.channel,
+          text: action.data.text,
+        };
+        break;
       case GOT_PASSWORD_REQ:
-        return produce(state, (draft) => {
-          draft.pendingPasswordReq = {
-            channel: action.data.channel,
-          };
-        });
+        draft.pendingPasswordReq = {
+          channel: action.data.channel,
+        };
+        break;
       case INFORMATION:
         if (action.data.channel && draft.channels[action.data.channel]) {
           draft.channels[action.data.channel].messages.push({
@@ -280,48 +291,34 @@ const communicationProviderReducer = (state = initialState, action) =>
           },
         });
         break;
-      case IGNORE_USER:
-        if (draft.channels[action.channel].users[action.userid].blocked) {
-          draft.channels[action.channel].users[action.userid].blocked = false;
+      case IGNORE_USER: {
+        const toBlock = draft.channels[action.channel].users[action.userid];
+        if (toBlock && !toBlock.blocked) {
+          toBlock.blocked = true;
           draft.channels[action.channel].messages.push({
             type: 'info',
             data: {
               // yes, this is lazy af
-              text: `👁️ @${draft.channels[action.channel].users[action.userid].username}`,
-            },
-          });
-        } else {
-          draft.channels[action.channel].users[action.userid].blocked = true;
-          draft.channels[action.channel].messages.push({
-            type: 'info',
-            data: {
-              // yes, this is also lazy af
-              text: `🚫 @${draft.channels[action.channel].users[action.userid].username}`,
+              text: `🚫 @${toBlock.username}`,
             },
           });
         }
         break;
-      case UNIGNORE_USER:
-        if (draft.channels[action.channel].users[action.userid].blocked) {
-          draft.channels[action.channel].users[action.userid].blocked = false;
-          draft.channels[action.channel].messages.push({
-            type: 'info',
-            data: {
-              // yes, this is lazy af
-              text: `👁️ @${draft.channels[action.channel].users[action.userid].username}`,
-            },
-          });
-        } else {
-          draft.channels[action.channel].users[action.userid].blocked = true;
+      }
+      case UNIGNORE_USER: {
+        const toUnblock = draft.channels[action.channel].users[action.userid];
+        if (toUnblock && toUnblock.blocked) {
+          toUnblock.blocked = false;
           draft.channels[action.channel].messages.push({
             type: 'info',
             data: {
               // yes, this is also lazy af
-              text: `🚫 @${draft.channels[action.channel].users[action.userid].username}`,
+              text: `👁️ @${toUnblock.username}`,
             },
           });
         }
         break;
+      }
       case NEW_TX_REQUEST:
         draft.channels[action.channel].messages.push({
           type: 'tx_request',
@@ -329,6 +326,8 @@ const communicationProviderReducer = (state = initialState, action) =>
             tx: action.tx,
             tx_type: action.tx_type,
             from: action.from,
+            imageUrl: action.imageUrl,
+            timestamp: Date.now(),
           },
         });
         break;
@@ -378,10 +377,9 @@ const communicationProviderReducer = (state = initialState, action) =>
         break;
       }
       case CLEAR_AUTH_REQS:
-        return produce(state, (draft) => {
-          draft.pendingCaptcha = false;
-          draft.pendingPasswordReq = false;
-        });
+        draft.pendingCaptcha = false;
+        draft.pendingPasswordReq = false;
+        break;
     }
   });
 

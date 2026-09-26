@@ -24,6 +24,7 @@ import {
 import {
   Connection,
   Transaction,
+  VersionedTransaction,
   ComputeBudgetProgram,
   SystemProgram,
 } from '@solana/web3.js';
@@ -130,9 +131,22 @@ function* performTransaction(action) {
     let transactionBytes = Uint8Array.from(atob(encodedPayload), (c) =>
       c.charCodeAt(0),
     );
-    let transaction = Transaction.from(transactionBytes);
-    let simulationSuccess = false;
 
+    let transaction;
+    let isVersioned = false;
+
+    try {
+      transaction = Transaction.from(transactionBytes);
+    } catch (err) {
+      if (err.message && err.message.includes('Versioned')) {
+        transaction = VersionedTransaction.deserialize(transactionBytes);
+        isVersioned = true;
+      } else {
+        throw err;
+      }
+    }
+
+    let simulationSuccess = false;
     const fixedAccounts = new Set();
     const MAX_RETRIES = 5;
     let retries = 0;
@@ -158,6 +172,12 @@ function* performTransaction(action) {
         if (errorStr.includes('InsufficientFundsForRent')) {
           // eslint-disable-next-line no-console
           console.log('Detected Rent Problem. Analyzing...');
+
+          if (isVersioned) {
+            throw new Error(
+              'Transaction failed: Insufficient funds for rent. (Auto-fix is unsupported for compressed v0 transactions).',
+            );
+          }
 
           const rentExemptLamports = yield call(
             [connection, 'getMinimumBalanceForRentExemption'],
@@ -318,6 +338,8 @@ function* connectWalletSaga(action) {
         name,
       }));
 
+      yield put({ type: WAITING_ON_WALLET, waiting: false });
+
       yield put({
         type: CONNECT_SUCCESS,
         wallet: {
@@ -369,6 +391,8 @@ function* disconnectWalletSaga() {
     WALLET_CACHE.liveAccounts = [];
     WALLET_CACHE.activeWallet = null;
     WALLET_CACHE.activeAccount = null;
+
+    yield put({ type: WAITING_ON_WALLET, waiting: false });
 
     yield put(setAuthToken(null));
     yield put({

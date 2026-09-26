@@ -187,6 +187,11 @@ const messages = {
     id: `${scope}.err.Channel.DEY_BANNED`,
     defaultMessage: "You're banned, lmao",
   },
+  errChannelCloseWarning: {
+    id: `${scope}.err.Channel.CLOSE_WARNING`,
+    defaultMessage:
+      'WARNING: Closing this channel will permanently un-claim the namespace, wipe all moderators, refund your storage rent, and BURN your ownership NFT',
+  },
 
   errInviteRatelimit: {
     id: `${scope}.err.Invite.RATELIMIT`,
@@ -206,9 +211,16 @@ const messages = {
   },
   errClaimChannelAlreadyOwned: {
     id: `${scope}.err.ClaimChannel.ALREADY_OWNED`,
-    defaultMessage: `Failed to take ownership:
-This channel is already owned by the trip "{ownerTrip}",
-until {claimExpires}`,
+    defaultMessage:
+      '?{channel} has already been claimed by [{short}](https://solscan.io/account/{owner})',
+  },
+  errClaimChannelMustMint: {
+    id: `${scope}.err.ClaimChannel.MUST_MINT`,
+    defaultMessage: `?{channel} must be minted first, use: /mintchannel`,
+  },
+  errClaimChannelAcceptClaim: {
+    id: `${scope}.err.ClaimChannel.ACCEPT_CLAIM`,
+    defaultMessage: `Accept the following to claim ownership:`,
   },
 
   errMakePrivateMissingPerms: {
@@ -616,6 +628,14 @@ until {claimExpires}`,
     id: `${scope}.info.ChannelInfo.NO_PASS`,
     defaultMessage: 'Channel does not currently have a password',
   },
+  infoChannelInfoRequestingOwnership: {
+    id: `${scope}.info.ChannelInfo.REQUESTING_OWNERSHIP`,
+    defaultMessage: 'Requesting ownership. . .',
+  },
+  infoChannelInfoAcceptChanges: {
+    id: `${scope}.info.ChannelInfo.ACCEPT_CHANGES`,
+    defaultMessage: 'Accept the following to make it permanent:',
+  },
 };
 
 export const ERROR_ID = [];
@@ -650,6 +670,7 @@ ERROR_ID[35] = messages.errJoinLegacyRestrict;
 ERROR_ID[41] = messages.errChannelInvalidName;
 ERROR_ID[42] = messages.errChannelInvalidLength;
 ERROR_ID[43] = messages.errChannelDeyBanned;
+ERROR_ID[44] = messages.errChannelCloseWarning;
 
 // Invite Errors
 ERROR_ID[51] = messages.errInviteRatelimit;
@@ -660,6 +681,8 @@ ERROR_ID[61] = messages.errSaveConfigGeneralFailure;
 // ClaimChannel Errors
 ERROR_ID[71] = messages.errClaimChannelModsCant;
 ERROR_ID[72] = messages.errClaimChannelAlreadyOwned;
+ERROR_ID[73] = messages.errClaimChannelMustMint;
+ERROR_ID[74] = messages.errClaimChannelAcceptClaim;
 
 // MakePrivate Errors
 ERROR_ID[81] = messages.errMakePrivateMissingPerms;
@@ -795,5 +818,7 @@ INFO_ID[1602] = messages.infoChannelInfoPermsChanged;
 INFO_ID[1603] = messages.infoChannelInfoMotdChanged;
 INFO_ID[1604] = messages.infoChannelInfoOwnerReset;
 INFO_ID[1605] = messages.infoChannelInfoNoPass;
+INFO_ID[1606] = messages.infoChannelInfoRequestingOwnership;
+INFO_ID[1607] = messages.infoChannelInfoAcceptChanges;
 
 export default defineMessages(messages);

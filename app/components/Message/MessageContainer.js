@@ -1,7 +1,7 @@
 /**
  * Exports a styled div
  *
- * @todo add perf option, enabling and disabling:
+ * @todo? add perf option, enabling and disabling:
  * content-visibility: auto;
  * contain-intrinsic-size: auto 24px;
  */
@@ -21,4 +21,5 @@ const MessageContainer = styled.div`
     flex-direction: row;
   }
 `;
+
 export default MessageContainer;

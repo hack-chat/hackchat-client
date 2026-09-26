@@ -2,6 +2,7 @@
  * LocaleModal exports the ui rendering functions to display the popup that allows
  * the user to change the current language
  */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';

@@ -1,6 +1,7 @@
 /**
  * Exports a styled span
  */
+
 import styled from 'styled-components';
 import { applyEffect } from './NameStyle';
 

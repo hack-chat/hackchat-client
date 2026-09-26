@@ -7,6 +7,17 @@ import styled from 'styled-components';
 const WarnStyle = styled.div`
   color: ${({ theme }) => theme.palette.status.error};
   font-family: 'DejaVu Sans Mono', monospace;
+
+  & > p {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  & > a,
+  & > p > a,
+  & > p > span > a {
+    color: ${({ theme }) => theme.palette.accent.main};
+  }
 `;
 
 export default WarnStyle;

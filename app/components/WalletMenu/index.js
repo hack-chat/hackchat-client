@@ -1,6 +1,7 @@
 /**
  * WalletMenu component handles wallet connection and account selection modals.
  */
+
 import React, { useState, useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';

@@ -3,6 +3,7 @@
  *
  * This contains all the text for the WalletMenu component.
  */
+
 import { defineMessages } from 'react-intl';
 
 export const scope = 'hcclient.components.WalletMenu';
@@ -18,10 +19,10 @@ export default defineMessages({
   },
   noWalletsFound: {
     id: `${scope}.noWalletsFound`,
-    defaultMessage: 'No wallets found.',
+    defaultMessage: 'No wallets found',
   },
   installWalletNotice: {
     id: `${scope}.installWalletNotice`,
-    defaultMessage: 'Please install a Solana-compatible wallet.',
+    defaultMessage: 'You must install a Solana-compatible wallet',
   },
 });

@@ -392,6 +392,7 @@ function initWebsocket() {
         tx_type: payload.type,
         channel: payload.channel,
         from: payload.from,
+        imageUrl: payload.imageUrl,
       });
 
     const onUpdateMessage = (payload) =>

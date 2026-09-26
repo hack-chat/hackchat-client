@@ -1,6 +1,7 @@
 /**
  * This contains all the text for the LocaleModal component
  */
+
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({

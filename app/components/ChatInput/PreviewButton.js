@@ -1,6 +1,7 @@
 /**
  * Exports a styled button
  */
+
 import styled from 'styled-components';
 
 export default styled.button.attrs({

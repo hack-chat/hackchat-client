@@ -1,6 +1,7 @@
 /**
  * Exports an extended MessageContent component
  */
+
 import styled from 'styled-components';
 import MessageContent from './MessageContent';
 

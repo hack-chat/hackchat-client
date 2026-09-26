@@ -4,6 +4,7 @@
  * KaTeX math, syntax highlighting, spoiler tags, and image rendering, while
  * hooking into Redux to dynamically toggle these features based on user settings.
  */
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';

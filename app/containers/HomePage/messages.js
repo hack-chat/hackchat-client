@@ -1,6 +1,7 @@
 /**
  * This contains all the text for the HomePage component
  */
+
 import { defineMessages } from 'react-intl';
 
 export const scope = 'hcclient.containers.HomePage';
@@ -81,7 +82,7 @@ export default defineMessages({
   externalLinkWarning: {
     id: `${scope}.externalLinkWarning`,
     defaultMessage:
-      'You are about to visit an external link. This may compromise your security and privacy. Please be careful!',
+      'You are about to visit an external link. This may compromise your security and privacy. Be careful!',
   },
   suppressWarningText: {
     id: `${scope}.suppressWarningText`,
@@ -89,12 +90,11 @@ export default defineMessages({
   },
   txWarningHeader: {
     id: `${scope}.txWarningHeader`,
-    defaultMessage: 'Third-Party Transaction Warning',
+    defaultMessage: 'Authorize Request',
   },
   txWarningBody: {
     id: `${scope}.txWarningBody`,
-    defaultMessage:
-      'This transaction request was sent by a 3rd party. Please review the raw transaction data below before proceeding.',
+    defaultMessage: 'Review the transaction details below before signing',
   },
   txCopy: {
     id: `${scope}.txCopy`,
@@ -102,10 +102,14 @@ export default defineMessages({
   },
   txSignAndSend: {
     id: `${scope}.txSignAndSend`,
-    defaultMessage: 'Sign & Send',
+    defaultMessage: 'Proceed',
   },
   connectionSlowText: {
     id: `${scope}.connectionSlowText`,
     defaultMessage: 'Connecting is taking longer than usual. . .',
+  },
+  txBreakdown: {
+    id: `${scope}.txBreakdown`,
+    defaultMessage: 'View Transaction Breakdown ({count} instructions)',
   },
 });

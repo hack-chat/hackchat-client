@@ -1,6 +1,7 @@
 /**
  * This contains all the text for the JoinModal component
  */
+
 import { defineMessages } from 'react-intl';
 
 export const scope = 'hcclient.components.JoinMenu';

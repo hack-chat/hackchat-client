@@ -18,6 +18,13 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import DOMPurify from 'dompurify';
+import {
+  PublicKey,
+  Transaction,
+  VersionedTransaction,
+  TransactionMessage,
+  AddressLookupTableAccount,
+} from '@solana/web3.js';
 
 import { FaMarkdown, FaGithub } from 'react-icons/fa6';
 import { SiLatex } from 'react-icons/si';
@@ -93,8 +100,6 @@ import ModalHeader from './ModalHeader';
 import ModalBody from './ModalBody';
 import ModalLabel from './ModalLabel';
 import ModalActions from './ModalActions';
-import CodeBox from './CodeBox';
-import CodeText from './CodeText';
 import CodeAction from './CodeAction';
 import ResetButton from './ResetButton';
 import CaptchaText from './CaptchaText';
@@ -104,6 +109,17 @@ import SlowWarningText from './SlowWarningText';
 import AuthModalHeader from './AuthModalHeader';
 import AuthInput from './AuthInput';
 import HiddenInput from './HiddenInput';
+import TxPreviewImage from './TxPreviewImage';
+import TxSummaryContainer from './TxSummaryContainer';
+import TxTotalSol from './TxTotalSol';
+import TxFeesSummary from './TxFeesSummary';
+import TxDetails from './TxDetails';
+import TxSummaryToggle from './TxSummaryToggle';
+import TxInstructionList from './TxInstructionList';
+import TxInstructionItem from './TxInstructionItem';
+import TxInstructionHeader from './TxInstructionHeader';
+import TxInstructionDetail from './TxInstructionDetail';
+import TxInstructionPid from './TxInstructionPid';
 
 const useUrlChannel = () => {
   const { search } = useLocation();
@@ -275,12 +291,12 @@ export function HomePage({
   );
 
   const handleTxAttemptClick = useCallback(
-    (tx) => {
+    (payload) => {
       if (suppressTxWarning) {
-        onDoTransfer(tx);
+        onDoTransfer(payload.tx);
       } else {
         setTempSuppressTxCheckbox(false);
-        setTxToWarn(tx);
+        setTxToWarn(payload);
       }
     },
     [suppressTxWarning, onDoTransfer],
@@ -459,9 +475,9 @@ export function HomePage({
   }, [pendingPasswordReq]);
 
   const handleCopyTx = async () => {
-    if (txToWarn) {
+    if (txToWarn && txToWarn.tx) {
       try {
-        await navigator.clipboard.writeText(txToWarn);
+        await navigator.clipboard.writeText(txToWarn.tx);
       } catch (err) {
         // eslint-disable-next-line no-console
         console.error('Failed to copy transaction', err);
@@ -590,6 +606,257 @@ export function HomePage({
       </Center>
     </FadeInContainer>
   );
+
+  const {
+    parsedInstructions,
+    payloadSol,
+    networkFeeSol,
+    totalSol,
+    totalLamports,
+  } = useMemo(() => {
+    if (!txToWarn?.tx)
+      return {
+        parsedInstructions: [],
+        payloadSol: '0',
+        networkFeeSol: '0',
+        totalSol: '0',
+        totalLamports: 0,
+      };
+
+    const KNOWN_WALLETS = {
+      HaCKy1tUTBDkfUkcYcUFkhC887ucAs3tEjcmqRa5cHat: '🏦 hack.chat Treasury',
+      AutHysEUfKrWDETzrDA7S7MwL1eSSc2BjySR2W8EuSEr:
+        '📜 hack.chat Smart Contract',
+      HACkoKCBiLiWjuVf4S4gTbFqJohVC6VkacBEBTtUCHat: '🔑 SC Upgrade Authority',
+      HaCkAvuxxfnfNLfnENxQ1V3aHCjgDS1rMNYcm4qWsYNC: '🖼️ NFT Master Collection',
+      AuTHa7GoqCvm8Hp1epZMwvpwkuYCZ1SAdbtzVeNbUser: '⚙️ Server Hot Wallet',
+    };
+
+    const HACKCHAT_ALT_ACCOUNT = new AddressLookupTableAccount({
+      key: new PublicKey('GQij98JJ75GRBJZbjTgAtt8Y575U7XrVDsNYcgD1Fh4H'),
+      state: {
+        deactivationSlot: BigInt('18446744073709551615'),
+        lastExtendedSlot: 0,
+        lastExtendedSlotStartIndex: 0,
+        authority: new PublicKey(
+          'AuTHa7GoqCvm8Hp1epZMwvpwkuYCZ1SAdbtzVeNbUser',
+        ),
+        addresses: [
+          /*
+            00: System Program
+            01: Token Program
+            02: ATA Program
+            03: Metadata Program
+            04: Smart Contract
+            05: Compute Budget
+            06: Treasury
+            07: Server
+            08: Master Collection
+            09: Master Collection Metadata PDA
+            10: Master Collection Edition PDA
+            11: Sysvar Rent
+          */
+          new PublicKey('11111111111111111111111111111111'),
+          new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'),
+          new PublicKey('ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL'),
+          new PublicKey('metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s'),
+          new PublicKey('AutHysEUfKrWDETzrDA7S7MwL1eSSc2BjySR2W8EuSEr'),
+          new PublicKey('ComputeBudget111111111111111111111111111111'),
+          new PublicKey('HaCKy1tUTBDkfUkcYcUFkhC887ucAs3tEjcmqRa5cHat'),
+          new PublicKey('AuTHa7GoqCvm8Hp1epZMwvpwkuYCZ1SAdbtzVeNbUser'),
+          new PublicKey('HaCkAvuxxfnfNLfnENxQ1V3aHCjgDS1rMNYcm4qWsYNC'),
+          new PublicKey('CSWL7CLamvMcUDKDqKpjED29YHgwiCz2aUmMwpGnYEfo'),
+          new PublicKey('2LUBQq1QuvUs5qaDxo1SL9UHpan2scqFmsjJTAsa3ZBT'),
+          new PublicKey('SysvarRent111111111111111111111111111111111'),
+        ],
+      },
+    });
+
+    const formatSol = (lamports) => {
+      let str = (lamports / 1000000000).toFixed(9);
+      str = str.replace(/0+$/, '');
+      if (str.endsWith('.')) str += '0';
+      return str;
+    };
+
+    const readBorshString = (dataView, offset) => {
+      const len = dataView.getUint32(offset, true);
+      const bytes = new Uint8Array(
+        dataView.buffer,
+        dataView.byteOffset + offset + 4,
+        len,
+      );
+      return new TextDecoder().decode(bytes);
+    };
+
+    try {
+      const binaryString = atob(txToWarn.tx);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+
+      let transactionInstructions = [];
+
+      try {
+        const transaction = Transaction.from(bytes);
+        transactionInstructions = transaction.instructions;
+      } catch (err) {
+        if (err.message.includes('Versioned')) {
+          const versionedTx = VersionedTransaction.deserialize(bytes);
+          try {
+            const decompiled = TransactionMessage.decompile(
+              versionedTx.message,
+              {
+                addressLookupTableAccounts: [HACKCHAT_ALT_ACCOUNT],
+              },
+            );
+            transactionInstructions = decompiled.instructions;
+          } catch (decompileErr) {
+            // eslint-disable-next-line no-console
+            console.log('Failed v0', decompileErr);
+
+            return {
+              parsedInstructions: [
+                {
+                  index: 1,
+                  name: '📦 Compressed v0 Transaction',
+                  pid: 'Unknown',
+                  details: 'Proceed to see details', // @todo translation
+                },
+              ],
+              payloadSol: '0',
+              networkFeeSol: '0',
+              totalSol: '0',
+              totalLamports: 0,
+            };
+          }
+        } else {
+          throw err;
+        }
+      }
+
+      let accumulatedLamports = 0;
+      let computeLimit = 200000;
+      let computePriceMicroLamports = 0;
+
+      const instructions = transactionInstructions.map((ix, index) => {
+        const pid = ix.programId.toBase58();
+        let name = '❓ Unknown Program';
+        let details = null;
+
+        const dataView = new DataView(
+          ix.data.buffer,
+          ix.data.byteOffset,
+          ix.data.byteLength,
+        );
+
+        if (pid === '11111111111111111111111111111111') {
+          name = '⚙️ System Program';
+          if (ix.data.length === 12 && dataView.getUint32(0, true) === 2) {
+            const lamports = Number(dataView.getBigUint64(4, true));
+            accumulatedLamports += lamports;
+
+            let destLabel = 'Unknown';
+            if (ix.keys && ix.keys.length > 1) {
+              const destPubkey = ix.keys[1].pubkey.toBase58();
+              destLabel =
+                KNOWN_WALLETS[destPubkey] ||
+                `${destPubkey.slice(0, 4)}...${destPubkey.slice(-4)}`;
+            }
+
+            details = `💸 ${formatSol(lamports)} SOL ➡️ ${destLabel}`;
+          }
+        } else if (pid === 'AutHysEUfKrWDETzrDA7S7MwL1eSSc2BjySR2W8EuSEr') {
+          name = '📜 hack.chat Smart Contract';
+          if (ix.data.length > 0) {
+            const ixType = ix.data[0];
+
+            if (ixType === 0) {
+              const channelName = readBorshString(dataView, 1);
+              details = `📺 ${channelName}`; // Claim Channel
+            } else if (ixType === 1) {
+              details = `♻️ Reclaim`; // Reclaim Channel
+            } else if (ixType === 2) {
+              const tripCode = readBorshString(dataView, 1);
+              details = `🛡️ ${tripCode}`; // Assign Mod
+            } else if (ixType === 3) {
+              const tripCode = readBorshString(dataView, 1);
+              details = `🚫 ${tripCode}`; // Remove Mod
+            } else if (ixType === 4) {
+              details = `❌ Close`; // Burn Channel
+            } else if (ixType === 5) {
+              // Donation
+              const effectId = ix.data[1];
+              const lamports = Number(dataView.getBigUint64(2, true));
+              accumulatedLamports += lamports;
+              details = `🎁 Record Donation: ${formatSol(lamports)} SOL (✨ ${effectId})`;
+            }
+          }
+        } else if (pid === 'ComputeBudget111111111111111111111111111111') {
+          name = '⛽ Compute Budget';
+          if (ix.data.length > 0) {
+            const instructionType = ix.data[0];
+            if (instructionType === 2 && ix.data.length === 5) {
+              computeLimit = dataView.getUint32(1, true);
+              details = `📏 ${computeLimit.toLocaleString()} units`;
+            } else if (instructionType === 3 && ix.data.length === 9) {
+              computePriceMicroLamports = Number(
+                dataView.getBigUint64(1, true),
+              );
+              details = `⚡ ${computePriceMicroLamports.toLocaleString()} µLamports/u`;
+            }
+          }
+        } else if (pid === 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA') {
+          name = '🪙 SPL Token Program';
+        } else if (pid === 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL') {
+          name = '🔗 Associated Token Program';
+        } else if (pid === 'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s') {
+          name = '🖼️ Metaplex Metadata';
+          if (ix.data.length > 0) {
+            const discriminator = ix.data[0];
+            if (discriminator === 33) {
+              const MINT_RENT_LAMPORTS = 18835200; // ~0.0188 SOL rent
+              accumulatedLamports += MINT_RENT_LAMPORTS;
+              details = `📦 Storage Rent (~${formatSol(MINT_RENT_LAMPORTS)} SOL)`;
+            } else if (discriminator === 17) {
+              details = `👑 Master Edition Creation`;
+            } else if (discriminator === 30) {
+              details = `✅ Verify into Master Collection`;
+            }
+          }
+        }
+
+        return { index: index + 1, name, pid, details };
+      });
+
+      const baseFee = 5000;
+      const priorityFeeLamports = Math.floor(
+        (computeLimit * computePriceMicroLamports) / 1000000,
+      );
+      const maxNetworkFeeLamports = baseFee + priorityFeeLamports;
+      const absoluteTotalLamports = accumulatedLamports + maxNetworkFeeLamports;
+
+      return {
+        parsedInstructions: instructions,
+        payloadSol: formatSol(accumulatedLamports),
+        networkFeeSol: formatSol(maxNetworkFeeLamports),
+        totalSol: formatSol(absoluteTotalLamports),
+        totalLamports: absoluteTotalLamports,
+      };
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log('Failed to build breakdown', err);
+
+      return {
+        parsedInstructions: [],
+        payloadSol: '0',
+        networkFeeSol: '0',
+        totalSol: '0',
+        totalLamports: 0,
+      };
+    }
+  }, [txToWarn]);
 
   return (
     <MainContainer>
@@ -732,14 +999,65 @@ export function HomePage({
       <Modal isOpen={!!txToWarn} doToggle={() => setTxToWarn(null)}>
         <ModalHeader>{txWarningHeader}</ModalHeader>
 
-        <ModalBody>{txWarningBody}</ModalBody>
+        <ModalBody>
+          {txWarningBody}
 
-        <CodeBox>
-          <CodeText>{txToWarn}</CodeText>
-          <CodeAction onClick={handleCopyTx} title={txCopy}>
-            {txCopy}
-          </CodeAction>
-        </CodeBox>
+          {(txToWarn?.imageUrl || totalLamports > 0) && (
+            <Center>
+              {txToWarn.imageUrl && (
+                <a
+                  href={txToWarn.imageUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: 'inline-block' }}
+                >
+                  <TxPreviewImage src={txToWarn.imageUrl} />
+                </a>
+              )}
+              {totalLamports > 0 && (
+                <TxSummaryContainer $hasImage={!!txToWarn.imageUrl}>
+                  <TxTotalSol>~{totalSol} SOL</TxTotalSol>
+                  <TxFeesSummary>
+                    📦 {payloadSol} SOL | ⛽ {networkFeeSol} SOL
+                  </TxFeesSummary>
+                </TxSummaryContainer>
+              )}
+            </Center>
+          )}
+
+          {parsedInstructions.length > 0 && (
+            <TxDetails>
+              <TxSummaryToggle>
+                {intl.formatMessage(messages.txBreakdown, {
+                  count: parsedInstructions.length,
+                })}
+              </TxSummaryToggle>
+              <TxInstructionList>
+                {parsedInstructions.map((ix) => (
+                  <TxInstructionItem key={ix.index}>
+                    <TxInstructionHeader>
+                      #{ix.index} {ix.name}
+                    </TxInstructionHeader>
+
+                    {ix.details && (
+                      <TxInstructionDetail>↳ {ix.details}</TxInstructionDetail>
+                    )}
+
+                    <TxInstructionPid>{ix.pid}</TxInstructionPid>
+                  </TxInstructionItem>
+                ))}
+              </TxInstructionList>
+
+              <CodeAction
+                onClick={handleCopyTx}
+                title={txCopy}
+                style={{ marginTop: '0.5rem' }}
+              >
+                {txCopy}
+              </CodeAction>
+            </TxDetails>
+          )}
+        </ModalBody>
 
         <Center>
           <ModalLabel>
@@ -761,7 +1079,7 @@ export function HomePage({
               if (tempSuppressTxCheckbox) {
                 setSuppressTxWarning(true);
               }
-              onDoTransfer(txToWarn);
+              onDoTransfer(txToWarn.tx);
               setTxToWarn(null);
             }}
           >

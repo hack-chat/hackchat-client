@@ -1,6 +1,7 @@
 /**
  * Exports a styled ModalHeader component
  */
+
 import styled from 'styled-components';
 import ModalHeader from './ModalHeader';
 

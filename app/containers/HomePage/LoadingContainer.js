@@ -1,6 +1,7 @@
 /**
  * Exports a styled Center component
  */
+
 import styled from 'styled-components';
 import Center from './Center';
 

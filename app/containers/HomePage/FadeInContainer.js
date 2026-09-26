@@ -1,6 +1,7 @@
 /**
  * Exports an animated div container
  */
+
 import styled, { keyframes } from 'styled-components';
 
 const delayedFade = keyframes`
