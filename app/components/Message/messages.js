@@ -243,21 +243,6 @@ const messages = {
       'Failed to make channel public: This channel is already public',
   },
 
-  errRenewClaimModsCant: {
-    id: `${scope}.err.RenewClaim.MODS_CANT`,
-    defaultMessage:
-      "Failed to renew ownership: You're already a global moderator; it's free real estate. . .",
-  },
-  errRenewClaimNotOwner: {
-    id: `${scope}.err.RenewClaim.NOT_OWNER`,
-    defaultMessage: 'Failed to renew ownership: You may not do that',
-  },
-  errRenewClaimTooSoon: {
-    id: `${scope}.err.RenewClaim.TOO_SOON`,
-    defaultMessage:
-      'Failed to renew ownership: You must wait. Hours until renewable: {timeLeft}',
-  },
-
   errSetLevelBadTrip: {
     id: `${scope}.err.SetLevel.BAD_TRIP`,
     defaultMessage:
@@ -286,16 +271,6 @@ const messages = {
   errSetMotdTooLong: {
     id: `${scope}.err.SetMOTD.TOO_LONG`,
     defaultMessage: 'Failed to set motd: Invalid motd, max length: {maxLength}',
-  },
-
-  errUnclaimChannelNotOwned: {
-    id: `${scope}.err.UnclaimChannel.NOT_OWNED`,
-    defaultMessage:
-      'Failed to release ownership: That which is not owned may not be unowned, and with strange aeons. . .',
-  },
-  errUnclaimChannelFakeOwner: {
-    id: `${scope}.err.UnclaimChannel.FAKE_OWNER`,
-    defaultMessage: 'Failed to release ownership: Wrong trip code',
   },
 
   errChangeColorInvalidColor: {
@@ -692,74 +667,65 @@ ERROR_ID[82] = messages.errMakePrivateAlreadyPrivate;
 ERROR_ID[91] = messages.errMakePublicMissingPerms;
 ERROR_ID[92] = messages.errMakePublicAlreadyPublic;
 
-// RenewClaim Errors
-ERROR_ID[101] = messages.errRenewClaimModsCant;
-ERROR_ID[102] = messages.errRenewClaimNotOwner;
-ERROR_ID[103] = messages.errRenewClaimTooSoon;
-
 // SetLevel Errors
-ERROR_ID[111] = messages.errSetLevelBadTrip;
-ERROR_ID[112] = messages.errSetLevelBadLabel;
-ERROR_ID[113] = messages.errSetLevelBadLevel;
-ERROR_ID[114] = messages.errSetLevelApplyError;
-ERROR_ID[115] = messages.errSetLevelLevelConflict;
+ERROR_ID[101] = messages.errSetLevelBadTrip;
+ERROR_ID[102] = messages.errSetLevelBadLabel;
+ERROR_ID[103] = messages.errSetLevelBadLevel;
+ERROR_ID[104] = messages.errSetLevelApplyError;
+ERROR_ID[105] = messages.errSetLevelLevelConflict;
 
 // SetMOTD Errors
-ERROR_ID[121] = messages.errSetMotdTooLong;
-
-// UnclaimChannel Errors
-ERROR_ID[131] = messages.errUnclaimChannelNotOwned;
-ERROR_ID[132] = messages.errUnclaimChannelFakeOwner;
+ERROR_ID[111] = messages.errSetMotdTooLong;
 
 // ChangeColor Errors
-ERROR_ID[141] = messages.errChangeColorInvalidColor;
+ERROR_ID[121] = messages.errChangeColorInvalidColor;
 
 // Emote Errors
-ERROR_ID[151] = messages.errEmoteMissingText;
+ERROR_ID[131] = messages.errEmoteMissingText;
 
 // Whisper Errors
-ERROR_ID[161] = messages.errWhisperMissingNick;
-ERROR_ID[162] = messages.errWhisperNoReply;
+ERROR_ID[141] = messages.errWhisperMissingNick;
+ERROR_ID[142] = messages.errWhisperNoReply;
 
 // ForceColor Errors
-ERROR_ID[171] = messages.errForceColorMissingNick;
+ERROR_ID[151] = messages.errForceColorMissingNick;
 
 // ForceFlair Errors
-ERROR_ID[181] = messages.errForceFlairInvalidFlair;
-ERROR_ID[182] = messages.errForceFlairMissingNick;
+ERROR_ID[161] = messages.errForceFlairInvalidFlair;
+ERROR_ID[162] = messages.errForceFlairMissingNick;
 
 // Users Errors
-ERROR_ID[191] = messages.errUsersBadHashOrIp;
+ERROR_ID[171] = messages.errUsersBadHashOrIp;
 
 // HackRequest Errors
-ERROR_ID[201] = messages.errHackRequestBadPerms;
-ERROR_ID[202] = messages.errHackRequestRatelimit;
-ERROR_ID[203] = messages.errHackRequestTooLong;
-ERROR_ID[204] = messages.errHackRequestBadUrl;
+ERROR_ID[181] = messages.errHackRequestBadPerms;
+ERROR_ID[182] = messages.errHackRequestRatelimit;
+ERROR_ID[183] = messages.errHackRequestTooLong;
+ERROR_ID[184] = messages.errHackRequestBadUrl;
 
 // Kick Errors
-ERROR_ID[211] = messages.errKickMissingNick;
+ERROR_ID[191] = messages.errKickMissingNick;
 
 // LockRoom Errors
-ERROR_ID[221] = messages.errLockRoomLevelTooHigh;
-ERROR_ID[222] = messages.errLockRoomLevelRequired;
-ERROR_ID[223] = messages.errLockRoomAlreadyLocked;
-ERROR_ID[224] = messages.errLockRoomNoRejoin;
-ERROR_ID[225] = messages.errLockRoomInvalidPassword;
-ERROR_ID[226] = messages.errLockRoomNotLocked;
-ERROR_ID[227] = messages.errLockRoomUnlockReq;
+ERROR_ID[201] = messages.errLockRoomLevelTooHigh;
+ERROR_ID[202] = messages.errLockRoomLevelRequired;
+ERROR_ID[203] = messages.errLockRoomAlreadyLocked;
+ERROR_ID[204] = messages.errLockRoomNoRejoin;
+ERROR_ID[205] = messages.errLockRoomInvalidPassword;
+ERROR_ID[206] = messages.errLockRoomNotLocked;
+ERROR_ID[207] = messages.errLockRoomUnlockReq;
 
 // Wallet Errors
-ERROR_ID[231] = messages.errWalletInvalidAmount;
-ERROR_ID[232] = messages.errWalletUserNotReady;
-ERROR_ID[233] = messages.errWalletRpcError;
-ERROR_ID[234] = messages.errWalletCmdHelp;
-ERROR_ID[235] = messages.errWalletNoSelf;
-ERROR_ID[236] = messages.errWalletBadTx;
-ERROR_ID[237] = messages.errWalletYourNotReady;
+ERROR_ID[211] = messages.errWalletInvalidAmount;
+ERROR_ID[212] = messages.errWalletUserNotReady;
+ERROR_ID[213] = messages.errWalletRpcError;
+ERROR_ID[214] = messages.errWalletCmdHelp;
+ERROR_ID[215] = messages.errWalletNoSelf;
+ERROR_ID[216] = messages.errWalletBadTx;
+ERROR_ID[217] = messages.errWalletYourNotReady;
 
 // Password Errors
-ERROR_ID[241] = messages.errPasswordNoAutoJoin;
+ERROR_ID[221] = messages.errPasswordNoAutoJoin;
 
 // Admin Info
 INFO_ID[1101] = messages.infoAdminYouAreMod;

@@ -161,6 +161,7 @@ export function MainMenu({
         $isOpen={isMenuForcedOpen}
         $menuLeft={menuLeft}
         dir={isLtr ? 'ltr' : 'rtl'}
+        onWheel={(e) => e.stopPropagation()}
       >
         {allowPinning && (
           <PinButton

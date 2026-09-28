@@ -212,8 +212,8 @@ export function HomePage({
   );
 
   const chatInputRef = useRef(null);
-
   const channelUsersRef = useRef({});
+  const chatScrollContainerRef = useRef(null);
 
   useEffect(() => {
     channelUsersRef.current = channelData?.[channel]?.users || {};
@@ -384,6 +384,7 @@ export function HomePage({
     },
     [
       channel,
+      channelData,
       onKickUser,
       onBanUser,
       onIgnoreUser,
@@ -398,6 +399,37 @@ export function HomePage({
   const handleInsertText = useCallback((text) => {
     chatInputRef.current?.insertText(text);
   }, []);
+
+  const handleGlobalWheel = useCallback(
+    (e) => {
+      if (
+        isJoinModalOpen ||
+        isLocaleModalOpen ||
+        externalUrlToWarn ||
+        txToWarn ||
+        pendingCaptcha ||
+        pendingPasswordReq ||
+        isWalletModalOpen ||
+        pendingSignRequest
+      ) {
+        return;
+      }
+
+      if (chatScrollContainerRef.current) {
+        chatScrollContainerRef.current.scrollTop += e.deltaY;
+      }
+    },
+    [
+      isJoinModalOpen,
+      isLocaleModalOpen,
+      externalUrlToWarn,
+      txToWarn,
+      pendingCaptcha,
+      pendingPasswordReq,
+      isWalletModalOpen,
+      pendingSignRequest,
+    ],
+  );
 
   useEffect(() => {
     if (!sessionReady) return;
@@ -831,7 +863,7 @@ export function HomePage({
   }, [txToWarn]);
 
   return (
-    <MainContainer>
+    <MainContainer onWheel={handleGlobalWheel}>
       <Helmet>
         <title>{homepageTitle}</title>
         <meta
@@ -867,6 +899,7 @@ export function HomePage({
             onExternalLinkClick={handleExternalLinkClick}
             onTxAttemptClick={handleTxAttemptClick}
             intl={intl}
+            externalScrollRef={chatScrollContainerRef}
           />
           <ChatInput
             channel={channel}

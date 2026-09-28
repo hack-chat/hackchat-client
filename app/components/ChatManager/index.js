@@ -31,8 +31,10 @@ export function ChatManager({
   onExternalLinkClick,
   onTxAttemptClick,
   intl,
+  externalScrollRef,
 }) {
-  const scrollContainerRef = useRef(null);
+  const internalRef = useRef(null);
+  const scrollContainerRef = externalScrollRef || internalRef;
   const isAtBottomRef = useRef(true);
 
   const [contextMenu, setContextMenu] = useState(null);
