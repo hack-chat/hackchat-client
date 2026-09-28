@@ -356,48 +356,20 @@ export function HomePage({
 
         if (targetUser) {
           if (kickMatch) {
-            // eslint-disable-next-line no-console
-            console.log(`Kicking user: ${username} (ID: ${targetUser.userid})`);
             onKickUser(channel, targetUser.userid);
           } else if (banMatch) {
-            // eslint-disable-next-line no-console
-            console.log(`Banning user: ${username} (ID: ${targetUser.userid})`);
             onBanUser(channel, targetUser.userid);
           } else if (ignoreMatch) {
-            // eslint-disable-next-line no-console
-            console.log(
-              `Ignoring user: ${username} (ID: ${targetUser.userid})`,
-            );
             onIgnoreUser(channel, targetUser.userid);
           } else if (unignoreMatch) {
-            // eslint-disable-next-line no-console
-            console.log(
-              `Unignoring user: ${username} (ID: ${targetUser.userid})`,
-            );
             onUnignoreUser(channel, targetUser.userid);
           } else if (inviteMatch) {
-            // eslint-disable-next-line no-console
-            console.log(
-              `Inviting user: ${username} (ID: ${targetUser.userid})`,
-            );
             onInviteUser(channel, targetUser.userid);
           } else if (muzzleMatch) {
-            // eslint-disable-next-line no-console
-            console.log(
-              `Muzzling user: ${username} (ID: ${targetUser.userid})`,
-            );
             onMuteUser(channel, targetUser.userid);
           } else if (unmuzzleMatch) {
-            // eslint-disable-next-line no-console
-            console.log(
-              `Unmuzzling user: ${username} (ID: ${targetUser.userid})`,
-            );
             onUnmuteUser(channel, targetUser.userid);
           } else if (uwuifyMatch) {
-            // eslint-disable-next-line no-console
-            console.log(
-              `Uwuifying user: ${username} (ID: ${targetUser.userid})`,
-            );
             onUwuifyUser(channel, targetUser.userid);
           }
         } else {
