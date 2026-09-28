@@ -22,6 +22,7 @@ import {
   SolanaSignMessage,
 } from '@solana/wallet-standard-features';
 import {
+  PublicKey,
   Connection,
   Transaction,
   VersionedTransaction,
@@ -46,9 +47,21 @@ import {
   SIGN_MESSAGE_FAILURE,
   WALLETS_SETTLED,
   WAITING_ON_WALLET,
+  CHECK_CHANNEL_INFO,
 } from './constants';
+
+import { INFORMATION } from 'containers/CommunicationProvider/constants';
+
 import { setAuthToken } from './actions';
+
 import messages from './messages';
+
+const SMART_CONTRACT_PROGRAM_ID = new PublicKey(
+  'AutHysEUfKrWDETzrDA7S7MwL1eSSc2BjySR2W8EuSEr',
+);
+
+const shortenAddress = (address) =>
+  `${address.slice(0, 5)}...${address.slice(-5)}`;
 
 const SOLANA_MAINNET_CHAIN = 'solana:mainnet';
 
@@ -65,6 +78,50 @@ const WALLET_CACHE = window.__WALLET_CACHE__;
 
 const RPC_URL = `https://rpc.solanatracker.io/public`;
 const connection = new Connection(RPC_URL, 'confirmed');
+
+function decodeChannelState(data) {
+  const dataView = new DataView(data.buffer, data.byteOffset, data.byteLength);
+  let offset = 0;
+  const discriminator = dataView.getUint8(offset);
+  offset += 1;
+  const nameLen = dataView.getUint32(offset, true);
+  offset += 4;
+  const channelNameBytes = new Uint8Array(
+    data.buffer,
+    data.byteOffset + offset,
+    nameLen,
+  );
+  const channelName = new TextDecoder().decode(channelNameBytes);
+  offset += nameLen;
+  const ownerNftMint = new PublicKey(data.slice(offset, offset + 32));
+  offset += 32;
+  const ownerWallet = new PublicKey(data.slice(offset, offset + 32));
+  offset += 32;
+  const modsLen = dataView.getUint32(offset, true);
+  offset += 4;
+
+  const moderatorTrips = [];
+  for (let i = 0; i < modsLen; i++) {
+    const tripBytes = new Uint8Array(data.buffer, data.byteOffset + offset, 6);
+    const tripStr = new TextDecoder().decode(tripBytes).replace(/\0/g, '');
+    if (tripStr.trim().length > 0) {
+      moderatorTrips.push(tripStr);
+    }
+    offset += 6;
+  }
+
+  const bump = dataView.getUint8(offset);
+  offset += 1;
+
+  return {
+    discriminator,
+    channelName,
+    ownerNftMint,
+    ownerWallet,
+    moderatorTrips,
+    bump,
+  };
+}
 
 function* connectAccountSaga({ account }) {
   const { address } = account;
@@ -587,6 +644,56 @@ function* discoverInitialWalletsSaga() {
   }
 }
 
+function* checkChannelInfoSaga(action) {
+  const { channel } = action;
+
+  try {
+    const [channelPda] = PublicKey.findProgramAddressSync(
+      [new TextEncoder().encode('channel'), new TextEncoder().encode(channel)],
+      SMART_CONTRACT_PROGRAM_ID,
+    );
+
+    const accountInfo = yield call([connection, 'getAccountInfo'], channelPda);
+
+    let infoText = '';
+
+    if (accountInfo !== null) {
+      const decodedState = decodeChannelState(accountInfo.data);
+      const ownerWalletKey = decodedState.ownerWallet.toBase58();
+      const nftMintKey = decodedState.ownerNftMint.toBase58();
+
+      const modsStr =
+        decodedState.moderatorTrips.length > 0
+          ? decodedState.moderatorTrips.join(', ')
+          : '0';
+
+      infoText = `ℹ️ ?${channel}:\n👑: [${shortenAddress(ownerWalletKey)}](https://solscan.io/account/${ownerWalletKey})\n🔑: [${shortenAddress(nftMintKey)}](https://solscan.io/account/${nftMintKey})\n🛡️: ${modsStr}`;
+    } else {
+      infoText = `⚪ ?${channel} 🔓 ➡️ /mintchannel`;
+    }
+
+    yield put({
+      type: INFORMATION,
+      data: {
+        channel: channel,
+        text: infoText,
+      },
+    });
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log('Failed to fetch channel info:', err);
+
+    yield put({
+      type: INFORMATION,
+      data: {
+        channel: channel,
+        text: `RPC error, try again later`,
+        id: 213,
+      },
+    });
+  }
+}
+
 export default function* walletLayerSaga() {
   yield fork(discoverInitialWalletsSaga);
   const listenerChannel = yield call(initWalletListenerChannel);
@@ -602,4 +709,5 @@ export default function* walletLayerSaga() {
   yield takeLatest(DISCONNECT_WALLET, disconnectWalletSaga);
   yield takeLatest(DO_TX, performTransaction);
   yield takeLatest(SIGN_MESSAGE_REQUEST, signMessageSaga);
+  yield takeLatest(CHECK_CHANNEL_INFO, checkChannelInfoSaga);
 }

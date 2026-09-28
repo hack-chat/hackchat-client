@@ -64,6 +64,7 @@ import {
   disconnectWallet,
   signMessageRequest,
   doTransfer,
+  checkChannelInfo,
 } from 'containers/WalletLayer/actions';
 import {
   makeSelectConnectedTo,
@@ -1221,6 +1222,8 @@ export function mapDispatchToProps(dispatch) {
         dispatch(leaveChannel(channel));
       } else if (message.trim() === '/clear') {
         dispatch(clearChannel(channel));
+      } else if (message.trim() === '/channelinfo') {
+        dispatch(checkChannelInfo(channel));
       } else {
         dispatch(sendChat(channel, message));
       }

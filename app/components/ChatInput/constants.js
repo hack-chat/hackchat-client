@@ -50,7 +50,9 @@ export const KAOMOJI = {
 
 export const COMMANDS = [
   { command: 'ban', params: ['username'] },
+  { command: 'channelinfo', params: [] },
   { command: 'claimchannel', params: [] },
+  { command: 'clear', params: [] },
   { command: 'clearpassword', params: [] },
   { command: 'closechannel', params: [] },
   { command: 'color', params: ['rgbHex'] },
@@ -84,7 +86,6 @@ export const COMMANDS = [
   { command: 'w', params: ['username', 'text'] },
   { command: 'wallet', params: ['<username>'] },
   { command: 'whisper', params: ['username', 'text'] },
-  { command: 'clear', params: [] },
 
   // { command: 'addmod', params: ['tripCode'] },
   // { command: 'disconnect', params: [] },

@@ -14,6 +14,7 @@ import {
   SIGN_MESSAGE_SUCCESS,
   SIGN_MESSAGE_FAILURE,
   SET_PENDING_SIGN_REQUEST,
+  CHECK_CHANNEL_INFO,
 } from './constants';
 
 /**
@@ -77,6 +78,7 @@ export function doTransfer(encodedPayload) {
  * Commit to signing message
  * @param {number} wallet Wallet id
  * @param {number} message Wallet account id
+ * @return {object} An action object with a type of SIGN_MESSAGE_REQUEST
  */
 export function signMessageRequest(wallet, message) {
   return {
@@ -88,7 +90,8 @@ export function signMessageRequest(wallet, message) {
 
 /**
  * Update the auth token in redux
- * @param {number} token String
+ * @param {string} token JWT token
+ * @return {object} An action object with a type of SET_AUTH_TOKEN
  */
 export function setAuthToken(token) {
   return {
@@ -99,7 +102,8 @@ export function setAuthToken(token) {
 
 /**
  * Update the auth token in redux
- * @param {number} token String
+ * @param {number} account Account id
+ * @return {object} An action object with a type of SET_ACTIVE_ACCOUNT
  */
 export function setActiveAccount(account) {
   return {
@@ -110,7 +114,8 @@ export function setActiveAccount(account) {
 
 /**
  * Update the auth token in redux
- * @param {number} token String
+ * @param {object} payload { signature, signedMessage }
+ * @return {object} An action object with a type of SIGN_MESSAGE_SUCCESS
  */
 export function signMessageSuccess({ signature, signedMessage }) {
   return {
@@ -122,7 +127,8 @@ export function signMessageSuccess({ signature, signedMessage }) {
 
 /**
  * Update the auth token in redux
- * @param {number} token String
+ * @param {string} error Error message
+ * @return {object} An action object with a type of SIGN_MESSAGE_FAILURE
  */
 export function signMessageFailure(error) {
   return {
@@ -133,11 +139,24 @@ export function signMessageFailure(error) {
 
 /**
  * Store the sign request in redux so the UI can display a modal
- * @param {object} payload { wallet, message }
+ * @param {object} payload Incoming payload
+ * @return {object} An action object with a type of SET_PENDING_SIGN_REQUEST
  */
 export function setPendingSignRequest(payload) {
   return {
     type: SET_PENDING_SIGN_REQUEST,
     payload,
+  };
+}
+
+/**
+ * Request channel ownership and mods
+ * @param {object} channel Target channel
+ * @return {object} An action object with a type of CHECK_CHANNEL_INFO
+ */
+export function checkChannelInfo(channel) {
+  return {
+    type: CHECK_CHANNEL_INFO,
+    channel,
   };
 }
