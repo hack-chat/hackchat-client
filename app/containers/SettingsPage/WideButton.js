@@ -16,7 +16,6 @@ export default styled.button.attrs({
   color: ${({ theme }) => theme.palette.text.primary};
   border: 1px solid ${({ theme }) => theme.palette.border.light};
   border-radius: 4px;
-  font-family: monospace;
   font-weight: bold;
   transition: all 0.2s ease;
   display: flex;

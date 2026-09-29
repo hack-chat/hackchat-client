@@ -14,7 +14,6 @@ export default styled.div`
   flex-shrink: 0;
   padding: 0;
   margin: 0;
-  font-family: monospace;
   font-size: 1.1em;
   background-color: ${({ theme }) => theme.palette.background.alt};
   color: ${({ theme }) => theme.palette.text.secondary};

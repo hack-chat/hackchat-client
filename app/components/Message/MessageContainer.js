@@ -14,7 +14,7 @@ const MessageContainer = styled.div`
 
   & > div:last-child {
     padding-top: 0.3em;
-    padding-bottom: 0.3em;
+    padding-bottom: ${({ theme }) => theme.padding.chat.msgSpacing};
   }
 
   @media (width >= 768px) {

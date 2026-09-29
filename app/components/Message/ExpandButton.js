@@ -11,7 +11,6 @@ const ExpandButton = styled.button`
   cursor: pointer;
   padding: 4px 0 0;
   font-size: 0.9em;
-  font-family: 'DejaVu Sans Mono', monospace;
   text-decoration: underline;
 
   &:hover {

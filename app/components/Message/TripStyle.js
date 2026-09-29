@@ -20,7 +20,6 @@ const TripStyle = styled.span`
   display: inline-block;
   margin-inline-end: 0.5em;
   font-size: 0.7rem;
-  font-family: 'DejaVu Sans Mono', monospace;
 
   ${getFlair}
 `;

@@ -8,7 +8,6 @@ export default styled.button.attrs({
   type: 'button',
 })`
   cursor: pointer;
-  font-family: monospace;
   font-size: 1.25rem;
   min-height: 46px;
   width: max-content;

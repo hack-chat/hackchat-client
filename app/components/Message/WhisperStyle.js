@@ -21,7 +21,6 @@ const WhisperStyle = styled.div`
   color: ${({ theme }) => theme.palette.status.info};
   white-space: pre-wrap;
   word-wrap: break-word;
-  font-family: 'DejaVu Sans Mono', monospace;
   max-height: 50vh;
   overflow-y: auto;
   min-width: 0;

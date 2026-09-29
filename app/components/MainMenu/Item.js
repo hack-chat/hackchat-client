@@ -15,7 +15,7 @@ const getFontWeight = (props) => {
 };
 
 export default styled.li`
-  padding: 0.4rem 0.2rem;
+  padding: ${({ theme }) => theme.padding.mainMenu.buttons};
   color: ${({ theme }) => theme.palette.text.primary};
   cursor: pointer;
   border-radius: 4px;

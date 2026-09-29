@@ -232,7 +232,6 @@ export const applyEffect = (effect) => {
 };
 
 const NameStyle = styled.div`
-  font-family: 'DejaVu Sans Mono', monospace;
   color: ${(props) => props.$color || props.theme.palette.text.white};
   padding-top: 0.25em;
   padding-bottom: 0.25em;

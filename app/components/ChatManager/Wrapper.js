@@ -31,6 +31,6 @@ export default styled.div`
   }
 
   & > div:last-child > div:last-child {
-    padding-bottom: 1.5em;
+    padding-bottom: ${({ theme }) => theme.padding.chat.lastChild};
   }
 `;

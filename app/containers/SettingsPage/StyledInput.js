@@ -20,7 +20,6 @@ export default styled.input`
   padding: 0 16px;
   background-color: transparent;
   color: ${({ theme }) => theme.palette.text.primary};
-  font-family: monospace;
   border: 1px solid ${getBorderColor};
   border-radius: 4px;
   margin-bottom: 12px;

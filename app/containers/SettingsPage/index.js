@@ -47,7 +47,7 @@ import ThemeRow from './ThemeRow';
 import FooterSection from './FooterSection';
 import ThemeSelect from './ThemeSelect';
 
-const AVAILABLE_THEMES = ['default', 'light', 'hacker'];
+const AVAILABLE_THEMES = ['default', 'light', 'hacker', 'mlg-gamer'];
 
 import {
   setUsername,

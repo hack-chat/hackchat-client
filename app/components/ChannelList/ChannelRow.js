@@ -10,7 +10,6 @@ export default styled.div`
   align-items: center;
   padding: 12px 1em;
   border-bottom: 1px solid ${({ theme }) => theme.palette.border.subtle};
-  font-family: monospace;
   color: ${({ theme }) => theme.palette.text.primary};
   cursor: pointer;
 

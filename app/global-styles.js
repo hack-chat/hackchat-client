@@ -5,6 +5,8 @@
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
+  ${({ theme }) => theme.typography?.import || ''}
+
   html,
   body {
     height: 100dvh;
@@ -15,6 +17,8 @@ const GlobalStyle = createGlobalStyle`
   body {
     background: ${({ theme }) => theme.palette.background.main};
     color: ${({ theme }) => theme.palette.text.secondary};
+    font-size: ${({ theme }) => theme.typography.fontSize};
+    tab-size: 4;
   }
 
   body::-webkit-scrollbar {
@@ -39,10 +43,11 @@ const GlobalStyle = createGlobalStyle`
 
   body,
   input,
-  textarea {
-    font-family: 'DejaVu Sans Mono', monospace;
-    font-size: 12px;
-    tab-size: 4;
+  textarea,
+  button,
+  select {
+    font-family: ${({ theme }) => theme.typography?.primary || "'DejaVu Sans Mono', monospace"};
+    letter-spacing: ${({ theme }) => theme.typography.letterSpacing};
   }
 
   input,
@@ -60,7 +65,6 @@ const GlobalStyle = createGlobalStyle`
   }
 
   h4 {
-    font-size: 12px;
     margin: 1em 0;
     font-weight: bold;
   }
@@ -195,16 +199,12 @@ const GlobalStyle = createGlobalStyle`
     vertical-align: 3px;
   }
 
-  @keyframes rainbow-animation {
-    0%,
-    100% {
-      background-position: 0 0;
-    }
-
-    50% {
-      background-position: 100% 0;
-    }
+  :focus-visible {
+    outline: 2px dashed ${({ theme }) => theme.palette.border.focus};
+    outline-offset: 2px;
   }
+
+  ${({ theme }) => theme.customCss || ''}
 `;
 
 export default GlobalStyle;

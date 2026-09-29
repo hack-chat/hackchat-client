@@ -38,7 +38,6 @@ const getPointerEvents = (props) => {
 export default styled.button.attrs({
   type: 'button',
 })`
-  font-family: monospace;
   min-height: 46px;
   padding-left: 23px;
   padding-right: 23px;
