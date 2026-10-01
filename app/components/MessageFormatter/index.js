@@ -75,6 +75,9 @@ const MarkdownImage = ({ alt, src, title }) => {
       'i.ytimg.com',
       'i.ibb.co',
       'giphy.com',
+      'files.catbox.moe',
+      'litter.catbox.moe',
+      'gateway.irys.xyz',
     ];
 
     if (whitelist.includes(host) || host.endsWith('.giphy.com')) {
