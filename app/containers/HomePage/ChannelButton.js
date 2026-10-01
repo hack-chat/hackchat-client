@@ -5,19 +5,34 @@
 import styled from 'styled-components';
 
 const getBgColor = (props) => {
-  if (props.$active) return props.theme.palette.accent.main;
-  return props.theme.palette.background.tertiary;
+  if (props.$active) return props.theme.palette.background.element;
+  return 'transparent';
 };
 
 const getColor = (props) => {
-  if (props.$active) return props.theme.palette.text.inverse;
+  if (props.$active) return props.theme.palette.text.white;
   return props.theme.palette.text.primary;
 };
 
+const getBorderColor = (props) => {
+  if (props.$active) return props.theme.palette.border.main;
+  return props.theme.palette.border.subtle;
+};
+
 const getHoverBgColor = (props) => {
-  if (props.$active) return props.theme.palette.accent.hover;
-  if (props.$isDisabled) return props.theme.palette.background.element;
-  return props.theme.palette.border.light;
+  if (props.$isDisabled) return 'transparent';
+  return props.theme.palette.background.element;
+};
+
+const getHoverBorderColor = (props) => {
+  if (props.$isDisabled) return props.theme.palette.border.subtle;
+  return props.theme.palette.border.main;
+};
+
+const getHoverColor = (props) => {
+  if (props.$isDisabled && !props.$active)
+    return props.theme.palette.text.primary;
+  return props.theme.palette.text.white;
 };
 
 const getCursor = (props) => {
@@ -38,28 +53,29 @@ const getPointerEvents = (props) => {
 export default styled.button.attrs({
   type: 'button',
 })`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 46px;
-  padding-left: 23px;
-  padding-right: 23px;
+  padding: 0.75rem 1.5rem;
   border-radius: 4px;
-  border: 1px solid transparent;
   margin-top: 0.75rem;
   transition: all 0.2s ease;
   background-color: ${getBgColor};
   color: ${getColor};
-  border-color: ${getBgColor};
+  border: 1px solid ${getBorderColor};
   cursor: ${getCursor};
   opacity: ${getOpacity};
   pointer-events: ${getPointerEvents};
 
   & > svg {
-    margin-left: 12px;
-    margin-right: 12px;
+    margin-left: 8px;
+    margin-right: 8px;
   }
 
   &:hover {
     background-color: ${getHoverBgColor};
-    border-color: ${getHoverBgColor};
-    color: ${getColor};
+    border-color: ${getHoverBorderColor};
+    color: ${getHoverColor};
   }
 `;

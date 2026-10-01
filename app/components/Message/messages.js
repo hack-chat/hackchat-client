@@ -146,7 +146,7 @@ const messages = {
   errCaptchaNoRejoin: {
     id: `${scope}.err.Captcha.NO_REJOIN`,
     defaultMessage:
-      'Could not auto-rejoin ?{channel}. The channel requires captcha verification',
+      'Could not auto-rejoin ?{channel} . The channel requires captcha verification',
   },
   errCaptchaBadCaptcha: {
     id: `${scope}.err.Captcha.BAD_CAPTCHA`,
@@ -356,7 +356,7 @@ const messages = {
   errLockRoomNoRejoin: {
     id: `${scope}.err.LockRoom.NO_REJOIN`,
     defaultMessage:
-      'Could not auto-rejoin ?{channel}. The channel is currently locked',
+      'Could not auto-rejoin ?{channel} . The channel is currently locked',
   },
   errLockRoomInvalidPassword: {
     id: `${scope}.err.LockRoom.INVALID_PASSWORD`,
@@ -404,7 +404,7 @@ const messages = {
   errPasswordNoAutoJoin: {
     id: `${scope}.err.Password.NO_AUTO_JOIN`,
     defaultMessage:
-      'Could not auto-rejoin ?{channel}. The channel is now password protected',
+      'Could not auto-rejoin ?{channel} . The channel is now password protected',
   },
 
   infoAdminYouAreMod: {

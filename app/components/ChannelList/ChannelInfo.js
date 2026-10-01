@@ -7,9 +7,10 @@ import styled from 'styled-components';
 export default styled.div`
   display: flex;
   align-items: center;
+  gap: 8px;
+  font-weight: bold;
 
   svg {
-    margin-right: 12px;
-    color: ${({ theme }) => theme.palette.text.secondary};
+    color: inherit;
   }
 `;

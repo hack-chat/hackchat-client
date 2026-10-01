@@ -593,13 +593,15 @@ export default function* communicationProviderSaga() {
     const isCurrentChannel = activeChannel === actionChannel;
 
     if (isFocused && isCurrentChannel) return;
+    if (payload.fromMe || (action.user && action.user.mine)) return;
 
     let shouldNotify = false;
     let title = '';
     let body = '';
 
     const messageContent = payload.content;
-    const senderName = payload.name || payload.from;
+    const senderName =
+      payload.name || (payload.from && payload.from.username) || payload.from;
 
     if (action.type === MESSAGE && mentionRegex.test(messageContent)) {
       shouldNotify = true;
@@ -612,7 +614,7 @@ export default function* communicationProviderSaga() {
     } else if (action.type === INVITE) {
       shouldNotify = true;
       title = `🤝 ${senderName}`;
-      body = `👉 ?${actionChannel}`;
+      body = `👉 ?${payload.targetChannel || actionChannel}`;
     }
 
     if (shouldNotify) {

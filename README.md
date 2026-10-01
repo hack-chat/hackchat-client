@@ -23,7 +23,10 @@ See [DEPLOY.md](documentation/DEPLOY.md)
 
 # Contributing
 
-- Todo
+We welcome contributions! If you're looking to help customize or localize the client, here are a few great places to start:
+
+- **Translations**: Language files can be found in the `app/translations` directory. You can update these files to improve existing translations or submit pull requests to add entirely new languages to the application.
+- **Themes**: Themed appearance files are located in the `app/themes` directory. You can update existing stylesheets or submit new custom themes to change the visual appearance of the chat.
 
 # Credits
 
@@ -31,4 +34,4 @@ See [DEPLOY.md](documentation/DEPLOY.md)
 
 # License
 
-This project is licensed under the [WTFPL License](LICENSE).
+This project is licensed under the [MIT License](LICENSE).

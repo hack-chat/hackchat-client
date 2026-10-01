@@ -6,7 +6,6 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { useIntl } from 'react-intl';
-import { FaHashtag } from 'react-icons/fa6';
 import { IoClose } from 'react-icons/io5';
 
 import ListWrapper from './ListWrapper';
@@ -41,8 +40,7 @@ function ChannelList({ channels, onLeaveChannel }) {
       {channels.map((channel) => (
         <ChannelRow key={channel} onClick={() => handleRowClick(channel)}>
           <ChannelInfo>
-            <FaHashtag />
-            <ChannelName>{channel}</ChannelName>
+            <ChannelName>?{channel}</ChannelName>
           </ChannelInfo>
           <LeaveButton
             onClick={(e) => handleLeaveClick(e, channel)}

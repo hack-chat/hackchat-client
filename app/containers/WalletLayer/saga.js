@@ -667,7 +667,7 @@ function* checkChannelInfoSaga(action) {
           ? decodedState.moderatorTrips.join(', ')
           : '0';
 
-      infoText = `ℹ️ ?${channel}:\n👑: [${shortenAddress(ownerWalletKey)}](https://solscan.io/account/${ownerWalletKey})\n🔑: [${shortenAddress(nftMintKey)}](https://solscan.io/account/${nftMintKey})\n🛡️: ${modsStr}`;
+      infoText = `ℹ️ ?${channel}\n👑: [${shortenAddress(ownerWalletKey)}](https://solscan.io/account/${ownerWalletKey})\n🔑: [${shortenAddress(nftMintKey)}](https://solscan.io/account/${nftMintKey})\n🛡️: ${modsStr}`;
     } else {
       infoText = `⚪ ?${channel} 🔓 ➡️ /mintchannel`;
     }

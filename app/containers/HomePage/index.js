@@ -28,7 +28,8 @@ import {
 
 import { FaMarkdown, FaGithub } from 'react-icons/fa6';
 import { SiLatex } from 'react-icons/si';
-import { FaFileCode } from 'react-icons/fa';
+import { FaUser } from 'react-icons/fa';
+import { IoMdSettings } from 'react-icons/io';
 
 import {
   changeChannel,
@@ -95,7 +96,6 @@ import LandingPageContents from './Contents';
 import Banner from './Banner';
 import Center from './Center';
 import Socials from './Socials';
-import ChannelRow from './ChannelRow';
 import ChannelButton from './ChannelButton';
 import ModalHeader from './ModalHeader';
 import ModalBody from './ModalBody';
@@ -121,6 +121,9 @@ import TxInstructionItem from './TxInstructionItem';
 import TxInstructionHeader from './TxInstructionHeader';
 import TxInstructionDetail from './TxInstructionDetail';
 import TxInstructionPid from './TxInstructionPid';
+import PublicChannelButton from './PublicChannelButton';
+import PublicChannelListWrapper from './PublicChannelListWrapper';
+import SectionHeader from './SectionHeader';
 
 const useUrlChannel = () => {
   const { search } = useLocation();
@@ -193,8 +196,8 @@ export function HomePage({
     messages.publicChannelsHeader,
   );
   const currentGithub = intl.formatMessage(messages.currentGithub);
-  const legacyGithub = intl.formatMessage(messages.legacyGithub);
-  const thirdParty = intl.formatMessage(messages.thirdParty);
+  // const legacyGithub = intl.formatMessage(messages.legacyGithub);
+  // const thirdParty = intl.formatMessage(messages.thirdParty);
   const siwText = intl.formatMessage(messages.siwText);
   const siwFinish = intl.formatMessage(messages.siwFinish);
   const cancelText = intl.formatMessage(messages.cancelText);
@@ -492,29 +495,16 @@ export function HomePage({
 
   const publicChannels = useMemo(() => {
     const sortedChannels = [...meta.channels].sort((a, b) => b.count - a.count);
-    const channelPairs = [];
-    for (let i = 0; i < sortedChannels.length; i += 2) {
-      channelPairs.push(sortedChannels.slice(i, i + 2));
-    }
-    return channelPairs.map(([ch1, ch2]) => {
-      const key = ch1 ? `pchan-${ch1.name}` : `pchan-empty-${Math.random()}`;
+
+    return sortedChannels.map((ch) => {
+      const cleanName = DOMPurify.sanitize(ch.name);
       return (
-        <ChannelRow key={key}>
-          <div>
-            {ch1 && (
-              <Link to={`/?${DOMPurify.sanitize(ch1.name)}`}>
-                ?{DOMPurify.sanitize(ch1.name)}: {ch1.count}
-              </Link>
-            )}
-          </div>
-          <div>
-            {ch2 && (
-              <Link to={`/?${DOMPurify.sanitize(ch2.name)}`}>
-                ?{DOMPurify.sanitize(ch2.name)}: {ch2.count}
-              </Link>
-            )}
-          </div>
-        </ChannelRow>
+        <PublicChannelButton key={`pchan-${cleanName}`} to={`/?${cleanName}`}>
+          <b>?{cleanName}</b>
+          <i>
+            {ch.count} <FaUser />
+          </i>
+        </PublicChannelButton>
       );
     });
   }, [meta.channels]);
@@ -553,15 +543,23 @@ export function HomePage({
           {createOrJoinLabel}
         </ChannelButton>
       </Center>
+      <br />
       <ChannelList
         channels={joinedChannels}
         onLeaveChannel={(ch) => onLeaveChannel(ch)}
       />
-      <br />
-      <Center>{publicChannelsHeader}</Center>
-      {publicChannels.length === 0 ? <LoadingIndicator /> : publicChannels}
+
+      <SectionHeader>{publicChannelsHeader}</SectionHeader>
+
+      <PublicChannelListWrapper>
+        {publicChannels.length === 0 ? <LoadingIndicator /> : publicChannels}
+      </PublicChannelListWrapper>
+
       <Center>
         <Socials>
+          <Link to="/settings">
+            <IoMdSettings />
+          </Link>
           <Link
             to="https://www.markdownguide.org/cheat-sheet/"
             rel="noopener noreferrer"
@@ -577,33 +575,10 @@ export function HomePage({
             <SiLatex />
           </Link>
           <Link
-            to="https://highlightjs.org/"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <FaFileCode />
-          </Link>
-          <Link
             to="https://github.com/hack-chat"
             rel="noopener noreferrer"
             target="_blank"
             title={currentGithub}
-          >
-            <FaGithub />
-          </Link>
-          <Link
-            to="https://github.com/AndrewBelt/hack.chat"
-            rel="noopener noreferrer"
-            target="_blank"
-            title={legacyGithub}
-          >
-            <FaGithub />
-          </Link>
-          <Link
-            to="https://github.com/hack-chat/3rd-party-software-list"
-            rel="noopener noreferrer"
-            target="_blank"
-            title={thirdParty}
           >
             <FaGithub />
           </Link>
