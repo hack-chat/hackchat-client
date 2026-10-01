@@ -193,6 +193,7 @@ export function JoinMenu({
         />
         <InputGroupText>
           <NickColor
+            tabIndex={-1}
             title={usernameColorText}
             initColor={currentColor}
             onChangeComplete={(color) => setCurrentColor(color.hex)}
