@@ -7,8 +7,12 @@ import PropTypes from 'prop-types';
 
 import NameStyle from './NameStyle';
 import TripStyle from './TripStyle';
+import useOnScreen from '../../utils/useOnScreen';
 
 const Nick = ({ user, handleMention, handleContextMenu, time }) => {
+  // name effects are costly to animate, so only run them while visible
+  const [ref, onScreen] = useOnScreen(!!user.effect);
+
   const handleClick = () => {
     handleMention(`@${user.username} `);
   };
@@ -24,11 +28,12 @@ const Nick = ({ user, handleMention, handleContextMenu, time }) => {
 
   return (
     <NameStyle
+      ref={ref}
       title={hoverTime}
       onClick={handleClick}
       onContextMenu={handleRightClick}
       $color={`#${user.nickColor}`}
-      $effect={user.effect}
+      $effect={onScreen ? user.effect : 0}
     >
       {trip}
       {user.username}
