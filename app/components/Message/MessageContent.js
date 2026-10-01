@@ -21,7 +21,7 @@ const MessageContent = styled.div`
   align-items: flex-start;
   flex-grow: 1;
   min-width: 0;
-  padding-inline-start: 1.5em;
+  padding-inline: 1.5em 0.5em;
   background-color: ${getBackground} !important;
 
   @media (width >= 768px) {
