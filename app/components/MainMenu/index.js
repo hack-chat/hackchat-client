@@ -3,7 +3,7 @@
  * channel, and global actions like settings.
  */
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
@@ -88,6 +88,8 @@ export function MainMenu({
   const [isOpen, setIsOpen] = useState(false);
   const [isPinned, setIsPinned] = useState(false);
   const [contextMenu, setContextMenu] = useState(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const menuRef = useRef(null);
 
   // Mobile detection
   const windowSize = useWindowSize();
@@ -134,6 +136,22 @@ export function MainMenu({
     });
   };
 
+  // Hover is tracked here instead of CSS :hover, which browsers drop as soon
+  // as the pointer leaves the window (e.g. pushed past the screen edge). The
+  // menu closes only once the pointer is back over something outside of it.
+  useEffect(() => {
+    if (!isHovered) return undefined;
+
+    const handleMouseOver = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setIsHovered(false);
+      }
+    };
+
+    document.addEventListener('mouseover', handleMouseOver);
+    return () => document.removeEventListener('mouseover', handleMouseOver);
+  }, [isHovered]);
+
   useEffect(() => {
     const handleSwitchChannel = (e) => {
       const targetChannel = e.detail?.channel;
@@ -158,10 +176,13 @@ export function MainMenu({
       </MenuToggle>
 
       <MenuWrapper
+        ref={menuRef}
         $isOpen={isMenuForcedOpen}
+        $isHovered={isHovered}
         $menuLeft={menuLeft}
         dir={isLtr ? 'ltr' : 'rtl'}
         onWheel={(e) => e.stopPropagation()}
+        onMouseEnter={() => setIsHovered(true)}
       >
         {allowPinning && (
           <PinButton

@@ -22,20 +22,23 @@ const getTransform = (props) => {
   return props.$menuLeft ? 'translateX(-100%)' : 'translateX(100%)';
 };
 
+// On desktop the menu also opens while hovered
+const isExpanded = (props) => props.$isOpen || props.$isHovered;
+
 const getMediaTransform = (props) => {
-  if (props.$isOpen) return 'translateX(0)';
+  if (isExpanded(props)) return 'translateX(0)';
   return props.$menuLeft
     ? 'translateX(calc(-100% + 40px))'
     : 'translateX(calc(100% - 40px))';
 };
 
 const getMediaFilter = (props) => {
-  if (props.$isOpen) return 'grayscale(0%)';
+  if (isExpanded(props)) return 'grayscale(0%)';
   return 'grayscale(70%)';
 };
 
 const getMediaOpacity = (props) => {
-  if (props.$isOpen) return '1';
+  if (isExpanded(props)) return '1';
   return '0.5';
 };
 
@@ -64,15 +67,6 @@ export default styled.div`
         opacity 0.3s ease-in-out;
       filter: ${getMediaFilter};
       opacity: ${getMediaOpacity};
-    }
-
-    &:hover {
-      transform: translateX(0);
-
-      & > * {
-        filter: grayscale(0%);
-        opacity: 1;
-      }
     }
   }
 `;
