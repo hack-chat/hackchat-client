@@ -2,7 +2,7 @@
  * Normal chat messages rendering
  */
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
@@ -34,6 +34,10 @@ const ChatMessage = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const isLongMessage = payload.content.length > TRUNCATION_CHAR_THRESHOLD;
   const ContentWrapper = extended ? ExtendedMessageContent : MessageContent;
+  const renderedContent = useMemo(
+    () => msgForm.render(payload.content),
+    [msgForm, payload.content],
+  );
 
   const doHighlight = useSelector(
     (state) => selectSettingsPageDomain(state).highlightMentions ?? true,
@@ -93,7 +97,7 @@ const ChatMessage = ({
           onClick={handleChatClick}
           onContextMenu={handleChatRightClick}
         >
-          {msgForm.render(payload.content)}
+          {renderedContent}
         </ChatStyle>
         {isLongMessage && (
           <ExpandButton onClick={() => setIsExpanded((prev) => !prev)}>
