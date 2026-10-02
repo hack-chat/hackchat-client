@@ -113,7 +113,7 @@
   "hcclient.components.Message.info.Mod.BANNED": "{targetNick} banlandı",
   "hcclient.components.Message.info.Mod.BANNED_DETAILED": "{nick}#{trip}, {currentChannel} kanalında {targetNick} kullanıcısını banladı, userhash: {hash}",
   "hcclient.components.Message.info.Mod.KICKED": "{kickedNames} atıldı",
-  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "{nick} ?{destChannel} kanalına sürüldü",
+  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "{nick}, {kickerTrip}#{kickerNick} tarafından ?{destChannel} kanalına sürüldü",
   "hcclient.components.Message.info.Mod.LOCKED_DETAILED": "Kanal: ?{targetChannel} [{trip}]{nick} tarafından {lockLevel} seviyesinde kilitlendi",
   "hcclient.components.Message.info.Mod.MUZZLED_DETAILED": "{nick}#{trip}, {targetChannel} kanalında {targetUser} kullanıcısını susturdu, userhash: {targetHash}",
   "hcclient.components.Message.info.Mod.PASS_DISABLED": "Şifre koruması kaldırıldı: ?{targetChannel} kanalında [{trip}]{nick} tarafından",

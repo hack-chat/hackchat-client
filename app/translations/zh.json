@@ -113,7 +113,7 @@
   "hcclient.components.Message.info.Mod.BANNED": "已封鎖 {targetNick}",
   "hcclient.components.Message.info.Mod.BANNED_DETAILED": "{nick}#{trip} 在 {currentChannel} 封鎖了 {targetNick}，使用者 hash：{hash}",
   "hcclient.components.Message.info.Mod.KICKED": "已踢出 {kickedNames}",
-  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "{nick} 被放逐到了 ?{destChannel}",
+  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "{nick} 被 {kickerTrip}#{kickerNick} 放逐到了 ?{destChannel}",
   "hcclient.components.Message.info.Mod.LOCKED_DETAILED": "頻道：?{targetChannel} 已被 [{trip}]{nick} 鎖定在 {lockLevel} 等級",
   "hcclient.components.Message.info.Mod.MUZZLED_DETAILED": "{nick}#{trip} 在 {targetChannel} 中禁言了 {targetUser}，使用者 hash：{targetHash}",
   "hcclient.components.Message.info.Mod.PASS_DISABLED": "已移除密碼保護於：?{targetChannel}，執行者：[{trip}]{nick}",

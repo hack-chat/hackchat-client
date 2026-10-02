@@ -19,6 +19,7 @@ export default styled.textarea`
   background-color: transparent;
   color: ${({ theme }) => theme.palette.text.primary};
   scrollbar-width: none;
+  font-size: 1em;
 
   &::-webkit-scrollbar {
     display: none;

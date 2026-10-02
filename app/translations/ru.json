@@ -113,7 +113,7 @@
   "hcclient.components.Message.info.Mod.BANNED": "Забанен {targetNick}",
   "hcclient.components.Message.info.Mod.BANNED_DETAILED": "{nick}#{trip} забанил {targetNick} в {currentChannel}, хэш пользователя: {hash}",
   "hcclient.components.Message.info.Mod.KICKED": "Кикнут {kickedNames}",
-  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "{nick} был изгнан в ?{destChannel}",
+  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "{nick} изгнан в ?{destChannel} пользователем {kickerTrip}#{kickerNick}",
   "hcclient.components.Message.info.Mod.LOCKED_DETAILED": "Канал: ?{targetChannel} заблокирован на уровне {lockLevel} пользователем [{trip}]{nick}",
   "hcclient.components.Message.info.Mod.MUZZLED_DETAILED": "{nick}#{trip} дал мут {targetUser} в {targetChannel}, хэш пользователя: {targetHash}",
   "hcclient.components.Message.info.Mod.PASS_DISABLED": "Защита паролем снята в: ?{targetChannel} пользователем [{trip}]{nick}",

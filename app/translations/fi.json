@@ -113,7 +113,7 @@
   "hcclient.components.Message.info.Mod.BANNED": "Annettiin porttikielto: {targetNick}",
   "hcclient.components.Message.info.Mod.BANNED_DETAILED": "{nick}#{trip} antoi porttikiellon käyttäjälle {targetNick} kanavalla {currentChannel}, userhash: {hash}",
   "hcclient.components.Message.info.Mod.KICKED": "Potkittiin {kickedNames}",
-  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "{nick} karkotettiin kanavalle ?{destChannel}",
+  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "{kickerTrip}#{kickerNick} karkotti käyttäjän {nick} kanavalle ?{destChannel}",
   "hcclient.components.Message.info.Mod.LOCKED_DETAILED": "Kanava: ?{targetChannel} lukittiin tasolle {lockLevel} käyttäjän [{trip}]{nick} toimesta",
   "hcclient.components.Message.info.Mod.MUZZLED_DETAILED": "{nick}#{trip} vaimensi käyttäjän {targetUser} kanavalla {targetChannel}, userhash: {targetHash}",
   "hcclient.components.Message.info.Mod.PASS_DISABLED": "Salasanasuojaus poistettu kanavalta: ?{targetChannel} käyttäjän [{trip}]{nick} toimesta",

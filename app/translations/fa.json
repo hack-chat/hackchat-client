@@ -113,7 +113,7 @@
   "hcclient.components.Message.info.Mod.BANNED": "{targetNick} مسدود (بن) شد",
   "hcclient.components.Message.info.Mod.BANNED_DETAILED": "{nick}#{trip} کاربر {targetNick} را در {currentChannel} مسدود کرد، هش کاربر: {hash}",
   "hcclient.components.Message.info.Mod.KICKED": "{kickedNames} اخراج شد",
-  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "{nick} به ?{destChannel} تبعید شد",
+  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "{nick} توسط {kickerTrip}#{kickerNick} به ?{destChannel} تبعید شد",
   "hcclient.components.Message.info.Mod.LOCKED_DETAILED": "کانال: ?{targetChannel} در سطح {lockLevel} توسط [{trip}]{nick} قفل شد",
   "hcclient.components.Message.info.Mod.MUZZLED_DETAILED": "{nick}#{trip} کاربر {targetUser} را در {targetChannel} بی‌صدا (muzzle) کرد، هش کاربر: {targetHash}",
   "hcclient.components.Message.info.Mod.PASS_DISABLED": "محافظت با رمز عبور در ?{targetChannel} توسط [{trip}]{nick} حذف شد",

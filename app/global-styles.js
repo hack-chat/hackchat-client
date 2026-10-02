@@ -167,7 +167,6 @@ const GlobalStyle = createGlobalStyle`
 
   code {
     padding: 2px 4px;
-    font-size: 90%;
     color: #000;
     background-color: ${({ theme }) => theme.palette.background.tertiary};
     border-radius: 4px;

@@ -113,7 +113,7 @@
   "hcclient.components.Message.info.Mod.BANNED": "Αποκλείστηκε ο/η {targetNick}",
   "hcclient.components.Message.info.Mod.BANNED_DETAILED": "Ο/Η {nick}#{trip} απέκλεισε (banned) τον/την {targetNick} στο {currentChannel}, userhash: {hash}",
   "hcclient.components.Message.info.Mod.KICKED": "Εκδιώχθηκαν οι {kickedNames}",
-  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "Ο/Η {nick} εξορίστηκε στο ?{destChannel}",
+  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "Ο/Η {nick} εξορίστηκε στο ?{destChannel} από: {kickerTrip}#{kickerNick}",
   "hcclient.components.Message.info.Mod.LOCKED_DETAILED": "Το κανάλι: ?{targetChannel} κλειδώθηκε στο επίπεδο {lockLevel} από τον/την [{trip}]{nick}",
   "hcclient.components.Message.info.Mod.MUZZLED_DETAILED": "Ο/Η {nick}#{trip} φίμωσε (muzzled) τον/την {targetUser} στο {targetChannel}, userhash: {targetHash}",
   "hcclient.components.Message.info.Mod.PASS_DISABLED": "Η προστασία με κωδικό πρόσβασης καταργήθηκε στο: ?{targetChannel} από τον/την [{trip}]{nick}",

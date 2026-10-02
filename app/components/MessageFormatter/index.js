@@ -241,7 +241,7 @@ MessageFormatter.renderer = new RemarkableReactRenderer({
                 /[^?.,;:!"']/.test(chunk);
 
               if (isChannelLink) {
-                const key = `invite-${Math.random() * 9999}`;
+                const key = `invite-${i}-${k}`;
                 alteredChildren.push(
                   <Link key={key} to={`/${DOMPurify.sanitize(chunk)}`}>
                     {DOMPurify.sanitize(chunk)}
@@ -394,6 +394,18 @@ const parseKatex = (children) => {
     } else if (inBlock === false && inInline === false) {
       newChildren.push(children[i]);
     }
+  }
+
+  if (inBlock) {
+    newChildren.push({
+      type: 'text',
+      content: `$$${buffer}`,
+    });
+  } else if (inInline) {
+    newChildren.push({
+      type: 'text',
+      content: `$${buffer}`,
+    });
   }
 
   return newChildren;

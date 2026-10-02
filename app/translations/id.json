@@ -113,7 +113,7 @@
   "hcclient.components.Message.info.Mod.BANNED": "Mencekal {targetNick}",
   "hcclient.components.Message.info.Mod.BANNED_DETAILED": "{nick}#{trip} mencekal {targetNick} di {currentChannel}, hash pengguna: {hash}",
   "hcclient.components.Message.info.Mod.KICKED": "Mengeluarkan {kickedNames}",
-  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "{nick} diasingkan ke ?{destChannel}",
+  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "{nick} telah diasingkan ke ?{destChannel} oleh {kickerTrip}#{kickerNick}",
   "hcclient.components.Message.info.Mod.LOCKED_DETAILED": "Saluran: ?{targetChannel} dikunci pada tingkat {lockLevel} oleh [{trip}]{nick}",
   "hcclient.components.Message.info.Mod.MUZZLED_DETAILED": "{nick}#{trip} membungkam {targetUser} di {targetChannel}, hash pengguna: {targetHash}",
   "hcclient.components.Message.info.Mod.PASS_DISABLED": "Perlindungan kata sandi dihapus pada: ?{targetChannel} oleh [{trip}]{nick}",

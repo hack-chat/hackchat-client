@@ -253,6 +253,9 @@ export function ChatManager({
 
   return (
     <Wrapper
+      key={channel}
+      translate="no"
+      className="notranslate"
       ref={scrollContainerRef}
       onScroll={handleScroll}
       onClick={handleChatClick}

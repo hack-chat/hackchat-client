@@ -113,7 +113,7 @@
   "hcclient.components.Message.info.Mod.BANNED": "{targetNick} a été banni(e)",
   "hcclient.components.Message.info.Mod.BANNED_DETAILED": "{nick}#{trip} a banni {targetNick} dans {currentChannel}, hash de l'utilisateur : {hash}",
   "hcclient.components.Message.info.Mod.KICKED": "{kickedNames} expulsé(s)",
-  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "{nick} a été banni vers ?{destChannel}",
+  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "{nick} a été banni vers ?{destChannel} par {kickerTrip}#{kickerNick}",
   "hcclient.components.Message.info.Mod.LOCKED_DETAILED": "Canal : ?{targetChannel} verrouillé au niveau {lockLevel} par [{trip}]{nick}",
   "hcclient.components.Message.info.Mod.MUZZLED_DETAILED": "{nick}#{trip} a réduit {targetUser} au silence dans {targetChannel}, hash de l'utilisateur : {targetHash}",
   "hcclient.components.Message.info.Mod.PASS_DISABLED": "Protection par mot de passe retirée sur : ?{targetChannel} par [{trip}]{nick}",

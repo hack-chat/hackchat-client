@@ -113,7 +113,7 @@
   "hcclient.components.Message.info.Mod.BANNED": "تم حظر {targetNick}",
   "hcclient.components.Message.info.Mod.BANNED_DETAILED": "قام {nick}#{trip} بحظر {targetNick} في {currentChannel}، رمز المستخدم (userhash): {hash}",
   "hcclient.components.Message.info.Mod.KICKED": "تم طرد {kickedNames}",
-  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "تم نفي {nick} إلى ?{destChannel}",
+  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "تم نفي {nick} إلى ?{destChannel} بواسطة {kickerTrip}#{kickerNick}",
   "hcclient.components.Message.info.Mod.LOCKED_DETAILED": "القناة: ?{targetChannel} تم قفلها على المستوى {lockLevel} بواسطة [{trip}]{nick}",
   "hcclient.components.Message.info.Mod.MUZZLED_DETAILED": "قام {nick}#{trip} بتكميم {targetUser} في {targetChannel}، رمز المستخدم: {targetHash}",
   "hcclient.components.Message.info.Mod.PASS_DISABLED": "تمت إزالة الحماية بكلمة مرور عن: ?{targetChannel} بواسطة [{trip}]{nick}",

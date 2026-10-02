@@ -113,7 +113,7 @@
   "hcclient.components.Message.info.Mod.BANNED": "{targetNick}-কে নিষিদ্ধ করা হয়েছে",
   "hcclient.components.Message.info.Mod.BANNED_DETAILED": "{nick}#{trip} {currentChannel}-এ {targetNick}-কে নিষিদ্ধ করেছেন, userhash: {hash}",
   "hcclient.components.Message.info.Mod.KICKED": "{kickedNames}-কে কিক করা হয়েছে",
-  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "{nick}-কে ?{destChannel} -এ নির্বাসিত করা হয়েছে",
+  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "{nick} কে ?{destChannel} এ নির্বাসিত করেছে {kickerTrip}#{kickerNick}",
   "hcclient.components.Message.info.Mod.LOCKED_DETAILED": "চ্যানেল: ?{targetChannel} , {lockLevel} লেভেলে লক করেছেন [{trip}]{nick}",
   "hcclient.components.Message.info.Mod.MUZZLED_DETAILED": "{nick}#{trip} {targetChannel}-এ {targetUser}-কে সাইলেন্ট (muzzled) করেছেন, userhash: {targetHash}",
   "hcclient.components.Message.info.Mod.PASS_DISABLED": "?{targetChannel} -এর পাসওয়ার্ড সুরক্ষা সরিয়ে দিয়েছেন [{trip}]{nick}",

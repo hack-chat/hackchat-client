@@ -452,7 +452,8 @@ const messages = {
   },
   infoModKickedDetailed: {
     id: `${scope}.info.Mod.KICKED_DETAILED`,
-    defaultMessage: '{nick} was banished to ?{destChannel}',
+    defaultMessage:
+      '{nick} was banished to ?{destChannel} by {kickerTrip}#{kickerNick}',
   },
   infoModKicked: {
     id: `${scope}.info.Mod.KICKED`,

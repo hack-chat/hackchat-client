@@ -113,7 +113,7 @@
   "hcclient.components.Message.info.Mod.BANNED": "B4NN3D {targetNick}",
   "hcclient.components.Message.info.Mod.BANNED_DETAILED": "{nick}#{trip} B4NN3D {targetNick} 1N {currentChannel}, U53RH45H: {hash}",
   "hcclient.components.Message.info.Mod.KICKED": "K1CK3D {kickedNames}",
-  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "{nick} W45 B4N15H3D 2 ?{destChannel}",
+  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "{nick} WUZ B4N1SH3D 2 ?{destChannel} BY {kickerTrip}#{kickerNick}",
   "hcclient.components.Message.info.Mod.LOCKED_DETAILED": "CH4NN3L: ?{targetChannel} L0CK3D 2 {lockLevel} BY [{trip}]{nick}",
   "hcclient.components.Message.info.Mod.MUZZLED_DETAILED": "{nick}#{trip} MUZZL3D {targetUser} 1N {targetChannel}, U53RH45H: {targetHash}",
   "hcclient.components.Message.info.Mod.PASS_DISABLED": "P455W0RD PR073C710N R3M0V3D 0N: ?{targetChannel} BY [{trip}]{nick}",

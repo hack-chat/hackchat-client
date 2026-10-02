@@ -113,7 +113,7 @@
   "hcclient.components.Message.info.Mod.BANNED": "已封禁 {targetNick}",
   "hcclient.components.Message.info.Mod.BANNED_DETAILED": "{nick}#{trip} 在 {currentChannel} 中封禁了 {targetNick}，用户哈希：{hash}",
   "hcclient.components.Message.info.Mod.KICKED": "已踢出 {kickedNames}",
-  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "{nick} 被放逐到了 ?{destChannel}",
+  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "{nick} 被 {kickerTrip}#{kickerNick} 放逐到了 ?{destChannel}",
   "hcclient.components.Message.info.Mod.LOCKED_DETAILED": "频道：?{targetChannel} 被 [{trip}]{nick} 锁定至 {lockLevel} 级",
   "hcclient.components.Message.info.Mod.MUZZLED_DETAILED": "{nick}#{trip} 在 {targetChannel} 中禁言了 {targetUser}，用户哈希：{targetHash}",
   "hcclient.components.Message.info.Mod.PASS_DISABLED": "[{trip}]{nick} 已移除 ?{targetChannel} 的密码保护",

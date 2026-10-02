@@ -113,7 +113,7 @@
   "hcclient.components.Message.info.Mod.BANNED": "{targetNick} をBANしました",
   "hcclient.components.Message.info.Mod.BANNED_DETAILED": "{nick}#{trip} が {currentChannel} で {targetNick} をBANしました (userhash: {hash})",
   "hcclient.components.Message.info.Mod.KICKED": "{kickedNames} をキックしました",
-  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "{nick} は ?{destChannel} に追放されました",
+  "hcclient.components.Message.info.Mod.KICKED_DETAILED": "{nick} は {kickerTrip}#{kickerNick} によって ?{destChannel} に追放されました",
   "hcclient.components.Message.info.Mod.LOCKED_DETAILED": "チャンネル: ?{targetChannel} が [{trip}]{nick} によってレベル {lockLevel} にロックされました",
   "hcclient.components.Message.info.Mod.MUZZLED_DETAILED": "{nick}#{trip} が {targetChannel} で {targetUser} をミュート（muzzle）しました (userhash: {targetHash})",
   "hcclient.components.Message.info.Mod.PASS_DISABLED": "[{trip}]{nick} が ?{targetChannel} のパスワード保護を解除しました",
