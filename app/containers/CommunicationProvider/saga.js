@@ -424,6 +424,8 @@ function initWebsocket() {
       });
 
     hcClient.on('error', onError);
+    // fires as soon as the socket closes, well before a retry can fail
+    hcClient.on('reconnecting', onError);
     hcClient.on('connected', onConnected);
     hcClient.on('session', onSession);
     hcClient.on('channelJoined', onChannelJoined);
@@ -446,6 +448,7 @@ function initWebsocket() {
 
     return () => {
       hcClient.removeListener('error', onError);
+      hcClient.removeListener('reconnecting', onError);
       hcClient.removeListener('connected', onConnected);
       hcClient.removeListener('session', onSession);
       hcClient.removeListener('channelJoined', onChannelJoined);
