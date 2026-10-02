@@ -510,8 +510,10 @@ export function HomePage({
     });
   }, [meta.channels]);
 
+  // Not gated on sessionReady: once a channel has been joined, keep it on
+  // screen through a dropped connection so the "lost connection" notice
+  // in the chat is visible, rather than falling back to the connect spinner
   const showChat = Boolean(
-    sessionReady &&
     channel &&
     channel === channelFromUrl &&
     channelData &&
@@ -849,7 +851,7 @@ export function HomePage({
         />
       </Helmet>
 
-      {sessionReady && channel && (
+      {(sessionReady || showChat) && channel && (
         <MainMenu
           channel={channel}
           channelData={channelData}
