@@ -164,6 +164,7 @@ const communicationProviderReducer = (state = initialState, action) =>
         //
         break;
       case USER_JOINED:
+        if (!draft.channels[action.channel]) break;
         draft.channels[action.channel].users[action.user.userid] = action.user;
         draft.channels[action.channel].messages.push({
           type: 'join',
@@ -175,6 +176,7 @@ const communicationProviderReducer = (state = initialState, action) =>
         });
         break;
       case USER_LEFT:
+        if (!draft.channels[action.channel]) break;
         if (draft.channels[action.channel]?.users[action.user.userid]) {
           draft.channels[action.channel].users[action.user.userid].online =
             false;
@@ -189,6 +191,7 @@ const communicationProviderReducer = (state = initialState, action) =>
         });
         break;
       case USER_UPDATE:
+        if (!draft.channels[action.channel]) break;
         draft.channels[action.channel].users[action.user.userid] = action.user;
         break;
       case WARNING:
