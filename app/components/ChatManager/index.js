@@ -53,14 +53,30 @@ export function ChatManager({
     }
   }, [channel]);
 
-  // Depends on the array itself, not its length, so in-place edits
-  // (updateMessage appends) also keep the view pinned to the bottom
-  useEffect(() => {
+  const pinToBottom = useCallback(() => {
     if (scrollContainerRef.current && isAtBottomRef.current) {
       const { scrollHeight, clientHeight } = scrollContainerRef.current;
       scrollContainerRef.current.scrollTop = scrollHeight - clientHeight;
     }
-  }, [currentChannelData.messages]);
+  }, [scrollContainerRef]);
+
+  // Depends on the array itself, not its length, so in-place edits
+  // (updateMessage appends) also keep the view pinned to the bottom
+  useEffect(pinToBottom, [currentChannelData.messages]);
+
+  // Images grow their message once they load, after the effect above has
+  // run. Load events don't bubble, so listen for them in the capture phase.
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return undefined;
+
+    container.addEventListener('load', pinToBottom, true);
+    container.addEventListener('error', pinToBottom, true);
+    return () => {
+      container.removeEventListener('load', pinToBottom, true);
+      container.removeEventListener('error', pinToBottom, true);
+    };
+  }, [scrollContainerRef, pinToBottom]);
 
   const handleScroll = () => {
     if (scrollContainerRef.current) {

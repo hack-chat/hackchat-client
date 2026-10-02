@@ -125,6 +125,24 @@ import PublicChannelButton from './PublicChannelButton';
 import PublicChannelListWrapper from './PublicChannelListWrapper';
 import SectionHeader from './SectionHeader';
 
+/**
+ * True when the wheel event started inside an element that scrolls on its
+ * own (the chat, an expanded message, the input...). The browser already
+ * scrolls those natively, so forwarding the event would scroll twice.
+ */
+const isOverScrollable = (e) => {
+  for (let el = e.target; el && el !== e.currentTarget; el = el.parentElement) {
+    const { overflowY } = window.getComputedStyle(el);
+    if (
+      (overflowY === 'auto' || overflowY === 'scroll') &&
+      el.scrollHeight > el.clientHeight
+    ) {
+      return true;
+    }
+  }
+  return false;
+};
+
 const useUrlChannel = () => {
   const { search } = useLocation();
   return useMemo(() => search.substring(1), [search]);
@@ -420,7 +438,7 @@ export function HomePage({
         return;
       }
 
-      if (chatScrollContainerRef.current) {
+      if (chatScrollContainerRef.current && !isOverScrollable(e)) {
         chatScrollContainerRef.current.scrollTop += e.deltaY;
       }
     },
