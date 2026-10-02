@@ -346,7 +346,9 @@ export function HomePage({
           (unmuzzleMatch && unmuzzleMatch[1]) ||
           (uwuifyMatch && uwuifyMatch[1]);
 
-        const users = channelData[channel]?.users;
+        // read users through the ref so this callback (passed to every
+        // Message) doesn't change identity on each channelData update
+        const users = channelUsersRef.current;
 
         if (!users) {
           // eslint-disable-next-line no-console
@@ -388,7 +390,6 @@ export function HomePage({
     },
     [
       channel,
-      channelData,
       onKickUser,
       onBanUser,
       onIgnoreUser,

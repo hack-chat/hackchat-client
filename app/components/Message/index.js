@@ -18,7 +18,7 @@ import WelcomeStyle from './WelcomeStyle';
 import JoinStyle from './JoinStyle';
 import LeaveStyle from './LeaveStyle';
 import EmoteStyle from './EmoteStyle';
-import EmoteNameStyle from './EmoteNameStyle';
+import EmoteName from './EmoteName';
 
 import ChatMessage from './ChatMessage';
 import WhisperMessage from './WhisperMessage';
@@ -91,9 +91,9 @@ export const Message = memo(
               <EmoteStyle>
                 {namePart ? (
                   <>
-                    <EmoteNameStyle title={hoverTime} $effect={user.effect}>
+                    <EmoteName title={hoverTime} effect={user.effect}>
                       {namePart}
-                    </EmoteNameStyle>
+                    </EmoteName>
                     {restPart}
                   </>
                 ) : (

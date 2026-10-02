@@ -231,7 +231,16 @@ export function ChatManager({
         />
       );
     });
-  }, [currentChannelData.messages, currentChannelData.users, intl]);
+  }, [
+    currentChannelData.messages,
+    currentChannelData.users,
+    intl,
+    handleMenuCommand,
+    handleUserContextMenu,
+    handleMessageLeftClick,
+    handleMessageContextMenu,
+    onTxAttemptClick,
+  ]);
 
   const myPermissionLevel = useMemo(() => {
     const me = Object.values(currentChannelData.users).find(

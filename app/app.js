@@ -27,6 +27,21 @@ import { translationMessages } from './i18n';
 
 const store = setupStore();
 const mountNode = document.getElementById('app');
+
+// React delegates every event type to its root and to each portal container
+// (several components portal into document.body), including
+// animationiteration. Any listener for that event makes Chrome service all
+// CSS animations on the main thread (even composited ones) to fire it, so
+// infinite name effects re-run style recalc every frame. Nothing here uses
+// onAnimationIteration.
+[mountNode, document.body].forEach((node) => {
+  const add = node.addEventListener.bind(node);
+  node.addEventListener = (type, ...rest) => {
+    if (type === 'animationiteration') return;
+    add(type, ...rest);
+  };
+});
+
 const root = createRoot(mountNode);
 
 // Main render
