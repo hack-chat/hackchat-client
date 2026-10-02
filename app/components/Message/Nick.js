@@ -5,6 +5,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import NameColumn from './NameColumn';
 import NameStyle from './NameStyle';
 import TripStyle from './TripStyle';
 import useOnScreen from '../../utils/useOnScreen';
@@ -27,17 +28,18 @@ const Nick = ({ user, handleMention, handleContextMenu, time }) => {
   const hoverTime = time ? new Date(time).toLocaleString() : '';
 
   return (
-    <NameStyle
-      ref={ref}
-      title={hoverTime}
-      onClick={handleClick}
-      onContextMenu={handleRightClick}
-      $color={`#${user.nickColor}`}
-      $effect={onScreen ? user.effect : 0}
-    >
-      {trip}
-      {user.username}
-    </NameStyle>
+    <NameColumn title={hoverTime}>
+      <NameStyle
+        ref={ref}
+        onClick={handleClick}
+        onContextMenu={handleRightClick}
+        $color={`#${user.nickColor}`}
+        $effect={onScreen ? user.effect : 0}
+      >
+        {trip}
+        {user.username}
+      </NameStyle>
+    </NameColumn>
   );
 };
 

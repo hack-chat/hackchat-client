@@ -231,12 +231,14 @@ export const applyEffect = (effect) => {
   }
 };
 
+// Sized to the name itself so only the name is clickable, see NameColumn
 const NameStyle = styled.div`
   color: ${(props) => props.$color || props.theme.palette.text.white};
   padding-top: 0.25em;
   padding-bottom: 0.25em;
   cursor: pointer;
   display: inline-block;
+  vertical-align: top;
 
   ${(props) => applyEffect(props.$effect)}
 
@@ -250,10 +252,7 @@ const NameStyle = styled.div`
   }
 
   @media (width >= 768px) {
-    flex-shrink: 0;
-    width: 220px;
-    text-align: end;
-    margin-inline-end: 1em;
+    max-width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

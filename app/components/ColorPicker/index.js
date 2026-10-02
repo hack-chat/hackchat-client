@@ -14,7 +14,7 @@ import Popover from './Popover';
 
 import 'react-color-palette/css';
 
-export function ColorChanger({ title, initColor, onChangeComplete }) {
+export function ColorChanger({ title, initColor, onChangeComplete, tabIndex }) {
   const [open, setOpen] = useState(false);
   const [color, setColor] = useColor(initColor || '#561ecb');
 
@@ -56,6 +56,7 @@ export function ColorChanger({ title, initColor, onChangeComplete }) {
       <PickerButton
         ref={buttonRef}
         title={title}
+        tabIndex={tabIndex}
         onClick={handleClick}
         $color={color.hex}
       >
@@ -85,6 +86,7 @@ ColorChanger.propTypes = {
   onChangeComplete: PropTypes.func,
   initColor: PropTypes.string,
   title: PropTypes.string,
+  tabIndex: PropTypes.number,
 };
 
 export default ColorChanger;

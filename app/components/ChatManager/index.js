@@ -53,12 +53,14 @@ export function ChatManager({
     }
   }, [channel]);
 
+  // Depends on the array itself, not its length, so in-place edits
+  // (updateMessage appends) also keep the view pinned to the bottom
   useEffect(() => {
     if (scrollContainerRef.current && isAtBottomRef.current) {
       const { scrollHeight, clientHeight } = scrollContainerRef.current;
       scrollContainerRef.current.scrollTop = scrollHeight - clientHeight;
     }
-  }, [currentChannelData.messages.length]);
+  }, [currentChannelData.messages]);
 
   const handleScroll = () => {
     if (scrollContainerRef.current) {

@@ -4,6 +4,8 @@
 
 import styled, { css } from 'styled-components';
 
+import thinScrollbar from 'utils/thinScrollbar';
+
 const getExpandStyles = (props) => {
   if (props.$canExpand && !props.$isExpanded) {
     return css`
@@ -27,25 +29,8 @@ const ChatStyle = styled.div`
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.15s ease;
-  scrollbar-width: thin;
-  scrollbar-color: ${({ theme }) => theme.palette.scrollbar.thumb}
-    ${({ theme }) => theme.palette.scrollbar.track};
 
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: ${({ theme }) => theme.palette.scrollbar.track};
-    border-radius: 4px;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: ${({ theme }) => theme.palette.scrollbar.thumb};
-    border-radius: 3px;
-  }
+  ${thinScrollbar}
 
   & > p {
     margin: 0;
