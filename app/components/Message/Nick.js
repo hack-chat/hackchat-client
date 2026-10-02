@@ -11,7 +11,6 @@ import TripStyle from './TripStyle';
 import useOnScreen from '../../utils/useOnScreen';
 
 const Nick = ({ user, handleMention, handleContextMenu, time }) => {
-  // name effects are costly to animate, so only run them while visible
   const [ref, onScreen] = useOnScreen(!!user.effect);
 
   const handleClick = () => {
@@ -27,6 +26,11 @@ const Nick = ({ user, handleMention, handleContextMenu, time }) => {
   const trip = <TripStyle $flair={user.flair}>{user.usertrip}</TripStyle>;
   const hoverTime = time ? new Date(time).toLocaleString() : '';
 
+  let effectClass = '';
+  if (onScreen && user.effect) {
+    effectClass = `effect-${user.effect} gpu-accelerate`;
+  }
+
   return (
     <NameColumn title={hoverTime}>
       <NameStyle
@@ -34,7 +38,7 @@ const Nick = ({ user, handleMention, handleContextMenu, time }) => {
         onClick={handleClick}
         onContextMenu={handleRightClick}
         $color={`#${user.nickColor}`}
-        $effect={onScreen ? user.effect : 0}
+        className={effectClass}
       >
         {trip}
         {user.username}

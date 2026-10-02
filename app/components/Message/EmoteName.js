@@ -9,11 +9,15 @@ import EmoteNameStyle from './EmoteNameStyle';
 import useOnScreen from '../../utils/useOnScreen';
 
 const EmoteName = ({ effect, title, children }) => {
-  // name effects are costly to animate, so only run them while visible
   const [ref, onScreen] = useOnScreen(!!effect);
 
+  let effectClass = '';
+  if (onScreen && effect) {
+    effectClass = `effect-${effect} gpu-accelerate`;
+  }
+
   return (
-    <EmoteNameStyle ref={ref} title={title} $effect={onScreen ? effect : 0}>
+    <EmoteNameStyle ref={ref} title={title} className={effectClass}>
       {children}
     </EmoteNameStyle>
   );
