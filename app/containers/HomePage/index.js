@@ -884,6 +884,7 @@ export function HomePage({
             channel={channel}
             users={channelData?.[channel]?.users}
             onSendMessage={onSendMessage}
+            canSend={sessionReady}
             ref={chatInputRef}
           />
         </ChatLayout>

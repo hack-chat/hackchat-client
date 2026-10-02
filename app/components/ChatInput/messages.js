@@ -11,6 +11,10 @@ export default defineMessages({
     id: `${scope}.inputTitle`,
     defaultMessage: 'Your Message',
   },
+  reconnectingTitle: {
+    id: `${scope}.reconnectingTitle`,
+    defaultMessage: 'Reconnecting… your message will wait here',
+  },
   previewTitle: {
     id: `${scope}.previewTitle`,
     defaultMessage: 'Preview Message',

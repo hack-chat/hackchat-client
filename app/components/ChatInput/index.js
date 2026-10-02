@@ -140,10 +140,12 @@ const parseMessage = (text) => {
   return chunks.join('');
 };
 
-function ChatInput({ channel, users, onSendMessage }, ref) {
+function ChatInput({ channel, users, onSendMessage, canSend = true }, ref) {
   const intl = useIntl();
 
-  const inputTitle = intl.formatMessage(messages.inputTitle);
+  const inputTitle = intl.formatMessage(
+    canSend ? messages.inputTitle : messages.reconnectingTitle,
+  );
   const previewTitle = intl.formatMessage(messages.previewTitle);
   const sendTitle = intl.formatMessage(messages.sendTitle);
 
@@ -303,6 +305,9 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
   );
 
   const submitInput = useCallback(() => {
+    // While disconnected, keep the text rather than send it into the void
+    if (!canSend) return;
+
     const text = parseMessage(inputValue.trim());
 
     if (text) {
@@ -313,7 +318,14 @@ function ChatInput({ channel, users, onSendMessage }, ref) {
       setMentionState((prev) => ({ ...prev, isCycling: false }));
       setTimeout(resizeTextarea, 0);
     }
-  }, [inputValue, onSendMessage, channel, updateHistory, resizeTextarea]);
+  }, [
+    canSend,
+    inputValue,
+    onSendMessage,
+    channel,
+    updateHistory,
+    resizeTextarea,
+  ]);
 
   const handleKeyDown = useCallback(
     (evt) => {
@@ -590,6 +602,7 @@ ChatInputWithRef.propTypes = {
   channel: PropTypes.string,
   users: PropTypes.object,
   onSendMessage: PropTypes.func.isRequired,
+  canSend: PropTypes.bool,
 };
 
 export default memo(ChatInputWithRef);
