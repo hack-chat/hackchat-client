@@ -4,7 +4,7 @@
 
 import styled from 'styled-components';
 
-export default styled.form`
+export default styled.form.attrs({ className: 'chat-form' })`
   position: relative;
   display: flex;
   width: 100%;

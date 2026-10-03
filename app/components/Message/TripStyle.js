@@ -15,7 +15,7 @@ const getFlair = (props) => {
   return '';
 };
 
-const TripStyle = styled.span`
+const TripStyle = styled.span.attrs({ className: 'trip' })`
   color: ${({ theme }) => theme.palette.text.trip};
   display: inline-block;
   margin-inline-end: 0.5em;
