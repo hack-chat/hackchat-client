@@ -20,9 +20,10 @@ module.exports = {
   },
   setupFilesAfterEnv: [
     '<rootDir>/internals/testing/test-bundler.js',
-    '@testing-library/react/cleanup-after-each',
+    '<rootDir>/internals/testing/test-globals.js',
   ],
-  setupFiles: ['raf/polyfill'],
+  setupFiles: ['raf/polyfill', '<rootDir>/internals/testing/localstorage-polyfill.js'],
   testRegex: 'tests/.*\\.test\\.js$',
+  testPathIgnorePatterns: ['/\\.claude/', '/\\.git/'],
   snapshotSerializers: [],
 };

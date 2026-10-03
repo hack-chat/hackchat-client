@@ -18,6 +18,7 @@ import { pushNotification } from 'utils/NotificationService';
 import { Client } from 'hackchat-engine';
 
 import { showToast } from 'containers/ToastNotifier/actions';
+import { staleUserids } from './userLifecycle';
 
 import {
   CONNECTION_ERROR,
@@ -664,6 +665,17 @@ export default function* communicationProviderSaga() {
   while (true) {
     const action = yield take(client);
     yield put(action);
+
+    // Prune engine user records that are no longer in any joined
+    // channel: the engine keeps offline records forever (memory creep
+    // in long-lived tabs). Safe because the JOINED_CHANNEL merge only
+    // needs records for users the server re-reports, and the sidebar/
+    // ChatManager filter on `online`. Never drop our own record.
+    if (action.type === USER_LEFT || action.type === USER_UPDATE) {
+      const joinedChannels = Array.from(hcClient.channels.keys());
+      const toPrune = staleUserids(hcClient.users, joinedChannels);
+      toPrune.forEach((userid) => hcClient.users.delete(userid));
+    }
 
     if (
       (action.type === WARNING || action.type === INFORMATION) &&
