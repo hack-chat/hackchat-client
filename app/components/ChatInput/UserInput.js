@@ -4,7 +4,8 @@
 
 import styled from 'styled-components';
 
-export default styled.textarea`
+// the class is a stable hook for theme customCss
+export default styled.textarea.attrs({ className: 'chat-input' })`
   flex-grow: 1;
   min-height: 4em;
   max-width: 600px;

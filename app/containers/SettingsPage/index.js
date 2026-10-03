@@ -47,7 +47,56 @@ import ThemeRow from './ThemeRow';
 import FooterSection from './FooterSection';
 import ThemeSelect from './ThemeSelect';
 
-const AVAILABLE_THEMES = ['default', 'light', 'hacker', 'mlg-gamer'];
+const AVAILABLE_THEMES = [
+  'default',
+  'light',
+  'hacker',
+  'mlg-gamer',
+  // Colour schemes ported from the legacy client. Not ported: rainbow (nick
+  // effects cover it) and waifu (relied on an image no longer shipped).
+  'amoled',
+  'android',
+  'android-white',
+  'andromeda',
+  'atelier-dune',
+  'atelier-forest',
+  'atelier-heath',
+  'atelier-lakeside',
+  'atelier-seaside',
+  'banana',
+  'bright',
+  'bubblegum',
+  'carrot',
+  'catppuccin',
+  'chalk',
+  'eighties',
+  'flamingo',
+  'fresh-green',
+  'fried-egg',
+  'greenscreen',
+  'gruvbox-light',
+  'lax',
+  'legacy-default',
+  'legacy-hacker',
+  'maniac',
+  'mariana',
+  'military',
+  'milkyway',
+  'mocha',
+  'monokai',
+  'nebula',
+  'nese',
+  'ocean',
+  'omega',
+  'pop',
+  'railscasts',
+  'retro',
+  'solarized',
+  'sunlight',
+  'tk-night',
+  'tomorrow',
+  'ubuntu',
+];
 
 import {
   setUsername,

@@ -4,7 +4,8 @@
 
 import styled from 'styled-components';
 
-const WarnStyle = styled.div`
+// the class is a stable hook for theme customCss
+const WarnStyle = styled.div.attrs({ className: 'warn' })`
   color: ${({ theme }) => theme.palette.status.error};
 
   & > p {

@@ -4,7 +4,8 @@
 
 import styled from 'styled-components';
 
-export default styled.form`
+// the class is a stable hook for theme customCss
+export default styled.form.attrs({ className: 'chat-form' })`
   position: relative;
   display: flex;
   width: 100%;
