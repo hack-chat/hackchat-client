@@ -1,0 +1,20 @@
+digraph store_wiring {
+  rankdir=LR;
+  // Reducer/saga injection wiring (evidence: app/utils/injectReducer.js,
+  // injectSaga.js, app/reducers.js, container index.js files)
+  node [shape=box];
+
+  "app/setupStore.js" -> "app/reducers.js" [label="createReducer()"];
+  "app/reducers.js" -> "language reducer" [label="combineReducers"];
+  "app/reducers.js" -> "settings reducer";
+
+  "containers/CommunicationProvider/index.js" -> "store.injectedReducers[communicationProvider]" [label="useInjectReducer"];
+  "containers/CommunicationProvider/index.js" -> "store.runSaga(communicationProviderSaga)" [label="useInjectSaga"];
+  "containers/WalletLayer/index.js" -> "store.injectedReducers[walletLayer]";
+  "containers/ToastNotifier/index.js" -> "store.injectedReducers[toastNotifier]";
+  "components/MainMenu/index.js" -> "store.injectedReducers[mainMenu]";
+  "containers/SettingsPage/index.js" -> "store.injectedReducers[settings]";
+
+  "utils/injectReducer.js" -> "utils/checkStore.js" [label="guard"];
+  "utils/injectSaga.js" -> "utils/checkStore.js";
+}

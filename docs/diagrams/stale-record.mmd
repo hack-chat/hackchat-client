@@ -1,0 +1,18 @@
+%% The duplicate-nick root cause (repro: repro-dup-nick.js, fix: PR #77)
+sequenceDiagram
+    participant OBS as Observer window (engine Client A)
+    participant AL as Alice window (engine Client B)
+    participant GW as gateway (ws)
+
+    OBS->>GW: {cmd:"join"} -> subscribed to channel
+    AL->>GW: {cmd:"join"} (userid 104)
+    GW->>OBS: {cmd:"onlineAdd", userid:104, nick:"Alice"}
+    Note over OBS: engine.users[104] = {online:true, channels:{gamerism}}
+    OBS->>GW: {cmd:"leave"} -> OBS UNSUBSCRIBED
+    AL-->>AL: window closes (session ends)
+    GW-->>OBS: (nothing - onlineRemove sent only to subscribed sockets)
+    Note over OBS: stale record 104 stays online:true forever
+    OBS->>GW: {cmd:"join"} again (rejoin)
+    GW->>OBS: {cmd:"onlineSet", users:[106 Alice, 107 observer]}
+    Note over OBS: OLD: saga scanned hcClient.users -> resurrects 104 beside 106 -> sidebar renders Alice twice
+    Note over OBS: NEW (PR #77): list built from payload.users -> only 106, 107 -> no duplicate
