@@ -1,6 +1,7 @@
 {
   "hcclient.components.ChannelList.leaveChannel": "Kanaldan Ayrıl",
   "hcclient.components.ChatInput.inputTitle": "Mesajınız",
+  "hcclient.components.ChatInput.reconnectingTitle": "Sohbet yeniden bağlanıyor, bir saniye. . .",
   "hcclient.components.ChatInput.previewTitle": "Mesajı Önizle",
   "hcclient.components.ChatInput.sendTitle": "Mesajı Gönder",
   "hcclient.components.ChatManager.aloneMsg": "Yalnızsınız.",

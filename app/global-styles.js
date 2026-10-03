@@ -265,6 +265,8 @@ const GlobalStyle = createGlobalStyle`
     padding: 3px 10px;
     margin: 3px;
     border-inline-start: 5px solid ${({ theme }) => theme.palette.background.tertiary};
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   blockquote > p {

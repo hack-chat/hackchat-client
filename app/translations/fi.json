@@ -1,6 +1,7 @@
 {
   "hcclient.components.ChannelList.leaveChannel": "Poistu kanavalta",
   "hcclient.components.ChatInput.inputTitle": "Viestisi",
+  "hcclient.components.ChatInput.reconnectingTitle": "Chat yhdistää uudelleen, hetkinen. . .",
   "hcclient.components.ChatInput.previewTitle": "Esikatsele viestiä",
   "hcclient.components.ChatInput.sendTitle": "Lähetä viesti",
   "hcclient.components.ChatManager.aloneMsg": "Olet yksin.",

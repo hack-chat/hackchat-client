@@ -1,6 +1,7 @@
 {
   "hcclient.components.ChannelList.leaveChannel": "Quitter le canal",
   "hcclient.components.ChatInput.inputTitle": "Votre message",
+  "hcclient.components.ChatInput.reconnectingTitle": "Le chat se reconnecte, un instant. . .",
   "hcclient.components.ChatInput.previewTitle": "Aperçu du message",
   "hcclient.components.ChatInput.sendTitle": "Envoyer le message",
   "hcclient.components.ChatManager.aloneMsg": "Vous êtes seul.",

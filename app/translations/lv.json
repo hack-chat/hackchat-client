@@ -1,6 +1,7 @@
 {
   "hcclient.components.ChannelList.leaveChannel": "L34V3 CH4NN3L",
   "hcclient.components.ChatInput.inputTitle": "UR M355493",
+  "hcclient.components.ChatInput.reconnectingTitle": "CH4T 1S R3C0NN3CT1NG, 0N3 M0M3NT. . .",
   "hcclient.components.ChatInput.previewTitle": "PR3V13W M3554G3",
   "hcclient.components.ChatInput.sendTitle": "S3ND M3554G3",
   "hcclient.components.ChatManager.aloneMsg": "U R 4L0N3.",

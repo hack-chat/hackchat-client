@@ -1,6 +1,7 @@
 {
   "hcclient.components.ChannelList.leaveChannel": "Keluar dari Saluran",
   "hcclient.components.ChatInput.inputTitle": "Pesan Anda",
+  "hcclient.components.ChatInput.reconnectingTitle": "Obrolan sedang menyambung kembali, tunggu sebentar. . .",
   "hcclient.components.ChatInput.previewTitle": "Pratinjau Pesan",
   "hcclient.components.ChatInput.sendTitle": "Kirim Pesan",
   "hcclient.components.ChatManager.aloneMsg": "Anda sendirian.",

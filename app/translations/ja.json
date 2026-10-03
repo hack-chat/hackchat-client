@@ -1,6 +1,7 @@
 {
   "hcclient.components.ChannelList.leaveChannel": "チャンネルを退出",
   "hcclient.components.ChatInput.inputTitle": "メッセージを入力",
+  "hcclient.components.ChatInput.reconnectingTitle": "チャットを再接続しています、少々お待ちください. . .",
   "hcclient.components.ChatInput.previewTitle": "メッセージをプレビュー",
   "hcclient.components.ChatInput.sendTitle": "メッセージを送信",
   "hcclient.components.ChatManager.aloneMsg": "ここにはあなた一人だけです。",

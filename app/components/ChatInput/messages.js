@@ -13,7 +13,7 @@ export default defineMessages({
   },
   reconnectingTitle: {
     id: `${scope}.reconnectingTitle`,
-    defaultMessage: 'Reconnecting… your message will wait here',
+    defaultMessage: 'Chat is reconnecting, one moment. . .',
   },
   previewTitle: {
     id: `${scope}.previewTitle`,

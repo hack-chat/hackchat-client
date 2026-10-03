@@ -1,6 +1,7 @@
 {
   "hcclient.components.ChannelList.leaveChannel": "ترک کانال",
   "hcclient.components.ChatInput.inputTitle": "پیام شما",
+  "hcclient.components.ChatInput.reconnectingTitle": "چت در حال اتصال مجدد است، یک لحظه. . .",
   "hcclient.components.ChatInput.previewTitle": "پیش‌نمایش پیام",
   "hcclient.components.ChatInput.sendTitle": "ارسال پیام",
   "hcclient.components.ChatManager.aloneMsg": "شما تنها هستید.",

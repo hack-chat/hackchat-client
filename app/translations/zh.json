@@ -1,6 +1,7 @@
 {
   "hcclient.components.ChannelList.leaveChannel": "離開頻道",
   "hcclient.components.ChatInput.inputTitle": "你的訊息",
+  "hcclient.components.ChatInput.reconnectingTitle": "聊天正在重新連線，請稍候. . .",
   "hcclient.components.ChatInput.previewTitle": "預覽訊息",
   "hcclient.components.ChatInput.sendTitle": "發送訊息",
   "hcclient.components.ChatManager.aloneMsg": "這裡只有你一個人。",

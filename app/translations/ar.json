@@ -1,6 +1,7 @@
 {
   "hcclient.components.ChannelList.leaveChannel": "مغادرة القناة",
   "hcclient.components.ChatInput.inputTitle": "رسالتك",
+  "hcclient.components.ChatInput.reconnectingTitle": "جاري إعادة الاتصال بالدردشة، لحظة واحدة. . .",
   "hcclient.components.ChatInput.previewTitle": "معاينة الرسالة",
   "hcclient.components.ChatInput.sendTitle": "إرسال الرسالة",
   "hcclient.components.ChatManager.aloneMsg": "أنت وحدك.",

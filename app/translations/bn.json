@@ -1,6 +1,7 @@
 {
   "hcclient.components.ChannelList.leaveChannel": "চ্যানেল ত্যাগ করুন",
   "hcclient.components.ChatInput.inputTitle": "আপনার বার্তা",
+  "hcclient.components.ChatInput.reconnectingTitle": "চ্যাট পুনরায় সংযোগ করা হচ্ছে, এক মুহূর্ত. . .",
   "hcclient.components.ChatInput.previewTitle": "বার্তা প্রাকদর্শন",
   "hcclient.components.ChatInput.sendTitle": "বার্তা পাঠান",
   "hcclient.components.ChatManager.aloneMsg": "আপনি একা।",
