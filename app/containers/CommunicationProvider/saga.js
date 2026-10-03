@@ -117,25 +117,31 @@ function initWebsocket() {
     };
 
     const onChannelJoined = (payload) => {
+      // Build the user list from the authoritative onlineSet packet the
+      // server just sent, NOT from hcClient.users: the engine keeps
+      // records for users whose sessions ended while this client was
+      // unsubscribed (the server sends onlineRemove only to subscribed
+      // clients), and scanning the map resurrects those stale records
+      // beside the fresh ones -> duplicate nicks in the sidebar.
       let userList = {};
-      hcClient.users.forEach((userRecord, key) => {
-        if (userRecord.channels.has(payload.channel)) {
-          userList[key] = {
-            blocked: userRecord.blocked,
-            isBot: userRecord.isBot,
-            mine: userRecord.mine,
-            nickColor: userRecord.nickColor,
-            online: userRecord.online,
-            permissionLevel: userRecord.permissionLevel,
-            userhash: userRecord.userhash,
-            userid: userRecord.userid,
-            userlevel: userRecord.userlevel,
-            username: userRecord.username,
-            usertrip: userRecord.usertrip,
-            flair: userRecord.flair,
-            effect: userRecord.effect,
-          };
-        }
+      payload.users.forEach((userData) => {
+        const userRecord = hcClient.users.get(userData.userid);
+
+        userList[userData.userid] = {
+          blocked: userRecord ? userRecord.blocked : false,
+          isBot: userData.isBot || false,
+          mine: userData.isme === true,
+          nickColor: userData.color || false,
+          online: true,
+          permissionLevel: userData.level || false,
+          userhash: userData.hash || '',
+          userid: userData.userid,
+          userlevel: userData.uType || 'user',
+          username: userData.nick || 'anonymous',
+          usertrip: userData.trip || '',
+          flair: userData.flair || '',
+          effect: userData.effect || 0,
+        };
       });
 
       return emitter({
