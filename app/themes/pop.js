@@ -1,6 +1,5 @@
 /**
  * Theme Name: Pop
- * Author: marzavec
  * Description: The "pop" colour scheme from the legacy hack.chat client
  */
 

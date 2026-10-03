@@ -1,6 +1,5 @@
 /**
  * Theme Name: Banana
- * Author: marzavec
  * Description: The "banana" colour scheme from the legacy hack.chat client
  */
 

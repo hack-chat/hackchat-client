@@ -4,7 +4,6 @@
 
 import styled from 'styled-components';
 
-// the class is a stable hook for theme customCss
 const InfoStyle = styled.div.attrs({ className: 'info' })`
   color: ${({ theme }) => theme.palette.status.info};
   padding-top: 0.25em;

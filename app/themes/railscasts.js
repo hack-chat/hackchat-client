@@ -1,6 +1,5 @@
 /**
  * Theme Name: Railscasts
- * Author: marzavec
  * Description: The "railscasts" colour scheme from the legacy hack.chat client
  */
 

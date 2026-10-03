@@ -1,6 +1,5 @@
 /**
  * Theme Name: Android
- * Author: marzavec
  * Description: The "android" colour scheme from the legacy hack.chat client
  */
 

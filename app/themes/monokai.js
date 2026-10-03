@@ -1,6 +1,5 @@
 /**
  * Theme Name: Monokai
- * Author: marzavec
  * Description: The "monokai" colour scheme from the legacy hack.chat client
  */
 

@@ -26,7 +26,6 @@ const Nick = ({ user, handleMention, handleContextMenu, time }) => {
   const trip = <TripStyle $flair={user.flair}>{user.usertrip}</TripStyle>;
   const hoverTime = time ? new Date(time).toLocaleString() : '';
 
-  // `nick` is a stable hook for theme customCss
   let className = 'nick';
   if (onScreen && user.effect) {
     className += ` effect-${user.effect} gpu-accelerate`;

@@ -4,8 +4,7 @@
 
 import styled from 'styled-components';
 
-// Lays out the fixed-width name gutter; the clickable name is NameStyle.
-// The class is a stable hook for theme customCss
+// Lays out the fixed-width name gutter; the clickable name is NameStyle
 const NameColumn = styled.div.attrs({ className: 'nick-column' })`
   @media (width >= 768px) {
     flex-shrink: 0;

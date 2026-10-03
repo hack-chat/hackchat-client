@@ -1,6 +1,5 @@
 /**
  * Theme Name: Bubblegum
- * Author: marzavec
  * Description: The "bubblegum" colour scheme from the legacy hack.chat client
  */
 

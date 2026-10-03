@@ -15,7 +15,6 @@ const getFlair = (props) => {
   return '';
 };
 
-// the class is a stable hook for theme customCss
 const TripStyle = styled.span.attrs({ className: 'trip' })`
   color: ${({ theme }) => theme.palette.text.trip};
   display: inline-block;

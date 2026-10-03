@@ -1,6 +1,5 @@
 /**
  * Theme Name: Legacy Hacker
- * Author: marzavec
  * Description: The "hacker" colour scheme from the legacy hack.chat client
  */
 

@@ -1,6 +1,5 @@
 /**
  * Theme Name: Solarized
- * Author: marzavec
  * Description: The "solarized" colour scheme from the legacy hack.chat client
  */
 

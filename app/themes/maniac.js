@@ -1,6 +1,5 @@
 /**
  * Theme Name: Maniac
- * Author: marzavec
  * Description: The "maniac" colour scheme from the legacy hack.chat client
  */
 

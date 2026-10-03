@@ -1,6 +1,5 @@
 /**
  * Theme Name: Amoled
- * Author: marzavec
  * Description: The "amoled" colour scheme from the legacy hack.chat client
  */
 

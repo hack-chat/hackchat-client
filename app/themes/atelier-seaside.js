@@ -1,6 +1,5 @@
 /**
  * Theme Name: Atelier Seaside
- * Author: marzavec
  * Description: The "atelier-seaside" colour scheme from the legacy hack.chat client
  */
 

@@ -1,6 +1,5 @@
 /**
  * Theme Name: Greenscreen
- * Author: marzavec
  * Description: The "greenscreen" colour scheme from the legacy hack.chat client
  */
 

@@ -1,6 +1,5 @@
 /**
  * Theme Name: Mariana
- * Author: marzavec
  * Description: The "mariana" colour scheme from the legacy hack.chat client
  */
 

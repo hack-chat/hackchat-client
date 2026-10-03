@@ -1,6 +1,5 @@
 /**
  * Theme Name: Mocha
- * Author: marzavec
  * Description: The "mocha" colour scheme from the legacy hack.chat client
  */
 

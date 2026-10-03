@@ -1,6 +1,5 @@
 /**
  * Theme Name: Ocean
- * Author: marzavec
  * Description: The "ocean" colour scheme from the legacy hack.chat client
  */
 

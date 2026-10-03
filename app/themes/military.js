@@ -1,6 +1,5 @@
 /**
  * Theme Name: Military
- * Author: marzavec
  * Description: The "military" colour scheme from the legacy hack.chat client
  */
 

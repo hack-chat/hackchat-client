@@ -1,6 +1,5 @@
 /**
  * Theme Name: Bright
- * Author: marzavec
  * Description: The "bright" colour scheme from the legacy hack.chat client
  */
 

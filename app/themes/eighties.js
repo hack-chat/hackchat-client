@@ -1,6 +1,5 @@
 /**
  * Theme Name: Eighties
- * Author: marzavec
  * Description: The "eighties" colour scheme from the legacy hack.chat client
  */
 

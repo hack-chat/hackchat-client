@@ -1,6 +1,5 @@
 /**
  * Theme Name: Atelier Heath
- * Author: marzavec
  * Description: The "atelier-heath" colour scheme from the legacy hack.chat client
  */
 

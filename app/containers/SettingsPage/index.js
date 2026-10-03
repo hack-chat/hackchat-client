@@ -52,8 +52,6 @@ const AVAILABLE_THEMES = [
   'light',
   'hacker',
   'mlg-gamer',
-  // Colour schemes ported from the legacy client. Not ported: rainbow (nick
-  // effects cover it) and waifu (relied on an image no longer shipped).
   'amoled',
   'android',
   'android-white',

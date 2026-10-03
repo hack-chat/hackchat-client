@@ -1,6 +1,5 @@
 /**
  * Theme Name: Nese
- * Author: marzavec
  * Description: The "nese" colour scheme from the legacy hack.chat client
  */
 

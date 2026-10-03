@@ -1,6 +1,5 @@
 /**
  * Theme Name: Gruvbox Light
- * Author: marzavec
  * Description: The "gruvbox-light" colour scheme from the legacy hack.chat client
  */
 

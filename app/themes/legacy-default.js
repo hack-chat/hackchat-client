@@ -1,6 +1,5 @@
 /**
  * Theme Name: Legacy Default
- * Author: marzavec
  * Description: The "default" colour scheme from the legacy hack.chat client
  */
 

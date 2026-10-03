@@ -1,6 +1,5 @@
 /**
  * Theme Name: Tomorrow
- * Author: marzavec
  * Description: The "tomorrow" colour scheme from the legacy hack.chat client
  */
 

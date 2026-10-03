@@ -1,6 +1,5 @@
 /**
  * Theme Name: Atelier Dune
- * Author: marzavec
  * Description: The "atelier-dune" colour scheme from the legacy hack.chat client
  */
 

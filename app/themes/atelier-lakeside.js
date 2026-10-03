@@ -1,6 +1,5 @@
 /**
  * Theme Name: Atelier Lakeside
- * Author: marzavec
  * Description: The "atelier-lakeside" colour scheme from the legacy hack.chat client
  */
 

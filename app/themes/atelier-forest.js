@@ -1,6 +1,5 @@
 /**
  * Theme Name: Atelier Forest
- * Author: marzavec
  * Description: The "atelier-forest" colour scheme from the legacy hack.chat client
  */
 

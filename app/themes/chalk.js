@@ -1,6 +1,5 @@
 /**
  * Theme Name: Chalk
- * Author: marzavec
  * Description: The "chalk" colour scheme from the legacy hack.chat client
  */
 

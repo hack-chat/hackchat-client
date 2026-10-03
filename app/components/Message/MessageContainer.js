@@ -8,7 +8,6 @@
 
 import styled from 'styled-components';
 
-// the class is a stable hook for theme customCss
 const MessageContainer = styled.div.attrs({ className: 'message' })`
   display: flex;
   flex-direction: column;
