@@ -32,7 +32,8 @@ the `hackchat-engine` npm package (pinned `^1.1.28`).
   - `reducer.js` — immer fold of all chat state (channels, users, messages,
     session, captcha/password flags).
   - `actions.js` / `selectors.js` — public API used by the UI.
-  - `userLifecycle.js` — pure prune predicate (testable without a socket).
+  - `userLifecycle.js` — pure prune predicate (testable without a socket;
+    lands in PR #74, not yet on master).
   - `constants.js` — the action/event type vocabulary.
 - `app/containers/` — App (routes + ThemeProvider), HomePage (chat UI),
   SettingsPage, WalletLayer (Solana wallet-standard), LanguageProvider (i18n),
@@ -74,11 +75,13 @@ the `hackchat-engine` npm package (pinned `^1.1.28`).
 - Store state is the single rendering source: sidebar filters
   `channels[].users` on `online` (`MainMenu/index.js:103`,
   `ChatManager/index.js:176`). Never render from `hcClient.users` directly.
-- The saga builds the JOINED_CHANNEL user list from the `onlineSet` packet,
-  NOT by scanning `hcClient.users` (PR #77 fix; scanning resurrects stale
-  records — see docs/issues.md and docs/diagrams/stale-record.mmd).
-- Reducer guards: `USER_JOINED`/`USER_LEFT`/`USER_UPDATE` are no-ops for
-  channels absent client-side (PR #76); keep them when editing the reducer.
+- The JOINED_CHANNEL user list must be built from the `onlineSet` packet,
+  NOT by scanning `hcClient.users` (master still scans — fix pending in
+  PR #77; scanning resurrects stale records — see docs/issues.md and
+  docs/diagrams/stale-record.mmd).
+- Reducer guards: `USER_JOINED`/`USER_LEFT`/`USER_UPDATE` must be no-ops
+  for channels absent client-side (unguarded on master; guards land in
+  PR #76 — see docs/issues.md).
 - Wire facts: engine `util/Constants.js` maps event names to wire cmds
   (`LEAVE: 'leave'`, `USER_LEAVE: 'onlineRemove'`); `onlineRemove` is
   delivered only to subscribed sockets. PacketRouter keys on `packet.cmd`.

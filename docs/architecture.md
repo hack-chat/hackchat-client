@@ -140,7 +140,7 @@ reads; the client's own vocabulary, verified against
 
 Note: `onlineRemove` is delivered **only to subscribed sockets** — the
 mechanism behind the stale-record behaviour documented in
-`docs/issues.md` and fixed in PR #77.
+`docs/issues.md`; the fix is pending in PR #77.
 
 ## 5. Failure paths
 

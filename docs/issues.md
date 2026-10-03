@@ -18,8 +18,8 @@ the observer receives nothing, so its engine record `Alice#104` keeps
 `onChannelJoined` scanned `hcClient.users` for `channels.has(channel)`
 and resurrected the stale record beside the fresh `Alice#106`.
 
-Status: fixed in PR #77 (upstream) / #6 (fork) — user list built from the
-authoritative `onlineSet` packet. See `docs/diagrams/stale-record.mmd`.
+Status: fix pending in PR #77 (upstream) / #6 (fork) — user list built from
+the authoritative `onlineSet` packet. See `docs/diagrams/stale-record.mmd`.
 
 ## 2. "User stays connected" after leaving; rejoin says nick already in use
 
@@ -44,11 +44,11 @@ emits the user's own `leave`/`update` packets for it; the unguarded reducer
 wrote through `draft.channels[channel]` and immer crashed
 (`Cannot read properties of undefined`).
 
-Status: fixed in PR #76 / #5 — `USER_JOINED`/`USER_LEFT`/`USER_UPDATE` are
+Status: fix pending in PR #76 / #5 — `USER_JOINED`/`USER_LEFT`/`USER_UPDATE` are
 no-ops when the channel is absent client-side.
 
 ## 4. Engine memory creep
 
 `hcClient.users` keeps offline records forever (engine never prunes).
-Status: client-side prune landed in PR #74 / #3
+Status: client-side prune pending in PR #74 / #3
 (`app/containers/CommunicationProvider/userLifecycle.js` + saga hook).
