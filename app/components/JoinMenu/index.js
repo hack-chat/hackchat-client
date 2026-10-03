@@ -312,11 +312,11 @@ export function mapDispatchToProps(dispatch) {
   return {
     onSubmitForm: (user, pass, chan, color, remember) => {
       dispatch(setStoreChannelsFlag(remember));
+      dispatch(setUsername(user, remember));
 
       if (remember) {
-        dispatch(setUsername(user));
-        dispatch(setPassword(pass));
         dispatch(setColor(color));
+        dispatch(setPassword(pass));
         dispatch(addPrevChannel(chan));
       }
 

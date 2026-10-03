@@ -68,6 +68,7 @@ import {
   signMessageRequest,
 } from 'containers/WalletLayer/actions';
 
+import { setUsername } from 'containers/SettingsPage/actions';
 import { WSPATH_LSLABEL, SET_WSPATH } from 'containers/SettingsPage/constants';
 
 const savedWsPath = JSON.parse(localStorage.getItem(WSPATH_LSLABEL));
@@ -138,6 +139,10 @@ function initWebsocket() {
         }
       });
 
+      if (hcClient.myUser && hcClient.myUser.username) {
+        emitter(setUsername(hcClient.myUser.username, false));
+      }
+
       return emitter({
         type: JOINED_CHANNEL,
         data: {
@@ -189,8 +194,12 @@ function initWebsocket() {
         },
       });
 
-    const onUserUpdate = (payload) =>
-      emitter({
+    const onUserUpdate = (payload) => {
+      if (payload.mine) {
+        emitter(setUsername(payload.username, false));
+      }
+
+      return emitter({
         type: USER_UPDATE,
         channel: payload.channel,
         userid: payload.userid,
@@ -210,6 +219,7 @@ function initWebsocket() {
           effect: payload.effect,
         },
       });
+    };
 
     const onWarning = (payload) =>
       emitter({

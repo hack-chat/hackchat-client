@@ -6,6 +6,10 @@ import styled from 'styled-components';
 import { FaUser } from 'react-icons/fa';
 
 export default styled(FaUser)`
-  margin: 0.5em;
-  vertical-align: middle;
+  width: 24px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  margin-right: 8px;
 `;

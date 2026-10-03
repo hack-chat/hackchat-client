@@ -33,7 +33,6 @@ import MenuCopyButton from './MenuCopyButton';
 import ItemList from './ItemList';
 import Item from './Item';
 import Divider from './Divider';
-import UserColorIndicator from './UserColorIndicator';
 import UserFlair from './UserFlair';
 import UserIcon from './UserIcon';
 
@@ -257,11 +256,10 @@ export function MainMenu({
                 onClick={(e) => handleUserClick(user, e)}
                 onContextMenu={(e) => handleUserClick(user, e)}
                 title={user.usertrip || ''}
+                $userColor={
+                  user.nickColor ? `#${user.nickColor}` : 'transparent'
+                }
               >
-                <UserColorIndicator
-                  $color={`#${user.nickColor || 'fff'}`}
-                  title={`#${user.nickColor}`}
-                />
                 {user.flair ? (
                   <UserFlair>{user.flair}</UserFlair>
                 ) : (

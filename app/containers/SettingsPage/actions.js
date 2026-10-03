@@ -43,8 +43,10 @@ import {
  * @param  {string} username New username
  * @return {object} An action object with a type of SET_USERNAME
  */
-export function setUsername(username) {
-  localStorage.setItem(USERNAME_LSLABEL, JSON.stringify(username));
+export function setUsername(username, save = true) {
+  if (save) {
+    localStorage.setItem(USERNAME_LSLABEL, JSON.stringify(username));
+  }
 
   return {
     type: SET_USERNAME,

@@ -34,6 +34,7 @@ const ChatMessage = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const isLongMessage = payload.content.length > TRUNCATION_CHAR_THRESHOLD;
   const ContentWrapper = extended ? ExtendedMessageContent : MessageContent;
+
   const renderedContent = useMemo(
     () => msgForm.render(payload.content),
     [msgForm, payload.content],
@@ -42,6 +43,7 @@ const ChatMessage = ({
   const doHighlight = useSelector(
     (state) => selectSettingsPageDomain(state).highlightMentions ?? true,
   );
+
   const myUsername = useSelector(
     (state) => selectSettingsPageDomain(state).username ?? '',
   );
@@ -50,7 +52,7 @@ const ChatMessage = ({
   if (doHighlight && myUsername && payload.content) {
     const escapedName = myUsername.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const mentionRegex = new RegExp(
-      `(?:^|\\s)(@?${escapedName})(?=\\s|$|[.,!?])`,
+      `(^|\\s|\\W)@${escapedName}($|\\s|\\W)`,
       'i',
     );
     isMentioned = mentionRegex.test(payload.content);
