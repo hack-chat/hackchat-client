@@ -4,11 +4,6 @@
 
 import { css } from 'styled-components';
 
-// The 10px gutter keeps it easy to grab, while the transparent border leaves
-// a 4px visible thumb that sits 3px off the content and widens on hover.
-// Blink ignores ::-webkit-scrollbar once scrollbar-width or scrollbar-color
-// is set, so the standard properties are only used where the pseudo-elements
-// are unsupported (Firefox).
 const thinScrollbar = css`
   &::-webkit-scrollbar {
     width: 10px;

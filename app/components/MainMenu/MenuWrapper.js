@@ -3,6 +3,7 @@
  */
 
 import styled, { css } from 'styled-components';
+import thinScrollbar from 'utils/thinScrollbar';
 
 const getAlignment = (props) => {
   if (props.$menuLeft) {
@@ -54,9 +55,8 @@ export default styled.div`
   z-index: 9;
   display: flex;
   flex-direction: column;
-  scrollbar-width: thin;
-  scrollbar-color: ${({ theme }) => theme.palette.scrollbar.menuThumb}
-    ${({ theme }) => theme.palette.background.menu};
+
+  ${thinScrollbar}
 
   @media (width >= 768px) {
     transform: ${getMediaTransform};

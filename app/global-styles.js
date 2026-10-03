@@ -3,6 +3,7 @@
  */
 
 import { createGlobalStyle, keyframes } from 'styled-components';
+import thinScrollbar from 'utils/thinScrollbar';
 
 const colorSwirl = keyframes`
   0% { filter: hue-rotate(0deg); }
@@ -127,25 +128,7 @@ const GlobalStyle = createGlobalStyle`
     tab-size: 4;
   }
 
-  body::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  body::-webkit-scrollbar-track {
-    background: ${({ theme }) => theme.palette.scrollbar.track};
-    border-radius: 3px;
-  }
-
-  body::-webkit-scrollbar-thumb {
-    background: ${({ theme }) => theme.palette.scrollbar.thumb};
-    border-radius: 3px;
-  }
-
-  @supports not selector(::-webkit-scrollbar) {
-    body {
-      scrollbar-color: ${({ theme }) => theme.palette.scrollbar.thumb} ${({ theme }) => theme.palette.scrollbar.track};
-    }
-  }
+  ${thinScrollbar}
 
   body,
   input,

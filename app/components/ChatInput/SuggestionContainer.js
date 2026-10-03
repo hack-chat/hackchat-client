@@ -3,6 +3,7 @@
  */
 
 import styled from 'styled-components';
+import thinScrollbar from 'utils/thinScrollbar';
 
 export default styled.div`
   position: absolute;
@@ -16,9 +17,8 @@ export default styled.div`
   max-width: 618px;
   width: 100%;
   right: 0;
-  scrollbar-width: thin;
-  scrollbar-color: ${({ theme }) => theme.palette.scrollbar.menuThumb}
-    ${({ theme }) => theme.palette.scrollbar.track};
+
+  ${thinScrollbar}
 
   @media (width <= 767px) {
     left: calc(220px + 1em);

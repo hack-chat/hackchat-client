@@ -3,7 +3,6 @@
  */
 
 import styled from 'styled-components';
-
 import thinScrollbar from 'utils/thinScrollbar';
 
 export default styled.div`
