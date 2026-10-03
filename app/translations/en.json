@@ -137,7 +137,7 @@
   "hcclient.components.Message.join.rateLimit": "You are joining channels too fast. Wait a moment and try again.",
   "hcclient.components.Message.joined": "{nick} joined",
   "hcclient.components.Message.left": "{nick} left",
-  "hcclient.components.Message.rcWarning": "Reconnected- you may have missed messages",
+  "hcclient.components.Message.rcWarning": "Reconnected - you may have missed some messages.",
   "hcclient.components.Message.showLess": "Show less",
   "hcclient.components.Message.showMore": "Show more",
   "hcclient.components.Message.txPreview": "Preview Transaction",
