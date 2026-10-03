@@ -1,0 +1,38 @@
+# System structure of hackchat-client (evidence: app/app.js render nesting,
+# app/containers/*, app/components/*). Groups = ownership boundaries.
+
+app: {
+  Provider: "Provider (redux store)\napp/setupStore.js"
+
+  CommunicationProvider: {
+    label: "CommunicationProvider\nsaga + reducer + store namespace"
+    saga: "saga.js\nowns hcClient (hackchat-engine)"
+    reducer: "reducer.js\nimmer state fold"
+    actions: "actions.js\nUI -> dispatch"
+    selectors: "selectors.js\nstore -> UI"
+  }
+  LanguageProvider: "LanguageProvider\nreact-intl, 19 locales"
+  WalletLayer: "WalletLayer\nSolana wallet-standard saga"
+  Router: "Router\nreact-router-dom"
+  App: {
+    label: "App\nThemeProvider + routes"
+    HomePage: "HomePage\nchat UI (/ and /:channel)"
+    SettingsPage: "SettingsPage\n/settings"
+    ToastNotifier: "ToastNotifier\nreact-toastify bridge"
+  }
+
+  Provider -> CommunicationProvider -> LanguageProvider -> WalletLayer -> Router -> App
+  App -> HomePage
+  App -> SettingsPage
+  App -> ToastNotifier
+}
+
+engine: "hackchat-engine (npm ^1.1.28)\nClient, PacketRouter, event handlers"
+gateway: "chat gateway\nwss://hack.chat/chat-ws"
+
+gateway <-> engine: "WebSocket packets\n(cmd: join/leave/onlineSet/...)"
+CommunicationProvider.saga <-> engine: "engine events <-> engine calls"
+HomePage -> CommunicationProvider.actions: "joinChannel/leaveChannel/sendChat"
+CommunicationProvider.selectors -> HomePage: "channel data, meta, session"
+CommunicationProvider.selectors -> App.HomePage: "makeSelectChannelData etc."
+CommunicationProvider.reducer -> ToastNotifier: "WARNING/INFO actions"

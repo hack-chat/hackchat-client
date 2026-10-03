@@ -1,0 +1,28 @@
+%% Round trip of a join + a chat message (evidence: HomePage actions.js,
+%% saga.js takeLatest blocks, engine Client.js/PacketRouter.js, reducer.js)
+sequenceDiagram
+    participant UI as HomePage / JoinButton
+    participant Store as Redux store
+    participant Saga as CommunicationProvider saga
+    participant Engine as hackchat-engine Client
+    participant GW as chat gateway (ws)
+
+    UI->>Store: dispatch START_JOIN (actions.js joinChannel)
+    Store->>Saga: takeLatest(START_JOIN)
+    Saga->>Engine: hcClient.join(nick, pass, chan, color)
+    Engine->>GW: {cmd:"join", nick, channel, ...}
+    GW->>Engine: {cmd:"onlineSet", channel, users[]}
+    Engine->>Saga: event "channelJoined" (payload.users)
+    Saga->>Store: emit JOINED_CHANNEL (users from packet)
+    Note over Saga: onChannelJoined builds user list from payload.users, NOT hcClient.users (PR #77 fix)
+    GW->>Engine: {cmd:"onlineAdd", userid, nick}
+    Engine->>Saga: event "userJoined"
+    Saga->>Store: USER_JOINED (reducer adds user online)
+    UI->>Store: dispatch SEND_CHAT (sendChat)
+    Store->>Saga: takeEvery(SEND_CHAT)
+    Saga->>Engine: hcClient.say(chan, msg)
+    Engine->>GW: {cmd:"chat", content}
+    GW->>Engine: {cmd:"chat", content, user}
+    Engine->>Saga: event "message"
+    Saga->>Store: MESSAGE (reducer pushes to channel.messages)
+    Store->>UI: selectors re-render (ChatManager, MainMenu)
