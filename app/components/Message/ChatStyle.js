@@ -23,8 +23,9 @@ const ChatStyle = styled.div`
   color: ${({ theme }) => theme.palette.text.secondary};
   white-space: pre-wrap;
   word-wrap: break-word;
+  height: fit-content;
   max-height: 50vh;
-  overflow-y: auto;
+  overflow: hidden auto;
   min-width: 100%;
   cursor: pointer;
   border-radius: 4px;

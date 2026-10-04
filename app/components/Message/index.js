@@ -173,7 +173,10 @@ export const Message = memo(
         return (
           <MessageContainer>
             <NickPlaceholder />
-            <MessageContent $hasBackground={hasBackground}>
+            <MessageContent
+              $hasBackground={hasBackground}
+              $isMentioned={!payload.fromMe}
+            >
               <WhisperMessage payload={payload} msgForm={msgForm} intl={intl} />
             </MessageContent>
           </MessageContainer>
@@ -182,7 +185,10 @@ export const Message = memo(
         return (
           <MessageContainer>
             <NickPlaceholder />
-            <MessageContent $hasBackground={hasBackground}>
+            <MessageContent
+              $hasBackground={hasBackground}
+              $isMentioned={!payload.fromMe}
+            >
               <InviteMessage payload={payload} />
             </MessageContent>
           </MessageContainer>

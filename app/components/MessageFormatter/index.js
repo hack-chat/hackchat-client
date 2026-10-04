@@ -232,22 +232,37 @@ MessageFormatter.renderer = new RemarkableReactRenderer({
       for (let i = 0, j = children.length; i < j; i += 1) {
         if (typeof children[i] === 'string') {
           if (children[i].indexOf('?') !== -1) {
-            const chunks = children[i].split(/(\?\S*)/gm);
+            const chunks = children[i].split(/(^|\s)(\?\S+)/gm);
             for (let k = 0, l = chunks.length; k < l; k += 1) {
               const chunk = chunks[k];
-              const isChannelLink =
-                chunk.startsWith('?') &&
-                chunk.length > 1 &&
-                /[^?.,;:!"']/.test(chunk);
 
-              if (isChannelLink) {
-                const key = `invite-${i}-${k}`;
-                alteredChildren.push(
-                  <Link key={key} to={`/${DOMPurify.sanitize(chunk)}`}>
-                    {DOMPurify.sanitize(chunk)}
-                  </Link>,
-                );
-              } else if (chunk !== '') {
+              if (!chunk) continue;
+
+              if (chunk.startsWith('?')) {
+                const trailingPunctuationMatch = chunk.match(/([.,;:!"']+)$/);
+                let cleanChannel = chunk;
+                let trailingPunctuation = '';
+
+                if (trailingPunctuationMatch) {
+                  trailingPunctuation = trailingPunctuationMatch[1];
+                  cleanChannel = chunk.slice(0, -trailingPunctuation.length);
+                }
+
+                if (cleanChannel.length > 1 && /[^?]/.test(cleanChannel)) {
+                  const key = `invite-${i}-${k}`;
+                  alteredChildren.push(
+                    <Link key={key} to={`/${DOMPurify.sanitize(cleanChannel)}`}>
+                      {DOMPurify.sanitize(cleanChannel)}
+                    </Link>,
+                  );
+
+                  if (trailingPunctuation) {
+                    alteredChildren.push(trailingPunctuation);
+                  }
+                } else {
+                  alteredChildren.push(chunk);
+                }
+              } else {
                 alteredChildren.push(chunk);
               }
             }

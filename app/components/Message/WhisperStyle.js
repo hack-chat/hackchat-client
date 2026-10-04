@@ -23,8 +23,9 @@ const WhisperStyle = styled.div`
   color: ${({ theme }) => theme.palette.status.info};
   white-space: pre-wrap;
   word-wrap: break-word;
+  height: fit-content;
   max-height: 50vh;
-  overflow-y: auto;
+  overflow: hidden auto;
   min-width: 0;
 
   ${thinScrollbar}
