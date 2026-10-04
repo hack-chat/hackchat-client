@@ -22,12 +22,13 @@ import {
   UWUIFY_USER,
   CLEAR_CHANNEL,
   CLEAR_AUTH_REQS,
+  CHANGE_USERNAME,
 } from './constants';
 
 /**
  * Alters the current channel the UI is displaying
  * @param  {string} channel Target channel
- * @return {object} An action object with a type of CHANGE_USERNAME
+ * @return {object} An action object with a type of CHANGE_CHANNEL
  */
 export function changeChannel(channel) {
   return {
@@ -274,5 +275,17 @@ export function clearChannel(channel) {
 export function clearAuthReqs() {
   return {
     type: CLEAR_AUTH_REQS,
+  };
+}
+
+/**
+ * Change name
+ * @param  {string} username New name
+ * @return {object} An action object with a type of CHANGE_USERNAME
+ */
+export function changeUsername(username) {
+  return {
+    type: CHANGE_USERNAME,
+    username,
   };
 }

@@ -19,9 +19,11 @@ import {
 } from 'containers/LanguageProvider/actions';
 import { makeSelectIsLocaleModalOpen } from 'containers/LanguageProvider/selectors';
 
-import { leaveChannel } from 'containers/CommunicationProvider/actions';
+import {
+  changeUsername,
+  leaveChannel,
+} from 'containers/CommunicationProvider/actions';
 import { makeSelectChannelData } from 'containers/CommunicationProvider/selectors';
-
 import Modal from 'components/Modal';
 import LocaleModal from 'components/LocaleModal';
 import ColorPicker from 'components/ColorPicker';
@@ -113,6 +115,7 @@ export function SettingsPage({
   onOpenLocaleModal,
   channelData,
   onLeaveChannel,
+  onChangeUsername,
   intl,
 }) {
   const navigate = useNavigate();
@@ -240,7 +243,12 @@ export function SettingsPage({
                     value={chosenUsername}
                     onChange={(e) => {
                       setChosenUsername(e.target.value);
-                      dispatch(setUsername(e.target.value));
+                    }}
+                    onBlur={() => {
+                      if (chosenUsername !== cachedUsername) {
+                        dispatch(setUsername(chosenUsername));
+                        onChangeUsername(chosenUsername);
+                      }
                     }}
                   />
                   <ColorSquare>
@@ -477,6 +485,7 @@ SettingsPage.propTypes = {
   onCloseLocaleModal: PropTypes.func,
   channelData: PropTypes.object,
   onLeaveChannel: PropTypes.func,
+  onChangeUsername: PropTypes.func,
   intl: PropTypes.object.isRequired,
 };
 
@@ -506,6 +515,7 @@ function mapDispatchToProps(dispatch) {
     onOpenLocaleModal: () => dispatch(openLocaleModal()),
     onCloseLocaleModal: () => dispatch(closeLocaleModal()),
     onLeaveChannel: (channel) => dispatch(leaveChannel(channel)),
+    onChangeUsername: (username) => dispatch(changeUsername(username)),
     dispatch,
   };
 }

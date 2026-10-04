@@ -11,28 +11,27 @@ const colorSwirl = keyframes`
 `;
 
 const pulseGlow = keyframes`
-  0% { text-shadow: 0 0 2px currentColor; }
-  50% { text-shadow: 0 0 12px currentColor; }
-  100% { text-shadow: 0 0 2px currentColor; }
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  50% { opacity: 0.75; filter: brightness(1.2); }
 `;
 
 const bounceMove = keyframes`
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-2px); }
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -2px, 0); }
 `;
 
 const glitchText = keyframes`
-  0% { transform: translate(0) }
-  20% { transform: translate(-2px, 1px) }
-  40% { transform: translate(-1px, -1px) }
-  60% { transform: translate(2px, 1px) }
-  80% { transform: translate(1px, -1px) }
-  100% { transform: translate(0) }
+  0% { transform: translate3d(0, 0, 0) }
+  20% { transform: translate3d(-2px, 1px, 0) }
+  40% { transform: translate3d(-1px, -1px, 0) }
+  60% { transform: translate3d(2px, 1px, 0) }
+  80% { transform: translate3d(1px, -1px, 0) }
+  100% { transform: translate3d(0, 0, 0) }
 `;
 
 const neonFlicker = keyframes`
-  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #0fa, 0 0 40px #0fa, 0 0 80px #0fa; opacity: 1; }
-  20%, 24%, 55% { text-shadow: none; opacity: 0.5; }
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+  20%, 24%, 55% { opacity: 0.4; }
 `;
 
 const gradientShift = keyframes`
@@ -42,25 +41,24 @@ const gradientShift = keyframes`
 `;
 
 const shake = keyframes`
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-2px) rotate(-1deg); }
-  75% { transform: translateX(2px) rotate(1deg); }
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  25% { transform: translate3d(-2px, 0, 0) rotate(-1deg); }
+  75% { transform: translate3d(2px, 0, 0) rotate(1deg); }
 `;
 
 const floatAnim = keyframes`
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-4px); }
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -4px, 0); }
 `;
 
 const hellfire = keyframes`
-  0% { text-shadow: 0 -1px 4px #ff3, 0 -2px 10px #ff8000, 0 -10px 20px #ff4136; }
-  50% { text-shadow: 0 -2px 6px #ff3, 0 -4px 12px #ff8000, 0 -12px 24px #ff4136; }
-  100% { text-shadow: 0 -1px 4px #ff3, 0 -2px 10px #ff8000, 0 -10px 20px #ff4136; }
+  0%, 100% { transform: translateY(0); filter: brightness(1); }
+  50% { transform: translateY(-1px); filter: brightness(1.1); }
 `;
 
 const matrixStretch = keyframes`
-  0%, 100% { transform: scaleY(1); color: #0f0; text-shadow: 0 0 5px #0f0; }
-  50% { transform: scaleY(1.1); color: #fff; text-shadow: 0 0 15px #0f0; }
+  0%, 100% { transform: scaleY(1); opacity: 1; }
+  50% { transform: scaleY(1.1); opacity: 0.8; }
 `;
 
 const flip3d = keyframes`
@@ -79,8 +77,8 @@ const squeeze = keyframes`
 `;
 
 const trackingBreathe = keyframes`
-  0%, 100% { letter-spacing: normal; }
-  50% { letter-spacing: 0.15em; }
+  0%, 100% { transform: scaleX(1); }
+  50% { transform: scaleX(1.05); }
 `;
 
 const shimmer = keyframes`
@@ -89,13 +87,13 @@ const shimmer = keyframes`
 `;
 
 const wave = keyframes`
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-3px) scale(1.05); }
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(0, -3px, 0) scale(1.05); }
 `;
 
 const pop = keyframes`
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+  0%, 100% { transform: scale3d(1, 1, 1); }
+  50% { transform: scale3d(1.1, 1.1, 1); }
 `;
 
 const swing = keyframes`
@@ -294,13 +292,27 @@ const GlobalStyle = createGlobalStyle`
     outline-offset: 2px;
   }
 
-  .effect-1 { animation: ${pulseGlow} 2s infinite ease-in-out; }
+  [class*="effect-"] {
+    display: inline-block; 
+    will-change: transform, filter, opacity;
+    transform: translateZ(0); 
+  }
+
+  .effect-1 { 
+    text-shadow: 0 0 8px currentcolor;
+    animation: ${pulseGlow} 2s infinite ease-in-out; 
+  }
   .effect-2 { animation: ${colorSwirl} 3s infinite linear; }
   .effect-3 { animation: ${bounceMove} 1s infinite ease-in-out; }
-  .effect-4 { animation: ${colorSwirl} 2s infinite linear, ${pulseGlow} 1.5s infinite ease-in-out; }
+  
+  .effect-4 { 
+    text-shadow: 0 0 8px currentcolor;
+    animation: ${colorSwirl} 2s infinite linear, ${pulseGlow} 1.5s infinite ease-in-out; 
+  }
 
   .effect-5 {
     color: #ffd700;
+    text-shadow: 0 0 8px currentcolor;
     animation: ${pulseGlow} 1s infinite ease-in-out;
   }
 
@@ -308,6 +320,7 @@ const GlobalStyle = createGlobalStyle`
 
   .effect-7 {
     color: #fff;
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #0fa, 0 0 40px #0fa, 0 0 80px #0fa;
     animation: ${neonFlicker} 2s infinite alternate;
   }
 
@@ -324,21 +337,18 @@ const GlobalStyle = createGlobalStyle`
 
   .effect-11 {
     color: #fff;
+    text-shadow: 0 -1px 4px #ff3, 0 -2px 10px #ff8000, 0 -10px 20px #ff4136;
     animation: ${hellfire} 1.5s infinite alternate;
   }
 
-  .effect-12 { animation: ${matrixStretch} 2s infinite ease-in-out; }
-
-  .effect-13 {
-    animation: ${flip3d} 3s infinite linear;
-    display: inline-block;
+  .effect-12 { 
+    color: #0f0; 
+    text-shadow: 0 0 10px #0f0;
+    animation: ${matrixStretch} 2s infinite ease-in-out; 
   }
 
-  .effect-14 {
-    animation: ${squeeze} 1.5s infinite ease-in-out;
-    display: inline-block;
-  }
-
+  .effect-13 { animation: ${flip3d} 3s infinite linear; }
+  .effect-14 { animation: ${squeeze} 1.5s infinite ease-in-out; }
   .effect-15 { animation: ${trackingBreathe} 2s infinite ease-in-out; }
 
   .effect-16 {
@@ -349,26 +359,18 @@ const GlobalStyle = createGlobalStyle`
     animation: ${shimmer} 4s infinite linear;
   }
 
-  .effect-17 {
-    animation: ${wave} 1.5s infinite ease-in-out;
-    display: inline-block;
-  }
-
-  .effect-18 {
-    animation: ${pop} 1s infinite ease-in-out;
-    display: inline-block;
-  }
-
+  .effect-17 { animation: ${wave} 1.5s infinite ease-in-out; }
+  .effect-18 { animation: ${pop} 1s infinite ease-in-out; }
+  
   .effect-19 {
     animation: ${swing} 2s infinite ease-in-out;
-    display: inline-block;
     transform-origin: top center;
   }
 
   .effect-20 { animation: ${blurReveal} 3s infinite ease-in-out; }
 
   .gpu-accelerate {
-    will-change: transform, filter, text-shadow;
+    will-change: transform, filter, opacity;
     transform: translateZ(0); 
   }
 

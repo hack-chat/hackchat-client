@@ -54,6 +54,7 @@ import {
   UPDATE_MSG,
   SESSION_LS,
   GOT_PASSWORD_REQ,
+  CHANGE_USERNAME,
 } from './constants';
 
 import {
@@ -113,17 +114,11 @@ function initWebsocket() {
     const onError = () => emitter({ type: CONNECTION_ERROR, data: {} });
 
     const onConnected = () => {
-      hcClient.ws.send({ cmd: 'getchannels' });
+      hcClient.getChannels();
       return emitter({ type: CONNECTED, data: {} });
     };
 
     const onChannelJoined = (payload) => {
-      // Build the user list from the authoritative onlineSet packet the
-      // server just sent, NOT from hcClient.users: the engine keeps
-      // records for users whose sessions ended while this client was
-      // unsubscribed (the server sends onlineRemove only to subscribed
-      // clients), and scanning the map resurrects those stale records
-      // beside the fresh ones -> duplicate nicks in the sidebar.
       let userList = {};
       payload.users.forEach((userData) => {
         const userRecord = hcClient.users.get(userData.userid);
@@ -514,6 +509,10 @@ export default function* communicationProviderSaga() {
     hcClient.enableCaptcha(action.channel),
   );
 
+  yield takeEvery(CHANGE_USERNAME, (action) => {
+    hcClient.myUser.changeUsername(action.username);
+  });
+
   yield takeLatest(DISABLE_CAPTCHA, (action) =>
     hcClient.disableCaptcha(action.channel),
   );
@@ -581,9 +580,7 @@ export default function* communicationProviderSaga() {
 
   yield takeLatest(DISCONNECT_WALLET, () => {
     currentSiwAddress = null;
-    if (hcClient && hcClient.ws) {
-      hcClient.ws.send({ cmd: 'disconnectwallet' });
-    }
+    hcClient.disconnectWallet();
   });
 
   yield takeLatest(INCOMING_SIGN_REQUEST, handleIncomingSignRequest);

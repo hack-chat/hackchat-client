@@ -135,9 +135,6 @@ export function MainMenu({
     });
   };
 
-  // Hover is tracked here instead of CSS :hover, which browsers drop as soon
-  // as the pointer leaves the window (e.g. pushed past the screen edge). The
-  // menu closes only once the pointer is back over something outside of it.
   useEffect(() => {
     if (!isHovered) return undefined;
 
