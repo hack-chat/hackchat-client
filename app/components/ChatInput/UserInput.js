@@ -4,7 +4,7 @@
 
 import styled from 'styled-components';
 
-export default styled.textarea`
+export default styled.textarea.attrs({ className: 'chat-input' })`
   flex-grow: 1;
   min-height: 4em;
   max-width: 600px;

@@ -8,7 +8,7 @@
 
 import styled from 'styled-components';
 
-const MessageContainer = styled.div`
+const MessageContainer = styled.div.attrs({ className: 'message' })`
   display: flex;
   flex-direction: column;
 

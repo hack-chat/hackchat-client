@@ -5,7 +5,8 @@
 import styled from 'styled-components';
 
 const NameStyle = styled.div`
-  color: ${(props) => props.$color || props.theme.palette.text.white};
+  color: ${(props) =>
+    props.$color || props.theme.palette.text.nick || 'inherit'};
   padding-top: 0.25em;
   padding-bottom: 0.25em;
   cursor: pointer;

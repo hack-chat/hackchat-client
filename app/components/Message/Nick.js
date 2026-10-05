@@ -26,9 +26,9 @@ const Nick = ({ user, handleMention, handleContextMenu, time }) => {
   const trip = <TripStyle $flair={user.flair}>{user.usertrip}</TripStyle>;
   const hoverTime = time ? new Date(time).toLocaleString() : '';
 
-  let effectClass = '';
+  let className = 'nick';
   if (onScreen && user.effect) {
-    effectClass = `effect-${user.effect} gpu-accelerate`;
+    className += ` effect-${user.effect} gpu-accelerate`;
   }
 
   return (
@@ -37,8 +37,8 @@ const Nick = ({ user, handleMention, handleContextMenu, time }) => {
         ref={ref}
         onClick={handleClick}
         onContextMenu={handleRightClick}
-        $color={`#${user.nickColor}`}
-        className={effectClass}
+        $color={user.nickColor ? `#${user.nickColor}` : undefined}
+        className={className}
       >
         {trip}
         {user.username}
