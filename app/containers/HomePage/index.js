@@ -30,6 +30,7 @@ import { FaMarkdown, FaGithub } from 'react-icons/fa6';
 import { SiLatex } from 'react-icons/si';
 import { FaUser } from 'react-icons/fa';
 import { IoMdSettings } from 'react-icons/io';
+import { IoWarningOutline } from 'react-icons/io5';
 
 import {
   changeChannel,
@@ -124,12 +125,11 @@ import TxInstructionPid from './TxInstructionPid';
 import PublicChannelButton from './PublicChannelButton';
 import PublicChannelListWrapper from './PublicChannelListWrapper';
 import SectionHeader from './SectionHeader';
+import WarningHeader from './WarningHeader';
+import WarningBody from './WarningBody';
+import UrlBox from './UrlBox';
+import CheckBox from './CheckBox';
 
-/**
- * True when the wheel event started inside an element that scrolls on its
- * own (the chat, an expanded message, the input...). The browser already
- * scrolls those natively, so forwarding the event would scroll twice.
- */
 const isOverScrollable = (e) => {
   for (let el = e.target; el && el !== e.currentTarget; el = el.parentElement) {
     const { overflowY } = window.getComputedStyle(el);
@@ -364,8 +364,6 @@ export function HomePage({
           (unmuzzleMatch && unmuzzleMatch[1]) ||
           (uwuifyMatch && uwuifyMatch[1]);
 
-        // read users through the ref so this callback (passed to every
-        // Message) doesn't change identity on each channelData update
         const users = channelUsersRef.current;
 
         if (!users) {
@@ -528,9 +526,6 @@ export function HomePage({
     });
   }, [meta.channels]);
 
-  // Not gated on sessionReady: once a channel has been joined, keep it on
-  // screen through a dropped connection so the "lost connection" notice
-  // in the chat is visible, rather than falling back to the connect spinner
   const showChat = Boolean(
     channel &&
     channel === channelFromUrl &&
@@ -962,24 +957,33 @@ export function HomePage({
         isOpen={!!externalUrlToWarn}
         doToggle={() => setExternalUrlToWarn(null)}
       >
-        <ModalHeader>{externalWarningText}</ModalHeader>
+        <WarningHeader>
+          <h3>
+            <IoWarningOutline /> {externalWarningText}
+          </h3>
+        </WarningHeader>
 
-        <ModalBody>
-          <a href={externalUrlToWarn} target="_blank" rel="noopener noreferrer">
-            {externalUrlToWarn}
-          </a>
-        </ModalBody>
+        <WarningBody>
+          <UrlBox>
+            <a
+              href={externalUrlToWarn}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {externalUrlToWarn}
+            </a>
+          </UrlBox>
+        </WarningBody>
 
-        <Center>
-          <ModalLabel>
-            <input
-              type="checkbox"
-              checked={tempSuppressCheckbox}
-              onChange={(e) => setTempSuppressCheckbox(e.target.checked)}
-            />
-            {suppressWarningMsg}
-          </ModalLabel>
-        </Center>
+        <ModalLabel>
+          <input
+            type="checkbox"
+            checked={tempSuppressCheckbox}
+            onChange={(e) => setTempSuppressCheckbox(e.target.checked)}
+          />
+          <CheckBox $isChecked={tempSuppressCheckbox} />
+          {suppressWarningMsg}
+        </ModalLabel>
 
         <ModalActions>
           <ChannelButton onClick={() => setExternalUrlToWarn(null)}>
@@ -1062,16 +1066,15 @@ export function HomePage({
           )}
         </ModalBody>
 
-        <Center>
-          <ModalLabel>
-            <input
-              type="checkbox"
-              checked={tempSuppressTxCheckbox}
-              onChange={(e) => setTempSuppressTxCheckbox(e.target.checked)}
-            />
-            {suppressWarningMsg}
-          </ModalLabel>
-        </Center>
+        <ModalLabel>
+          <input
+            type="checkbox"
+            checked={tempSuppressTxCheckbox}
+            onChange={(e) => setTempSuppressTxCheckbox(e.target.checked)}
+          />
+          <CheckBox $isChecked={tempSuppressTxCheckbox} />
+          {suppressWarningMsg}
+        </ModalLabel>
 
         <ModalActions>
           <ChannelButton onClick={() => setTxToWarn(null)}>
