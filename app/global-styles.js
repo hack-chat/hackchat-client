@@ -166,24 +166,6 @@ const GlobalStyle = createGlobalStyle`
     text-decoration: underline;
   }
 
-  ul, ol {
-    display: block;
-    margin: 0;
-    padding: 0;
-    list-style-type: disc;
-    margin-block: 1em;
-    margin-inline: 0;
-    padding-inline-start: 40px;
-  }
-
-  ul ul, ol ol {
-    padding-inline-start: 2em;
-  }
-
-  ul li {
-    list-style: inside;
-  }
-
   table {
     color: ${({ theme }) => theme.palette.text.primary};
     background-color: transparent;

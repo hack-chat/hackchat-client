@@ -8,14 +8,17 @@ const getFlair = (props) => {
   if (props.$flair) {
     return css`
       &::before {
-        content: '${props.$flair} ';
+        content: attr(data-flair) ' ';
       }
     `;
   }
   return '';
 };
 
-const TripStyle = styled.span.attrs({ className: 'trip' })`
+const TripStyle = styled.span.attrs(({ $flair }) => ({
+  className: 'trip',
+  'data-flair': $flair || undefined,
+}))`
   color: ${({ theme }) => theme.palette.text.trip};
   display: inline-block;
   margin-inline-end: 0.5em;

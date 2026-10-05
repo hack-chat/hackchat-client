@@ -1,6 +1,6 @@
 /**
  * Theme Name: Fresh Green
- * Author: marzavec
+ * Author: ???
  * Description: The "fresh-green" colour scheme from the legacy hack.chat client
  */
 

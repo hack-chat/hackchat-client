@@ -53,6 +53,9 @@ const MessageFormatter = new Remarkable('full', {
 MessageFormatter.core.ruler.disable(['abbr']);
 MessageFormatter.inline.ruler.disable(['sup']);
 
+const isSafeHref = (href) =>
+  typeof href === 'string' && DOMPurify.isValidAttribute('a', 'href', href);
+
 const MarkdownImage = ({ alt, src, title }) => {
   const loadSafe = useSelector(
     (state) => selectSettingsPageDomain(state).loadSafeImages ?? true,
@@ -91,32 +94,34 @@ const MarkdownImage = ({ alt, src, title }) => {
 
   const shouldRenderImage = loadUnsafe || (loadSafe && isSafeHost);
 
+  if (!isSafeHref(src)) {
+    return <span>{src}</span>;
+  }
+
   if (shouldRenderImage) {
-    const html = `<a href="${src}" target="_blank" title="${
-      title || alt
-    }" rel="noopener noreferrer"><img src="${src}" alt="${alt}" referrerpolicy="no-referrer" /></a>`;
     return (
-      <span
-        dangerouslySetInnerHTML={{
-          __html: DOMPurify.sanitize(html, {
-            ADD_ATTR: ['target', 'referrerpolicy'],
-          }),
-        }}
-      />
+      <a
+        href={src}
+        target="_blank"
+        title={title || alt}
+        rel="noopener noreferrer"
+      >
+        <img src={src} alt={alt} referrerPolicy="no-referrer" />
+      </a>
     );
   }
 
   const fallbackText = alt || src;
-  const html = `<a href="${src}" target="_blank" title="${
-    title || fallbackText
-  }" rel="noopener noreferrer">${src}</a>`;
 
   return (
-    <span
-      dangerouslySetInnerHTML={{
-        __html: DOMPurify.sanitize(html, { ADD_ATTR: ['target'] }),
-      }}
-    />
+    <a
+      href={src}
+      target="_blank"
+      title={title || fallbackText}
+      rel="noopener noreferrer"
+    >
+      {fallbackText}
+    </a>
   );
 };
 
@@ -191,14 +196,19 @@ const MarkdownElement = ({ tag: Tag, prefix = '', suffix = '', children }) => {
 MessageFormatter.renderer = new RemarkableReactRenderer({
   components: {
     a: ({ href, title, children }) => {
-      const html = `<a href="${href}" target="_blank" title="${title}" rel="noopener noreferrer">${children}</a>`;
+      if (!isSafeHref(href)) {
+        return <span>{children}</span>;
+      }
 
       return (
-        <span
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(html, { ADD_ATTR: ['target'] }),
-          }}
-        />
+        <a
+          href={href}
+          target="_blank"
+          title={title || undefined}
+          rel="noopener noreferrer"
+        >
+          {children}
+        </a>
       );
     },
     img: MarkdownImage,

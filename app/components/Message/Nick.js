@@ -37,7 +37,7 @@ const Nick = ({ user, handleMention, handleContextMenu, time }) => {
         ref={ref}
         onClick={handleClick}
         onContextMenu={handleRightClick}
-        $color={user.nickColor ? `#${user.nickColor}` : undefined}
+        $color={`#${user.nickColor}`}
         className={className}
       >
         {trip}
