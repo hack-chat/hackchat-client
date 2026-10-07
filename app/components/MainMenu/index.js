@@ -11,7 +11,7 @@ import { compose } from 'redux';
 import {
   FaCog,
   FaWallet,
-  FaHashtag,
+  FaQuestion,
   FaBars,
   FaTimes,
   FaPlusCircle,
@@ -231,7 +231,7 @@ export function MainMenu({
                   }
                 }}
               >
-                <FaHashtag /> {ch}
+                <FaQuestion /> {ch}
               </Item>
             ))}
             <Item

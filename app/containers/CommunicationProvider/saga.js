@@ -55,6 +55,7 @@ import {
   SESSION_LS,
   GOT_PASSWORD_REQ,
   CHANGE_USERNAME,
+  LOGOUT,
 } from './constants';
 
 import {
@@ -652,16 +653,26 @@ export default function* communicationProviderSaga() {
     if (hcClient.options.ws.gateway !== newPath) {
       hcClient.options.ws.gateway = newPath;
 
-      if (hcClient.ws) {
-        hcClient.ws.destroy();
+      if (hcClient.ws && hcClient.ws.connection) {
+        hcClient.ws.connection.gateway = newPath;
 
-        if (hcClient.ws.connection) {
-          hcClient.ws.connection.connect(newPath, 0, true);
-        } else {
-          hcClient.ws.connect(newPath);
+        if (hcClient.ws.connection.ws) {
+          hcClient.ws.connection.ws.close();
         }
+      } else if (hcClient.ws) {
+        hcClient.ws.connect(newPath);
       }
     }
+  });
+
+  yield takeLatest(LOGOUT, () => {
+    localStorage.removeItem(SESSION_LS);
+
+    if (hcClient.ws && hcClient.ws.connection && hcClient.ws.connection.ws) {
+      hcClient.ws.connection.ws.close();
+    }
+
+    window.location.reload();
   });
 
   while (true) {

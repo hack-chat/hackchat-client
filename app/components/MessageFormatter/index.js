@@ -248,7 +248,7 @@ MessageFormatter.renderer = new RemarkableReactRenderer({
 
               if (!chunk) continue;
 
-              if (chunk.startsWith('?')) {
+              if (chunk.startsWith('?') && !/\s/.test(chunk)) {
                 const trailingPunctuationMatch = chunk.match(/([.,;:!"']+)$/);
                 let cleanChannel = chunk;
                 let trailingPunctuation = '';

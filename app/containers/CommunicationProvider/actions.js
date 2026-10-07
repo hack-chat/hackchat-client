@@ -23,6 +23,7 @@ import {
   CLEAR_CHANNEL,
   CLEAR_AUTH_REQS,
   CHANGE_USERNAME,
+  LOGOUT,
 } from './constants';
 
 /**
@@ -287,5 +288,15 @@ export function changeUsername(username) {
   return {
     type: CHANGE_USERNAME,
     username,
+  };
+}
+
+/**
+ * Delete local jwt
+ * @return {object} An action object with a type of LOGOUT
+ */
+export function doLogout() {
+  return {
+    type: LOGOUT,
   };
 }

@@ -51,3 +51,4 @@ export const SESSION_LS = 'app/CommunicationProvider/SESSION_LS';
 export const GOT_PASSWORD_REQ = 'app/CommunicationProvider/GOT_PASSWORD_REQ';
 export const CLEAR_AUTH_REQS = 'app/CommunicationProvider/CLEAR_AUTH_REQS';
 export const CHANGE_USERNAME = 'app/CommunicationProvider/CHANGE_USERNAME';
+export const LOGOUT = 'app/CommunicationProvider/LOGOUT';

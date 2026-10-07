@@ -46,6 +46,7 @@ import {
   leaveChannel,
   clearChannel,
   clearAuthReqs,
+  doLogout,
 } from 'containers/CommunicationProvider/actions';
 import {
   makeSelectChannel,
@@ -1224,6 +1225,8 @@ export function mapDispatchToProps(dispatch) {
         dispatch(clearChannel(channel));
       } else if (message.trim() === '/channelinfo') {
         dispatch(checkChannelInfo(channel));
+      } else if (message.trim() === '/logout') {
+        dispatch(doLogout());
       } else {
         dispatch(sendChat(channel, message));
       }
