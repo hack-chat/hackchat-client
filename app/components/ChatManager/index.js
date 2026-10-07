@@ -196,7 +196,7 @@ export function ChatManager({
         type="welcome"
         payload={`${intl.formatMessage(
           messages.currentChannel,
-        )} "${channel}". ${users}`}
+        )} "${channel}".\n${users}`}
         user={{}}
         intl={intl}
       />

@@ -110,7 +110,7 @@ const messages = {
   },
   rcWarning: {
     id: `${scope}.rcWarning`,
-    defaultMessage: 'Reconnected- you may have missed messages',
+    defaultMessage: 'Reconnected - you may have missed some messages.',
   },
 
   errGlobalRatelimit: {
