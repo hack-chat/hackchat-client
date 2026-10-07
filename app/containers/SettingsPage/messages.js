@@ -87,4 +87,8 @@ export default defineMessages({
     id: `${scope}.loadUnsafeImagesText`,
     defaultMessage: 'Load Unsafe Images',
   },
+  maxMessagesText: {
+    id: `${scope}.maxMessagesText`,
+    defaultMessage: 'Max Messages (0 = infinite)',
+  },
 });

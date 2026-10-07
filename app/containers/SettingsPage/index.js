@@ -2,7 +2,7 @@
  * SettingsPage allows the user to change application settings
  */
 
-import React, { useMemo, useEffect, useCallback } from 'react';
+import React, { useMemo, useEffect, useCallback, useRef } from 'react';
 import { useStateIfMounted } from 'use-state-if-mounted';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
@@ -48,6 +48,7 @@ import SwitchRow from './SwitchRow';
 import ThemeRow from './ThemeRow';
 import FooterSection from './FooterSection';
 import ThemeSelect from './ThemeSelect';
+import NumericSettingRow from './NumericSettingRow';
 
 const AVAILABLE_THEMES = [
   'default',
@@ -115,6 +116,7 @@ import {
   setNotify,
   setLoadSafeImages,
   setLoadUnsafeImages,
+  setMaxMessages,
 } from './actions';
 
 import {
@@ -134,6 +136,7 @@ import {
   makeSelectCachedNotifyEnabled,
   makeSelectCachedLoadSafeImages,
   makeSelectCachedLoadUnsafeImages,
+  makeSelectCachedMaxMessages,
 } from './selectors';
 
 import reducer from './reducer';
@@ -157,6 +160,7 @@ export function SettingsPage({
   cachedNotifyEnabled,
   cachedLoadSafeImages,
   cachedLoadUnsafeImages,
+  cachedMaxMessages,
   isLocaleModalOpen,
   onCloseLocaleModal,
   onOpenLocaleModal,
@@ -166,6 +170,7 @@ export function SettingsPage({
   intl,
 }) {
   const navigate = useNavigate();
+  const scrollRef = useRef(null);
 
   const handleGoBack = useCallback(() => {
     const channels = channelData ? Object.keys(channelData) : [];
@@ -220,6 +225,8 @@ export function SettingsPage({
   const [chosenLoadUnsafe, setChosenLoadUnsafe] = useStateIfMounted(
     cachedLoadUnsafeImages,
   );
+  const [chosenMaxMessages, setChosenMaxMessages] =
+    useStateIfMounted(cachedMaxMessages);
 
   useEffect(() => {
     if (cachedUsername !== chosenUsername)
@@ -235,6 +242,30 @@ export function SettingsPage({
     if (cachedWsPath !== chosenWsPath)
       setChosenWsPath(cachedWsPath || 'wss://hack.chat/chat-ws');
   }, [cachedWsPath]);
+
+  useEffect(() => {
+    if (
+      cachedMaxMessages !== undefined &&
+      cachedMaxMessages !== chosenMaxMessages
+    ) {
+      setChosenMaxMessages(cachedMaxMessages);
+    }
+  }, [cachedMaxMessages]);
+
+  useEffect(() => {
+    const handleGlobalWheel = (e) => {
+      if (isLocaleModalOpen) return;
+
+      if (scrollRef.current && !scrollRef.current.contains(e.target)) {
+        scrollRef.current.scrollTop += e.deltaY;
+      }
+    };
+
+    window.addEventListener('wheel', handleGlobalWheel, { passive: true });
+    return () => {
+      window.removeEventListener('wheel', handleGlobalWheel);
+    };
+  }, [isLocaleModalOpen]);
 
   const headerText = intl.formatMessage(messages.header);
   const usernameText = intl.formatMessage(messages.usernameText);
@@ -257,6 +288,7 @@ export function SettingsPage({
   const backBtnText = intl.formatMessage(messages.backBtnText);
   const rememberText = intl.formatMessage(messages.rememberText);
   const usernameColorText = intl.formatMessage(messages.usernameColorText);
+  const maxMessagesText = intl.formatMessage(messages.maxMessagesText);
 
   const joinedChannels = useMemo(
     () => (channelData ? Object.keys(channelData) : []),
@@ -270,7 +302,7 @@ export function SettingsPage({
         <meta name="description" content={headerText} />
       </Helmet>
 
-      <ScrollArea>
+      <ScrollArea ref={scrollRef}>
         <h4>{headerText}</h4>
 
         <SettingsGroup>
@@ -354,6 +386,37 @@ export function SettingsPage({
               }}
             />
           </InputRow>
+
+          <NumericSettingRow>
+            <LabelText>{maxMessagesText}</LabelText>
+            <StyledInput
+              type="number"
+              min="0"
+              style={{ width: '120px', textAlign: 'center' }}
+              value={
+                chosenMaxMessages !== '' && chosenMaxMessages !== null
+                  ? chosenMaxMessages
+                  : ''
+              }
+              onChange={(e) => {
+                const val =
+                  e.target.value === '' ? '' : parseInt(e.target.value, 10);
+                setChosenMaxMessages(val);
+              }}
+              onBlur={() => {
+                let finalVal = chosenMaxMessages;
+
+                if (finalVal === '') {
+                  finalVal = 0;
+                  setChosenMaxMessages(0);
+                }
+
+                if (finalVal !== cachedMaxMessages) {
+                  dispatch(setMaxMessages(finalVal));
+                }
+              }}
+            />
+          </NumericSettingRow>
         </SettingsGroup>
 
         <SettingsGroup $marginTop="20px">
@@ -527,6 +590,7 @@ SettingsPage.propTypes = {
   cachedNotifyEnabled: PropTypes.bool,
   cachedLoadSafeImages: PropTypes.bool,
   cachedLoadUnsafeImages: PropTypes.bool,
+  cachedMaxMessages: PropTypes.number,
   isLocaleModalOpen: PropTypes.bool,
   onOpenLocaleModal: PropTypes.func,
   onCloseLocaleModal: PropTypes.func,
@@ -553,6 +617,7 @@ const mapStateToProps = createStructuredSelector({
   cachedNotifyEnabled: makeSelectCachedNotifyEnabled(),
   cachedLoadSafeImages: makeSelectCachedLoadSafeImages(),
   cachedLoadUnsafeImages: makeSelectCachedLoadUnsafeImages(),
+  cachedMaxMessages: makeSelectCachedMaxMessages(),
   isLocaleModalOpen: makeSelectIsLocaleModalOpen(),
   channelData: makeSelectChannelData(),
 });

@@ -220,6 +220,7 @@
   "hcclient.containers.SettingsPage.header": "客户端设置",
   "hcclient.containers.SettingsPage.loadSafeImagesText": "加载安全图片",
   "hcclient.containers.SettingsPage.loadUnsafeImagesText": "加载不安全图片",
+  "hcclient.containers.SettingsPage.maxMessagesText": "最大消息数 (0 = 无限)",
   "hcclient.containers.SettingsPage.menuPosText": "左侧菜单按钮",
   "hcclient.containers.SettingsPage.reconnectText": "立即重新连接",
   "hcclient.containers.SettingsPage.useLtrText": "从左到右阅读",

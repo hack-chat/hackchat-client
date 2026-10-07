@@ -220,6 +220,7 @@
   "hcclient.containers.SettingsPage.header": "Asiakasasetukset",
   "hcclient.containers.SettingsPage.loadSafeImagesText": "Lataa turvalliset kuvat",
   "hcclient.containers.SettingsPage.loadUnsafeImagesText": "Lataa turvattomat kuvat",
+  "hcclient.containers.SettingsPage.maxMessagesText": "Maksimiviestit (0 = ääretön)",
   "hcclient.containers.SettingsPage.menuPosText": "Valikkopainike vasemmalla",
   "hcclient.containers.SettingsPage.reconnectText": "Yhdistä nyt",
   "hcclient.containers.SettingsPage.useLtrText": "Luku vasemmalta oikealle (LTR)",

@@ -42,3 +42,5 @@ export const NOTIFY_LSLABEL = 'app/Settings/NOTIFY_LSLABEL';
 export const LOAD_SAFE_IMAGES_LSLABEL = 'app/Settings/LOAD_SAFE_IMAGES_LSLABEL';
 export const LOAD_UNSAFE_IMAGES_LSLABEL =
   'app/Settings/LOAD_UNSAFE_IMAGES_LSLABEL';
+export const MAX_MESSAGES_LSLABEL = 'app/Settings/MAX_MESSAGES_LSLABEL';
+export const SET_MAX_MESSAGES = 'app/Settings/SET_MAX_MESSAGES';

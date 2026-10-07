@@ -220,6 +220,7 @@
   "hcclient.containers.SettingsPage.header": "クライアント設定",
   "hcclient.containers.SettingsPage.loadSafeImagesText": "安全な画像を読み込む",
   "hcclient.containers.SettingsPage.loadUnsafeImagesText": "安全でない画像を読み込む",
+  "hcclient.containers.SettingsPage.maxMessagesText": "最大メッセージ数 (0 = 無限)",
   "hcclient.containers.SettingsPage.menuPosText": "メニューボタンを左に配置",
   "hcclient.containers.SettingsPage.reconnectText": "今すぐ再接続",
   "hcclient.containers.SettingsPage.useLtrText": "左から右へ読む (LTR)",

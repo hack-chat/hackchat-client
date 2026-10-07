@@ -36,6 +36,8 @@ import {
   LOAD_SAFE_IMAGES_LSLABEL,
   SET_LOAD_UNSAFE_IMAGES,
   LOAD_UNSAFE_IMAGES_LSLABEL,
+  SET_MAX_MESSAGES,
+  MAX_MESSAGES_LSLABEL,
 } from './constants';
 
 /**
@@ -283,5 +285,19 @@ export function setLoadUnsafeImages(enabled) {
   return {
     type: SET_LOAD_UNSAFE_IMAGES,
     enabled,
+  };
+}
+
+/**
+ * Update the max number of events in a channels redux
+ * @param  {number} maxMessages New max message count
+ * @return {object} An action object with a type of SET_MAX_MESSAGES
+ */
+export function setMaxMessages(maxMessages) {
+  localStorage.setItem(MAX_MESSAGES_LSLABEL, maxMessages);
+
+  return {
+    type: SET_MAX_MESSAGES,
+    maxMessages,
   };
 }

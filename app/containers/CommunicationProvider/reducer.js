@@ -3,6 +3,12 @@
  */
 
 import { produce } from 'immer';
+
+import {
+  SET_MAX_MESSAGES,
+  MAX_MESSAGES_LSLABEL,
+} from 'containers/SettingsPage/constants';
+
 import {
   CONNECTION_ERROR,
   CHANGE_CHANNEL,
@@ -34,6 +40,20 @@ import {
   CLEAR_AUTH_REQS,
 } from './constants';
 
+const isMobile =
+  typeof navigator !== 'undefined' &&
+  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent,
+  );
+
+const DEFAULT_MAX_MESSAGES = isMobile ? 500 : 3000;
+
+const initialMaxMessagesStr = localStorage.getItem(MAX_MESSAGES_LSLABEL);
+const initialMaxMessages =
+  initialMaxMessagesStr !== null
+    ? parseInt(initialMaxMessagesStr, 10)
+    : DEFAULT_MAX_MESSAGES;
+
 export const initialState = {
   connected: false,
   channel: false,
@@ -47,6 +67,7 @@ export const initialState = {
   lastSession: false,
   pendingCaptcha: false,
   pendingPasswordReq: false,
+  maxMessages: initialMaxMessages,
 };
 
 const communicationProviderReducer = (state = initialState, action) =>
@@ -380,6 +401,23 @@ const communicationProviderReducer = (state = initialState, action) =>
         draft.pendingCaptcha = false;
         draft.pendingPasswordReq = false;
         break;
+      case SET_MAX_MESSAGES:
+        draft.maxMessages = action.maxMessages;
+        break;
+    }
+
+    if (draft.maxMessages > 0) {
+      Object.values(draft.channels).forEach((channelObj) => {
+        if (
+          channelObj.messages &&
+          channelObj.messages.length > draft.maxMessages
+        ) {
+          channelObj.messages.splice(
+            0,
+            channelObj.messages.length - draft.maxMessages,
+          );
+        }
+      });
     }
   });
 

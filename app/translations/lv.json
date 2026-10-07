@@ -220,6 +220,7 @@
   "hcclient.containers.SettingsPage.header": "CL13N7 53771N95",
   "hcclient.containers.SettingsPage.loadSafeImagesText": "L04D 54F3 1M4G35",
   "hcclient.containers.SettingsPage.loadUnsafeImagesText": "L04D UN54F3 1M4G35",
+  "hcclient.containers.SettingsPage.maxMessagesText": "M4X M3554G35 (0 = 1NF1N173)",
   "hcclient.containers.SettingsPage.menuPosText": "L3F7 M3NU 8U770N",
   "hcclient.containers.SettingsPage.reconnectText": "R3C0NN3C7 N0W",
   "hcclient.containers.SettingsPage.useLtrText": "L3F7 70 R19H7 (LTR)",

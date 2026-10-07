@@ -220,6 +220,7 @@
   "hcclient.containers.SettingsPage.header": "ক্লায়েন্ট সেটিংস",
   "hcclient.containers.SettingsPage.loadSafeImagesText": "নিরাপদ ছবি লোড করুন",
   "hcclient.containers.SettingsPage.loadUnsafeImagesText": "অনিরাপদ ছবি লোড করুন",
+  "hcclient.containers.SettingsPage.maxMessagesText": "সর্বোচ্চ বার্তা (0 = অসীম)",
   "hcclient.containers.SettingsPage.menuPosText": "বামদিকের মেনু বোতাম",
   "hcclient.containers.SettingsPage.reconnectText": "এখনই পুনঃসংযোগ করুন",
   "hcclient.containers.SettingsPage.useLtrText": "বাম থেকে ডানে পড়া (LTR)",

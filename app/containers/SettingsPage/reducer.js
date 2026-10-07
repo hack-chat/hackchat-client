@@ -38,6 +38,7 @@ import {
   LOAD_SAFE_IMAGES_LSLABEL,
   SET_LOAD_UNSAFE_IMAGES,
   LOAD_UNSAFE_IMAGES_LSLABEL,
+  SET_MAX_MESSAGES,
 } from './constants';
 
 const randomRGB = () => {
@@ -158,6 +159,9 @@ const settingsPageReducer = (state = settingsInitialState, action) =>
         break;
       case SET_LOAD_UNSAFE_IMAGES:
         draft.loadUnsafeImages = action.enabled;
+        break;
+      case SET_MAX_MESSAGES:
+        draft.maxMessages = action.maxMessages;
         break;
     }
   });

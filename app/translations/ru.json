@@ -220,6 +220,7 @@
   "hcclient.containers.SettingsPage.header": "Настройки клиента",
   "hcclient.containers.SettingsPage.loadSafeImagesText": "Загружать безопасные изображения",
   "hcclient.containers.SettingsPage.loadUnsafeImagesText": "Загружать небезопасные изображения",
+  "hcclient.containers.SettingsPage.maxMessagesText": "Максимум сообщений (0 = бесконечно)",
   "hcclient.containers.SettingsPage.menuPosText": "Кнопка меню слева",
   "hcclient.containers.SettingsPage.reconnectText": "Переподключиться",
   "hcclient.containers.SettingsPage.useLtrText": "Чтение слева направо (LTR)",

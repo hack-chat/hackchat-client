@@ -220,6 +220,7 @@
   "hcclient.containers.SettingsPage.header": "تنظیمات کلاینت",
   "hcclient.containers.SettingsPage.loadSafeImagesText": "بارگیری تصاویر امن",
   "hcclient.containers.SettingsPage.loadUnsafeImagesText": "بارگیری تصاویر ناامن",
+  "hcclient.containers.SettingsPage.maxMessagesText": "حداکثر پیام‌ها (0 = نامحدود)",
   "hcclient.containers.SettingsPage.menuPosText": "دکمه منو سمت چپ",
   "hcclient.containers.SettingsPage.reconnectText": "اتصال مجدد اکنون",
   "hcclient.containers.SettingsPage.useLtrText": "خواندن از چپ به راست (LTR)",

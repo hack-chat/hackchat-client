@@ -1,5 +1,12 @@
 import { createSelector } from 'reselect';
 import { settingsInitialState } from './reducer';
+import { MAX_MESSAGES_LSLABEL } from './constants';
+
+const isMobile =
+  typeof navigator !== 'undefined' &&
+  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent,
+  );
 
 /**
  * Root domain selector for the SettingsPage container state
@@ -124,6 +131,19 @@ const makeSelectCachedLoadUnsafeImages = () =>
     (substate) => substate.loadUnsafeImages,
   );
 
+/**
+ * The max number of events in a channels redux
+ */
+const makeSelectCachedMaxMessages = () =>
+  createSelector(selectSettingsPageDomain, (substate) => {
+    if (substate.maxMessages !== undefined) {
+      return substate.maxMessages;
+    }
+
+    const savedStr = localStorage.getItem(MAX_MESSAGES_LSLABEL);
+    return savedStr !== null ? parseInt(savedStr, 10) : isMobile ? 500 : 3000;
+  });
+
 export {
   selectSettingsPageDomain,
   makeSelectCachedUsername,
@@ -142,4 +162,5 @@ export {
   makeSelectCachedNotifyEnabled,
   makeSelectCachedLoadSafeImages,
   makeSelectCachedLoadUnsafeImages,
+  makeSelectCachedMaxMessages,
 };

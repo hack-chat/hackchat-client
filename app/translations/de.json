@@ -220,6 +220,7 @@
   "hcclient.containers.SettingsPage.header": "Client-Einstellungen",
   "hcclient.containers.SettingsPage.loadSafeImagesText": "Sichere Bilder laden",
   "hcclient.containers.SettingsPage.loadUnsafeImagesText": "Unsichere Bilder laden",
+  "hcclient.containers.SettingsPage.maxMessagesText": "Maximale Nachrichten (0 = unbegrenzt)",
   "hcclient.containers.SettingsPage.menuPosText": "Menü-Button links",
   "hcclient.containers.SettingsPage.reconnectText": "Jetzt neu verbinden",
   "hcclient.containers.SettingsPage.useLtrText": "Von links nach rechts lesen (LTR)",

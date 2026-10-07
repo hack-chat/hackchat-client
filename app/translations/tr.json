@@ -220,6 +220,7 @@
   "hcclient.containers.SettingsPage.header": "İstemci Ayarları",
   "hcclient.containers.SettingsPage.loadSafeImagesText": "Güvenli Resimleri Yükle",
   "hcclient.containers.SettingsPage.loadUnsafeImagesText": "Güvenli Olmayan Resimleri Yükle",
+  "hcclient.containers.SettingsPage.maxMessagesText": "Maksimum Mesaj (0 = sınırsız)",
   "hcclient.containers.SettingsPage.menuPosText": "Sol Taraftaki Menü Düğmesi",
   "hcclient.containers.SettingsPage.reconnectText": "Şimdi Yeniden Bağlan",
   "hcclient.containers.SettingsPage.useLtrText": "Soldan Sağa Okuma (LTR)",

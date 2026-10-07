@@ -220,6 +220,7 @@
   "hcclient.containers.SettingsPage.header": "क्लाइंट सेटिंग्स",
   "hcclient.containers.SettingsPage.loadSafeImagesText": "सुरक्षित चित्र लोड करें",
   "hcclient.containers.SettingsPage.loadUnsafeImagesText": "असुरक्षित चित्र लोड करें",
+  "hcclient.containers.SettingsPage.maxMessagesText": "अधिकतम संदेश (0 = अनंत)",
   "hcclient.containers.SettingsPage.menuPosText": "बायीं ओर मेनू बटन",
   "hcclient.containers.SettingsPage.reconnectText": "अभी पुन: कनेक्ट करें",
   "hcclient.containers.SettingsPage.useLtrText": "बाएँ से दाएँ पढ़ना (LTR)",
