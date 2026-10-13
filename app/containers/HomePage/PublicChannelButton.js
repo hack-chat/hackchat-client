@@ -1,11 +1,10 @@
 /**
- * Exports a styled Link
+ * Exports a styled button
  */
 
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
-export default styled(Link)`
+export default styled.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -19,6 +18,9 @@ export default styled(Link)`
   border-radius: 4px;
   border: 1px solid ${({ theme }) => theme.palette.border.subtle};
   transition: all 0.2s ease;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
 
   &:hover {
     background-color: ${({ theme }) => theme.palette.background.element};

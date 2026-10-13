@@ -9,6 +9,7 @@
   "hcclient.components.ChatManager.onlineUsersText": "Пользователи онлайн:",
   "hcclient.components.JoinMenu.button": "Присоединиться!",
   "hcclient.components.JoinMenu.channel": "Канал",
+  "hcclient.components.JoinMenu.logoutTip": "Введите \"/logout\" в чате, чтобы изменить свою личность",
   "hcclient.components.JoinMenu.password": "Пароль (необязательно)",
   "hcclient.components.JoinMenu.username": "Имя пользователя",
   "hcclient.components.LocaleModal.title": "Изменить язык",

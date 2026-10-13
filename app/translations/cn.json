@@ -9,6 +9,7 @@
   "hcclient.components.ChatManager.onlineUsersText": "在线用户：",
   "hcclient.components.JoinMenu.button": "加入！",
   "hcclient.components.JoinMenu.channel": "频道",
+  "hcclient.components.JoinMenu.logoutTip": "在聊天中输入 \"/logout\" 来更改您的身份",
   "hcclient.components.JoinMenu.password": "密码（可选）",
   "hcclient.components.JoinMenu.username": "用户名",
   "hcclient.components.LocaleModal.title": "更改语言",

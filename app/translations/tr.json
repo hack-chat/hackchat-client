@@ -9,6 +9,7 @@
   "hcclient.components.ChatManager.onlineUsersText": "Çevrimiçi kullanıcılar:",
   "hcclient.components.JoinMenu.button": "Katıl!",
   "hcclient.components.JoinMenu.channel": "Kanal",
+  "hcclient.components.JoinMenu.logoutTip": "Kimliğinizi değiştirmek için sohbete \"/logout\" yazın",
   "hcclient.components.JoinMenu.password": "Şifre (isteğe bağlı)",
   "hcclient.components.JoinMenu.username": "Kullanıcı adı",
   "hcclient.components.LocaleModal.title": "Dili Değiştir",

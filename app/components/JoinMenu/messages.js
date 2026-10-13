@@ -36,4 +36,8 @@ export default defineMessages({
     id: `${genScope}.randomButton`,
     defaultMessage: 'Use Random',
   },
+  logoutTip: {
+    id: `${scope}.logoutTip`,
+    defaultMessage: 'Type "/logout" in chat to change your identity',
+  },
 });

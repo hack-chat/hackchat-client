@@ -62,6 +62,8 @@ export default styled.button.attrs({
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;
   border-radius: 4px;
+  font-size: inherit;
+  font-family: ${(props) => props.theme.typography.primary};
   transition: all 0.2s ease;
   background-color: ${getBgColor};
   color: ${getColor};

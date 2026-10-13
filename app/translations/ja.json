@@ -9,6 +9,7 @@
   "hcclient.components.ChatManager.onlineUsersText": "オンラインのユーザー:",
   "hcclient.components.JoinMenu.button": "参加！",
   "hcclient.components.JoinMenu.channel": "チャンネル",
+  "hcclient.components.JoinMenu.logoutTip": "チャットで \"/logout\" と入力してアイデンティティを変更します",
   "hcclient.components.JoinMenu.password": "パスワード (任意)",
   "hcclient.components.JoinMenu.username": "ユーザー名",
   "hcclient.components.LocaleModal.title": "言語を変更",

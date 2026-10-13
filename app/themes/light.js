@@ -21,7 +21,7 @@ const theme = {
     accent: {
       hover: '#75715c',
       logoDark: '#e6e4dc',
-      main: '#8c8872',
+      main: '#4a5160',
     },
     background: {
       alt: '#fdfdfd',
@@ -61,9 +61,9 @@ const theme = {
     text: {
       code: '#4a5160',
       inverse: '#ffffff',
-      muted: '#777777',
+      muted: '#4a5160',
       primary: '#333333',
-      secondary: '#7b7762',
+      secondary: '#4a5160',
       trip: '#8c8872',
       white: '#111111',
     },

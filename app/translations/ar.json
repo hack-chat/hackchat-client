@@ -9,6 +9,7 @@
   "hcclient.components.ChatManager.onlineUsersText": "المستخدمون المتصلون:",
   "hcclient.components.JoinMenu.button": "انضم!",
   "hcclient.components.JoinMenu.channel": "قناة",
+  "hcclient.components.JoinMenu.logoutTip": "اكتب \"/logout\" في الدردشة لتغيير هويتك",
   "hcclient.components.JoinMenu.password": "كلمة المرور (اختياري)",
   "hcclient.components.JoinMenu.username": "اسم المستخدم",
   "hcclient.components.LocaleModal.title": "تغيير اللغة",

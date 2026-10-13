@@ -9,6 +9,7 @@
   "hcclient.components.ChatManager.onlineUsersText": "کاربران آنلاین:",
   "hcclient.components.JoinMenu.button": "پیوستن!",
   "hcclient.components.JoinMenu.channel": "کانال",
+  "hcclient.components.JoinMenu.logoutTip": "برای تغییر هویت خود، \"/logout\" را در چت تایپ کنید",
   "hcclient.components.JoinMenu.password": "رمز عبور (اختیاری)",
   "hcclient.components.JoinMenu.username": "نام کاربری",
   "hcclient.components.LocaleModal.title": "تغییر زبان",

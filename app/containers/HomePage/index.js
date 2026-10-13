@@ -47,6 +47,7 @@ import {
   clearChannel,
   clearAuthReqs,
   doLogout,
+  joinChannel,
 } from 'containers/CommunicationProvider/actions';
 import {
   makeSelectChannel,
@@ -78,6 +79,9 @@ import {
 import {
   makeSelectCachedLTR,
   makeSelectCachedMenuBtnPos,
+  makeSelectCachedPassword,
+  makeSelectCachedColor,
+  makeSelectCachedUsername,
 } from 'containers/SettingsPage/selectors';
 
 import LoadingIndicator from 'components/LoadingIndicator';
@@ -180,11 +184,124 @@ export function HomePage({
   pendingPasswordReq,
   cachedLtr,
   cachedMenuBtnPos,
+  cachedPassword,
+  cachedColor,
+  cachedUsername,
+  onJoinChannel,
 }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const channelFromUrl = useUrlChannel();
+  const isFromModal = location.state?.fromModal;
   const [isJoinModalOpen, setJoinModalOpen] = useState(false);
-  const toggleJoinModal = () => setJoinModalOpen(!isJoinModalOpen);
+  const lastPromptedUrl = useRef(null);
+  const leavingChannelRef = useRef(null);
+
+  const handleLeaveChannel = useCallback(
+    (channelToLeave) => {
+      leavingChannelRef.current = channelToLeave;
+      if (channelFromUrl === channelToLeave) {
+        navigate('/', { replace: true });
+        lastPromptedUrl.current = null;
+      }
+
+      onLeaveChannel(channelToLeave);
+    },
+    [channelFromUrl, navigate, onLeaveChannel],
+  );
+
+  const handleSendMessage = useCallback(
+    (chan, message) => {
+      if (message.trim() === '/leave') {
+        handleLeaveChannel(chan);
+      } else {
+        onSendMessage(chan, message);
+      }
+    },
+    [handleLeaveChannel, onSendMessage],
+  );
+
+  const toggleJoinModal = useCallback(
+    (isSubmit) => {
+      if (isJoinModalOpen && isSubmit !== true) {
+        if (channelFromUrl && (!channelData || !channelData[channelFromUrl])) {
+          navigate('/', { replace: true });
+          lastPromptedUrl.current = null;
+        }
+      }
+      setJoinModalOpen((prev) => !prev);
+    },
+    [isJoinModalOpen, channelFromUrl, channelData, navigate],
+  );
+
+  useEffect(() => {
+    if (!sessionReady) return;
+
+    if (pendingCaptcha || pendingPasswordReq) {
+      setJoinModalOpen(false);
+      return;
+    }
+
+    if (channelFromUrl) {
+      if (channelFromUrl === leavingChannelRef.current) {
+        return;
+      }
+
+      const isAlreadyMember = channelData && channelData[channelFromUrl];
+
+      if (isAlreadyMember) {
+        if (channel !== channelFromUrl) {
+          onChangeChannel(channelFromUrl);
+        }
+      } else {
+        const hasActiveChannels =
+          channelData && Object.keys(channelData).length > 0;
+
+        if (hasActiveChannels) {
+          if (lastPromptedUrl.current !== channelFromUrl) {
+            if (!isFromModal) {
+              const activeRoom = channel || Object.keys(channelData)[0];
+
+              const users = channelData[activeRoom]?.users || {};
+              const myUser = Object.values(users).find((u) => u.mine);
+              const activeName = myUser?.username || cachedUsername;
+
+              onJoinChannel(
+                activeName,
+                cachedPassword,
+                channelFromUrl,
+                cachedColor,
+              );
+            }
+            lastPromptedUrl.current = channelFromUrl;
+          }
+        } else {
+          if (lastPromptedUrl.current !== channelFromUrl) {
+            setJoinModalOpen(true);
+            lastPromptedUrl.current = channelFromUrl;
+          }
+        }
+      }
+    } else {
+      leavingChannelRef.current = null;
+      setJoinModalOpen(false);
+    }
+  }, [
+    channelFromUrl,
+    channel,
+    channelData,
+    onChangeChannel,
+    navigate,
+    sessionReady,
+    pendingCaptcha,
+    pendingPasswordReq,
+    cachedPassword,
+    cachedColor,
+    cachedUsername,
+    onJoinChannel,
+    isFromModal,
+  ]);
+
   const [isWalletModalOpen, setWalletModalOpen] = useState(false);
 
   const [externalUrlToWarn, setExternalUrlToWarn] = useState(null);
@@ -203,6 +320,7 @@ export function HomePage({
 
   const [challengeCaptcha, setChallengeCaptcha] = useState('');
   const [challengePassword, setChallengePassword] = useState('');
+
   const captchaInputRef = useRef(null);
   const passwordInputRef = useRef(null);
 
@@ -454,41 +572,6 @@ export function HomePage({
   );
 
   useEffect(() => {
-    if (!sessionReady) return;
-
-    if (pendingCaptcha || pendingPasswordReq) {
-      setJoinModalOpen(false);
-      return;
-    }
-
-    if (channelFromUrl) {
-      const isAlreadyMember = channelData && channelData[channelFromUrl];
-
-      if (isAlreadyMember) {
-        if (channel !== channelFromUrl) {
-          onChangeChannel(channelFromUrl);
-        }
-        setJoinModalOpen(false);
-      } else {
-        setJoinModalOpen(true);
-      }
-    } else {
-      if (channel) {
-        navigate(`/?${channel}`, { replace: true });
-      }
-    }
-  }, [
-    channelFromUrl,
-    channel,
-    channelData,
-    onChangeChannel,
-    navigate,
-    sessionReady,
-    pendingCaptcha,
-    pendingPasswordReq,
-  ]);
-
-  useEffect(() => {
     if (pendingCaptcha && captchaInputRef.current) {
       setTimeout(() => captchaInputRef.current.focus(), 100);
     }
@@ -517,7 +600,10 @@ export function HomePage({
     return sortedChannels.map((ch) => {
       const cleanName = DOMPurify.sanitize(ch.name);
       return (
-        <PublicChannelButton key={`pchan-${cleanName}`} to={`/?${cleanName}`}>
+        <PublicChannelButton
+          key={`pchan-${cleanName}`}
+          onClick={() => navigate(`/?${cleanName}`)}
+        >
           <b>?{cleanName}</b>
           <i>
             {ch.count} <FaUser />
@@ -525,19 +611,21 @@ export function HomePage({
         </PublicChannelButton>
       );
     });
-  }, [meta.channels]);
+  }, [meta.channels, navigate]);
 
   const showChat = Boolean(
-    channel &&
-    channel === channelFromUrl &&
-    channelData &&
-    channelData[channelFromUrl],
+    channel && channelData && channelData[channel] && channelFromUrl,
   );
 
   let homepageTitle = baseTitle;
   if (missedMessages > 0) {
     homepageTitle = `(${missedMessages}) ${baseTitle}`;
   }
+
+  const myUser = channelData?.[channel]?.users
+    ? Object.values(channelData[channel].users).find((u) => u.mine)
+    : null;
+  const activeUsername = myUser ? myUser.username : '';
 
   const HomePageContent = (
     <FadeInContainer>
@@ -563,7 +651,7 @@ export function HomePage({
       <br />
       <ChannelList
         channels={joinedChannels}
-        onLeaveChannel={(ch) => onLeaveChannel(ch)}
+        onLeaveChannel={handleLeaveChannel}
       />
 
       <SectionHeader>{publicChannelsHeader}</SectionHeader>
@@ -878,7 +966,7 @@ export function HomePage({
           isWalletConnected={!!connectedTo}
           walletAddress={connectedAccount ? connectedAccount.address : ''}
           onDisconnectWallet={onDisconnectWallet}
-          onLeaveChannel={onLeaveChannel}
+          onLeaveChannel={handleLeaveChannel}
         />
       )}
 
@@ -897,7 +985,7 @@ export function HomePage({
           <ChatInput
             channel={channel}
             users={channelData?.[channel]?.users}
-            onSendMessage={onSendMessage}
+            onSendMessage={handleSendMessage}
             canSend={sessionReady}
             ref={chatInputRef}
           />
@@ -927,11 +1015,17 @@ export function HomePage({
         </LandingPageContents>
       )}
 
-      <Modal isOpen={isJoinModalOpen} doToggle={setJoinModalOpen}>
-        <JoinMenu
-          doToggle={toggleJoinModal}
-          qString={!showChat ? channelFromUrl : ''}
-        />
+      <Modal isOpen={isJoinModalOpen} doToggle={toggleJoinModal}>
+        {isJoinModalOpen && (
+          <JoinMenu
+            doToggle={toggleJoinModal}
+            qString={!showChat ? channelFromUrl : ''}
+            isActivelyJoined={
+              !!(channel && channelData && channelData[channel])
+            }
+            activeUsername={activeUsername}
+          />
+        )}
       </Modal>
 
       <Modal isOpen={isLocaleModalOpen} doToggle={onCloseLocaleModal}>
@@ -1197,6 +1291,10 @@ HomePage.propTypes = {
   onClearAuthReqs: PropTypes.func,
   cachedLtr: PropTypes.bool,
   cachedMenuBtnPos: PropTypes.bool,
+  cachedPassword: PropTypes.string,
+  cachedColor: PropTypes.string,
+  cachedUsername: PropTypes.string,
+  onJoinChannel: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -1212,6 +1310,9 @@ const mapStateToProps = createStructuredSelector({
   pendingPasswordReq: makeSelectPendingPasswordReq(),
   cachedLtr: makeSelectCachedLTR(),
   cachedMenuBtnPos: makeSelectCachedMenuBtnPos(),
+  cachedPassword: makeSelectCachedPassword(),
+  cachedColor: makeSelectCachedColor(),
+  cachedUsername: makeSelectCachedUsername(),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -1219,9 +1320,7 @@ export function mapDispatchToProps(dispatch) {
     onChangeChannel: (channelName) => dispatch(changeChannel(channelName)),
     onSendMessage: (channel, message) => {
       // bet there is a better spot for these. . .
-      if (message.trim() === '/leave') {
-        dispatch(leaveChannel(channel));
-      } else if (message.trim() === '/clear') {
+      if (message.trim() === '/clear') {
         dispatch(clearChannel(channel));
       } else if (message.trim() === '/channelinfo') {
         dispatch(checkChannelInfo(channel));
@@ -1248,6 +1347,8 @@ export function mapDispatchToProps(dispatch) {
       dispatch(signMessageRequest(wallet, message)),
     onDoTransfer: (tx) => dispatch(doTransfer(tx)),
     onClearAuthReqs: () => dispatch(clearAuthReqs()),
+    onJoinChannel: (user, pass, chan, color) =>
+      dispatch(joinChannel(user, pass, chan, color)),
   };
 }
 

@@ -9,6 +9,7 @@
   "hcclient.components.ChatManager.onlineUsersText": "0NL1N3 U53R5:",
   "hcclient.components.JoinMenu.button": "J01N!",
   "hcclient.components.JoinMenu.channel": "CH4NN3L",
+  "hcclient.components.JoinMenu.logoutTip": "7YP3 \"/logout\" 1N CH47 70 CH4NG3 Y0UR 1D3N717Y",
   "hcclient.components.JoinMenu.password": "P455W0RD (0P710N4L)",
   "hcclient.components.JoinMenu.username": "U53RN4M3",
   "hcclient.components.LocaleModal.title": "CH4N93 L4N9U493",

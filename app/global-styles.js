@@ -270,7 +270,6 @@ const GlobalStyle = createGlobalStyle`
   }
 
   :focus-visible {
-    outline: 2px dashed ${({ theme }) => theme.palette.border.focus};
     outline-offset: 2px;
   }
 

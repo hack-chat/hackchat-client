@@ -42,6 +42,7 @@ import JoinButton from './JoinButton';
 import SuggestionContainer from './SuggestionContainer';
 import SuggestionItem from './SuggestionItem';
 import AutocompleteWrapper from './AutocompleteWrapper';
+import TipBox from './TipBox';
 
 export function JoinMenu({
   doToggle,
@@ -53,6 +54,8 @@ export function JoinMenu({
   prevChannels,
   qString,
   intl,
+  isActivelyJoined,
+  activeUsername,
 }) {
   const navigate = useNavigate();
 
@@ -63,24 +66,37 @@ export function JoinMenu({
   const usernameColorText = intl.formatMessage(messages.usernameColorText);
   const rememberText = intl.formatMessage(messages.rememberText);
   const randomButtonText = intl.formatMessage(messages.randomButtonText);
+  const logoutTip = intl.formatMessage(messages.logoutTip);
 
   const [invalidName, setInvalidName] = useStateIfMounted(false);
   const [invalidChannel, setInvalidChannel] = useStateIfMounted(false);
   const [currentColor, setCurrentColor] = useStateIfMounted(prevColor);
   const [rememberMe, setRememberMe] = useStateIfMounted(rememberUser);
-  const [chosenUsername, setChosenUsername] = useStateIfMounted(username);
-  const [chosenPassword, setChosenPassword] = useStateIfMounted(password);
+  const [chosenUsername, setChosenUsername] = useStateIfMounted(username || '');
+  const [chosenPassword, setChosenPassword] = useStateIfMounted(password || '');
   const [chosenChannel, setChosenChannel] = useStateIfMounted(qString || '');
   const [suggestions, setSuggestions] = useStateIfMounted([]);
   const [activeSuggestion, setActiveSuggestion] = useStateIfMounted(0);
   const suggestionsRef = useRef(null);
+
+  useEffect(() => {
+    if (username !== undefined && !chosenUsername) setChosenUsername(username);
+  }, [username, chosenUsername, setChosenUsername]);
+
+  useEffect(() => {
+    if (password !== undefined && !chosenPassword) setChosenPassword(password);
+  }, [password, chosenPassword, setChosenPassword]);
+
+  useEffect(() => {
+    if (prevColor !== undefined && !currentColor) setCurrentColor(prevColor);
+  }, [prevColor, currentColor, setCurrentColor]);
 
   const toggleInvalidName = () => setInvalidName(!invalidName);
   const clearInvalidName = () => setInvalidName(false);
   const toggleRememberMe = () => setRememberMe(!rememberMe);
   const toggleInvalidChannel = () => setInvalidChannel(!invalidChannel);
 
-  const hideChannel = !!qString;
+  const hideChannel = !isActivelyJoined && !!qString;
 
   useEffect(() => {
     setChosenChannel(qString || '');
@@ -137,19 +153,21 @@ export function JoinMenu({
   };
 
   const doJoin = (evt) => {
-    if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-    if (evt !== undefined && evt.stopPropagation) evt.stopPropagation();
-    if (evt !== undefined && evt.stopImmediatePropagation)
+    if (!evt || !evt.isTrusted) return;
+
+    if (evt.preventDefault) evt.preventDefault();
+    if (evt.stopPropagation) evt.stopPropagation();
+    if (evt.stopImmediatePropagation)
       evt.nativeEvent.stopImmediatePropagation();
 
     let err = false;
 
-    if (!chosenUsername) {
+    if (!isActivelyJoined && !chosenUsername) {
       err = true;
       toggleInvalidName();
     }
 
-    const chan = qString || chosenChannel;
+    const chan = !isActivelyJoined && qString ? qString : chosenChannel;
 
     if (!chan) {
       err = true;
@@ -158,132 +176,130 @@ export function JoinMenu({
 
     if (!err) {
       onSubmitForm(
-        chosenUsername,
-        chosenPassword,
+        isActivelyJoined
+          ? activeUsername || username || chosenUsername
+          : chosenUsername,
+        isActivelyJoined ? password || chosenPassword : chosenPassword,
         chan,
-        currentColor,
+        isActivelyJoined ? prevColor || currentColor : currentColor,
         rememberMe,
+        isActivelyJoined,
       );
 
-      if (typeof doToggle === 'function') doToggle();
+      if (typeof doToggle === 'function') doToggle(true);
 
-      navigate(`/?${chan}`);
+      navigate(`/?${chan}`, { state: { fromModal: true } });
     }
   };
 
   return (
     <Form onSubmit={doJoin}>
-      <InputGroup>
-        <InputGroupText>@</InputGroupText>
-        <Input
-          name="username"
-          autoComplete="username"
-          autoFocus
-          $invalid={invalidName}
-          placeholder={joinModalUsername}
-          onFocus={clearInvalidName}
-          defaultValue={username}
-          onChange={(e) => setChosenUsername(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              doJoin(e);
-            }
-          }}
-        />
-        <InputGroupText>
-          <NickColor
-            tabIndex={-1}
-            title={usernameColorText}
-            initColor={currentColor}
-            onChangeComplete={(color) => setCurrentColor(color.hex)}
-          />
-        </InputGroupText>
-      </InputGroup>
+      {!isActivelyJoined ? (
+        <>
+          <InputGroup>
+            <InputGroupText>@</InputGroupText>
+            <Input
+              name="username"
+              autoComplete="username"
+              autoFocus
+              $invalid={invalidName}
+              placeholder={joinModalUsername}
+              onFocus={clearInvalidName}
+              value={chosenUsername}
+              onChange={(e) => setChosenUsername(e.target.value)}
+            />
+            <InputGroupText>
+              <NickColor
+                tabIndex={-1}
+                title={usernameColorText}
+                initColor={currentColor}
+                onChangeComplete={(color) => setCurrentColor(color.hex)}
+              />
+            </InputGroupText>
+          </InputGroup>
 
-      <InputGroup>
-        <InputGroupText>#</InputGroupText>
-        <Input
-          name="password"
-          type="password"
-          autoComplete="current-password"
-          placeholder={joinModalPassword}
-          defaultValue={password}
-          onChange={(e) => setChosenPassword(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              doJoin(e);
-            }
-          }}
-        />
-        <InputGroupText>
-          <RememberBox
-            title={rememberText}
-            $isChecked={rememberMe}
-            onClick={() => toggleRememberMe()}
-          />
-        </InputGroupText>
-      </InputGroup>
+          <InputGroup>
+            <InputGroupText>#</InputGroupText>
+            <Input
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              placeholder={joinModalPassword}
+              value={chosenPassword}
+              onChange={(e) => setChosenPassword(e.target.value)}
+            />
+            <InputGroupText>
+              <RememberBox
+                title={rememberText}
+                $isChecked={rememberMe}
+                onClick={() => toggleRememberMe()}
+              />
+            </InputGroupText>
+          </InputGroup>
+        </>
+      ) : (
+        <TipBox>💡 {logoutTip}</TipBox>
+      )}
 
-      <AutocompleteWrapper $hide={hideChannel}>
-        {suggestions.length > 0 && (
-          <SuggestionContainer ref={suggestionsRef}>
-            {suggestions.map((chan, index) => (
-              <SuggestionItem
-                key={chan}
-                $isActive={index === activeSuggestion}
-                onMouseDown={() => {
-                  setChosenChannel(chan);
+      {!hideChannel && (
+        <AutocompleteWrapper>
+          {suggestions.length > 0 && (
+            <SuggestionContainer ref={suggestionsRef}>
+              {suggestions.map((chan, index) => (
+                <SuggestionItem
+                  key={chan}
+                  $isActive={index === activeSuggestion}
+                  onMouseDown={() => {
+                    setChosenChannel(chan);
+                    setSuggestions([]);
+                  }}
+                >
+                  ?{chan}
+                </SuggestionItem>
+              ))}
+            </SuggestionContainer>
+          )}
+
+          <InputGroup>
+            <InputGroupText>?</InputGroupText>
+            <Input
+              name="channel"
+              autoComplete="off"
+              $invalid={invalidChannel}
+              placeholder={joinModalChannel}
+              value={chosenChannel}
+              autoFocus={isActivelyJoined}
+              onFocus={() => {
+                setInvalidChannel(false);
+                if (chosenChannel && prevChannels) {
+                  const filtered = prevChannels.filter((ch) =>
+                    ch.toLowerCase().includes(chosenChannel.toLowerCase()),
+                  );
+                  setSuggestions(filtered);
+                }
+              }}
+              onBlur={() => setSuggestions([])}
+              onChange={handleChannelChange}
+              onKeyDown={handleKeyDown}
+            />
+            <InputGroupText id="randomButton">
+              <RandomButton
+                type="button"
+                title={randomButtonText}
+                onClick={() => {
+                  const newChan = Math.random().toString(36).substr(2, 8);
+                  setChosenChannel(newChan);
                   setSuggestions([]);
                 }}
               >
-                ?{chan}
-              </SuggestionItem>
-            ))}
-          </SuggestionContainer>
-        )}
+                <GiRollingDices />
+              </RandomButton>
+            </InputGroupText>
+          </InputGroup>
+        </AutocompleteWrapper>
+      )}
 
-        <InputGroup>
-          <InputGroupText>?</InputGroupText>
-          <Input
-            name="channel"
-            autoComplete="off"
-            $invalid={invalidChannel}
-            placeholder={joinModalChannel}
-            value={chosenChannel}
-            onFocus={() => {
-              setInvalidChannel(false);
-              if (chosenChannel && prevChannels) {
-                const filtered = prevChannels.filter((ch) =>
-                  ch.toLowerCase().includes(chosenChannel.toLowerCase()),
-                );
-                setSuggestions(filtered);
-              }
-            }}
-            onBlur={() => setSuggestions([])}
-            onChange={handleChannelChange}
-            onKeyDown={handleKeyDown}
-          />
-          <InputGroupText id="randomButton">
-            <RandomButton
-              type="button"
-              title={randomButtonText}
-              onClick={() => {
-                const newChan = Math.random().toString(36).substr(2, 8);
-                setChosenChannel(newChan);
-                setSuggestions([]);
-              }}
-            >
-              <GiRollingDices />
-            </RandomButton>
-          </InputGroupText>
-        </InputGroup>
-      </AutocompleteWrapper>
-
-      <JoinButton type="submit" onClick={doJoin}>
-        {joinModalBtn}
-      </JoinButton>
+      <JoinButton onClick={doJoin}>{joinModalBtn}</JoinButton>
     </Form>
   );
 }
@@ -298,6 +314,8 @@ JoinMenu.propTypes = {
   prevChannels: PropTypes.array,
   qString: PropTypes.string,
   intl: PropTypes.object.isRequired,
+  isActivelyJoined: PropTypes.bool,
+  activeUsername: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -310,13 +328,18 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
   return {
-    onSubmitForm: (user, pass, chan, color, remember) => {
-      dispatch(setStoreChannelsFlag(remember));
-      dispatch(setUsername(user, remember));
+    onSubmitForm: (user, pass, chan, color, remember, isActivelyJoined) => {
+      if (!isActivelyJoined) {
+        dispatch(setStoreChannelsFlag(remember));
+        dispatch(setUsername(user, remember));
+
+        if (remember) {
+          dispatch(setColor(color));
+          dispatch(setPassword(pass));
+        }
+      }
 
       if (remember) {
-        dispatch(setColor(color));
-        dispatch(setPassword(pass));
         dispatch(addPrevChannel(chan));
       }
 

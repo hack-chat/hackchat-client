@@ -9,6 +9,7 @@
   "hcclient.components.ChatManager.onlineUsersText": "Συνδεδεμένοι χρήστες:",
   "hcclient.components.JoinMenu.button": "Συμμετοχή!",
   "hcclient.components.JoinMenu.channel": "Κανάλι",
+  "hcclient.components.JoinMenu.logoutTip": "Πληκτρολογήστε \"/logout\" στο chat για να αλλάξετε την ταυτότητά σας",
   "hcclient.components.JoinMenu.password": "Κωδικός πρόσβασης (προαιρετικό)",
   "hcclient.components.JoinMenu.username": "Όνομα χρήστη",
   "hcclient.components.LocaleModal.title": "Αλλαγή γλώσσας",

@@ -9,6 +9,7 @@
   "hcclient.components.ChatManager.onlineUsersText": "Pengguna Online:",
   "hcclient.components.JoinMenu.button": "Gabung!",
   "hcclient.components.JoinMenu.channel": "Saluran",
+  "hcclient.components.JoinMenu.logoutTip": "Ketik \"/logout\" di obrolan untuk mengubah identitas Anda",
   "hcclient.components.JoinMenu.password": "Kata Sandi (opsional)",
   "hcclient.components.JoinMenu.username": "Nama Pengguna",
   "hcclient.components.LocaleModal.title": "Ganti Bahasa",

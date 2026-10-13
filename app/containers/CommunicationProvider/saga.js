@@ -496,7 +496,15 @@ export default function* communicationProviderSaga() {
     );
   });
 
-  yield takeLatest(LEAVE_CHANNEL, (action) => hcClient.leave(action.channel));
+  yield takeLatest(LEAVE_CHANNEL, (action) => {
+    hcClient.leave(action.channel);
+
+    const currentUrlChannel = window.location.search.substring(1);
+    if (currentUrlChannel === action.channel) {
+      window.history.replaceState(null, '', '/');
+      window.dispatchEvent(new Event('popstate'));
+    }
+  });
 
   yield takeEvery(SEND_CHAT, (action) =>
     hcClient.say(action.channel, action.message),
@@ -692,6 +700,16 @@ export default function* communicationProviderSaga() {
           action.data.args || {},
         ),
       );
+    }
+
+    if (action.type === SESSION_READY && action.data.restored === true) {
+      const currentUrlChannel = window.location.search.substring(1);
+      const activeChannels = action.data.channels || [];
+
+      if (currentUrlChannel && !activeChannels.includes(currentUrlChannel)) {
+        window.history.replaceState(null, '', '/');
+        window.dispatchEvent(new Event('popstate'));
+      }
     }
   }
 }

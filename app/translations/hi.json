@@ -9,6 +9,7 @@
   "hcclient.components.ChatManager.onlineUsersText": "ऑनलाइन उपयोगकर्ता:",
   "hcclient.components.JoinMenu.button": "शामिल हों!",
   "hcclient.components.JoinMenu.channel": "चैनल",
+  "hcclient.components.JoinMenu.logoutTip": "अपनी पहचान बदलने के लिए चैट में \"/logout\" टाइप करें",
   "hcclient.components.JoinMenu.password": "पासवर्ड (वैकल्पिक)",
   "hcclient.components.JoinMenu.username": "उपयोगकर्ता नाम",
   "hcclient.components.LocaleModal.title": "भाषा बदलें",

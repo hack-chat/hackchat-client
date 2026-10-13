@@ -10,8 +10,8 @@ const getBgColor = (props) => {
 };
 
 const getKnobLeft = (props) => {
-  if (props.checked) return '25px';
-  return '3px';
+  if (props.checked) return '1.5625em';
+  return '0.1875em';
 };
 
 const getKnobBgColor = (props) => {
@@ -22,10 +22,11 @@ const getKnobBgColor = (props) => {
 export default styled.button.attrs({
   type: 'button',
 })`
+  font-size: inherit;
   cursor: pointer;
-  width: 50px;
-  height: 28px;
-  border-radius: 14px;
+  width: 3.125em;
+  height: 1.75em;
+  border-radius: 1em;
   border: 1px solid ${({ theme }) => theme.palette.border.divider};
   position: relative;
   transition: all 0.2s ease;
@@ -34,10 +35,10 @@ export default styled.button.attrs({
   &::after {
     content: '';
     position: absolute;
-    top: 3px;
+    top: 0.1875em;
     left: ${getKnobLeft};
-    width: 20px;
-    height: 20px;
+    width: 1.25em;
+    height: 1.25em;
     background-color: ${getKnobBgColor};
     border-radius: 50%;
     transition: all 0.2s ease;

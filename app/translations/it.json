@@ -9,6 +9,7 @@
   "hcclient.components.ChatManager.onlineUsersText": "Utenti online:",
   "hcclient.components.JoinMenu.button": "Entra!",
   "hcclient.components.JoinMenu.channel": "Canale",
+  "hcclient.components.JoinMenu.logoutTip": "Digita \"/logout\" nella chat per cambiare la tua identità",
   "hcclient.components.JoinMenu.password": "Password (opzionale)",
   "hcclient.components.JoinMenu.username": "Nome utente",
   "hcclient.components.LocaleModal.title": "Cambia lingua",

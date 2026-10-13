@@ -49,6 +49,8 @@ export default styled.input`
   padding: 0 16px;
   border-radius: 4px;
   margin-bottom: 12px;
+  font-size: inherit;
+  font-family: ${(props) => props.theme.typography.primary};
   transition: all 0.2s ease;
   background-color: ${getBgColor};
   color: ${getColor};

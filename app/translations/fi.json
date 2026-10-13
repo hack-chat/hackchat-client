@@ -9,6 +9,7 @@
   "hcclient.components.ChatManager.onlineUsersText": "Paikalla olevat käyttäjät:",
   "hcclient.components.JoinMenu.button": "Liity!",
   "hcclient.components.JoinMenu.channel": "Kanava",
+  "hcclient.components.JoinMenu.logoutTip": "Kirjoita chattiin \"/logout\" vaihtaaksesi identiteettisi",
   "hcclient.components.JoinMenu.password": "Salasana (valinnainen)",
   "hcclient.components.JoinMenu.username": "Käyttäjätunnus",
   "hcclient.components.LocaleModal.title": "Vaihda kieltä",
