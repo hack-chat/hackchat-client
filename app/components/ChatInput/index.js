@@ -141,7 +141,17 @@ const parseMessage = (text) => {
   return chunks.join('');
 };
 
-function ChatInput({ channel, users, onSendMessage, canSend = true }, ref) {
+function ChatInput(
+  {
+    channel,
+    users,
+    onSendMessage,
+    canSend = true,
+    enablePreview = true,
+    largeMode = false,
+  },
+  ref,
+) {
   const intl = useIntl();
 
   const inputTitle = intl.formatMessage(
@@ -585,6 +595,7 @@ function ChatInput({ channel, users, onSendMessage, canSend = true }, ref) {
         autoFocus
         rows="1"
         value={inputValue}
+        $largeMode={largeMode}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
         onKeyUp={(e) => {
@@ -600,7 +611,7 @@ function ChatInput({ channel, users, onSendMessage, canSend = true }, ref) {
         placeholder={inputTitle}
       />
 
-      {inputValue.trim().length > 0 && (
+      {enablePreview && inputValue.trim().length > 0 && (
         <PreviewButton
           title={previewTitle}
           onClick={() => setIsPreviewOpen(true)}
@@ -634,6 +645,8 @@ ChatInputWithRef.propTypes = {
   users: PropTypes.object,
   onSendMessage: PropTypes.func.isRequired,
   canSend: PropTypes.bool,
+  enablePreview: PropTypes.bool,
+  largeMode: PropTypes.bool,
 };
 
 export default memo(ChatInputWithRef);

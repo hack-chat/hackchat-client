@@ -82,6 +82,8 @@ import {
   makeSelectCachedPassword,
   makeSelectCachedColor,
   makeSelectCachedUsername,
+  makeSelectCachedEnablePreview,
+  makeSelectCachedLargeMode,
 } from 'containers/SettingsPage/selectors';
 
 import LoadingIndicator from 'components/LoadingIndicator';
@@ -187,6 +189,8 @@ export function HomePage({
   cachedPassword,
   cachedColor,
   cachedUsername,
+  cachedEnablePreview,
+  cachedLargeMode,
   onJoinChannel,
 }) {
   const navigate = useNavigate();
@@ -971,7 +975,10 @@ export function HomePage({
       )}
 
       {showChat ? (
-        <ChatLayout dir={cachedLtr ? 'ltr' : 'rtl'}>
+        <ChatLayout
+          dir={cachedLtr ? 'ltr' : 'rtl'}
+          $largeMode={cachedLargeMode}
+        >
           <ChatManager
             channel={channel}
             channelData={channelData}
@@ -989,6 +996,8 @@ export function HomePage({
             onSendMessage={handleSendMessage}
             canSend={sessionReady}
             ref={chatInputRef}
+            enablePreview={cachedEnablePreview}
+            largeMode={cachedLargeMode}
           />
         </ChatLayout>
       ) : (
@@ -1296,6 +1305,8 @@ HomePage.propTypes = {
   cachedColor: PropTypes.string,
   cachedUsername: PropTypes.string,
   onJoinChannel: PropTypes.func,
+  cachedEnablePreview: PropTypes.bool,
+  cachedLargeMode: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -1314,6 +1325,8 @@ const mapStateToProps = createStructuredSelector({
   cachedPassword: makeSelectCachedPassword(),
   cachedColor: makeSelectCachedColor(),
   cachedUsername: makeSelectCachedUsername(),
+  cachedEnablePreview: makeSelectCachedEnablePreview(),
+  cachedLargeMode: makeSelectCachedLargeMode(),
 });
 
 export function mapDispatchToProps(dispatch) {

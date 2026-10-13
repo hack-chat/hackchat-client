@@ -22,7 +22,7 @@ const TripStyle = styled.span.attrs(({ $flair }) => ({
   color: ${({ theme }) => theme.palette.text.trip};
   display: inline-block;
   margin-inline-end: 0.5em;
-  font-size: 0.7rem;
+  font-size: 0.8em;
 
   ${getFlair}
 `;

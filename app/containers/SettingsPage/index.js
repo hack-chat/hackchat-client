@@ -117,6 +117,8 @@ import {
   setLoadSafeImages,
   setLoadUnsafeImages,
   setMaxMessages,
+  setEnablePreview,
+  setLargeMode,
 } from './actions';
 
 import {
@@ -137,6 +139,8 @@ import {
   makeSelectCachedLoadSafeImages,
   makeSelectCachedLoadUnsafeImages,
   makeSelectCachedMaxMessages,
+  makeSelectCachedEnablePreview,
+  makeSelectCachedLargeMode,
 } from './selectors';
 
 import reducer from './reducer';
@@ -167,6 +171,8 @@ export function SettingsPage({
   channelData,
   onLeaveChannel,
   onChangeUsername,
+  cachedEnablePreview,
+  cachedLargeMode,
   intl,
 }) {
   const navigate = useNavigate();
@@ -227,6 +233,10 @@ export function SettingsPage({
   );
   const [chosenMaxMessages, setChosenMaxMessages] =
     useStateIfMounted(cachedMaxMessages);
+  const [chosenEnablePreview, setChosenEnablePreview] =
+    useStateIfMounted(cachedEnablePreview);
+  const [chosenLargeMode, setChosenLargeMode] =
+    useStateIfMounted(cachedLargeMode);
 
   useEffect(() => {
     if (cachedUsername !== chosenUsername)
@@ -289,6 +299,8 @@ export function SettingsPage({
   const rememberText = intl.formatMessage(messages.rememberText);
   const usernameColorText = intl.formatMessage(messages.usernameColorText);
   const maxMessagesText = intl.formatMessage(messages.maxMessagesText);
+  const enablePreviewText = intl.formatMessage(messages.enablePreviewText);
+  const largeModeText = intl.formatMessage(messages.largeModeText);
 
   const joinedChannels = useMemo(
     () => (channelData ? Object.keys(channelData) : []),
@@ -496,6 +508,26 @@ export function SettingsPage({
 
           <SwitchRow
             onClick={() => {
+              setChosenEnablePreview(!chosenEnablePreview);
+              dispatch(setEnablePreview(!chosenEnablePreview));
+            }}
+          >
+            <LabelText>{enablePreviewText}</LabelText>
+            <BooleanSwitch checked={chosenEnablePreview} />
+          </SwitchRow>
+
+          <SwitchRow
+            onClick={() => {
+              setChosenLargeMode(!chosenLargeMode);
+              dispatch(setLargeMode(!chosenLargeMode));
+            }}
+          >
+            <LabelText>{largeModeText}</LabelText>
+            <BooleanSwitch checked={chosenLargeMode} />
+          </SwitchRow>
+
+          <SwitchRow
+            onClick={() => {
               setChosenDoHighlight(!chosenDoHighlight);
               dispatch(setDoHighlight(!chosenDoHighlight));
             }}
@@ -597,6 +629,8 @@ SettingsPage.propTypes = {
   channelData: PropTypes.object,
   onLeaveChannel: PropTypes.func,
   onChangeUsername: PropTypes.func,
+  cachedEnablePreview: PropTypes.bool,
+  cachedLargeMode: PropTypes.bool,
   intl: PropTypes.object.isRequired,
 };
 
@@ -620,6 +654,8 @@ const mapStateToProps = createStructuredSelector({
   cachedMaxMessages: makeSelectCachedMaxMessages(),
   isLocaleModalOpen: makeSelectIsLocaleModalOpen(),
   channelData: makeSelectChannelData(),
+  cachedEnablePreview: makeSelectCachedEnablePreview(),
+  cachedLargeMode: makeSelectCachedLargeMode(),
 });
 
 function mapDispatchToProps(dispatch) {

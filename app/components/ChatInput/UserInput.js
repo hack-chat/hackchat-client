@@ -7,7 +7,7 @@ import styled from 'styled-components';
 export default styled.textarea.attrs({ className: 'chat-input' })`
   flex-grow: 1;
   min-height: 4em;
-  max-width: 600px;
+  max-width: ${({ $largeMode }) => ($largeMode ? '750px' : '600px')};
   max-height: 200px;
   height: auto;
   resize: none;

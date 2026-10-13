@@ -144,6 +144,21 @@ const makeSelectCachedMaxMessages = () =>
     return savedStr !== null ? parseInt(savedStr, 10) : isMobile ? 500 : 3000;
   });
 
+/**
+ * Message preview button state
+ */
+const makeSelectCachedEnablePreview = () =>
+  createSelector(
+    selectSettingsPageDomain,
+    (substate) => substate.enablePreview,
+  );
+
+/**
+ * Large Mode state
+ */
+const makeSelectCachedLargeMode = () =>
+  createSelector(selectSettingsPageDomain, (substate) => substate.largeMode);
+
 export {
   selectSettingsPageDomain,
   makeSelectCachedUsername,
@@ -163,4 +178,6 @@ export {
   makeSelectCachedLoadSafeImages,
   makeSelectCachedLoadUnsafeImages,
   makeSelectCachedMaxMessages,
+  makeSelectCachedEnablePreview,
+  makeSelectCachedLargeMode,
 };

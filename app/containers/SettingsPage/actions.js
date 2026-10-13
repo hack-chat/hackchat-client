@@ -38,6 +38,10 @@ import {
   LOAD_UNSAFE_IMAGES_LSLABEL,
   SET_MAX_MESSAGES,
   MAX_MESSAGES_LSLABEL,
+  ENABLE_PREVIEW_LSLABEL,
+  SET_ENABLE_PREVIEW,
+  LARGE_MODE_LSLABEL,
+  SET_LARGE_MODE,
 } from './constants';
 
 /**
@@ -299,5 +303,33 @@ export function setMaxMessages(maxMessages) {
   return {
     type: SET_MAX_MESSAGES,
     maxMessages,
+  };
+}
+
+/**
+ * Enable / disable the preview button in chat
+ * @param  {boolean} allowed Show/hide
+ * @return {object} An action object with a type of SET_ENABLE_PREVIEW
+ */
+export function setEnablePreview(allowed) {
+  localStorage.setItem(ENABLE_PREVIEW_LSLABEL, JSON.stringify(allowed));
+
+  return {
+    type: SET_ENABLE_PREVIEW,
+    allowed,
+  };
+}
+
+/**
+ * Enable / disable large ui mode
+ * @param  {boolean} allowed Enabled/disabled
+ * @return {object} An action object with a type of SET_LARGE_MODE
+ */
+export function setLargeMode(allowed) {
+  localStorage.setItem(LARGE_MODE_LSLABEL, JSON.stringify(allowed));
+
+  return {
+    type: SET_LARGE_MODE,
+    allowed,
   };
 }

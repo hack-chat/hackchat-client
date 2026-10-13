@@ -109,6 +109,13 @@ const blurReveal = keyframes`
   50% { filter: blur(2px); opacity: 0.8; }
 `;
 
+const getRootFontSize = ({ $largeMode }) => ($largeMode ? '125%' : '100%');
+
+const getBodyFontSize = ({ theme, $largeMode }) =>
+  $largeMode
+    ? `calc(${theme.typography.fontSize} * 1.25)`
+    : theme.typography.fontSize;
+
 const GlobalStyle = createGlobalStyle`
   ${({ theme }) => theme.typography?.import || ''}
 
@@ -117,12 +124,13 @@ const GlobalStyle = createGlobalStyle`
     height: 100dvh;
     margin: 0;
     overflow: hidden;
+    font-size: ${getRootFontSize};
   }
 
   body {
     background: ${({ theme }) => theme.palette.background.main};
     color: ${({ theme }) => theme.palette.text.secondary};
-    font-size: ${({ theme }) => theme.typography.fontSize};
+    font-size: ${getBodyFontSize};
     tab-size: 4;
   }
 

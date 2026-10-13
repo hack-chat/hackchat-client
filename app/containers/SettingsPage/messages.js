@@ -91,4 +91,12 @@ export default defineMessages({
     id: `${scope}.maxMessagesText`,
     defaultMessage: 'Max Messages (0 = infinite)',
   },
+  enablePreviewText: {
+    id: `${scope}.enablePreviewText`,
+    defaultMessage: 'Show Preview Button',
+  },
+  largeModeText: {
+    id: `${scope}.largeModeText`,
+    defaultMessage: 'Large UI Mode',
+  },
 });

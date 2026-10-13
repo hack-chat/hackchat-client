@@ -39,6 +39,10 @@ import {
   SET_LOAD_UNSAFE_IMAGES,
   LOAD_UNSAFE_IMAGES_LSLABEL,
   SET_MAX_MESSAGES,
+  SET_ENABLE_PREVIEW,
+  ENABLE_PREVIEW_LSLABEL,
+  SET_LARGE_MODE,
+  LARGE_MODE_LSLABEL,
 } from './constants';
 
 const randomRGB = () => {
@@ -104,6 +108,9 @@ export const settingsInitialState = {
     JSON.parse(localStorage.getItem(LOAD_SAFE_IMAGES_LSLABEL)) ?? true,
   loadUnsafeImages:
     JSON.parse(localStorage.getItem(LOAD_UNSAFE_IMAGES_LSLABEL)) ?? false,
+  enablePreview:
+    JSON.parse(localStorage.getItem(ENABLE_PREVIEW_LSLABEL)) ?? true,
+  largeMode: JSON.parse(localStorage.getItem(LARGE_MODE_LSLABEL)) ?? false,
 };
 
 const settingsPageReducer = (state = settingsInitialState, action) =>
@@ -162,6 +169,12 @@ const settingsPageReducer = (state = settingsInitialState, action) =>
         break;
       case SET_MAX_MESSAGES:
         draft.maxMessages = action.maxMessages;
+        break;
+      case SET_ENABLE_PREVIEW:
+        draft.enablePreview = action.allowed;
+        break;
+      case SET_LARGE_MODE:
+        draft.largeMode = action.allowed;
         break;
     }
   });

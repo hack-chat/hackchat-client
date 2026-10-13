@@ -15,13 +15,16 @@ import HomePage from 'containers/HomePage/Loadable';
 import SettingsPage from 'containers/SettingsPage/Loadable';
 import ToastNotifier from 'containers/ToastNotifier';
 
-import { makeSelectCachedTheme } from 'containers/SettingsPage/selectors';
+import {
+  makeSelectCachedTheme,
+  makeSelectCachedLargeMode,
+} from 'containers/SettingsPage/selectors';
 import defaultThemeObj from '../../themes/default';
 
 import Wrapper from './Wrapper';
 import GlobalStyle from '../../global-styles';
 
-function App({ cachedTheme }) {
+function App({ cachedTheme, cachedLargeMode }) {
   const [activeTheme, setActiveTheme] = useState(defaultThemeObj);
 
   useEffect(() => {
@@ -79,7 +82,7 @@ function App({ cachedTheme }) {
           transition={Slide}
         />
 
-        <GlobalStyle />
+        <GlobalStyle $largeMode={cachedLargeMode} />
       </Wrapper>
     </ThemeProvider>
   );
@@ -87,6 +90,7 @@ function App({ cachedTheme }) {
 
 const mapStateToProps = createStructuredSelector({
   cachedTheme: makeSelectCachedTheme(),
+  cachedLargeMode: makeSelectCachedLargeMode(),
 });
 
 const withConnect = connect(mapStateToProps, null);

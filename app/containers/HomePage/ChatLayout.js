@@ -9,7 +9,7 @@ export default styled.div`
   flex-direction: column;
   height: 100%;
   width: 100%;
-  max-width: 850px;
+  max-width: ${({ $largeMode }) => ($largeMode ? '1060px' : '850px')};
   justify-content: flex-end;
 
   @media (width >= 768px) {
