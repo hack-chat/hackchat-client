@@ -37,6 +37,7 @@ emoji.allow_native = true;
 
 const ALL_EMOJIS = [];
 const seenCodes = new Set();
+const draftStorage = new Map();
 
 Object.keys(KAOMOJI).forEach((code) => {
   ALL_EMOJIS.push({ code, preview: KAOMOJI[code] });
@@ -149,7 +150,9 @@ function ChatInput({ channel, users, onSendMessage, canSend = true }, ref) {
   const previewTitle = intl.formatMessage(messages.previewTitle);
   const sendTitle = intl.formatMessage(messages.sendTitle);
 
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState(
+    () => draftStorage.get(channel) || '',
+  );
   const [history, setHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [suggestions, setSuggestions] = useState([]);
@@ -163,6 +166,31 @@ function ChatInput({ channel, users, onSendMessage, canSend = true }, ref) {
     currentIndex: 0,
     startIndex: -1,
   });
+
+  const setDraftValue = useCallback(
+    (val) => {
+      setInputValue(val);
+      if (val) {
+        draftStorage.set(channel, val);
+      } else {
+        draftStorage.delete(channel);
+      }
+    },
+    [channel],
+  );
+
+  useEffect(() => {
+    setInputValue(draftStorage.get(channel) || '');
+    setHistoryIndex(-1);
+    setSuggestions([]);
+    setMentionState({
+      isCycling: false,
+      originalPrefix: '',
+      matches: [],
+      currentIndex: 0,
+      startIndex: -1,
+    });
+  }, [channel]);
 
   const inputRef = useRef(null);
   const suggestionsRef = useRef(null);
@@ -247,7 +275,7 @@ function ChatInput({ channel, users, onSendMessage, canSend = true }, ref) {
     const newValue =
       currentValue.substring(0, start) + text + currentValue.substring(end);
 
-    setInputValue(newValue);
+    setDraftValue(newValue);
 
     setTimeout(() => {
       input.focus();
@@ -259,7 +287,7 @@ function ChatInput({ channel, users, onSendMessage, canSend = true }, ref) {
 
   useImperativeHandle(ref, () => ({
     setCommand: (commandText) => {
-      setInputValue(commandText);
+      setDraftValue(commandText);
       if (inputRef.current) {
         inputRef.current.focus();
       }
@@ -289,7 +317,7 @@ function ChatInput({ channel, users, onSendMessage, canSend = true }, ref) {
       const textAfter = inputValue.slice(sel.replaceEnd);
       const newValue = textBefore + sel.value + textAfter;
 
-      setInputValue(newValue);
+      setDraftValue(newValue);
       setSuggestions([]);
 
       const newCursor = sel.replaceStart + sel.value.length;
@@ -301,7 +329,7 @@ function ChatInput({ channel, users, onSendMessage, canSend = true }, ref) {
         }
       }, 0);
     },
-    [inputValue, resizeTextarea],
+    [inputValue, resizeTextarea, setDraftValue],
   );
 
   const submitInput = useCallback(() => {
@@ -314,6 +342,7 @@ function ChatInput({ channel, users, onSendMessage, canSend = true }, ref) {
       onSendMessage(channel, text);
       updateHistory(text);
       setInputValue('');
+      draftStorage.delete(channel);
       setHistoryIndex(-1);
       setMentionState((prev) => ({ ...prev, isCycling: false }));
       setTimeout(resizeTextarea, 0);
@@ -359,7 +388,7 @@ function ChatInput({ channel, users, onSendMessage, canSend = true }, ref) {
           const newIndex = Math.min(historyIndex + 1, history.length - 1);
           if (newIndex >= 0 && newIndex !== historyIndex) {
             setHistoryIndex(newIndex);
-            setInputValue(history[newIndex]);
+            setDraftValue(history[newIndex]);
 
             setTimeout(() => {
               if (inputRef.current) {
@@ -385,7 +414,7 @@ function ChatInput({ channel, users, onSendMessage, canSend = true }, ref) {
           if (newIndex !== historyIndex) {
             setHistoryIndex(newIndex);
             const newText = newIndex >= 0 ? history[newIndex] : '';
-            setInputValue(newText);
+            setDraftValue(newText);
 
             setTimeout(() => {
               if (inputRef.current) {
@@ -442,7 +471,7 @@ function ChatInput({ channel, users, onSendMessage, canSend = true }, ref) {
             const textAfter = inputValue.slice(inputRef.current.selectionEnd);
 
             const newValue = `${textBefore}${matchName} ${textAfter}`;
-            setInputValue(newValue);
+            setDraftValue(newValue);
             setMentionState(mState);
 
             setTimeout(() => {
@@ -467,6 +496,7 @@ function ChatInput({ channel, users, onSendMessage, canSend = true }, ref) {
       mentionState,
       users,
       applySuggestion,
+      setDraftValue,
     ],
   );
 
@@ -519,7 +549,7 @@ function ChatInput({ channel, users, onSendMessage, canSend = true }, ref) {
       }
     }
 
-    setInputValue(newVal);
+    setDraftValue(newVal);
     updateSuggestions(newVal, cursor);
 
     if (newVal !== evt.target.value) {
