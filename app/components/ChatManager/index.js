@@ -32,6 +32,7 @@ export function ChatManager({
   onTxAttemptClick,
   intl,
   externalScrollRef,
+  isWalletConnected,
 }) {
   const internalRef = useRef(null);
   const scrollContainerRef = externalScrollRef || internalRef;
@@ -103,6 +104,10 @@ export function ChatManager({
   };
 
   const handleUserContextMenu = useCallback((user, event) => {
+    if (user && user.mine) {
+      return;
+    }
+
     const selection = window.getSelection();
     if (
       selection &&
@@ -127,12 +132,14 @@ export function ChatManager({
   const handleMessageLeftClick = useCallback(
     (payload, user) => {
       const username = user.username || payload.name || 'unknown';
+      const prefix = user.mine ? '> ' : `> @${username}: `;
+
       const quoteText = payload.content
         .split('\n')
-        .map((line) => `> ${line}`)
+        .map((line, index) => (index === 0 ? `${prefix}${line}` : `> ${line}`))
         .join('\n');
-      const mention = user.mine ? '' : `@${username} `;
-      const replyString = `${quoteText}\n\n${mention}`;
+
+      const replyString = `${quoteText}\n\n`;
 
       if (handleInsertText) {
         handleInsertText(replyString);
@@ -284,6 +291,7 @@ export function ChatManager({
         closeContextMenu={closeUserContextMenu}
         onCommandClick={handleMenuCommand}
         myPermissionLevel={myPermissionLevel}
+        isWalletConnected={isWalletConnected}
       />
 
       <MessageContextMenu
@@ -303,6 +311,7 @@ ChatManager.propTypes = {
   onExternalLinkClick: PropTypes.func,
   intl: PropTypes.object.isRequired,
   onTxAttemptClick: PropTypes.func,
+  isWalletConnected: PropTypes.bool,
 };
 
 export default compose(injectIntl)(ChatManager);

@@ -412,9 +412,10 @@ function ChatInput({ channel, users, onSendMessage, canSend = true }, ref) {
             if (match) {
               const prefix = match[1].toLowerCase();
               const startIndex = cursor - match[1].length;
-              const userList = users
-                ? Object.values(users).map((u) => u.username)
-                : [];
+
+              const userList = Object.values(users || {})
+                .filter((u) => u.online)
+                .map((u) => u.username);
 
               const matches = userList.filter((u) =>
                 `@${u.toLowerCase()}`.startsWith(prefix),

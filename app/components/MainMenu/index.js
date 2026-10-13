@@ -310,6 +310,7 @@ export function MainMenu({
         closeContextMenu={closeContextMenu}
         onCommandClick={onCommandClick}
         myPermissionLevel={myPermissionLevel}
+        isWalletConnected={isWalletConnected}
       />
     </>
   );

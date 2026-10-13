@@ -48,6 +48,7 @@ export function UserContextMenu({
   onCommandClick,
   intl,
   myPermissionLevel = 0,
+  isWalletConnected,
 }) {
   const [openSubMenu, setOpenSubMenu] = useState(null);
   const [pos, setPos] = useState({ x: 0, y: 0 });
@@ -119,7 +120,7 @@ export function UserContextMenu({
     }
   }, [openSubMenu, isMobile]);
 
-  if (!contextMenu) return null;
+  if (!contextMenu || contextMenu.user?.mine) return null;
 
   const isMenuOnLeft = pos.x < windowSize.width / 2;
 
@@ -271,43 +272,53 @@ export function UserContextMenu({
               {intl.formatMessage(messages.whisper)}
             </ContextMenuItem>
 
-            <ContextMenuSeparator />
-
             {canManageUser && (
-              <ContextMenuItem
-                onClick={
-                  isMobile
-                    ? () => setOpenSubMenu('manage')
-                    : (e) => e.stopPropagation()
-                }
-                onMouseEnter={!isMobile ? () => setOpenSubMenu('manage') : null}
-              >
-                <FaChevronLeft />
-                <span>{intl.formatMessage(messages.manage)}</span>
-                {!isMobile && openSubMenu === 'manage' && (
-                  <SubMenu ref={subMenuRef} $openRight={isMenuOnLeft}>
-                    {renderManageMenu()}
-                  </SubMenu>
-                )}
-              </ContextMenuItem>
+              <>
+                <ContextMenuSeparator />
+
+                <ContextMenuItem
+                  onClick={
+                    isMobile
+                      ? () => setOpenSubMenu('manage')
+                      : (e) => e.stopPropagation()
+                  }
+                  onMouseEnter={
+                    !isMobile ? () => setOpenSubMenu('manage') : null
+                  }
+                >
+                  <FaChevronLeft />
+                  <span>{intl.formatMessage(messages.manage)}</span>
+                  {!isMobile && openSubMenu === 'manage' && (
+                    <SubMenu ref={subMenuRef} $openRight={isMenuOnLeft}>
+                      {renderManageMenu()}
+                    </SubMenu>
+                  )}
+                </ContextMenuItem>
+              </>
             )}
 
-            <ContextMenuItem
-              onClick={
-                isMobile
-                  ? () => setOpenSubMenu('send')
-                  : (e) => e.stopPropagation()
-              }
-              onMouseEnter={!isMobile ? () => setOpenSubMenu('send') : null}
-            >
-              <FaChevronLeft />
-              <span>{intl.formatMessage(messages.send)}</span>
-              {!isMobile && openSubMenu === 'send' && (
-                <SubMenu ref={subMenuRef} $openRight={isMenuOnLeft}>
-                  {renderSendMenu()}
-                </SubMenu>
-              )}
-            </ContextMenuItem>
+            {isWalletConnected && (
+              <>
+                <ContextMenuSeparator />
+
+                <ContextMenuItem
+                  onClick={
+                    isMobile
+                      ? () => setOpenSubMenu('send')
+                      : (e) => e.stopPropagation()
+                  }
+                  onMouseEnter={!isMobile ? () => setOpenSubMenu('send') : null}
+                >
+                  <FaChevronLeft />
+                  <span>{intl.formatMessage(messages.send)}</span>
+                  {!isMobile && openSubMenu === 'send' && (
+                    <SubMenu ref={subMenuRef} $openRight={isMenuOnLeft}>
+                      {renderSendMenu()}
+                    </SubMenu>
+                  )}
+                </ContextMenuItem>
+              </>
+            )}
           </>
         )}
       </>
@@ -364,6 +375,7 @@ UserContextMenu.propTypes = {
   onCommandClick: PropTypes.func.isRequired,
   intl: PropTypes.object.isRequired,
   myPermissionLevel: PropTypes.number,
+  isWalletConnected: PropTypes.bool,
 };
 
 export default compose(injectIntl)(UserContextMenu);

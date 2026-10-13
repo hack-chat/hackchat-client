@@ -981,6 +981,7 @@ export function HomePage({
             onTxAttemptClick={handleTxAttemptClick}
             intl={intl}
             externalScrollRef={chatScrollContainerRef}
+            isWalletConnected={!!connectedTo}
           />
           <ChatInput
             channel={channel}
