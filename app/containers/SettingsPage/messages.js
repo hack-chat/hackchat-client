@@ -79,14 +79,6 @@ export default defineMessages({
     id: `${scope}.enableNotificationsText`,
     defaultMessage: 'Enable Notifications',
   },
-  loadSafeImagesText: {
-    id: `${scope}.loadSafeImagesText`,
-    defaultMessage: 'Load Safe Images',
-  },
-  loadUnsafeImagesText: {
-    id: `${scope}.loadUnsafeImagesText`,
-    defaultMessage: 'Load Unsafe Images',
-  },
   maxMessagesText: {
     id: `${scope}.maxMessagesText`,
     defaultMessage: 'Max Messages (0 = infinite)',
@@ -98,5 +90,29 @@ export default defineMessages({
   largeModeText: {
     id: `${scope}.largeModeText`,
     defaultMessage: 'Large UI Mode',
+  },
+  interfaceBehaviorTitle: {
+    id: `${scope}.interfaceBehaviorTitle`,
+    defaultMessage: 'Interface & Behavior',
+  },
+  formattingMediaTitle: {
+    id: `${scope}.formattingMediaTitle`,
+    defaultMessage: 'Formatting & Media',
+  },
+  appearanceNotificationsTitle: {
+    id: `${scope}.appearanceNotificationsTitle`,
+    defaultMessage: 'Appearance & Notifications',
+  },
+  channelsHistoryTitle: {
+    id: `${scope}.channelsHistoryTitle`,
+    defaultMessage: 'Channels & History',
+  },
+  manageDomainWhitelist: {
+    id: `${scope}.manageDomainWhitelist`,
+    defaultMessage: 'Manage Domain Whitelist',
+  },
+  domainPlaceholder: {
+    id: `${scope}.domainPlaceholder`,
+    defaultMessage: 'Domain Name (e.g. google.com)',
   },
 });

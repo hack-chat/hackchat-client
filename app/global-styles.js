@@ -117,7 +117,7 @@ const getBodyFontSize = ({ theme, $largeMode }) =>
     : theme.typography.fontSize;
 
 const GlobalStyle = createGlobalStyle`
-  ${({ theme }) => theme.typography?.import || ''}
+  ${({ theme }) => theme.typography.import}
 
   html,
   body {
@@ -141,7 +141,7 @@ const GlobalStyle = createGlobalStyle`
   textarea,
   button,
   select {
-    font-family: ${({ theme }) => theme.typography?.primary || "'DejaVu Sans Mono', monospace"};
+    font-family: ${({ theme }) => theme.typography.primary};
     letter-spacing: ${({ theme }) => theme.typography.letterSpacing};
   }
 

@@ -34,15 +34,13 @@ import {
   WSPATH_LSLABEL,
   SET_NOTIFY,
   NOTIFY_LSLABEL,
-  SET_LOAD_SAFE_IMAGES,
-  LOAD_SAFE_IMAGES_LSLABEL,
-  SET_LOAD_UNSAFE_IMAGES,
-  LOAD_UNSAFE_IMAGES_LSLABEL,
   SET_MAX_MESSAGES,
   SET_ENABLE_PREVIEW,
   ENABLE_PREVIEW_LSLABEL,
   SET_LARGE_MODE,
   LARGE_MODE_LSLABEL,
+  SET_DOMAIN_WHITELIST,
+  DOMAIN_WHITELIST_LSLABEL,
 } from './constants';
 
 const randomRGB = () => {
@@ -83,6 +81,20 @@ const checkDefaultRtl = () => {
 
 const savedLtr = JSON.parse(localStorage.getItem(LTR_LSLABEL));
 
+const defaultDomainWhitelist = [
+  { domain: 'imgur.com', state: 1 },
+  { domain: 'share.lyka.pro', state: 1 },
+  { domain: 'cdn.discordapp.com', state: 1 },
+  { domain: 'i.gyazo.com', state: 1 },
+  { domain: 'i.postimg.cc', state: 1 },
+  { domain: 'i.ytimg.com', state: 1 },
+  { domain: 'i.ibb.co', state: 1 },
+  { domain: 'giphy.com', state: 1 },
+  { domain: 'files.catbox.moe', state: 1 },
+  { domain: 'litter.catbox.moe', state: 1 },
+  { domain: 'gateway.irys.xyz', state: 1 },
+];
+
 export const settingsInitialState = {
   username: JSON.parse(localStorage.getItem(USERNAME_LSLABEL)) || '',
   password: JSON.parse(localStorage.getItem(PASSWORD_LSLABEL)) || '',
@@ -104,13 +116,12 @@ export const settingsInitialState = {
     JSON.parse(localStorage.getItem(WSPATH_LSLABEL)) ||
     'wss://hack.chat/chat-ws',
   notifyEnabled: JSON.parse(localStorage.getItem(NOTIFY_LSLABEL)) !== false,
-  loadSafeImages:
-    JSON.parse(localStorage.getItem(LOAD_SAFE_IMAGES_LSLABEL)) ?? true,
-  loadUnsafeImages:
-    JSON.parse(localStorage.getItem(LOAD_UNSAFE_IMAGES_LSLABEL)) ?? false,
   enablePreview:
     JSON.parse(localStorage.getItem(ENABLE_PREVIEW_LSLABEL)) ?? true,
   largeMode: JSON.parse(localStorage.getItem(LARGE_MODE_LSLABEL)) ?? false,
+  domainWhitelist:
+    JSON.parse(localStorage.getItem(DOMAIN_WHITELIST_LSLABEL)) ||
+    defaultDomainWhitelist,
 };
 
 const settingsPageReducer = (state = settingsInitialState, action) =>
@@ -161,12 +172,6 @@ const settingsPageReducer = (state = settingsInitialState, action) =>
       case SET_NOTIFY:
         draft.notifyEnabled = action.enabled;
         break;
-      case SET_LOAD_SAFE_IMAGES:
-        draft.loadSafeImages = action.enabled;
-        break;
-      case SET_LOAD_UNSAFE_IMAGES:
-        draft.loadUnsafeImages = action.enabled;
-        break;
       case SET_MAX_MESSAGES:
         draft.maxMessages = action.maxMessages;
         break;
@@ -175,6 +180,9 @@ const settingsPageReducer = (state = settingsInitialState, action) =>
         break;
       case SET_LARGE_MODE:
         draft.largeMode = action.allowed;
+        break;
+      case SET_DOMAIN_WHITELIST:
+        draft.domainWhitelist = action.whitelist;
         break;
     }
   });

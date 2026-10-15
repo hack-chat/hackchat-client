@@ -24,10 +24,12 @@ import {
   leaveChannel,
 } from 'containers/CommunicationProvider/actions';
 import { makeSelectChannelData } from 'containers/CommunicationProvider/selectors';
+
 import Modal from 'components/Modal';
 import LocaleModal from 'components/LocaleModal';
 import ColorPicker from 'components/ColorPicker';
 import ChannelList from 'components/ChannelList';
+import GranularControlList from 'components/GranularControlList';
 
 import { useInjectReducer } from 'utils/injectReducer';
 
@@ -49,6 +51,8 @@ import ThemeRow from './ThemeRow';
 import FooterSection from './FooterSection';
 import ThemeSelect from './ThemeSelect';
 import NumericSettingRow from './NumericSettingRow';
+import CollapsibleSection from './CollapsibleSection';
+import StripedContainer from './StripedContainer';
 
 const AVAILABLE_THEMES = [
   'default',
@@ -114,11 +118,10 @@ import {
   setDoHighlight,
   setWsPath,
   setNotify,
-  setLoadSafeImages,
-  setLoadUnsafeImages,
   setMaxMessages,
   setEnablePreview,
   setLargeMode,
+  setDomainWhitelist,
 } from './actions';
 
 import {
@@ -136,11 +139,10 @@ import {
   makeSelectCachedHighlightMentions,
   makeSelectCachedWsPath,
   makeSelectCachedNotifyEnabled,
-  makeSelectCachedLoadSafeImages,
-  makeSelectCachedLoadUnsafeImages,
   makeSelectCachedMaxMessages,
   makeSelectCachedEnablePreview,
   makeSelectCachedLargeMode,
+  makeSelectCachedDomainWhitelist,
 } from './selectors';
 
 import reducer from './reducer';
@@ -162,8 +164,6 @@ export function SettingsPage({
   cachedDoHighlight,
   cachedWsPath,
   cachedNotifyEnabled,
-  cachedLoadSafeImages,
-  cachedLoadUnsafeImages,
   cachedMaxMessages,
   isLocaleModalOpen,
   onCloseLocaleModal,
@@ -173,6 +173,7 @@ export function SettingsPage({
   onChangeUsername,
   cachedEnablePreview,
   cachedLargeMode,
+  cachedDomainWhitelist,
   intl,
 }) {
   const navigate = useNavigate();
@@ -180,7 +181,6 @@ export function SettingsPage({
 
   const handleGoBack = useCallback(() => {
     const channels = channelData ? Object.keys(channelData) : [];
-
     if (channels.length === 0) {
       navigate('/');
     } else {
@@ -194,9 +194,7 @@ export function SettingsPage({
         handleGoBack();
       }
     };
-
     window.addEventListener('keydown', handleKeyDown);
-
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
@@ -226,17 +224,13 @@ export function SettingsPage({
   const [chosenWsPath, setChosenWsPath] = useStateIfMounted(cachedWsPath);
   const [chosenNotify, setChosenNotify] =
     useStateIfMounted(cachedNotifyEnabled);
-  const [chosenLoadSafe, setChosenLoadSafe] =
-    useStateIfMounted(cachedLoadSafeImages);
-  const [chosenLoadUnsafe, setChosenLoadUnsafe] = useStateIfMounted(
-    cachedLoadUnsafeImages,
-  );
   const [chosenMaxMessages, setChosenMaxMessages] =
     useStateIfMounted(cachedMaxMessages);
   const [chosenEnablePreview, setChosenEnablePreview] =
     useStateIfMounted(cachedEnablePreview);
   const [chosenLargeMode, setChosenLargeMode] =
     useStateIfMounted(cachedLargeMode);
+  const [isDomainModalOpen, setIsDomainModalOpen] = useStateIfMounted(false);
 
   useEffect(() => {
     if (cachedUsername !== chosenUsername)
@@ -264,18 +258,16 @@ export function SettingsPage({
 
   useEffect(() => {
     const handleGlobalWheel = (e) => {
-      if (isLocaleModalOpen) return;
-
+      if (isLocaleModalOpen || isDomainModalOpen) return;
       if (scrollRef.current && !scrollRef.current.contains(e.target)) {
         scrollRef.current.scrollTop += e.deltaY;
       }
     };
-
     window.addEventListener('wheel', handleGlobalWheel, { passive: true });
     return () => {
       window.removeEventListener('wheel', handleGlobalWheel);
     };
-  }, [isLocaleModalOpen]);
+  }, [isLocaleModalOpen, isDomainModalOpen]);
 
   const headerText = intl.formatMessage(messages.header);
   const usernameText = intl.formatMessage(messages.usernameText);
@@ -290,10 +282,6 @@ export function SettingsPage({
   const enableNotificationsText = intl.formatMessage(
     messages.enableNotificationsText,
   );
-  const loadSafeImagesText = intl.formatMessage(messages.loadSafeImagesText);
-  const loadUnsafeImagesText = intl.formatMessage(
-    messages.loadUnsafeImagesText,
-  );
   const languageText = intl.formatMessage(messages.languageText);
   const backBtnText = intl.formatMessage(messages.backBtnText);
   const rememberText = intl.formatMessage(messages.rememberText);
@@ -301,20 +289,74 @@ export function SettingsPage({
   const maxMessagesText = intl.formatMessage(messages.maxMessagesText);
   const enablePreviewText = intl.formatMessage(messages.enablePreviewText);
   const largeModeText = intl.formatMessage(messages.largeModeText);
+  const interfaceBehaviorTitle = intl.formatMessage(
+    messages.interfaceBehaviorTitle,
+  );
+  const formattingMediaTitle = intl.formatMessage(
+    messages.formattingMediaTitle,
+  );
+  const appearanceNotificationsTitle = intl.formatMessage(
+    messages.appearanceNotificationsTitle,
+  );
+  const channelsHistoryTitle = intl.formatMessage(
+    messages.channelsHistoryTitle,
+  );
+  const manageDomainWhitelist = intl.formatMessage(
+    messages.manageDomainWhitelist,
+  );
+  const domainPlaceholder = intl.formatMessage(messages.domainPlaceholder);
 
   const joinedChannels = useMemo(
     () => (channelData ? Object.keys(channelData) : []),
     [channelData],
   );
 
+  const whitelistStates = ['❌', '✅', '⚠️'];
+
+  const domainWhitelistOptions = {
+    keys: ['domain', 'safe'],
+    states: whitelistStates,
+    fields: [
+      {
+        name: 'domain',
+        type: 'input',
+        placeholder: domainPlaceholder,
+      },
+    ],
+  };
+
+  const domainWhitelistDefaults = useMemo(
+    () =>
+      cachedDomainWhitelist.map((item) => ({
+        domain: item.domain,
+        safe:
+          whitelistStates[item.state] !== undefined
+            ? whitelistStates[item.state]
+            : '⚠️',
+      })),
+    [cachedDomainWhitelist],
+  );
+
+  const handleDomainWhitelistChange = (newContents) => {
+    const reduxFormattedList = newContents.map((item) => ({
+      domain: item.domain,
+      state:
+        whitelistStates.indexOf(item.safe) !== -1
+          ? whitelistStates.indexOf(item.safe)
+          : 2,
+    }));
+
+    dispatch(setDomainWhitelist(reduxFormattedList));
+  };
+
   return (
-    <MainContainer>
+    <MainContainer dir={chosenLtr ? 'ltr' : 'rtl'}>
       <Helmet>
         <title>{headerText}</title>
         <meta name="description" content={headerText} />
       </Helmet>
 
-      <ScrollArea ref={scrollRef}>
+      <ScrollArea ref={scrollRef} $largeMode={chosenLargeMode}>
         <h4>{headerText}</h4>
 
         <SettingsGroup>
@@ -332,9 +374,7 @@ export function SettingsPage({
                     autoComplete="username"
                     onFocus={clearInvalidName}
                     value={chosenUsername}
-                    onChange={(e) => {
-                      setChosenUsername(e.target.value);
-                    }}
+                    onChange={(e) => setChosenUsername(e.target.value)}
                     onBlur={() => {
                       if (chosenUsername !== cachedUsername) {
                         dispatch(setUsername(chosenUsername));
@@ -384,170 +424,121 @@ export function SettingsPage({
           </form>
         </SettingsGroup>
 
-        <SettingsGroup>
-          <InputRow>
-            <InputIcon>
-              <IoGlobe />
-            </InputIcon>
-            <StyledInput
-              placeholder={wsPathText}
-              value={chosenWsPath}
-              onChange={(e) => {
-                setChosenWsPath(e.target.value);
-                dispatch(setWsPath(e.target.value));
-              }}
-            />
-          </InputRow>
-
-          <NumericSettingRow>
-            <LabelText>{maxMessagesText}</LabelText>
-            <StyledInput
-              type="number"
-              min="0"
-              style={{ width: '120px', textAlign: 'center' }}
-              value={
-                chosenMaxMessages !== '' && chosenMaxMessages !== null
-                  ? chosenMaxMessages
-                  : ''
-              }
-              onChange={(e) => {
-                const val =
-                  e.target.value === '' ? '' : parseInt(e.target.value, 10);
-                setChosenMaxMessages(val);
-              }}
-              onBlur={() => {
-                let finalVal = chosenMaxMessages;
-
-                if (finalVal === '') {
-                  finalVal = 0;
-                  setChosenMaxMessages(0);
+        <CollapsibleSection title={interfaceBehaviorTitle}>
+          <StripedContainer>
+            <NumericSettingRow>
+              <LabelText>{maxMessagesText}</LabelText>
+              <StyledInput
+                type="number"
+                min="0"
+                style={{ width: '120px', textAlign: 'center' }}
+                value={
+                  chosenMaxMessages !== '' && chosenMaxMessages !== null
+                    ? chosenMaxMessages
+                    : ''
                 }
+                onChange={(e) => {
+                  const val =
+                    e.target.value === '' ? '' : parseInt(e.target.value, 10);
+                  setChosenMaxMessages(val);
+                }}
+                onBlur={() => {
+                  let finalVal = chosenMaxMessages;
+                  if (finalVal === '') {
+                    finalVal = 0;
+                    setChosenMaxMessages(0);
+                  }
+                  if (finalVal !== cachedMaxMessages)
+                    dispatch(setMaxMessages(finalVal));
+                }}
+              />
+            </NumericSettingRow>
 
-                if (finalVal !== cachedMaxMessages) {
-                  dispatch(setMaxMessages(finalVal));
-                }
+            <InputRow>
+              <InputIcon>
+                <IoGlobe />
+              </InputIcon>
+              <StyledInput
+                placeholder={wsPathText}
+                value={chosenWsPath}
+                onChange={(e) => {
+                  setChosenWsPath(e.target.value);
+                  dispatch(setWsPath(e.target.value));
+                }}
+              />
+            </InputRow>
+
+            <SwitchRow
+              onClick={() => {
+                setChosenLtr(!chosenLtr);
+                dispatch(setLtr(!chosenLtr));
               }}
-            />
-          </NumericSettingRow>
-        </SettingsGroup>
+            >
+              <LabelText>{useLtrText}</LabelText>
+              <BooleanSwitch checked={chosenLtr} />
+            </SwitchRow>
 
-        <SettingsGroup $marginTop="20px">
-          <SwitchRow
-            onClick={() => {
-              setChosenAllowKatex(!chosenAllowKatex);
-              dispatch(setAllowKatex(!chosenAllowKatex));
-            }}
-          >
-            <LabelText>{allowKatexText}</LabelText>
-            <BooleanSwitch checked={chosenAllowKatex} />
-          </SwitchRow>
+            <SwitchRow
+              onClick={() => {
+                setChosenMenuBtnPos(!chosenMenuBtnPos);
+                dispatch(setMenuBtnPos(!chosenMenuBtnPos));
+              }}
+            >
+              <LabelText>{menuPosText}</LabelText>
+              <BooleanSwitch checked={chosenMenuBtnPos} />
+            </SwitchRow>
 
-          <SwitchRow
-            onClick={() => {
-              setChosenAllowMarkdown(!chosenAllowMarkdown);
-              dispatch(setAllowMarkdown(!chosenAllowMarkdown));
-            }}
-          >
-            <LabelText>{allowMarkdownText}</LabelText>
-            <BooleanSwitch checked={chosenAllowMarkdown} />
-          </SwitchRow>
+            <SwitchRow
+              onClick={() => {
+                setChosenLargeMode(!chosenLargeMode);
+                dispatch(setLargeMode(!chosenLargeMode));
+              }}
+            >
+              <LabelText>{largeModeText}</LabelText>
+              <BooleanSwitch checked={chosenLargeMode} />
+            </SwitchRow>
+          </StripedContainer>
+        </CollapsibleSection>
 
-          <SwitchRow
-            $disabled={!chosenAllowMarkdown}
-            onClick={() => {
-              if (!chosenAllowMarkdown) return;
-              setChosenLoadSafe(!chosenLoadSafe);
-              dispatch(setLoadSafeImages(!chosenLoadSafe));
-            }}
-          >
-            <LabelText>{loadSafeImagesText}</LabelText>
-            <BooleanSwitch checked={chosenLoadSafe} />
-          </SwitchRow>
+        <CollapsibleSection title={formattingMediaTitle}>
+          <StripedContainer>
+            <SwitchRow
+              onClick={() => {
+                setChosenAllowKatex(!chosenAllowKatex);
+                dispatch(setAllowKatex(!chosenAllowKatex));
+              }}
+            >
+              <LabelText>{allowKatexText}</LabelText>
+              <BooleanSwitch checked={chosenAllowKatex} />
+            </SwitchRow>
 
-          <SwitchRow
-            $disabled={!chosenAllowMarkdown}
-            onClick={() => {
-              if (!chosenAllowMarkdown) return;
-              setChosenLoadUnsafe(!chosenLoadUnsafe);
-              dispatch(setLoadUnsafeImages(!chosenLoadUnsafe));
-            }}
-          >
-            <LabelText>{loadUnsafeImagesText}</LabelText>
-            <BooleanSwitch checked={chosenLoadUnsafe} />
-          </SwitchRow>
+            <SwitchRow
+              onClick={() => {
+                setChosenAllowMarkdown(!chosenAllowMarkdown);
+                dispatch(setAllowMarkdown(!chosenAllowMarkdown));
+              }}
+            >
+              <LabelText>{allowMarkdownText}</LabelText>
+              <BooleanSwitch checked={chosenAllowMarkdown} />
+            </SwitchRow>
 
-          <SwitchRow
-            onClick={() => {
-              setChosenExtCode(!chosenExtCode);
-              dispatch(setAllowExternalCode(!chosenExtCode));
-            }}
-          >
-            <LabelText>{allowExtCodeText}</LabelText>
-            <BooleanSwitch checked={chosenExtCode} />
-          </SwitchRow>
+            <SwitchRow
+              onClick={() => {
+                setChosenExtCode(!chosenExtCode);
+                dispatch(setAllowExternalCode(!chosenExtCode));
+              }}
+            >
+              <LabelText>{allowExtCodeText}</LabelText>
+              <BooleanSwitch checked={chosenExtCode} />
+            </SwitchRow>
+          </StripedContainer>
 
-          <SwitchRow
-            onClick={() => {
-              setChosenLtr(!chosenLtr);
-              dispatch(setLtr(!chosenLtr));
-            }}
-          >
-            <LabelText>{useLtrText}</LabelText>
-            <BooleanSwitch checked={chosenLtr} />
-          </SwitchRow>
+          <WideButton onClick={() => setIsDomainModalOpen(true)}>
+            {manageDomainWhitelist}
+          </WideButton>
+        </CollapsibleSection>
 
-          <SwitchRow
-            onClick={() => {
-              setChosenMenuBtnPos(!chosenMenuBtnPos);
-              dispatch(setMenuBtnPos(!chosenMenuBtnPos));
-            }}
-          >
-            <LabelText>{menuPosText}</LabelText>
-            <BooleanSwitch checked={chosenMenuBtnPos} />
-          </SwitchRow>
-
-          <SwitchRow
-            onClick={() => {
-              setChosenEnablePreview(!chosenEnablePreview);
-              dispatch(setEnablePreview(!chosenEnablePreview));
-            }}
-          >
-            <LabelText>{enablePreviewText}</LabelText>
-            <BooleanSwitch checked={chosenEnablePreview} />
-          </SwitchRow>
-
-          <SwitchRow
-            onClick={() => {
-              setChosenLargeMode(!chosenLargeMode);
-              dispatch(setLargeMode(!chosenLargeMode));
-            }}
-          >
-            <LabelText>{largeModeText}</LabelText>
-            <BooleanSwitch checked={chosenLargeMode} />
-          </SwitchRow>
-
-          <SwitchRow
-            onClick={() => {
-              setChosenDoHighlight(!chosenDoHighlight);
-              dispatch(setDoHighlight(!chosenDoHighlight));
-            }}
-          >
-            <LabelText>{doHighlightsText}</LabelText>
-            <BooleanSwitch checked={chosenDoHighlight} />
-          </SwitchRow>
-
-          <SwitchRow
-            onClick={() => {
-              setChosenNotify(!chosenNotify);
-              dispatch(setNotify(!chosenNotify));
-            }}
-          >
-            <LabelText>{enableNotificationsText}</LabelText>
-            <BooleanSwitch checked={chosenNotify} />
-          </SwitchRow>
-        </SettingsGroup>
-
-        <SettingsGroup>
+        <CollapsibleSection title={appearanceNotificationsTitle}>
           <ThemeRow>
             <LabelText>
               <FormattedMessage
@@ -558,6 +549,7 @@ export function SettingsPage({
             </LabelText>
             <ThemeSelect
               value={chosenTheme}
+              name="theme"
               onChange={(e) => {
                 const newTheme = e.target.value;
                 setChosenTheme(newTheme);
@@ -571,27 +563,58 @@ export function SettingsPage({
               ))}
             </ThemeSelect>
           </ThemeRow>
-        </SettingsGroup>
 
-        <SettingsGroup>
-          <ChannelList
-            channels={joinedChannels}
-            onLeaveChannel={(ch) => onLeaveChannel(ch)}
-          />
-        </SettingsGroup>
+          <StripedContainer>
+            <SwitchRow
+              onClick={() => {
+                setChosenEnablePreview(!chosenEnablePreview);
+                dispatch(setEnablePreview(!chosenEnablePreview));
+              }}
+            >
+              <LabelText>{enablePreviewText}</LabelText>
+              <BooleanSwitch checked={chosenEnablePreview} />
+            </SwitchRow>
 
-        <WideButton onClick={() => dispatch(clearPrevChannels())}>
-          <FormattedMessage
-            id={messages.clearHistoryText.id}
-            defaultMessage={messages.clearHistoryText.defaultMessage}
-            values={{
-              count: `${cachedPreviousChannels.length}`,
-            }}
-          />
-        </WideButton>
+            <SwitchRow
+              onClick={() => {
+                setChosenDoHighlight(!chosenDoHighlight);
+                dispatch(setDoHighlight(!chosenDoHighlight));
+              }}
+            >
+              <LabelText>{doHighlightsText}</LabelText>
+              <BooleanSwitch checked={chosenDoHighlight} />
+            </SwitchRow>
+
+            <SwitchRow
+              onClick={() => {
+                setChosenNotify(!chosenNotify);
+                dispatch(setNotify(!chosenNotify));
+              }}
+            >
+              <LabelText>{enableNotificationsText}</LabelText>
+              <BooleanSwitch checked={chosenNotify} />
+            </SwitchRow>
+          </StripedContainer>
+        </CollapsibleSection>
+
+        <CollapsibleSection title={channelsHistoryTitle}>
+          <SettingsGroup>
+            <ChannelList
+              channels={joinedChannels}
+              onLeaveChannel={(ch) => onLeaveChannel(ch)}
+            />
+          </SettingsGroup>
+
+          <WideButton onClick={() => dispatch(clearPrevChannels())}>
+            <FormattedMessage
+              id={messages.clearHistoryText.id}
+              defaultMessage={messages.clearHistoryText.defaultMessage}
+              values={{ count: `${cachedPreviousChannels.length}` }}
+            />
+          </WideButton>
+        </CollapsibleSection>
 
         <WideButton onClick={onOpenLocaleModal}>{languageText}</WideButton>
-
         <FooterSection>
           <WideButton onClick={handleGoBack}>{backBtnText}</WideButton>
         </FooterSection>
@@ -599,6 +622,15 @@ export function SettingsPage({
 
       <Modal isOpen={isLocaleModalOpen} doToggle={onCloseLocaleModal}>
         <LocaleModal />
+      </Modal>
+
+      <Modal isOpen={isDomainModalOpen} doToggle={setIsDomainModalOpen} wide>
+        <GranularControlList
+          options={domainWhitelistOptions}
+          defaults={domainWhitelistDefaults}
+          onChangeFunc={handleDomainWhitelistChange}
+          dir={chosenLtr ? 'ltr' : 'rtl'}
+        />
       </Modal>
     </MainContainer>
   );
@@ -620,8 +652,6 @@ SettingsPage.propTypes = {
   cachedDoHighlight: PropTypes.bool,
   cachedWsPath: PropTypes.string,
   cachedNotifyEnabled: PropTypes.bool,
-  cachedLoadSafeImages: PropTypes.bool,
-  cachedLoadUnsafeImages: PropTypes.bool,
   cachedMaxMessages: PropTypes.number,
   isLocaleModalOpen: PropTypes.bool,
   onOpenLocaleModal: PropTypes.func,
@@ -631,6 +661,7 @@ SettingsPage.propTypes = {
   onChangeUsername: PropTypes.func,
   cachedEnablePreview: PropTypes.bool,
   cachedLargeMode: PropTypes.bool,
+  cachedDomainWhitelist: PropTypes.array,
   intl: PropTypes.object.isRequired,
 };
 
@@ -649,13 +680,12 @@ const mapStateToProps = createStructuredSelector({
   cachedDoHighlight: makeSelectCachedHighlightMentions(),
   cachedWsPath: makeSelectCachedWsPath(),
   cachedNotifyEnabled: makeSelectCachedNotifyEnabled(),
-  cachedLoadSafeImages: makeSelectCachedLoadSafeImages(),
-  cachedLoadUnsafeImages: makeSelectCachedLoadUnsafeImages(),
   cachedMaxMessages: makeSelectCachedMaxMessages(),
   isLocaleModalOpen: makeSelectIsLocaleModalOpen(),
   channelData: makeSelectChannelData(),
   cachedEnablePreview: makeSelectCachedEnablePreview(),
   cachedLargeMode: makeSelectCachedLargeMode(),
+  cachedDomainWhitelist: makeSelectCachedDomainWhitelist(),
 });
 
 function mapDispatchToProps(dispatch) {

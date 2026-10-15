@@ -32,16 +32,14 @@ import {
   WSPATH_LSLABEL,
   SET_NOTIFY,
   NOTIFY_LSLABEL,
-  SET_LOAD_SAFE_IMAGES,
-  LOAD_SAFE_IMAGES_LSLABEL,
-  SET_LOAD_UNSAFE_IMAGES,
-  LOAD_UNSAFE_IMAGES_LSLABEL,
   SET_MAX_MESSAGES,
   MAX_MESSAGES_LSLABEL,
   ENABLE_PREVIEW_LSLABEL,
   SET_ENABLE_PREVIEW,
   LARGE_MODE_LSLABEL,
   SET_LARGE_MODE,
+  SET_DOMAIN_WHITELIST,
+  DOMAIN_WHITELIST_LSLABEL,
 } from './constants';
 
 /**
@@ -267,32 +265,6 @@ export function setNotify(enabled) {
 }
 
 /**
- * Updates the safe image load setting
- * @param  {string} enabled Is enabled true/false
- * @return {object} An action object with a type of SET_LOAD_SAFE_IMAGES
- */
-export function setLoadSafeImages(enabled) {
-  localStorage.setItem(LOAD_SAFE_IMAGES_LSLABEL, JSON.stringify(enabled));
-  return {
-    type: SET_LOAD_SAFE_IMAGES,
-    enabled,
-  };
-}
-
-/**
- * Updates the unsafe image load setting
- * @param  {string} enabled Is enabled true/false
- * @return {object} An action object with a type of SET_LOAD_UNSAFE_IMAGES
- */
-export function setLoadUnsafeImages(enabled) {
-  localStorage.setItem(LOAD_UNSAFE_IMAGES_LSLABEL, JSON.stringify(enabled));
-  return {
-    type: SET_LOAD_UNSAFE_IMAGES,
-    enabled,
-  };
-}
-
-/**
  * Update the max number of events in a channels redux
  * @param  {number} maxMessages New max message count
  * @return {object} An action object with a type of SET_MAX_MESSAGES
@@ -331,5 +303,19 @@ export function setLargeMode(allowed) {
   return {
     type: SET_LARGE_MODE,
     allowed,
+  };
+}
+
+/**
+ * Updates the domain whitelist settings
+ * @param  {array} whitelist Array of objects containing { domain, state }
+ * @return {object} An action object with a type of SET_DOMAIN_WHITELIST
+ */
+export function setDomainWhitelist(whitelist) {
+  localStorage.setItem(DOMAIN_WHITELIST_LSLABEL, JSON.stringify(whitelist));
+
+  return {
+    type: SET_DOMAIN_WHITELIST,
+    whitelist,
   };
 }

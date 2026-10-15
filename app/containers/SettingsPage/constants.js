@@ -22,6 +22,7 @@ export const SET_LOAD_SAFE_IMAGES = 'app/Settings/SET_LOAD_SAFE_IMAGES';
 export const SET_LOAD_UNSAFE_IMAGES = 'app/Settings/SET_LOAD_UNSAFE_IMAGES';
 export const SET_ENABLE_PREVIEW = 'app/SettingsPage/SET_ENABLE_PREVIEW';
 export const SET_LARGE_MODE = 'app/SettingsPage/SET_LARGE_MODE';
+export const SET_DOMAIN_WHITELIST = 'app/SettingsPage/SET_DOMAIN_WHITELIST';
 
 /**
  * SettingsPage localStorage labels
@@ -48,3 +49,4 @@ export const MAX_MESSAGES_LSLABEL = 'app/Settings/MAX_MESSAGES_LSLABEL';
 export const SET_MAX_MESSAGES = 'app/Settings/SET_MAX_MESSAGES';
 export const ENABLE_PREVIEW_LSLABEL = 'app/Settings/ENABLE_PREVIEW_LSLABEL';
 export const LARGE_MODE_LSLABEL = 'app/Settings/LARGE_MODE_LSLABEL';
+export const DOMAIN_WHITELIST_LSLABEL = 'app/Settings/DOMAIN_WHITELIST_LSLABEL';

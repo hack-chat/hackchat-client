@@ -19,7 +19,7 @@ export default styled.button.attrs({
   font-weight: bold;
   line-height: 1;
   padding: 0.25rem;
-  z-index: 12;
+  z-index: ${({ $zIndex }) => $zIndex || 12};
 
   &:hover {
     color: ${({ theme }) => theme.palette.text.white};

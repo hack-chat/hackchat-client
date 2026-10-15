@@ -9,5 +9,4 @@ export default styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin: 10px 0;
 `;

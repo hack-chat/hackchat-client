@@ -7,7 +7,7 @@ import StyledInput from './StyledInput';
 
 export default styled(StyledInput)`
   margin-bottom: 0;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border-right: none;
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+  border-inline-end: none;
 `;

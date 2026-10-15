@@ -56,55 +56,83 @@ MessageFormatter.inline.ruler.disable(['sup']);
 const isSafeHref = (href) =>
   typeof href === 'string' && DOMPurify.isValidAttribute('a', 'href', href);
 
-const MarkdownImage = ({ alt, src, title }) => {
-  const loadSafe = useSelector(
-    (state) => selectSettingsPageDomain(state).loadSafeImages ?? true,
-  );
-  const loadUnsafe = useSelector(
-    (state) => selectSettingsPageDomain(state).loadUnsafeImages ?? false,
-  );
-
-  let isSafeHost = false;
+const getDomainState = (urlStr, whitelist) => {
   try {
-    const url = new URL(src);
+    const url = new URL(urlStr);
     const host = url.hostname;
-    const whitelist = [
-      'i.imgur.com',
-      'imgur.com',
-      'share.lyka.pro',
-      'cdn.discordapp.com',
-      'i.gyazo.com',
-      'i.postimg.cc',
-      'i.ytimg.com',
-      'i.ibb.co',
-      'giphy.com',
-      'files.catbox.moe',
-      'litter.catbox.moe',
-      'gateway.irys.xyz',
-    ];
 
-    if (whitelist.includes(host) || host.endsWith('.giphy.com')) {
-      isSafeHost = true;
+    const match = whitelist.find(
+      (d) => host === d.domain || host.endsWith(`.${d.domain}`),
+    );
+
+    if (match) {
+      return match.state;
     }
+
+    return 2;
   } catch (e) {
     // eslint-disable-next-line no-console
     console.log('url error:', e);
-    isSafeHost = false;
+
+    return 0;
+  }
+};
+
+const MarkdownLink = ({ href, title, children }) => {
+  const domainWhitelist = useSelector(
+    (state) => selectSettingsPageDomain(state).domainWhitelist ?? [],
+  );
+
+  if (!isSafeHref(href)) {
+    return <span>{children}</span>;
   }
 
-  const shouldRenderImage = loadUnsafe || (loadSafe && isSafeHost);
+  const domainState = getDomainState(href, domainWhitelist);
+
+  if (domainState === 0) {
+    return <span>{children}</span>;
+  }
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      title={title || undefined}
+      rel="noopener noreferrer"
+      onClick={(e) => {
+        if (domainState === 1) {
+          e.stopPropagation();
+        }
+      }}
+    >
+      {children}
+    </a>
+  );
+};
+
+const MarkdownImage = ({ alt, src, title }) => {
+  const domainWhitelist = useSelector(
+    (state) => selectSettingsPageDomain(state).domainWhitelist ?? [],
+  );
 
   if (!isSafeHref(src)) {
     return <span>{src}</span>;
   }
 
-  if (shouldRenderImage) {
+  const domainState = getDomainState(src, domainWhitelist);
+
+  if (domainState === 0) {
+    return <span>{alt || src}</span>;
+  }
+
+  if (domainState === 1) {
     return (
       <a
         href={src}
         target="_blank"
         title={title || alt}
         rel="noopener noreferrer"
+        onClick={(e) => e.stopPropagation()}
       >
         <img src={src} alt={alt} referrerPolicy="no-referrer" />
       </a>
@@ -195,22 +223,7 @@ const MarkdownElement = ({ tag: Tag, prefix = '', suffix = '', children }) => {
 
 MessageFormatter.renderer = new RemarkableReactRenderer({
   components: {
-    a: ({ href, title, children }) => {
-      if (!isSafeHref(href)) {
-        return <span>{children}</span>;
-      }
-
-      return (
-        <a
-          href={href}
-          target="_blank"
-          title={title || undefined}
-          rel="noopener noreferrer"
-        >
-          {children}
-        </a>
-      );
-    },
+    a: MarkdownLink,
     img: MarkdownImage,
     pre: ExternalCodeComponent,
     katex_block: KatexBlockComponent,

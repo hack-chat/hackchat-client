@@ -4,89 +4,93 @@
 
 import { defineMessages } from 'react-intl';
 
+export const scope = 'hcclient.components.LocaleModal';
+export const genScope = 'hcclient.Generic';
+export const langScope = 'hcclient.containers.LocaleToggle';
+
 export default defineMessages({
   languageModalTitle: {
-    id: 'hcclient.components.LocaleModal.title',
+    id: `${scope}.title`,
     defaultMessage: 'Change Language',
   },
   cancelText: {
-    id: 'hcclient.Generic.cancel.text',
+    id: `${genScope}.cancel.text`,
     defaultMessage: 'Cancel',
   },
   ar: {
-    id: 'hcclient.containers.LocaleToggle.ar',
+    id: `${langScope}.ar`,
     defaultMessage: 'العربية',
   },
   bn: {
-    id: 'hcclient.containers.LocaleToggle.bn',
+    id: `${langScope}.bn`,
     defaultMessage: 'বাংলা',
   },
   de: {
-    id: 'hcclient.containers.LocaleToggle.de',
+    id: `${langScope}.de`,
     defaultMessage: 'Deutsch',
   },
   el: {
-    id: 'hcclient.containers.LocaleToggle.el',
+    id: `${langScope}.el`,
     defaultMessage: 'ελληνικά',
   },
   en: {
-    id: 'hcclient.containers.LocaleToggle.en',
+    id: `${langScope}.en`,
     defaultMessage: 'English',
   },
   es: {
-    id: 'hcclient.containers.LocaleToggle.es',
+    id: `${langScope}.es`,
     defaultMessage: 'Español',
   },
   fa: {
-    id: 'hcclient.containers.LocaleToggle.fa',
+    id: `${langScope}.fa`,
     defaultMessage: 'فارسی',
   },
   fi: {
-    id: 'hcclient.containers.LocaleToggle.fi',
+    id: `${langScope}.fi`,
     defaultMessage: 'Suomi',
   },
   fr: {
-    id: 'hcclient.containers.LocaleToggle.fr',
+    id: `${langScope}.fr`,
     defaultMessage: 'Français',
   },
   hi: {
-    id: 'hcclient.containers.LocaleToggle.hi',
+    id: `${langScope}.hi`,
     defaultMessage: 'हिन्दी',
   },
   id: {
-    id: 'hcclient.containers.LocaleToggle.id',
+    id: `${langScope}.id`,
     defaultMessage: 'Bahasa Indonesia',
   },
   it: {
-    id: 'hcclient.containers.LocaleToggle.it',
+    id: `${langScope}.it`,
     defaultMessage: 'Italiano',
   },
   ja: {
-    id: 'hcclient.containers.LocaleToggle.ja',
+    id: `${langScope}.ja`,
     defaultMessage: '日本語',
   },
   lv: {
-    id: 'hcclient.containers.LocaleToggle.lv',
+    id: `${langScope}.lv`,
     defaultMessage: '1337 SP34K',
   },
   pt: {
-    id: 'hcclient.containers.LocaleToggle.pt',
+    id: `${langScope}.pt`,
     defaultMessage: 'Português',
   },
   ru: {
-    id: 'hcclient.containers.LocaleToggle.ru',
+    id: `${langScope}.ru`,
     defaultMessage: 'Русский язык',
   },
   tr: {
-    id: 'hcclient.containers.LocaleToggle.tr',
+    id: `${langScope}.tr`,
     defaultMessage: 'Türkçe',
   },
   zh: {
-    id: 'hcclient.containers.LocaleToggle.zh',
+    id: `${langScope}.zh`,
     defaultMessage: '繁体中文',
   },
   'zh-CN': {
-    id: 'hcclient.containers.LocaleToggle.zh-CN',
+    id: `${langScope}.zh-CN`,
     defaultMessage: '简体中文',
   },
 });

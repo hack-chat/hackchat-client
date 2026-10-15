@@ -114,24 +114,6 @@ const makeSelectCachedNotifyEnabled = () =>
   );
 
 /**
- * Safe image load setting
- */
-const makeSelectCachedLoadSafeImages = () =>
-  createSelector(
-    selectSettingsPageDomain,
-    (substate) => substate.loadSafeImages,
-  );
-
-/**
- * Unsafe image load setting
- */
-const makeSelectCachedLoadUnsafeImages = () =>
-  createSelector(
-    selectSettingsPageDomain,
-    (substate) => substate.loadUnsafeImages,
-  );
-
-/**
  * The max number of events in a channels redux
  */
 const makeSelectCachedMaxMessages = () =>
@@ -159,6 +141,15 @@ const makeSelectCachedEnablePreview = () =>
 const makeSelectCachedLargeMode = () =>
   createSelector(selectSettingsPageDomain, (substate) => substate.largeMode);
 
+/**
+ * Domain Whitelist state
+ */
+const makeSelectCachedDomainWhitelist = () =>
+  createSelector(
+    selectSettingsPageDomain,
+    (substate) => substate.domainWhitelist,
+  );
+
 export {
   selectSettingsPageDomain,
   makeSelectCachedUsername,
@@ -175,9 +166,8 @@ export {
   makeSelectCachedHighlightMentions,
   makeSelectCachedWsPath,
   makeSelectCachedNotifyEnabled,
-  makeSelectCachedLoadSafeImages,
-  makeSelectCachedLoadUnsafeImages,
   makeSelectCachedMaxMessages,
   makeSelectCachedEnablePreview,
   makeSelectCachedLargeMode,
+  makeSelectCachedDomainWhitelist,
 };

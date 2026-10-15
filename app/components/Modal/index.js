@@ -19,6 +19,7 @@ const Modal = ({
   onCloseFunction,
   children,
   wide,
+  zIndex = 11,
 }) => {
   const toggle = useCallback(() => {
     doToggle(!isOpen);
@@ -52,9 +53,11 @@ const Modal = ({
   }
 
   return createPortal(
-    <Backdrop onClick={toggle} hidden={!isOpen}>
-      <Container onClick={handleContainerClick} $wide={wide}>
-        <CloseButton onClick={toggle}>&times;</CloseButton>
+    <Backdrop onClick={toggle} hidden={!isOpen} $zIndex={zIndex - 1}>
+      <Container onClick={handleContainerClick} $wide={wide} $zIndex={zIndex}>
+        <CloseButton onClick={toggle} $zIndex={zIndex + 1}>
+          &times;
+        </CloseButton>
 
         {title && (
           <Header>
@@ -78,6 +81,7 @@ Modal.propTypes = {
   children: PropTypes.node.isRequired,
   onCloseFunction: PropTypes.func,
   wide: PropTypes.bool,
+  zIndex: PropTypes.number,
 };
 
 export default Modal;

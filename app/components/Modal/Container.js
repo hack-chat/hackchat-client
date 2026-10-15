@@ -11,7 +11,7 @@ const getMaxWidth = (props) => {
 
 export default styled.div`
   position: relative;
-  z-index: 11;
+  z-index: ${({ $zIndex }) => $zIndex || 11};
   display: flex;
   flex-direction: column;
   width: 90vw;

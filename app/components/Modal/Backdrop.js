@@ -10,7 +10,7 @@ export default styled.div`
   margin: 0;
   top: 0;
   left: 0;
-  z-index: 10;
+  z-index: ${({ $zIndex }) => $zIndex || 10};
   width: 100%;
   height: 100%;
   background-color: rgba(0 0 0 / 50%);
