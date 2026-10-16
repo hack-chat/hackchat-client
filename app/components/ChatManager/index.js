@@ -12,14 +12,17 @@ import React, {
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import { compose } from 'redux';
+import { Virtuoso } from 'react-virtuoso';
 
 import { Message } from 'components/Message';
 import MessageFormatter from 'components/MessageFormatter';
 import UserContextMenu from 'components/UserContextMenu';
 import MessageContextMenu from 'components/MessageContextMenu';
 
-import Wrapper from './Wrapper';
 import messages from './messages';
+
+import ChatFooter from './ChatFooter';
+import Wrapper from './Wrapper';
 
 const EMPTY_USER = {};
 
@@ -33,9 +36,9 @@ export function ChatManager({
   intl,
   externalScrollRef,
   isWalletConnected,
+  largeMode,
 }) {
-  const internalRef = useRef(null);
-  const scrollContainerRef = externalScrollRef || internalRef;
+  const virtuosoRef = useRef(null);
   const isAtBottomRef = useRef(true);
 
   const [contextMenu, setContextMenu] = useState(null);
@@ -47,46 +50,20 @@ export function ChatManager({
   );
 
   useEffect(() => {
-    isAtBottomRef.current = true;
-    if (scrollContainerRef.current) {
-      const { scrollHeight, clientHeight } = scrollContainerRef.current;
-      scrollContainerRef.current.scrollTop = scrollHeight - clientHeight;
+    const wasAtBottom = isAtBottomRef.current;
+
+    if (wasAtBottom && virtuosoRef.current) {
+      setTimeout(() => {
+        if (virtuosoRef.current) {
+          virtuosoRef.current.scrollToIndex({
+            index: enrichedMessages.length - 1,
+            align: 'end',
+            behavior: 'smooth',
+          });
+        }
+      }, 50);
     }
-  }, [channel]);
-
-  const pinToBottom = useCallback(() => {
-    if (scrollContainerRef.current && isAtBottomRef.current) {
-      const { scrollHeight, clientHeight } = scrollContainerRef.current;
-      scrollContainerRef.current.scrollTop = scrollHeight - clientHeight;
-    }
-  }, [scrollContainerRef]);
-
-  // Depends on the array itself, not its length, so in-place edits
-  // (updateMessage appends) also keep the view pinned to the bottom
-  useEffect(pinToBottom, [currentChannelData.messages]);
-
-  // Images grow their message once they load, after the effect above has
-  // run. Load events don't bubble, so listen for them in the capture phase.
-  useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (!container) return undefined;
-
-    container.addEventListener('load', pinToBottom, true);
-    container.addEventListener('error', pinToBottom, true);
-    return () => {
-      container.removeEventListener('load', pinToBottom, true);
-      container.removeEventListener('error', pinToBottom, true);
-    };
-  }, [scrollContainerRef, pinToBottom]);
-
-  const handleScroll = () => {
-    if (scrollContainerRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } =
-        scrollContainerRef.current;
-      const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
-      isAtBottomRef.current = distanceFromBottom < 150;
-    }
-  };
+  }, [enrichedMessages]);
 
   const handleChatClick = (e) => {
     const linkTarget = e.target.closest('a');
@@ -104,9 +81,7 @@ export function ChatManager({
   };
 
   const handleUserContextMenu = useCallback((user, event) => {
-    if (user && user.mine) {
-      return;
-    }
+    if (user && user.mine) return;
 
     const selection = window.getSelection();
     if (
@@ -118,16 +93,10 @@ export function ChatManager({
     }
 
     event.preventDefault();
-    setContextMenu({
-      user,
-      x: event.clientX,
-      y: event.clientY,
-    });
+    setContextMenu({ user, x: event.clientX, y: event.clientY });
   }, []);
 
-  const closeUserContextMenu = () => {
-    setContextMenu(null);
-  };
+  const closeUserContextMenu = () => setContextMenu(null);
 
   const handleMessageLeftClick = useCallback(
     (payload, user) => {
@@ -167,9 +136,7 @@ export function ChatManager({
     });
   }, []);
 
-  const closeMessageContextMenu = () => {
-    setMessageContextMenu(null);
-  };
+  const closeMessageContextMenu = () => setMessageContextMenu(null);
 
   const handleMessageMenuAction = (command, payload, user) => {
     if (command === 'reply') {
@@ -211,7 +178,7 @@ export function ChatManager({
     [channel, users, intl],
   );
 
-  const messageElements = useMemo(() => {
+  const enrichedMessages = useMemo(() => {
     let lastUserId = null;
     let stripe = false;
 
@@ -238,34 +205,14 @@ export function ChatManager({
         lastUserId = currentUserId;
       }
 
-      return (
-        <Message
-          key={`msg-${index}`}
-          msgForm={MessageFormatter}
-          handleMention={handleMenuCommand}
-          handleContextMenu={handleUserContextMenu}
-          onMessageClick={handleMessageLeftClick}
-          onMessageContextMenu={handleMessageContextMenu}
-          extended={isExtended}
-          type={msg.type}
-          payload={msg.data}
-          user={user}
-          intl={intl}
-          hasBackground={stripe}
-          onTxAttemptClick={onTxAttemptClick}
-        />
-      );
+      return {
+        ...msg,
+        computedUser: user,
+        isExtended,
+        stripe,
+      };
     });
-  }, [
-    currentChannelData.messages,
-    currentChannelData.users,
-    intl,
-    handleMenuCommand,
-    handleUserContextMenu,
-    handleMessageLeftClick,
-    handleMessageContextMenu,
-    onTxAttemptClick,
-  ]);
+  }, [currentChannelData.messages, currentChannelData.users]);
 
   const myPermissionLevel = useMemo(() => {
     const me = Object.values(currentChannelData.users).find(
@@ -274,17 +221,73 @@ export function ChatManager({
     return me ? me.permissionLevel : 0;
   }, [currentChannelData.users]);
 
+  const lastMessage = enrichedMessages[enrichedMessages.length - 1];
+
+  const virtuosoContext = useMemo(
+    () => ({
+      stripe: lastMessage ? lastMessage.stripe : false,
+      isMentioned: false,
+      largeMode,
+    }),
+    [lastMessage],
+  );
+
+  const virtuosoComponents = useMemo(
+    () => ({
+      Header: () => welcomeMessage,
+      Footer: ({ context }) => (
+        <ChatFooter
+          $hasBackground={context?.stripe}
+          $isMentioned={context?.isMentioned}
+          $largeMode={largeMode}
+        />
+      ),
+    }),
+    [welcomeMessage],
+  );
+
   return (
     <Wrapper
       key={channel}
       translate="no"
       className="notranslate chat-log"
-      ref={scrollContainerRef}
-      onScroll={handleScroll}
       onClick={handleChatClick}
     >
-      {welcomeMessage}
-      {messageElements}
+      <Virtuoso
+        ref={virtuosoRef}
+        scrollerRef={(element) => {
+          if (externalScrollRef) {
+            externalScrollRef.current = element;
+          }
+        }}
+        data={enrichedMessages}
+        style={{ flex: 1 }}
+        alignToBottom={false}
+        followOutput={(isAtBottom) => (isAtBottom ? 'auto' : false)}
+        atBottomThreshold={50}
+        atBottomStateChange={(atBottom) => {
+          isAtBottomRef.current = atBottom;
+        }}
+        initialTopMostItemIndex={enrichedMessages.length - 1}
+        context={virtuosoContext}
+        components={virtuosoComponents}
+        itemContent={(index, msg) => (
+          <Message
+            msgForm={MessageFormatter}
+            handleMention={handleMenuCommand}
+            handleContextMenu={handleUserContextMenu}
+            onMessageClick={handleMessageLeftClick}
+            onMessageContextMenu={handleMessageContextMenu}
+            extended={msg.isExtended}
+            type={msg.type}
+            payload={msg.data}
+            user={msg.computedUser}
+            intl={intl}
+            hasBackground={msg.stripe}
+            onTxAttemptClick={onTxAttemptClick}
+          />
+        )}
+      />
 
       <UserContextMenu
         contextMenu={contextMenu}
@@ -312,6 +315,8 @@ ChatManager.propTypes = {
   intl: PropTypes.object.isRequired,
   onTxAttemptClick: PropTypes.func,
   isWalletConnected: PropTypes.bool,
+  largeMode: PropTypes.bool,
+  externalScrollRef: PropTypes.object,
 };
 
 export default compose(injectIntl)(ChatManager);

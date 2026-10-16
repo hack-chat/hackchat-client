@@ -380,6 +380,10 @@ function ChatInput(
       }
 
       if (evt.key === 'Enter' && !evt.shiftKey) {
+        if (evt.nativeEvent.isComposing || evt.keyCode === 229) {
+          return;
+        }
+
         evt.preventDefault();
         if (suggestions.length > 0 && activeSuggestion < suggestions.length) {
           applySuggestion(suggestions[activeSuggestion]);

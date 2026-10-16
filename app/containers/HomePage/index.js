@@ -989,6 +989,7 @@ export function HomePage({
             intl={intl}
             externalScrollRef={chatScrollContainerRef}
             isWalletConnected={!!connectedTo}
+            largeMode={cachedLargeMode}
           />
           <ChatInput
             channel={channel}
