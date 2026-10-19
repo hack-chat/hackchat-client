@@ -233,6 +233,7 @@
   "hcclient.containers.SettingsPage.maxMessagesText": "الحد الأقصى للرسائل (0 = لا نهائي)",
   "hcclient.containers.SettingsPage.menuPosText": "زر القائمة على الجانب الأيسر",
   "hcclient.containers.SettingsPage.reconnectText": "أعد الاتصال الآن",
+  "hcclient.containers.SettingsPage.showShortcodesText": "إظهار اقتراحات الرموز القصيرة",
   "hcclient.containers.SettingsPage.useLtrText": "القراءة من اليسار إلى اليمين",
   "hcclient.containers.SettingsPage.wsPathText": "مسار الخادم",
   "hcclient.Generic.back.text": "عودة",

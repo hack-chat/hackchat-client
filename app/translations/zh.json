@@ -233,6 +233,7 @@
   "hcclient.containers.SettingsPage.maxMessagesText": "最大訊息數 (0 = 無限)",
   "hcclient.containers.SettingsPage.menuPosText": "左側選單按鈕",
   "hcclient.containers.SettingsPage.reconnectText": "立即重新連線",
+  "hcclient.containers.SettingsPage.showShortcodesText": "顯示短代碼建議",
   "hcclient.containers.SettingsPage.useLtrText": "從左到右閱讀",
   "hcclient.containers.SettingsPage.wsPathText": "伺服器路徑",
   "hcclient.Generic.back.text": "返回",

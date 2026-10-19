@@ -233,6 +233,7 @@
   "hcclient.containers.SettingsPage.maxMessagesText": "حداکثر پیام‌ها (0 = نامحدود)",
   "hcclient.containers.SettingsPage.menuPosText": "دکمه منو سمت چپ",
   "hcclient.containers.SettingsPage.reconnectText": "اتصال مجدد اکنون",
+  "hcclient.containers.SettingsPage.showShortcodesText": "نمایش پیشنهادهای کد کوتاه",
   "hcclient.containers.SettingsPage.useLtrText": "خواندن از چپ به راست (LTR)",
   "hcclient.containers.SettingsPage.wsPathText": "مسیر سرور",
   "hcclient.Generic.back.text": "بازگشت",

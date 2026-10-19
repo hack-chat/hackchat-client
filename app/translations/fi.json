@@ -233,6 +233,7 @@
   "hcclient.containers.SettingsPage.maxMessagesText": "Maksimiviestit (0 = ääretön)",
   "hcclient.containers.SettingsPage.menuPosText": "Valikkopainike vasemmalla",
   "hcclient.containers.SettingsPage.reconnectText": "Yhdistä nyt",
+  "hcclient.containers.SettingsPage.showShortcodesText": "Näytä lyhytkoodiehdotukset",
   "hcclient.containers.SettingsPage.useLtrText": "Luku vasemmalta oikealle (LTR)",
   "hcclient.containers.SettingsPage.wsPathText": "Palvelimen polku",
   "hcclient.Generic.back.text": "Takaisin",

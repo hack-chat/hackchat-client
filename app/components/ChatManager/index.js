@@ -37,9 +37,11 @@ export function ChatManager({
   externalScrollRef,
   isWalletConnected,
   largeMode,
+  isActive,
 }) {
   const virtuosoRef = useRef(null);
   const isAtBottomRef = useRef(true);
+  const welcomeTextRef = useRef(null);
 
   const [contextMenu, setContextMenu] = useState(null);
   const [messageContextMenu, setMessageContextMenu] = useState(null);
@@ -146,73 +148,82 @@ export function ChatManager({
     }
   };
 
-  const users = useMemo(() => {
+  const staticWelcomeText = useMemo(() => {
+    if (welcomeTextRef.current) return welcomeTextRef.current;
+
     const onlineUsers = Object.values(currentChannelData.users)
       .filter((user) => user.online)
       .map((user) => user.username);
 
-    if (onlineUsers.length <= 1) {
-      return intl.formatMessage(messages.aloneMsg);
+    if (onlineUsers.length === 0) {
+      return `${intl.formatMessage(messages.currentChannel)} "${channel}"...`;
     }
 
-    return `${intl.formatMessage(
-      messages.onlineUsersText,
-    )} ${onlineUsers.join(', ')}`;
-  }, [currentChannelData.users, intl]);
+    const usersString =
+      onlineUsers.length <= 1
+        ? intl.formatMessage(messages.aloneMsg)
+        : `${intl.formatMessage(messages.onlineUsersText)} ${onlineUsers.join(', ')}`;
 
-  const welcomeMessage = useMemo(
-    () => (
-      <Message
-        key="welcome-message"
-        msgForm={MessageFormatter}
-        handleMention={() => {}}
-        extended={false}
-        type="welcome"
-        payload={`${intl.formatMessage(
-          messages.currentChannel,
-        )} "${channel}". ${users}`}
-        user={{}}
-        intl={intl}
-      />
-    ),
-    [channel, users, intl],
-  );
+    const compiledText = `${intl.formatMessage(
+      messages.currentChannel,
+    )} "${channel}". ${usersString}`;
+
+    welcomeTextRef.current = compiledText;
+
+    return compiledText;
+  }, [currentChannelData.users, channel, intl]);
 
   const enrichedMessages = useMemo(() => {
     let lastUserId = null;
     let stripe = false;
 
-    return currentChannelData.messages.map((msg, index, allMessages) => {
-      const currentUserId = msg.data.userid || (msg.user && msg.user.userid);
-      const user = currentUserId
-        ? currentChannelData.users[currentUserId] || msg.user || EMPTY_USER
-        : msg.user || EMPTY_USER;
+    const mappedMessages = currentChannelData.messages.map(
+      (msg, index, allMessages) => {
+        const currentUserId = msg.data.userid || (msg.user && msg.user.userid);
+        const user = currentUserId
+          ? currentChannelData.users[currentUserId] || msg.user || EMPTY_USER
+          : msg.user || EMPTY_USER;
 
-      const previousMsg = allMessages[index - 1];
-      const previousUserId = previousMsg
-        ? previousMsg.data.userid ||
-          (previousMsg.user && previousMsg.user.userid)
-        : null;
+        const previousMsg = allMessages[index - 1];
+        const previousUserId = previousMsg
+          ? previousMsg.data.userid ||
+            (previousMsg.user && previousMsg.user.userid)
+          : null;
 
-      const isExtended =
-        previousMsg &&
-        previousMsg.type === 'chat' &&
-        msg.type === 'chat' &&
-        previousUserId === currentUserId;
+        const isExtended =
+          previousMsg &&
+          previousMsg.type === 'chat' &&
+          msg.type === 'chat' &&
+          previousUserId === currentUserId;
 
-      if (currentUserId && currentUserId !== lastUserId) {
-        stripe = !stripe;
-        lastUserId = currentUserId;
-      }
+        if (currentUserId && currentUserId !== lastUserId) {
+          stripe = !stripe;
+          lastUserId = currentUserId;
+        }
 
-      return {
-        ...msg,
-        computedUser: user,
-        isExtended,
-        stripe,
-      };
-    });
-  }, [currentChannelData.messages, currentChannelData.users]);
+        return {
+          ...msg,
+          computedUser: user,
+          isExtended,
+          stripe,
+        };
+      },
+    );
+
+    const welcomeMessageObj = {
+      type: 'welcome',
+      data: staticWelcomeText,
+      computedUser: EMPTY_USER,
+      isExtended: false,
+      stripe: false,
+    };
+
+    return [welcomeMessageObj, ...mappedMessages];
+  }, [
+    currentChannelData.messages,
+    currentChannelData.users,
+    staticWelcomeText,
+  ]);
 
   const myPermissionLevel = useMemo(() => {
     const me = Object.values(currentChannelData.users).find(
@@ -229,21 +240,20 @@ export function ChatManager({
       isMentioned: false,
       largeMode,
     }),
-    [lastMessage],
+    [lastMessage, largeMode],
   );
 
   const virtuosoComponents = useMemo(
     () => ({
-      Header: () => welcomeMessage,
       Footer: ({ context }) => (
         <ChatFooter
           $hasBackground={context?.stripe}
           $isMentioned={context?.isMentioned}
-          $largeMode={largeMode}
+          $largeMode={context?.largeMode}
         />
       ),
     }),
-    [welcomeMessage],
+    [],
   );
 
   return (
@@ -252,6 +262,7 @@ export function ChatManager({
       translate="no"
       className="notranslate chat-log"
       onClick={handleChatClick}
+      style={{ display: isActive ? 'flex' : 'none' }}
     >
       <Virtuoso
         ref={virtuosoRef}
@@ -317,6 +328,7 @@ ChatManager.propTypes = {
   isWalletConnected: PropTypes.bool,
   largeMode: PropTypes.bool,
   externalScrollRef: PropTypes.object,
+  isActive: PropTypes.bool,
 };
 
 export default compose(injectIntl)(ChatManager);

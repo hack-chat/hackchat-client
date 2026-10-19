@@ -233,6 +233,7 @@
   "hcclient.containers.SettingsPage.maxMessagesText": "Messaggi massimi (0 = infinito)",
   "hcclient.containers.SettingsPage.menuPosText": "Pulsante del menu a sinistra",
   "hcclient.containers.SettingsPage.reconnectText": "Riconnettiti ora",
+  "hcclient.containers.SettingsPage.showShortcodesText": "Mostra suggerimenti per gli shortcode",
   "hcclient.containers.SettingsPage.useLtrText": "Lettura da sinistra a destra (LTR)",
   "hcclient.containers.SettingsPage.wsPathText": "Percorso del server",
   "hcclient.Generic.back.text": "Indietro",

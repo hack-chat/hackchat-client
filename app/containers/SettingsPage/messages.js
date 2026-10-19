@@ -115,4 +115,8 @@ export default defineMessages({
     id: `${scope}.domainPlaceholder`,
     defaultMessage: 'Domain Name (e.g. google.com)',
   },
+  showShortcodesText: {
+    id: `${scope}.showShortcodesText`,
+    defaultMessage: 'Show Shortcode Suggestions',
+  },
 });

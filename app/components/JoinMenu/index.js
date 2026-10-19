@@ -186,9 +186,9 @@ export function JoinMenu({
         isActivelyJoined,
       );
 
-      if (typeof doToggle === 'function') doToggle(true);
+      if (typeof doToggle === 'function') doToggle(true, chan);
 
-      navigate(`/?${chan}`, { state: { fromModal: true } });
+      navigate(`/?${chan}`);
     }
   };
 

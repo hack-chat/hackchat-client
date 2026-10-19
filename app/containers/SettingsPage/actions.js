@@ -40,6 +40,8 @@ import {
   SET_LARGE_MODE,
   SET_DOMAIN_WHITELIST,
   DOMAIN_WHITELIST_LSLABEL,
+  SET_SHORTCODE_SUGGESTIONS,
+  SHORTCODE_SUGGESTIONS_LSLABEL,
 } from './constants';
 
 /**
@@ -317,5 +319,19 @@ export function setDomainWhitelist(whitelist) {
   return {
     type: SET_DOMAIN_WHITELIST,
     whitelist,
+  };
+}
+
+/**
+ * Updates the shortcode suggestions toggle in settings
+ * @param  {boolean} enabled New boolean state
+ * @return {object} An action object with a type of SET_SHORTCODE_SUGGESTIONS
+ */
+export function setShortcodeSuggestions(enabled) {
+  localStorage.setItem(SHORTCODE_SUGGESTIONS_LSLABEL, JSON.stringify(enabled));
+
+  return {
+    type: SET_SHORTCODE_SUGGESTIONS,
+    enabled,
   };
 }

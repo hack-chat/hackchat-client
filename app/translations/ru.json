@@ -233,6 +233,7 @@
   "hcclient.containers.SettingsPage.maxMessagesText": "Максимум сообщений (0 = бесконечно)",
   "hcclient.containers.SettingsPage.menuPosText": "Кнопка меню слева",
   "hcclient.containers.SettingsPage.reconnectText": "Переподключиться",
+  "hcclient.containers.SettingsPage.showShortcodesText": "Показывать подсказки шорткодов",
   "hcclient.containers.SettingsPage.useLtrText": "Чтение слева направо (LTR)",
   "hcclient.containers.SettingsPage.wsPathText": "Путь к серверу",
   "hcclient.Generic.back.text": "Назад",

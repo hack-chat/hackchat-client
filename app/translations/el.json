@@ -233,6 +233,7 @@
   "hcclient.containers.SettingsPage.maxMessagesText": "Μέγιστα Μηνύματα (0 = άπειρα)",
   "hcclient.containers.SettingsPage.menuPosText": "Κουμπί μενού αριστερά",
   "hcclient.containers.SettingsPage.reconnectText": "Επανασύνδεση τώρα",
+  "hcclient.containers.SettingsPage.showShortcodesText": "Εμφάνιση προτάσεων συντομεύσεων",
   "hcclient.containers.SettingsPage.useLtrText": "Ανάγνωση από αριστερά προς τα δεξιά (LTR)",
   "hcclient.containers.SettingsPage.wsPathText": "Διαδρομή διακομιστή",
   "hcclient.Generic.back.text": "Πίσω",

@@ -84,6 +84,7 @@ import {
   makeSelectCachedUsername,
   makeSelectCachedEnablePreview,
   makeSelectCachedLargeMode,
+  makeSelectCachedShortcodeSuggestions,
 } from 'containers/SettingsPage/selectors';
 
 import LoadingIndicator from 'components/LoadingIndicator';
@@ -192,11 +193,11 @@ export function HomePage({
   cachedEnablePreview,
   cachedLargeMode,
   onJoinChannel,
+  cachedShortcodeSuggestions,
 }) {
   const navigate = useNavigate();
-  const location = useLocation();
   const channelFromUrl = useUrlChannel();
-  const isFromModal = location.state?.fromModal;
+
   const [isJoinModalOpen, setJoinModalOpen] = useState(false);
   const lastPromptedUrl = useRef(null);
   const leavingChannelRef = useRef(null);
@@ -226,13 +227,18 @@ export function HomePage({
   );
 
   const toggleJoinModal = useCallback(
-    (isSubmit) => {
+    (isSubmit, submittedChannel) => {
       if (isJoinModalOpen && isSubmit !== true) {
         if (channelFromUrl && (!channelData || !channelData[channelFromUrl])) {
           navigate('/', { replace: true });
           lastPromptedUrl.current = null;
         }
       }
+
+      if (isSubmit === true && submittedChannel) {
+        lastPromptedUrl.current = submittedChannel;
+      }
+
       setJoinModalOpen((prev) => !prev);
     },
     [isJoinModalOpen, channelFromUrl, channelData, navigate],
@@ -263,20 +269,19 @@ export function HomePage({
 
         if (hasActiveChannels) {
           if (lastPromptedUrl.current !== channelFromUrl) {
-            if (!isFromModal) {
-              const activeRoom = channel || Object.keys(channelData)[0];
+            const activeRoom = channel || Object.keys(channelData)[0];
 
-              const users = channelData[activeRoom]?.users || {};
-              const myUser = Object.values(users).find((u) => u.mine);
-              const activeName = myUser?.username || cachedUsername;
+            const users = channelData[activeRoom]?.users || {};
+            const myUser = Object.values(users).find((u) => u.mine);
+            const activeName = myUser?.username || cachedUsername;
 
-              onJoinChannel(
-                activeName,
-                cachedPassword,
-                channelFromUrl,
-                cachedColor,
-              );
-            }
+            onJoinChannel(
+              activeName,
+              cachedPassword,
+              channelFromUrl,
+              cachedColor,
+            );
+
             lastPromptedUrl.current = channelFromUrl;
           }
         } else {
@@ -303,7 +308,6 @@ export function HomePage({
     cachedColor,
     cachedUsername,
     onJoinChannel,
-    isFromModal,
   ]);
 
   const [isWalletModalOpen, setWalletModalOpen] = useState(false);
@@ -358,7 +362,7 @@ export function HomePage({
 
   const chatInputRef = useRef(null);
   const channelUsersRef = useRef({});
-  const chatScrollContainerRef = useRef(null);
+  const chatScrollRefs = useRef({});
 
   useEffect(() => {
     channelUsersRef.current = channelData?.[channel]?.users || {};
@@ -559,11 +563,18 @@ export function HomePage({
         return;
       }
 
-      if (chatScrollContainerRef.current && !isOverScrollable(e)) {
-        chatScrollContainerRef.current.scrollTop += e.deltaY;
+      const activeScrollerRef = chatScrollRefs.current[channel];
+
+      if (
+        activeScrollerRef &&
+        activeScrollerRef.current &&
+        !isOverScrollable(e)
+      ) {
+        activeScrollerRef.current.scrollTop += e.deltaY;
       }
     },
     [
+      channel,
       isJoinModalOpen,
       isLocaleModalOpen,
       externalUrlToWarn,
@@ -979,18 +990,28 @@ export function HomePage({
           dir={cachedLtr ? 'ltr' : 'rtl'}
           $largeMode={cachedLargeMode}
         >
-          <ChatManager
-            channel={channel}
-            channelData={channelData}
-            handleMenuCommand={handleMenuCommand}
-            handleInsertText={handleInsertText}
-            onExternalLinkClick={handleExternalLinkClick}
-            onTxAttemptClick={handleTxAttemptClick}
-            intl={intl}
-            externalScrollRef={chatScrollContainerRef}
-            isWalletConnected={!!connectedTo}
-            largeMode={cachedLargeMode}
-          />
+          {joinedChannels.map((chanName) => {
+            if (!chatScrollRefs.current[chanName]) {
+              chatScrollRefs.current[chanName] = React.createRef();
+            }
+
+            return (
+              <ChatManager
+                key={chanName}
+                channel={chanName}
+                isActive={chanName === channel}
+                channelData={channelData}
+                handleMenuCommand={handleMenuCommand}
+                handleInsertText={handleInsertText}
+                onExternalLinkClick={handleExternalLinkClick}
+                onTxAttemptClick={handleTxAttemptClick}
+                intl={intl}
+                externalScrollRef={chatScrollRefs.current[chanName]}
+                isWalletConnected={!!connectedTo}
+                largeMode={cachedLargeMode}
+              />
+            );
+          })}
           <ChatInput
             channel={channel}
             users={channelData?.[channel]?.users}
@@ -999,6 +1020,7 @@ export function HomePage({
             ref={chatInputRef}
             enablePreview={cachedEnablePreview}
             largeMode={cachedLargeMode}
+            showShortcodeSuggestions={cachedShortcodeSuggestions}
           />
         </ChatLayout>
       ) : (
@@ -1308,6 +1330,7 @@ HomePage.propTypes = {
   onJoinChannel: PropTypes.func,
   cachedEnablePreview: PropTypes.bool,
   cachedLargeMode: PropTypes.bool,
+  cachedShortcodeSuggestions: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -1328,6 +1351,7 @@ const mapStateToProps = createStructuredSelector({
   cachedUsername: makeSelectCachedUsername(),
   cachedEnablePreview: makeSelectCachedEnablePreview(),
   cachedLargeMode: makeSelectCachedLargeMode(),
+  cachedShortcodeSuggestions: makeSelectCachedShortcodeSuggestions(),
 });
 
 export function mapDispatchToProps(dispatch) {

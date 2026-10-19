@@ -149,6 +149,7 @@ function ChatInput(
     canSend = true,
     enablePreview = true,
     largeMode = false,
+    showShortcodeSuggestions = true,
   },
   ref,
 ) {
@@ -216,53 +217,60 @@ function ChatInput(
     }
   }, [activeSuggestion]);
 
-  const updateSuggestions = useCallback((text, cursor) => {
-    const textBeforeCursor = text.slice(0, cursor);
+  const updateSuggestions = useCallback(
+    (text, cursor) => {
+      const textBeforeCursor = text.slice(0, cursor);
 
-    if (textBeforeCursor.startsWith('/')) {
-      const commandText = textBeforeCursor.slice(1).toLowerCase();
-      const filtered = COMMANDS.filter((cmd) =>
-        cmd.command.startsWith(commandText),
-      );
-      setSuggestions(
-        filtered.map((cmd) => ({
-          label: `/${cmd.command}`,
-          subText: cmd.params.join(' '),
-          value: `/${cmd.command} `,
-          type: 'command',
-          replaceStart: 0,
-          replaceEnd: cursor,
-        })),
-      );
-      setActiveSuggestion(0);
-    } else {
-      const match = textBeforeCursor.match(/(?:^|\s)(:[^\s:]+)$/);
-      if (match) {
-        const query = match[1].toLowerCase();
-        const filtered = ALL_EMOJIS.filter((e) =>
-          e.code.toLowerCase().startsWith(query),
-        ).slice(0, 15);
+      if (textBeforeCursor.startsWith('/')) {
+        const commandText = textBeforeCursor.slice(1).toLowerCase();
+        const filtered = COMMANDS.filter((cmd) =>
+          cmd.command.startsWith(commandText),
+        );
+        setSuggestions(
+          filtered.map((cmd) => ({
+            label: `/${cmd.command}`,
+            subText: cmd.params.join(' '),
+            value: `/${cmd.command} `,
+            type: 'command',
+            replaceStart: 0,
+            replaceEnd: cursor,
+          })),
+        );
+        setActiveSuggestion(0);
+      } else {
+        if (showShortcodeSuggestions) {
+          const match = textBeforeCursor.match(/(?:^|\s)(:[^\s:]+)$/);
+          if (match) {
+            const query = match[1].toLowerCase();
+            const filtered = ALL_EMOJIS.filter((e) =>
+              e.code.toLowerCase().startsWith(query),
+            ).slice(0, 15);
 
-        if (filtered.length > 0) {
-          setSuggestions(
-            filtered.map((e) => ({
-              label: e.code,
-              subText: e.preview,
-              value: `${e.preview} `,
-              type: 'emoji',
-              replaceStart: cursor - match[1].length,
-              replaceEnd: cursor,
-            })),
-          );
-          setActiveSuggestion(0);
+            if (filtered.length > 0) {
+              setSuggestions(
+                filtered.map((e) => ({
+                  label: e.code,
+                  subText: e.preview,
+                  value: `${e.preview} `,
+                  type: 'emoji',
+                  replaceStart: cursor - match[1].length,
+                  replaceEnd: cursor,
+                })),
+              );
+              setActiveSuggestion(0);
+            } else {
+              setSuggestions([]);
+            }
+          } else {
+            setSuggestions([]);
+          }
         } else {
           setSuggestions([]);
         }
-      } else {
-        setSuggestions([]);
       }
-    }
-  }, []);
+    },
+    [showShortcodeSuggestions],
+  );
 
   const resizeTextarea = useCallback(() => {
     window.requestAnimationFrame(() => {
@@ -651,6 +659,7 @@ ChatInputWithRef.propTypes = {
   canSend: PropTypes.bool,
   enablePreview: PropTypes.bool,
   largeMode: PropTypes.bool,
+  showShortcodeSuggestions: PropTypes.bool,
 };
 
 export default memo(ChatInputWithRef);

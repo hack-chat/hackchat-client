@@ -233,6 +233,7 @@
   "hcclient.containers.SettingsPage.maxMessagesText": "সর্বোচ্চ বার্তা (0 = অসীম)",
   "hcclient.containers.SettingsPage.menuPosText": "বামদিকের মেনু বোতাম",
   "hcclient.containers.SettingsPage.reconnectText": "এখনই পুনঃসংযোগ করুন",
+  "hcclient.containers.SettingsPage.showShortcodesText": "শর্টকোড সাজেশন দেখান",
   "hcclient.containers.SettingsPage.useLtrText": "বাম থেকে ডানে পড়া (LTR)",
   "hcclient.containers.SettingsPage.wsPathText": "সার্ভার পাথ",
   "hcclient.Generic.back.text": "ফিরে যান",

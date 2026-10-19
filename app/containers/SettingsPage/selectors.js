@@ -150,6 +150,15 @@ const makeSelectCachedDomainWhitelist = () =>
     (substate) => substate.domainWhitelist,
   );
 
+/**
+ * Shortcode suggestions state
+ */
+const makeSelectCachedShortcodeSuggestions = () =>
+  createSelector(
+    selectSettingsPageDomain,
+    (substate) => substate.showShortcodeSuggestions,
+  );
+
 export {
   selectSettingsPageDomain,
   makeSelectCachedUsername,
@@ -170,4 +179,5 @@ export {
   makeSelectCachedEnablePreview,
   makeSelectCachedLargeMode,
   makeSelectCachedDomainWhitelist,
+  makeSelectCachedShortcodeSuggestions,
 };

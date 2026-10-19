@@ -16,7 +16,10 @@ const getExpandStyles = (props) => {
       overflow: hidden;
     `;
   }
-  return '';
+
+  return css`
+    overflow-x: auto;
+  `;
 };
 
 const ChatStyle = styled.div`
@@ -26,7 +29,8 @@ const ChatStyle = styled.div`
   height: fit-content;
   max-height: 50vh;
   overflow: hidden auto;
-  min-width: 100%;
+  width: 100%;
+  max-width: 100%;
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.15s ease;

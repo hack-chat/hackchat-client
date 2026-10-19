@@ -122,6 +122,7 @@ import {
   setEnablePreview,
   setLargeMode,
   setDomainWhitelist,
+  setShortcodeSuggestions,
 } from './actions';
 
 import {
@@ -143,6 +144,7 @@ import {
   makeSelectCachedEnablePreview,
   makeSelectCachedLargeMode,
   makeSelectCachedDomainWhitelist,
+  makeSelectCachedShortcodeSuggestions,
 } from './selectors';
 
 import reducer from './reducer';
@@ -174,6 +176,7 @@ export function SettingsPage({
   cachedEnablePreview,
   cachedLargeMode,
   cachedDomainWhitelist,
+  cachedShortcodeSuggestions,
   intl,
 }) {
   const navigate = useNavigate();
@@ -231,6 +234,9 @@ export function SettingsPage({
   const [chosenLargeMode, setChosenLargeMode] =
     useStateIfMounted(cachedLargeMode);
   const [isDomainModalOpen, setIsDomainModalOpen] = useStateIfMounted(false);
+  const [chosenShortcodes, setChosenShortcodes] = useStateIfMounted(
+    cachedShortcodeSuggestions,
+  );
 
   useEffect(() => {
     if (cachedUsername !== chosenUsername)
@@ -305,6 +311,7 @@ export function SettingsPage({
     messages.manageDomainWhitelist,
   );
   const domainPlaceholder = intl.formatMessage(messages.domainPlaceholder);
+  const showShortcodesText = intl.formatMessage(messages.showShortcodesText);
 
   const joinedChannels = useMemo(
     () => (channelData ? Object.keys(channelData) : []),
@@ -497,6 +504,16 @@ export function SettingsPage({
               <LabelText>{largeModeText}</LabelText>
               <BooleanSwitch checked={chosenLargeMode} />
             </SwitchRow>
+
+            <SwitchRow
+              onClick={() => {
+                setChosenShortcodes(!chosenShortcodes);
+                dispatch(setShortcodeSuggestions(!chosenShortcodes));
+              }}
+            >
+              <LabelText>{showShortcodesText}</LabelText>
+              <BooleanSwitch checked={chosenShortcodes} />
+            </SwitchRow>
           </StripedContainer>
         </CollapsibleSection>
 
@@ -662,6 +679,7 @@ SettingsPage.propTypes = {
   cachedEnablePreview: PropTypes.bool,
   cachedLargeMode: PropTypes.bool,
   cachedDomainWhitelist: PropTypes.array,
+  cachedShortcodeSuggestions: PropTypes.bool,
   intl: PropTypes.object.isRequired,
 };
 
@@ -686,6 +704,7 @@ const mapStateToProps = createStructuredSelector({
   cachedEnablePreview: makeSelectCachedEnablePreview(),
   cachedLargeMode: makeSelectCachedLargeMode(),
   cachedDomainWhitelist: makeSelectCachedDomainWhitelist(),
+  cachedShortcodeSuggestions: makeSelectCachedShortcodeSuggestions(),
 });
 
 function mapDispatchToProps(dispatch) {

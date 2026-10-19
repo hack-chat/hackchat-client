@@ -41,6 +41,8 @@ import {
   LARGE_MODE_LSLABEL,
   SET_DOMAIN_WHITELIST,
   DOMAIN_WHITELIST_LSLABEL,
+  SET_SHORTCODE_SUGGESTIONS,
+  SHORTCODE_SUGGESTIONS_LSLABEL,
 } from './constants';
 
 const randomRGB = () => {
@@ -122,6 +124,8 @@ export const settingsInitialState = {
   domainWhitelist:
     JSON.parse(localStorage.getItem(DOMAIN_WHITELIST_LSLABEL)) ||
     defaultDomainWhitelist,
+  showShortcodeSuggestions:
+    JSON.parse(localStorage.getItem(SHORTCODE_SUGGESTIONS_LSLABEL)) ?? true,
 };
 
 const settingsPageReducer = (state = settingsInitialState, action) =>
@@ -183,6 +187,9 @@ const settingsPageReducer = (state = settingsInitialState, action) =>
         break;
       case SET_DOMAIN_WHITELIST:
         draft.domainWhitelist = action.whitelist;
+        break;
+      case SET_SHORTCODE_SUGGESTIONS:
+        draft.showShortcodeSuggestions = action.enabled;
         break;
     }
   });

@@ -233,6 +233,7 @@
   "hcclient.containers.SettingsPage.maxMessagesText": "Pesan Maksimum (0 = tak terbatas)",
   "hcclient.containers.SettingsPage.menuPosText": "Tombol Menu Sisi Kiri",
   "hcclient.containers.SettingsPage.reconnectText": "Sambung Ulang Sekarang",
+  "hcclient.containers.SettingsPage.showShortcodesText": "Tampilkan Saran Shortcode",
   "hcclient.containers.SettingsPage.useLtrText": "Baca Kiri ke Kanan (LTR)",
   "hcclient.containers.SettingsPage.wsPathText": "Jalur Server",
   "hcclient.Generic.back.text": "Kembali",

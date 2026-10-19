@@ -233,6 +233,7 @@
   "hcclient.containers.SettingsPage.maxMessagesText": "अधिकतम संदेश (0 = अनंत)",
   "hcclient.containers.SettingsPage.menuPosText": "बायीं ओर मेनू बटन",
   "hcclient.containers.SettingsPage.reconnectText": "अभी पुन: कनेक्ट करें",
+  "hcclient.containers.SettingsPage.showShortcodesText": "शॉर्टकोड सुझाव दिखाएं",
   "hcclient.containers.SettingsPage.useLtrText": "बाएँ से दाएँ पढ़ना (LTR)",
   "hcclient.containers.SettingsPage.wsPathText": "सर्वर पथ",
   "hcclient.Generic.back.text": "वापस",
