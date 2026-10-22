@@ -273,6 +273,7 @@ export function ChatManager({
         }}
         data={enrichedMessages}
         style={{ flex: 1 }}
+        overscan={600}
         alignToBottom={false}
         followOutput={(isAtBottom) => (isAtBottom ? 'auto' : false)}
         atBottomThreshold={50}

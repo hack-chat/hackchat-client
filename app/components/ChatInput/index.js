@@ -38,6 +38,7 @@ emoji.allow_native = true;
 const ALL_EMOJIS = [];
 const seenCodes = new Set();
 const draftStorage = new Map();
+const historyStorage = new Map();
 
 Object.keys(KAOMOJI).forEach((code) => {
   ALL_EMOJIS.push({ code, preview: KAOMOJI[code] });
@@ -164,7 +165,9 @@ function ChatInput(
   const [inputValue, setInputValue] = useState(
     () => draftStorage.get(channel) || '',
   );
-  const [history, setHistory] = useState([]);
+  const [history, setHistory] = useState(
+    () => historyStorage.get(channel) || [],
+  );
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [suggestions, setSuggestions] = useState([]);
   const [activeSuggestion, setActiveSuggestion] = useState(0);
@@ -192,6 +195,7 @@ function ChatInput(
 
   useEffect(() => {
     setInputValue(draftStorage.get(channel) || '');
+    setHistory(historyStorage.get(channel) || []);
     setHistoryIndex(-1);
     setSuggestions([]);
     setMentionState({
@@ -324,9 +328,10 @@ function ChatInput(
         0,
         MAX_MSG_HISTORY,
       );
+      historyStorage.set(channel, newHistory);
       setHistory(newHistory);
     },
-    [history],
+    [channel, history],
   );
 
   const applySuggestion = useCallback(

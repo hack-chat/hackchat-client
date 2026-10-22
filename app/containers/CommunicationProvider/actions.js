@@ -24,6 +24,9 @@ import {
   CLEAR_AUTH_REQS,
   CHANGE_USERNAME,
   LOGOUT,
+  SET_AGREED_TOS,
+  AGREED_TOS_LSLABEL,
+  CURRENT_TOS_VERSION,
 } from './constants';
 
 /**
@@ -298,5 +301,18 @@ export function changeUsername(username) {
 export function doLogout() {
   return {
     type: LOGOUT,
+  };
+}
+
+/**
+ * Updates the user's agreement to the Terms of Service
+ * @return {object} An action object with a type of SET_AGREED_TOS
+ */
+export function setAgreedTos() {
+  localStorage.setItem(AGREED_TOS_LSLABEL, JSON.stringify(CURRENT_TOS_VERSION));
+
+  return {
+    type: SET_AGREED_TOS,
+    hasAgreedTos: true,
   };
 }

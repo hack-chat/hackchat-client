@@ -82,8 +82,7 @@
     "remarkable-react": "^1.4.3",
     "reselect": "5.1.1",
     "sanitize.css": "13.0.0",
-    "styled-components": "6.1.13",
-    "use-state-if-mounted": "^1.0.7"
+    "styled-components": "6.1.13"
   },
   "overrides": {
     "graceful-fs": "^4.2.11"

@@ -38,6 +38,9 @@ import {
   CLEAR_CHANNEL,
   GOT_PASSWORD_REQ,
   CLEAR_AUTH_REQS,
+  SET_AGREED_TOS,
+  AGREED_TOS_LSLABEL,
+  CURRENT_TOS_VERSION,
 } from './constants';
 
 const isMobile =
@@ -54,6 +57,9 @@ const initialMaxMessages =
     ? parseInt(initialMaxMessagesStr, 10)
     : DEFAULT_MAX_MESSAGES;
 
+const savedTosVersion = JSON.parse(localStorage.getItem(AGREED_TOS_LSLABEL));
+const initialHasAgreedTos = savedTosVersion === CURRENT_TOS_VERSION;
+
 export const initialState = {
   connected: false,
   channel: false,
@@ -68,6 +74,7 @@ export const initialState = {
   pendingCaptcha: false,
   pendingPasswordReq: false,
   maxMessages: initialMaxMessages,
+  hasAgreedTos: initialHasAgreedTos,
 };
 
 const communicationProviderReducer = (state = initialState, action) =>
@@ -403,6 +410,9 @@ const communicationProviderReducer = (state = initialState, action) =>
         break;
       case SET_MAX_MESSAGES:
         draft.maxMessages = action.maxMessages;
+        break;
+      case SET_AGREED_TOS:
+        draft.hasAgreedTos = action.hasAgreedTos;
         break;
     }
 

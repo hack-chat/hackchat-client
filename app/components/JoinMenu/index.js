@@ -2,17 +2,20 @@
  * JoinMenu exports
  */
 
-import React, { useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useStateIfMounted } from 'use-state-if-mounted';
+import React, { useRef, useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { injectIntl } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { GiRollingDices } from 'react-icons/gi';
 
-import { joinChannel } from 'containers/CommunicationProvider/actions';
+import {
+  joinChannel,
+  setAgreedTos,
+} from 'containers/CommunicationProvider/actions';
+import { makeSelectHasAgreedTos } from 'containers/CommunicationProvider/selectors';
 
 import {
   setUsername,
@@ -43,6 +46,8 @@ import SuggestionContainer from './SuggestionContainer';
 import SuggestionItem from './SuggestionItem';
 import AutocompleteWrapper from './AutocompleteWrapper';
 import TipBox from './TipBox';
+import TosBox from './TosBox';
+import TosLabel from './TosLabel';
 
 export function JoinMenu({
   doToggle,
@@ -56,6 +61,8 @@ export function JoinMenu({
   intl,
   isActivelyJoined,
   activeUsername,
+  hasAgreedTos,
+  onAgreeTos,
 }) {
   const navigate = useNavigate();
 
@@ -68,15 +75,17 @@ export function JoinMenu({
   const randomButtonText = intl.formatMessage(messages.randomButtonText);
   const logoutTip = intl.formatMessage(messages.logoutTip);
 
-  const [invalidName, setInvalidName] = useStateIfMounted(false);
-  const [invalidChannel, setInvalidChannel] = useStateIfMounted(false);
-  const [currentColor, setCurrentColor] = useStateIfMounted(prevColor);
-  const [rememberMe, setRememberMe] = useStateIfMounted(rememberUser);
-  const [chosenUsername, setChosenUsername] = useStateIfMounted(username || '');
-  const [chosenPassword, setChosenPassword] = useStateIfMounted(password || '');
-  const [chosenChannel, setChosenChannel] = useStateIfMounted(qString || '');
-  const [suggestions, setSuggestions] = useStateIfMounted([]);
-  const [activeSuggestion, setActiveSuggestion] = useStateIfMounted(0);
+  const [invalidName, setInvalidName] = useState(false);
+  const [invalidChannel, setInvalidChannel] = useState(false);
+  const [tosChecked, setTosChecked] = useState(false);
+  const [tosError, setTosError] = useState(false);
+  const [currentColor, setCurrentColor] = useState(prevColor);
+  const [rememberMe, setRememberMe] = useState(rememberUser);
+  const [chosenUsername, setChosenUsername] = useState(username || '');
+  const [chosenPassword, setChosenPassword] = useState(password || '');
+  const [chosenChannel, setChosenChannel] = useState(qString || '');
+  const [suggestions, setSuggestions] = useState([]);
+  const [activeSuggestion, setActiveSuggestion] = useState(0);
   const suggestionsRef = useRef(null);
 
   useEffect(() => {
@@ -174,7 +183,16 @@ export function JoinMenu({
       toggleInvalidChannel();
     }
 
+    if (hasAgreedTos === false && tosChecked === false) {
+      err = true;
+      setTosError(true);
+    }
+
     if (!err) {
+      if (hasAgreedTos === false && tosChecked === true) {
+        onAgreeTos();
+      }
+
       onSubmitForm(
         isActivelyJoined
           ? activeUsername || username || chosenUsername
@@ -191,6 +209,8 @@ export function JoinMenu({
       navigate(`/?${chan}`);
     }
   };
+
+  const handleLinkClick = (e) => e.stopPropagation();
 
   return (
     <Form onSubmit={doJoin}>
@@ -299,6 +319,49 @@ export function JoinMenu({
         </AutocompleteWrapper>
       )}
 
+      {!hasAgreedTos && (
+        <TosLabel $error={tosError}>
+          <input
+            type="checkbox"
+            style={{ display: 'none' }}
+            checked={tosChecked}
+            onChange={(e) => {
+              setTosChecked(e.target.checked);
+              if (e.target.checked) setTosError(false);
+            }}
+          />
+          <TosBox $isChecked={tosChecked} />
+          <div>
+            <FormattedMessage
+              id={messages.tosAgreement.id}
+              defaultMessage={messages.tosAgreement.defaultMessage}
+              values={{
+                tosLink: (
+                  <Link
+                    to="/tos"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={handleLinkClick}
+                  >
+                    {intl.formatMessage(messages.tosLinkText)}
+                  </Link>
+                ),
+                privacyLink: (
+                  <Link
+                    to="/privacy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={handleLinkClick}
+                  >
+                    {intl.formatMessage(messages.privacyLinkText)}
+                  </Link>
+                ),
+              }}
+            />
+          </div>
+        </TosLabel>
+      )}
+
       <JoinButton onClick={doJoin}>{joinModalBtn}</JoinButton>
     </Form>
   );
@@ -324,6 +387,7 @@ const mapStateToProps = createStructuredSelector({
   prevColor: makeSelectCachedColor(),
   rememberUser: makeSelectCachedStoreChannels(),
   prevChannels: makeSelectCachedPrevChannels(),
+  hasAgreedTos: makeSelectHasAgreedTos(),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -345,6 +409,7 @@ export function mapDispatchToProps(dispatch) {
 
       dispatch(joinChannel(user, pass, chan, color));
     },
+    onAgreeTos: () => dispatch(setAgreedTos()),
     dispatch,
   };
 }

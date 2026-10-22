@@ -2,8 +2,13 @@
  * SettingsPage allows the user to change application settings
  */
 
-import React, { useMemo, useEffect, useCallback, useRef } from 'react';
-import { useStateIfMounted } from 'use-state-if-mounted';
+import React, {
+  useMemo,
+  useEffect,
+  useCallback,
+  useRef,
+  useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -205,36 +210,29 @@ export function SettingsPage({
 
   useInjectReducer({ key: 'settingsPage', reducer });
 
-  const [invalidName, setInvalidName] = useStateIfMounted(false);
+  const [invalidName, setInvalidName] = useState(false);
   const clearInvalidName = () => setInvalidName(false);
 
-  const [chosenUsername, setChosenUsername] = useStateIfMounted(cachedUsername);
-  const [chosenPassword, setChosenPassword] = useStateIfMounted(cachedPassword);
-  const [currentColor, setCurrentColor] = useStateIfMounted(cachedColor);
-  const [chosenDoStore, setChosenDoStore] = useStateIfMounted(cachedDoStore);
-  const [chosenTheme, setChosenTheme] = useStateIfMounted(cachedTheme);
-  const [chosenAllowKatex, setChosenAllowKatex] =
-    useStateIfMounted(cachedAllowKatex);
+  const [chosenUsername, setChosenUsername] = useState(cachedUsername);
+  const [chosenPassword, setChosenPassword] = useState(cachedPassword);
+  const [currentColor, setCurrentColor] = useState(cachedColor);
+  const [chosenDoStore, setChosenDoStore] = useState(cachedDoStore);
+  const [chosenTheme, setChosenTheme] = useState(cachedTheme);
+  const [chosenAllowKatex, setChosenAllowKatex] = useState(cachedAllowKatex);
   const [chosenAllowMarkdown, setChosenAllowMarkdown] =
-    useStateIfMounted(cachedAllowMarkdown);
-  const [chosenExtCode, setChosenExtCode] =
-    useStateIfMounted(cachedAllowExtCode);
-  const [chosenLtr, setChosenLtr] = useStateIfMounted(cachedLtr);
-  const [chosenMenuBtnPos, setChosenMenuBtnPos] =
-    useStateIfMounted(cachedMenuBtnPos);
-  const [chosenDoHighlight, setChosenDoHighlight] =
-    useStateIfMounted(cachedDoHighlight);
-  const [chosenWsPath, setChosenWsPath] = useStateIfMounted(cachedWsPath);
-  const [chosenNotify, setChosenNotify] =
-    useStateIfMounted(cachedNotifyEnabled);
-  const [chosenMaxMessages, setChosenMaxMessages] =
-    useStateIfMounted(cachedMaxMessages);
+    useState(cachedAllowMarkdown);
+  const [chosenExtCode, setChosenExtCode] = useState(cachedAllowExtCode);
+  const [chosenLtr, setChosenLtr] = useState(cachedLtr);
+  const [chosenMenuBtnPos, setChosenMenuBtnPos] = useState(cachedMenuBtnPos);
+  const [chosenDoHighlight, setChosenDoHighlight] = useState(cachedDoHighlight);
+  const [chosenWsPath, setChosenWsPath] = useState(cachedWsPath);
+  const [chosenNotify, setChosenNotify] = useState(cachedNotifyEnabled);
+  const [chosenMaxMessages, setChosenMaxMessages] = useState(cachedMaxMessages);
   const [chosenEnablePreview, setChosenEnablePreview] =
-    useStateIfMounted(cachedEnablePreview);
-  const [chosenLargeMode, setChosenLargeMode] =
-    useStateIfMounted(cachedLargeMode);
-  const [isDomainModalOpen, setIsDomainModalOpen] = useStateIfMounted(false);
-  const [chosenShortcodes, setChosenShortcodes] = useStateIfMounted(
+    useState(cachedEnablePreview);
+  const [chosenLargeMode, setChosenLargeMode] = useState(cachedLargeMode);
+  const [isDomainModalOpen, setIsDomainModalOpen] = useState(false);
+  const [chosenShortcodes, setChosenShortcodes] = useState(
     cachedShortcodeSuggestions,
   );
 

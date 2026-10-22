@@ -52,3 +52,8 @@ export const GOT_PASSWORD_REQ = 'app/CommunicationProvider/GOT_PASSWORD_REQ';
 export const CLEAR_AUTH_REQS = 'app/CommunicationProvider/CLEAR_AUTH_REQS';
 export const CHANGE_USERNAME = 'app/CommunicationProvider/CHANGE_USERNAME';
 export const LOGOUT = 'app/CommunicationProvider/LOGOUT';
+
+export const AGREED_TOS_LSLABEL =
+  'app/CommunicationProvider/AGREED_TOS_LSLABEL';
+export const SET_AGREED_TOS = 'app/CommunicationProvider/SET_AGREED_TOS';
+export const CURRENT_TOS_VERSION = 1;

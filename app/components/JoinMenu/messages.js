@@ -40,4 +40,16 @@ export default defineMessages({
     id: `${scope}.logoutTip`,
     defaultMessage: 'Type "/logout" in chat to change your identity',
   },
+  tosAgreement: {
+    id: `${scope}.tosAgreement`,
+    defaultMessage: 'I agree to the {tosLink} and {privacyLink}',
+  },
+  tosLinkText: {
+    id: `${scope}.tosLinkText`,
+    defaultMessage: 'Terms of Service',
+  },
+  privacyLinkText: {
+    id: `${scope}.privacyLinkText`,
+    defaultMessage: 'Privacy Policy',
+  },
 });

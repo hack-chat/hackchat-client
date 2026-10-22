@@ -61,6 +61,15 @@ const makeSelectPendingPasswordReq = () =>
     (substate) => substate.pendingPasswordReq,
   );
 
+/**
+ * Terms of Service agreement state
+ */
+const makeSelectHasAgreedTos = () =>
+  createSelector(
+    selectCommunicationProviderDomain,
+    (substate) => substate.hasAgreedTos,
+  );
+
 export {
   selectCommunicationProviderDomain,
   makeSelectChannel,
@@ -69,4 +78,5 @@ export {
   makeSelectSessionReady,
   makeSelectPendingCaptcha,
   makeSelectPendingPasswordReq,
+  makeSelectHasAgreedTos,
 };
