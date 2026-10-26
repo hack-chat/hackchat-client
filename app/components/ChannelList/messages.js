@@ -4,11 +4,11 @@
 
 import { defineMessages } from 'react-intl';
 
-export const scope = 'hcclient.components.ChannelList';
+const genScope = 'hcclient.generic';
 
 export default defineMessages({
   leaveChannel: {
-    id: `${scope}.leaveChannel`,
+    id: `${genScope}.leaveChannel`,
     defaultMessage: 'Leave Channel',
   },
 });

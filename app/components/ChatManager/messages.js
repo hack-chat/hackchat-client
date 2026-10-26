@@ -4,19 +4,19 @@
 
 import { defineMessages } from 'react-intl';
 
-export const scope = 'hcclient.components.ChatManager';
+const scope = 'hcclient.components.ChatManager';
 
 export default defineMessages({
   aloneMsg: {
     id: `${scope}.aloneMsg`,
     defaultMessage: 'You are alone.',
   },
-  onlineUsersText: {
-    id: `${scope}.onlineUsersText`,
-    defaultMessage: 'Online users:',
-  },
   currentChannel: {
     id: `${scope}.currentChannel`,
     defaultMessage: 'Current channel ',
+  },
+  onlineUsersText: {
+    id: `${scope}.onlineUsersText`,
+    defaultMessage: 'Online users:',
   },
 });

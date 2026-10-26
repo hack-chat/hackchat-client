@@ -1,10 +1,10 @@
 /**
- * This contains all the text for the Message container
+ * This contains all the text for the Message component
  */
 
 import { defineMessages } from 'react-intl';
 
-export const scope = 'hcclient.components.Message';
+const scope = 'hcclient.components.Message';
 
 const messages = {
   inviteTo: {
@@ -43,45 +43,15 @@ const messages = {
     id: `${scope}.confirmWarningText`,
     defaultMessage: `Warning, hitting okay will load unknown 3rd party code, this could result in many bad things happening- including (but not limited to) location disclosure, trip code theft, malicious trolling`,
   },
-  globalRateLimit: {
-    id: `${scope}.global.rateLimit`,
-    defaultMessage:
-      'You are sending too much text. Wait a moment and try again. Press the up arrow key to restore your last message',
-  },
-  globalUnknownUser: {
-    id: `${scope}.global.unknownUser`,
-    defaultMessage: 'Could not find user in that channel',
-  },
-  globalPermsFail: {
-    id: `${scope}.global.permsFail`,
-    defaultMessage: 'You do not have permission to do this',
-  },
   joinRateLimit: {
     id: `${scope}.join.rateLimit`,
     defaultMessage:
       'You are joining channels too fast. Wait a moment and try again',
   },
-  globalBadNick: {
-    id: `${scope}.global.badNick`,
-    defaultMessage:
-      'Nickname must consist of up to 24 letters, numbers, and underscores',
-  },
-  globalTaken: {
-    id: `${scope}.global.taken`,
-    defaultMessage: 'Nickname taken',
-  },
   inviteRateLimit: {
     id: `${scope}.invite.rateLimit`,
     defaultMessage:
       'You are sending invites too fast. Wait a moment before trying again',
-  },
-  warningLabel: {
-    id: `${scope}.global.warningLabel`,
-    defaultMessage: 'Warning',
-  },
-  errorLabel: {
-    id: `${scope}.global.ErrorLabel`,
-    defaultMessage: 'Error',
   },
   showLess: {
     id: `${scope}.showLess`,

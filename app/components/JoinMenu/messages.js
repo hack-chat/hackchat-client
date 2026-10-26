@@ -1,44 +1,49 @@
 /**
- * This contains all the text for the JoinModal component
+ * This contains all the text for the JoinMenu component
  */
 
 import { defineMessages } from 'react-intl';
 
-export const scope = 'hcclient.components.JoinMenu';
-export const genScope = 'hcclient.Generic';
+const genScope = 'hcclient.generic';
+const scope = 'hcclient.components.JoinMenu';
 
 export default defineMessages({
-  joinModalUsername: {
-    id: `${scope}.username`,
-    defaultMessage: 'username',
-  },
-  joinModalPassword: {
-    id: `${scope}.password`,
-    defaultMessage: 'password (optional)',
-  },
-  joinModalChannel: {
-    id: `${scope}.channel`,
-    defaultMessage: 'channel',
-  },
-  joinModalBtn: {
-    id: `${scope}.button`,
-    defaultMessage: 'Join!',
-  },
-  usernameColorText: {
-    id: `${genScope}.usernameColor`,
-    defaultMessage: 'Your Color',
+  randomButtonText: {
+    id: `${genScope}.randomButton`,
+    defaultMessage: 'Use Random',
   },
   rememberText: {
     id: `${genScope}.remember`,
     defaultMessage: 'Remember',
   },
-  randomButtonText: {
-    id: `${genScope}.randomButton`,
-    defaultMessage: 'Use Random',
+  usernameColorText: {
+    id: `${genScope}.usernameColor`,
+    defaultMessage: 'Your Color',
+  },
+
+  joinModalBtn: {
+    id: `${scope}.button`,
+    defaultMessage: 'Join!',
+  },
+  joinModalChannel: {
+    id: `${scope}.channel`,
+    defaultMessage: 'channel',
+  },
+  joinModalPassword: {
+    id: `${scope}.password`,
+    defaultMessage: 'password (optional)',
+  },
+  joinModalUsername: {
+    id: `${scope}.username`,
+    defaultMessage: 'username',
   },
   logoutTip: {
     id: `${scope}.logoutTip`,
     defaultMessage: 'Type "/logout" in chat to change your identity',
+  },
+  privacyLinkText: {
+    id: `${scope}.privacyLinkText`,
+    defaultMessage: 'Privacy Policy',
   },
   tosAgreement: {
     id: `${scope}.tosAgreement`,
@@ -47,9 +52,5 @@ export default defineMessages({
   tosLinkText: {
     id: `${scope}.tosLinkText`,
     defaultMessage: 'Terms of Service',
-  },
-  privacyLinkText: {
-    id: `${scope}.privacyLinkText`,
-    defaultMessage: 'Privacy Policy',
   },
 });

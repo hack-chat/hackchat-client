@@ -1,51 +1,15 @@
 /**
- * This contains all the text for the UserContextMenu container
+ * This contains all the text for the UserContextMenu component
  */
 
 import { defineMessages } from 'react-intl';
 
-export const scope = 'hcclient.components.UserContextMenu';
+const scope = 'hcclient.components.UserContextMenu';
 
-const messages = {
-  invite: {
-    id: `${scope}.invite`,
-    defaultMessage: 'Invite',
-  },
-  whisper: {
-    id: `${scope}.whisper`,
-    defaultMessage: 'Whisper',
-  },
-  kick: {
-    id: `${scope}.kick`,
-    defaultMessage: 'Kick',
-  },
+export default defineMessages({
   ban: {
     id: `${scope}.ban`,
     defaultMessage: 'Ban',
-  },
-  mention: {
-    id: `${scope}.mention`,
-    defaultMessage: 'Mention',
-  },
-  ignore: {
-    id: `${scope}.ignore`,
-    defaultMessage: 'Ignore',
-  },
-  unignore: {
-    id: `${scope}.unignore`,
-    defaultMessage: 'Unignore',
-  },
-  setLevel: {
-    id: `${scope}.setLevel`,
-    defaultMessage: 'Set Level',
-  },
-  muzzle: {
-    id: `${scope}.muzzle`,
-    defaultMessage: 'Muzzle',
-  },
-  unmuzzle: {
-    id: `${scope}.unmuzzle`,
-    defaultMessage: 'Unmuzzle',
   },
   changeColor: {
     id: `${scope}.changeColor`,
@@ -55,17 +19,37 @@ const messages = {
     id: `${scope}.changeFlair`,
     defaultMessage: 'Change Flair',
   },
-  uwuify: {
-    id: `${scope}.uwuify`,
-    defaultMessage: 'Uwuify',
+  ignore: {
+    id: `${scope}.ignore`,
+    defaultMessage: 'Ignore',
+  },
+  invite: {
+    id: `${scope}.invite`,
+    defaultMessage: 'Invite',
+  },
+  kick: {
+    id: `${scope}.kick`,
+    defaultMessage: 'Kick',
   },
   manage: {
     id: `${scope}.manage`,
     defaultMessage: 'Manage',
   },
+  mention: {
+    id: `${scope}.mention`,
+    defaultMessage: 'Mention',
+  },
+  muzzle: {
+    id: `${scope}.muzzle`,
+    defaultMessage: 'Muzzle',
+  },
   send: {
     id: `${scope}.send`,
     defaultMessage: 'Send',
+  },
+  sendNft: {
+    id: `${scope}.sendNft`,
+    defaultMessage: 'NFT',
   },
   sendSolana: {
     id: `${scope}.sendSolana`,
@@ -75,10 +59,24 @@ const messages = {
     id: `${scope}.sendToken`,
     defaultMessage: 'Token',
   },
-  sendNft: {
-    id: `${scope}.sendNft`,
-    defaultMessage: 'NFT',
+  setLevel: {
+    id: `${scope}.setLevel`,
+    defaultMessage: 'Set Level',
   },
-};
-
-export default defineMessages(messages);
+  unignore: {
+    id: `${scope}.unignore`,
+    defaultMessage: 'Unignore',
+  },
+  unmuzzle: {
+    id: `${scope}.unmuzzle`,
+    defaultMessage: 'Unmuzzle',
+  },
+  uwuify: {
+    id: `${scope}.uwuify`,
+    defaultMessage: 'Uwuify',
+  },
+  whisper: {
+    id: `${scope}.whisper`,
+    defaultMessage: 'Whisper',
+  },
+});

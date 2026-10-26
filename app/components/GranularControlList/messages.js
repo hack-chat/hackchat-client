@@ -4,7 +4,7 @@
 
 import { defineMessages } from 'react-intl';
 
-export const scope = 'hcclient.components.GranularControlList';
+const scope = 'hcclient.components.GranularControlList';
 
 export default defineMessages({
   addRowBtn: {

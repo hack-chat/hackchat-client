@@ -1,23 +1,23 @@
 /**
- * This contains all the text for the ChatInput container.
+ * This contains all the text for the ChatInput component
  */
 
 import { defineMessages } from 'react-intl';
 
-export const scope = 'hcclient.components.ChatInput';
+const scope = 'hcclient.components.ChatInput';
 
 export default defineMessages({
   inputTitle: {
     id: `${scope}.inputTitle`,
     defaultMessage: 'Your Message',
   },
-  reconnectingTitle: {
-    id: `${scope}.reconnectingTitle`,
-    defaultMessage: 'Chat is reconnecting, one moment. . .',
-  },
   previewTitle: {
     id: `${scope}.previewTitle`,
     defaultMessage: 'Preview Message',
+  },
+  reconnectingTitle: {
+    id: `${scope}.reconnectingTitle`,
+    defaultMessage: 'Chat is reconnecting, one moment. . .',
   },
   sendTitle: {
     id: `${scope}.sendTitle`,
