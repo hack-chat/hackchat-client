@@ -25,6 +25,7 @@ export const SET_LARGE_MODE = 'app/SettingsPage/SET_LARGE_MODE';
 export const SET_DOMAIN_WHITELIST = 'app/SettingsPage/SET_DOMAIN_WHITELIST';
 export const SET_SHORTCODE_SUGGESTIONS =
   'app/SettingsPage/SET_SHORTCODE_SUGGESTIONS';
+export const SET_TOUCH_MODE = 'app/SettingsPage/SET_TOUCH_MODE';
 
 /**
  * SettingsPage localStorage labels
@@ -54,3 +55,4 @@ export const LARGE_MODE_LSLABEL = 'app/Settings/LARGE_MODE_LSLABEL';
 export const DOMAIN_WHITELIST_LSLABEL = 'app/Settings/DOMAIN_WHITELIST_LSLABEL';
 export const SHORTCODE_SUGGESTIONS_LSLABEL =
   'app/Settings/SHORTCODE_SUGGESTIONS_LSLABEL';
+export const TOUCH_MODE_LSLABEL = 'app/Settings/TOUCH_MODE_LSLABEL';

@@ -22,8 +22,4 @@ export default styled.div`
   min-height: 0;
 
   ${thinScrollbar}
-
-  & > div:last-child > div:last-child {
-    padding-bottom: ${({ theme }) => theme.padding.chat.lastChild};
-  }
 `;

@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect';
-import { settingsInitialState } from './reducer';
 import { MAX_MESSAGES_LSLABEL } from './constants';
 
 const isMobile =
@@ -11,8 +10,7 @@ const isMobile =
 /**
  * Root domain selector for the SettingsPage container state
  */
-const selectSettingsPageDomain = (state) =>
-  state.settingsPage || settingsInitialState;
+const selectSettingsPageDomain = (state) => state.settings || {};
 
 /**
  * Last used username
@@ -159,6 +157,12 @@ const makeSelectCachedShortcodeSuggestions = () =>
     (substate) => substate.showShortcodeSuggestions,
   );
 
+/**
+ * Cached Touch Mode
+ */
+const makeSelectCachedTouchMode = () =>
+  createSelector(selectSettingsPageDomain, (substate) => substate.touchMode);
+
 export {
   selectSettingsPageDomain,
   makeSelectCachedUsername,
@@ -180,4 +184,5 @@ export {
   makeSelectCachedLargeMode,
   makeSelectCachedDomainWhitelist,
   makeSelectCachedShortcodeSuggestions,
+  makeSelectCachedTouchMode,
 };

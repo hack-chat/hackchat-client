@@ -42,6 +42,8 @@ import {
   DOMAIN_WHITELIST_LSLABEL,
   SET_SHORTCODE_SUGGESTIONS,
   SHORTCODE_SUGGESTIONS_LSLABEL,
+  SET_TOUCH_MODE,
+  TOUCH_MODE_LSLABEL,
 } from './constants';
 
 /**
@@ -333,5 +335,19 @@ export function setShortcodeSuggestions(enabled) {
   return {
     type: SET_SHORTCODE_SUGGESTIONS,
     enabled,
+  };
+}
+
+/**
+ * Updates the touch mode setting
+ * @param  {boolean} touchMode true if touch mode is enabled
+ * @return {object} An action object with a type of SET_TOUCH_MODE
+ */
+export function setTouchMode(touchMode) {
+  localStorage.setItem(TOUCH_MODE_LSLABEL, JSON.stringify(touchMode));
+
+  return {
+    type: SET_TOUCH_MODE,
+    touchMode,
   };
 }

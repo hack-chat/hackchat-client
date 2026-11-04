@@ -282,21 +282,21 @@ const GlobalStyle = createGlobalStyle`
   }
 
   [class*="effect-"] {
-    display: inline-block; 
+    display: inline-block;
     will-change: transform, filter, opacity;
-    transform: translateZ(0); 
+    transform: translateZ(0);
   }
 
-  .effect-1 { 
+  .effect-1 {
     text-shadow: 0 0 8px currentcolor;
-    animation: ${pulseGlow} 2s infinite ease-in-out; 
+    animation: ${pulseGlow} 2s infinite ease-in-out;
   }
   .effect-2 { animation: ${colorSwirl} 3s infinite linear; }
   .effect-3 { animation: ${bounceMove} 1s infinite ease-in-out; }
-  
-  .effect-4 { 
+
+  .effect-4 {
     text-shadow: 0 0 8px currentcolor;
-    animation: ${colorSwirl} 2s infinite linear, ${pulseGlow} 1.5s infinite ease-in-out; 
+    animation: ${colorSwirl} 2s infinite linear, ${pulseGlow} 1.5s infinite ease-in-out;
   }
 
   .effect-5 {
@@ -330,10 +330,10 @@ const GlobalStyle = createGlobalStyle`
     animation: ${hellfire} 1.5s infinite alternate;
   }
 
-  .effect-12 { 
-    color: #0f0; 
+  .effect-12 {
+    color: #0f0;
     text-shadow: 0 0 10px #0f0;
-    animation: ${matrixStretch} 2s infinite ease-in-out; 
+    animation: ${matrixStretch} 2s infinite ease-in-out;
   }
 
   .effect-13 { animation: ${flip3d} 3s infinite linear; }
@@ -350,7 +350,7 @@ const GlobalStyle = createGlobalStyle`
 
   .effect-17 { animation: ${wave} 1.5s infinite ease-in-out; }
   .effect-18 { animation: ${pop} 1s infinite ease-in-out; }
-  
+
   .effect-19 {
     animation: ${swing} 2s infinite ease-in-out;
     transform-origin: top center;
@@ -360,7 +360,7 @@ const GlobalStyle = createGlobalStyle`
 
   .gpu-accelerate {
     will-change: transform, filter, opacity;
-    transform: translateZ(0); 
+    transform: translateZ(0);
   }
 
   ${({ theme }) => theme.customCss || ''}

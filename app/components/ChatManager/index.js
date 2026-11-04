@@ -13,16 +13,24 @@ import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import { compose } from 'redux';
 import { Virtuoso } from 'react-virtuoso';
+import { FaBars } from 'react-icons/fa';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { Message } from 'components/Message';
 import MessageFormatter from 'components/MessageFormatter';
 import UserContextMenu from 'components/UserContextMenu';
 import MessageContextMenu from 'components/MessageContextMenu';
+import SearchBar from 'components/SearchBar';
+import NickPlaceholder from 'components/Message/NickPlaceholder';
 
 import messages from './messages';
 
 import ChatFooter from './ChatFooter';
 import Wrapper from './Wrapper';
+import MobileTopBar from './MobileTopBar';
+import MobileMenuToggle from './MobileMenuToggle';
+import ChannelName from './ChannelName';
+import MobileTopBarContent from './MobileTopBarContent';
 
 const EMPTY_USER = {};
 
@@ -38,34 +46,155 @@ export function ChatManager({
   isWalletConnected,
   largeMode,
   isActive,
+  isMobile,
+  isSimpleSearchOpen,
+  onToggleMainMenu,
+  toggleSimpleSearch,
+  myUsername,
 }) {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const searchTargetId = location.state?.searchTargetId;
+
   const virtuosoRef = useRef(null);
   const isAtBottomRef = useRef(true);
   const welcomeTextRef = useRef(null);
+  const processedSearchTargetRef = useRef(null);
 
   const [contextMenu, setContextMenu] = useState(null);
   const [messageContextMenu, setMessageContextMenu] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [mentionsOnly, setMentionsOnly] = useState(false);
+  const [activeMatchCursor, setActiveMatchCursor] = useState(0);
+  const [externalHighlightIndex, setExternalHighlightIndex] = useState(-1);
 
   const currentChannelData = useMemo(
     () => (channelData && channelData[channel]) || { users: [], messages: [] },
     [channelData, channel],
   );
 
-  useEffect(() => {
-    const wasAtBottom = isAtBottomRef.current;
+  const matchingIndices = useMemo(() => {
+    if (!isSimpleSearchOpen) return [];
 
-    if (wasAtBottom && virtuosoRef.current) {
-      setTimeout(() => {
-        if (virtuosoRef.current) {
-          virtuosoRef.current.scrollToIndex({
-            index: enrichedMessages.length - 1,
-            align: 'end',
-            behavior: 'smooth',
-          });
-        }
-      }, 50);
+    if (
+      !currentChannelData ||
+      !currentChannelData.messages ||
+      !Array.isArray(currentChannelData.messages)
+    ) {
+      return [];
     }
-  }, [enrichedMessages]);
+
+    if (!searchQuery && !mentionsOnly) return [];
+
+    let activeQuery = searchQuery.toLowerCase();
+
+    if (mentionsOnly && myUsername) {
+      activeQuery = `@${myUsername.toLowerCase()}`;
+    }
+
+    if (!activeQuery) return [];
+
+    const matches = [];
+    currentChannelData.messages.forEach((msg, index) => {
+      if (msg && (msg.type === 'chat' || msg.type === 'whisper') && msg.data) {
+        let rawString = '';
+
+        if (typeof msg.data.content === 'string') {
+          rawString = msg.data.content;
+        } else if (
+          msg.data.content &&
+          typeof msg.data.content === 'object' &&
+          msg.data.content.text
+        ) {
+          rawString = msg.data.content.text;
+        } else {
+          const extractText = (content) => {
+            if (!content) return '';
+            if (typeof content === 'string') return content;
+            if (typeof content === 'number') return content.toString();
+
+            if (Array.isArray(content))
+              return content.map(extractText).join('');
+
+            if (typeof content === 'object') {
+              if (content.props && content.props.children)
+                return extractText(content.props.children);
+
+              if (content.text) return content.text;
+            }
+
+            return '';
+          };
+          rawString = extractText(msg.data.content);
+        }
+
+        if (rawString && rawString.toLowerCase().includes(activeQuery)) {
+          matches.push(index + 1);
+        }
+      }
+    });
+
+    return matches;
+  }, [
+    currentChannelData.messages,
+    searchQuery,
+    mentionsOnly,
+    myUsername,
+    isSimpleSearchOpen,
+  ]);
+
+  const handleNextMatch = useCallback(() => {
+    if (matchingIndices.length === 0) return;
+
+    const nextCursor = (activeMatchCursor + 1) % matchingIndices.length;
+    setActiveMatchCursor(nextCursor);
+
+    setTimeout(() => {
+      virtuosoRef.current?.scrollToIndex({
+        index: matchingIndices[nextCursor],
+        align: 'center',
+        behavior: 'smooth',
+      });
+    }, 0);
+  }, [matchingIndices, activeMatchCursor]);
+
+  const handlePrevMatch = useCallback(() => {
+    if (matchingIndices.length === 0) return;
+
+    const prevCursor =
+      activeMatchCursor === 0
+        ? matchingIndices.length - 1
+        : activeMatchCursor - 1;
+    setActiveMatchCursor(prevCursor);
+
+    setTimeout(() => {
+      virtuosoRef.current?.scrollToIndex({
+        index: matchingIndices[prevCursor],
+        align: 'center',
+        behavior: 'smooth',
+      });
+    }, 0);
+  }, [matchingIndices, activeMatchCursor]);
+
+  useEffect(() => {
+    setActiveMatchCursor(0);
+
+    if (matchingIndices.length > 0) {
+      setTimeout(() => {
+        virtuosoRef.current?.scrollToIndex({
+          index: matchingIndices[0],
+          align: 'center',
+          behavior: 'smooth',
+        });
+      }, 0);
+    }
+  }, [searchQuery, mentionsOnly, matchingIndices]);
+
+  const handleCloseSearch = () => {
+    setSearchQuery('');
+    setMentionsOnly(false);
+    toggleSimpleSearch();
+  };
 
   const handleChatClick = (e) => {
     const linkTarget = e.target.closest('a');
@@ -225,6 +354,63 @@ export function ChatManager({
     staticWelcomeText,
   ]);
 
+  useEffect(() => {
+    if (
+      searchTargetId &&
+      isActive &&
+      searchTargetId !== processedSearchTargetRef.current
+    ) {
+      const targetIndex = enrichedMessages.findIndex(
+        (msg) => msg.data && msg.data.id === searchTargetId,
+      );
+
+      if (targetIndex !== -1) {
+        processedSearchTargetRef.current = searchTargetId;
+        setExternalHighlightIndex(targetIndex);
+
+        setTimeout(() => {
+          if (virtuosoRef.current) {
+            virtuosoRef.current.scrollToIndex({
+              index: targetIndex,
+              align: 'center',
+              behavior: 'smooth',
+            });
+          }
+        }, 150);
+
+        setTimeout(() => {
+          setExternalHighlightIndex(-1);
+        }, 5000);
+
+        const newState = { ...location.state };
+        delete newState.searchTargetId;
+
+        navigate(location.pathname + location.search, {
+          replace: true,
+          state: newState,
+        });
+      }
+    }
+  }, [searchTargetId, enrichedMessages, isActive, location, navigate]);
+
+  useEffect(() => {
+    if (isSimpleSearchOpen || externalHighlightIndex !== -1) return;
+
+    const wasAtBottom = isAtBottomRef.current;
+
+    if (wasAtBottom && virtuosoRef.current) {
+      setTimeout(() => {
+        if (virtuosoRef.current) {
+          virtuosoRef.current.scrollToIndex({
+            index: enrichedMessages.length - 1,
+            align: 'end',
+            behavior: 'smooth',
+          });
+        }
+      }, 50);
+    }
+  }, [enrichedMessages, isSimpleSearchOpen, externalHighlightIndex]);
+
   const myPermissionLevel = useMemo(() => {
     const me = Object.values(currentChannelData.users).find(
       (user) => user.mine,
@@ -239,8 +425,19 @@ export function ChatManager({
       stripe: lastMessage ? lastMessage.stripe : false,
       isMentioned: false,
       largeMode,
+      highlightedIndex:
+        isSimpleSearchOpen && matchingIndices.length > 0
+          ? matchingIndices[activeMatchCursor]
+          : externalHighlightIndex,
     }),
-    [lastMessage, largeMode],
+    [
+      lastMessage,
+      largeMode,
+      matchingIndices,
+      activeMatchCursor,
+      isSimpleSearchOpen,
+      externalHighlightIndex,
+    ],
   );
 
   const virtuosoComponents = useMemo(
@@ -264,6 +461,37 @@ export function ChatManager({
       onClick={handleChatClick}
       style={{ display: isActive ? 'flex' : 'none' }}
     >
+      {isMobile && (
+        <MobileTopBar>
+          <NickPlaceholder />
+          <MobileTopBarContent>
+            <ChannelName>?{channel}</ChannelName>
+            <MobileMenuToggle onClick={onToggleMainMenu}>
+              <FaBars />
+            </MobileMenuToggle>
+          </MobileTopBarContent>
+        </MobileTopBar>
+      )}
+
+      {isSimpleSearchOpen && (
+        <SearchBar
+          onClose={handleCloseSearch}
+          searchValue={searchQuery}
+          onSearchChange={setSearchQuery}
+          mentionsOnly={mentionsOnly}
+          onMentionsOnlyChange={setMentionsOnly}
+          matchCount={matchingIndices.length}
+          currentMatchIndex={activeMatchCursor}
+          onNextMatch={handleNextMatch}
+          onPrevMatch={handlePrevMatch}
+          resultText={
+            matchingIndices.length > 0
+              ? `${activeMatchCursor + 1} / ${matchingIndices.length}`
+              : intl.formatMessage(messages.noResults)
+          }
+        />
+      )}
+
       <Virtuoso
         ref={virtuosoRef}
         scrollerRef={(element) => {
@@ -273,18 +501,21 @@ export function ChatManager({
         }}
         data={enrichedMessages}
         style={{ flex: 1 }}
-        overscan={600}
-        alignToBottom={false}
+        defaultItemHeight={50}
+        increaseViewportBy={{ top: 1200, bottom: 800 }}
+        initialTopMostItemIndex={enrichedMessages.length - 1}
+        firstItemIndex={Math.max(0, 1000000 - enrichedMessages.length)}
+        alignToBottom={true}
         followOutput={(isAtBottom) => (isAtBottom ? 'auto' : false)}
         atBottomThreshold={50}
         atBottomStateChange={(atBottom) => {
           isAtBottomRef.current = atBottom;
         }}
-        initialTopMostItemIndex={enrichedMessages.length - 1}
         context={virtuosoContext}
         components={virtuosoComponents}
         itemContent={(index, msg) => (
           <Message
+            isSearchHighlighted={index === virtuosoContext.highlightedIndex}
             msgForm={MessageFormatter}
             handleMention={handleMenuCommand}
             handleContextMenu={handleUserContextMenu}
@@ -330,6 +561,11 @@ ChatManager.propTypes = {
   largeMode: PropTypes.bool,
   externalScrollRef: PropTypes.object,
   isActive: PropTypes.bool,
+  isMobile: PropTypes.bool,
+  isSimpleSearchOpen: PropTypes.bool,
+  onToggleMainMenu: PropTypes.func,
+  toggleSimpleSearch: PropTypes.func,
+  myUsername: PropTypes.string,
 };
 
 export default compose(injectIntl)(ChatManager);

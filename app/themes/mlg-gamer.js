@@ -22,17 +22,17 @@ const theme = {
     body::before {
       content: '';
       position: fixed;
-      background-image: url('https://gateway.irys.xyz/7UCQupVzB8VnW3YQQyVZtPu4dD7NUnHTf3Gnd4RLgwHj'); 
+      background-image: url('https://gateway.irys.xyz/7UCQupVzB8VnW3YQQyVZtPu4dD7NUnHTf3Gnd4RLgwHj');
       background-size: contain;
       background-position: center;
       background-repeat: no-repeat;
-      width: 150px; 
+      width: 150px;
       height: 150px;
       opacity: 0.4;
       pointer-events: none;
       z-index: 9998;
-      animation: 
-        bounceX150 12.7s linear infinite alternate, 
+      animation:
+        bounceX150 12.7s linear infinite alternate,
         bounceY150 8.1s linear infinite alternate,
         mlgSpin 5s linear infinite;
     }
@@ -44,12 +44,12 @@ const theme = {
       background-size: contain;
       background-position: center;
       background-repeat: no-repeat;
-      width: 150px; 
+      width: 150px;
       height: 150px;
       pointer-events: none;
       z-index: 9999;
-      animation: 
-        bounceX150 12.7s linear infinite alternate, 
+      animation:
+        bounceX150 12.7s linear infinite alternate,
         bounceY150 8.1s linear infinite alternate,
         mlgSpin 5s linear infinite,
         illumiFade 4s ease-in-out infinite;
@@ -62,32 +62,30 @@ const theme = {
       background-size: contain;
       background-position: center;
       background-repeat: no-repeat;
-      width: 120px; 
+      width: 120px;
       height: 120px;
       opacity: 0.4;
       pointer-events: none;
       z-index: 9997;
       transform-origin: bottom center;
-      animation: 
-        bounceX120 4.7s linear infinite alternate, 
+      animation:
+        bounceX120 4.7s linear infinite alternate,
         bounceY120 3.1s linear infinite alternate,
         dogeRock 0.5s ease-in-out infinite alternate;
     }
 
-    .WelcomeStyle-sc-ifxd1s-0::before {
+    .chat-log::before {
       content: '';
       display: block;
       width: 100%;
       height: 86px;
-      max-height: 86px;
-      margin: 0 auto;
       background-image: url('https://gateway.irys.xyz/CCVb6kwYvuVZj1kNBJywH1C7aEEC1jN3zjif6f9DfwM6');
       background-size: cover;
       background-position: center 30%;
       background-repeat: no-repeat;
       border-bottom: 4px solid #00ff00;
       box-shadow: 0 4px 15px #ff00ff80;
-      margin-bottom: 1em;
+      margin-bottom: 0;
       border-radius: 4px;
       z-index: 10;
       position: relative;
@@ -97,7 +95,7 @@ const theme = {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-    
+
     @keyframes dogeRock {
       0% { transform: rotate(-25deg); }
       100% { transform: rotate(25deg); }
@@ -112,7 +110,7 @@ const theme = {
 
     @keyframes bounceX150 { 0% { left: 0; } 100% { left: calc(100vw - 150px); } }
     @keyframes bounceY150 { 0% { top: 0; } 100% { top: calc(100vh - 150px); } }
-    
+
     @keyframes bounceX120 { 0% { left: 0; } 100% { left: calc(100vw - 120px); } }
     @keyframes bounceY120 { 0% { top: 0; } 100% { top: calc(100vh - 120px); } }
 
@@ -120,7 +118,7 @@ const theme = {
       display: inline-block;
       transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.2s;
     }
-    
+
     a:hover {
       transform: scale(1.5);
       color: #ff00ff !important;

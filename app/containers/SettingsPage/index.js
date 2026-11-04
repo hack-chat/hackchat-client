@@ -35,29 +35,29 @@ import LocaleModal from 'components/LocaleModal';
 import ColorPicker from 'components/ColorPicker';
 import ChannelList from 'components/ChannelList';
 import GranularControlList from 'components/GranularControlList';
+import MainContainer from 'components/Generic/MainContainer';
+import BooleanSwitch from 'components/Generic/BooleanSwitch';
+import StyledInput from 'components/Generic/StyledInput';
+import WideButton from 'components/Generic/WideButton';
+import LabelText from 'components/Generic/LabelText';
+import SettingsGroup from 'components/Generic/SettingsGroup';
+import ScrollArea from 'components/Generic/ScrollArea';
+import InputRow from 'components/Generic/InputRow';
+import SwitchRow from 'components/Generic/SwitchRow';
+import FooterSection from 'components/Generic/FooterSection';
+import CollapsibleSection from 'components/Generic/CollapsibleSection';
+import StripedContainer from 'components/Generic/StripedContainer';
 
-import { useInjectReducer } from 'utils/injectReducer';
+// import { useInjectReducer } from 'utils/injectReducer';
 
-import MainContainer from './MainContainer';
-import BooleanSwitch from './BooleanSwitch';
-import StyledInput from './StyledInput';
-import WideButton from './WideButton';
-import LabelText from './LabelText';
-import SettingsGroup from './SettingsGroup';
-import ScrollArea from './ScrollArea';
-import InputRow from './InputRow';
 import InputIcon from './InputIcon';
 import ColorInputWrapper from './ColorInputWrapper';
 import UsernameGroup from './UsernameGroup';
 import UsernameInput from './UsernameInput';
 import ColorSquare from './ColorSquare';
-import SwitchRow from './SwitchRow';
 import ThemeRow from './ThemeRow';
-import FooterSection from './FooterSection';
 import ThemeSelect from './ThemeSelect';
 import NumericSettingRow from './NumericSettingRow';
-import CollapsibleSection from './CollapsibleSection';
-import StripedContainer from './StripedContainer';
 
 const AVAILABLE_THEMES = [
   'default',
@@ -128,6 +128,7 @@ import {
   setLargeMode,
   setDomainWhitelist,
   setShortcodeSuggestions,
+  setTouchMode,
 } from './actions';
 
 import {
@@ -150,9 +151,10 @@ import {
   makeSelectCachedLargeMode,
   makeSelectCachedDomainWhitelist,
   makeSelectCachedShortcodeSuggestions,
+  makeSelectCachedTouchMode,
 } from './selectors';
 
-import reducer from './reducer';
+//import reducer from './reducer';
 import messages from './messages';
 
 export function SettingsPage({
@@ -183,6 +185,7 @@ export function SettingsPage({
   cachedDomainWhitelist,
   cachedShortcodeSuggestions,
   intl,
+  cachedTouchMode,
 }) {
   const navigate = useNavigate();
   const scrollRef = useRef(null);
@@ -208,7 +211,7 @@ export function SettingsPage({
     };
   }, [handleGoBack]);
 
-  useInjectReducer({ key: 'settingsPage', reducer });
+  // useInjectReducer({ key: 'settingsPage', reducer });
 
   const [invalidName, setInvalidName] = useState(false);
   const clearInvalidName = () => setInvalidName(false);
@@ -235,6 +238,7 @@ export function SettingsPage({
   const [chosenShortcodes, setChosenShortcodes] = useState(
     cachedShortcodeSuggestions,
   );
+  const [chosenTouchMode, setChosenTouchMode] = useState(cachedTouchMode);
 
   useEffect(() => {
     if (cachedUsername !== chosenUsername)
@@ -310,6 +314,7 @@ export function SettingsPage({
   );
   const domainPlaceholder = intl.formatMessage(messages.domainPlaceholder);
   const showShortcodesText = intl.formatMessage(messages.showShortcodesText);
+  const touchModeText = intl.formatMessage(messages.touchModeText);
 
   const joinedChannels = useMemo(
     () => (channelData ? Object.keys(channelData) : []),
@@ -512,6 +517,16 @@ export function SettingsPage({
               <LabelText>{showShortcodesText}</LabelText>
               <BooleanSwitch checked={chosenShortcodes} />
             </SwitchRow>
+
+            <SwitchRow
+              onClick={() => {
+                setChosenTouchMode(!chosenTouchMode);
+                dispatch(setTouchMode(!chosenTouchMode));
+              }}
+            >
+              <LabelText>{touchModeText}</LabelText>
+              <BooleanSwitch checked={chosenTouchMode} />
+            </SwitchRow>
           </StripedContainer>
         </CollapsibleSection>
 
@@ -679,6 +694,7 @@ SettingsPage.propTypes = {
   cachedDomainWhitelist: PropTypes.array,
   cachedShortcodeSuggestions: PropTypes.bool,
   intl: PropTypes.object.isRequired,
+  cachedTouchMode: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -703,6 +719,7 @@ const mapStateToProps = createStructuredSelector({
   cachedLargeMode: makeSelectCachedLargeMode(),
   cachedDomainWhitelist: makeSelectCachedDomainWhitelist(),
   cachedShortcodeSuggestions: makeSelectCachedShortcodeSuggestions(),
+  cachedTouchMode: makeSelectCachedTouchMode(),
 });
 
 function mapDispatchToProps(dispatch) {

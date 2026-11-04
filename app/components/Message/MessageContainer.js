@@ -1,9 +1,5 @@
 /**
  * Exports a styled div
- *
- * @todo? add perf option, enabling and disabling:
- * content-visibility: auto;
- * contain-intrinsic-size: auto 24px;
  */
 
 import styled from 'styled-components';
@@ -12,13 +8,9 @@ const MessageContainer = styled.div.attrs({ className: 'message' })`
   display: flex;
   flex-direction: column;
 
-  & > div:last-child {
-    padding-top: 0.3em;
-    padding-bottom: ${({ theme }) => theme.padding.chat.msgSpacing};
-  }
-
   @media (width >= 768px) {
     flex-direction: row;
+    align-items: stretch;
   }
 `;
 

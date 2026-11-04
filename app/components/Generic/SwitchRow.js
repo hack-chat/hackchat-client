@@ -18,7 +18,7 @@ export default styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 0;
+  padding: 10px 14px;
   border-bottom: 1px solid ${({ theme }) => theme.palette.border.subtle};
   cursor: pointer;
   user-select: none;

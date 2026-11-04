@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 
 import messages from './messages';
 
-// Import all layout and style components
 import MessageContainer from './MessageContainer';
 import MessageContent from './MessageContent';
 import ExtendedMessageContent from './ExtendedMessageContent';
@@ -19,7 +18,6 @@ import JoinStyle from './JoinStyle';
 import LeaveStyle from './LeaveStyle';
 import EmoteStyle from './EmoteStyle';
 import EmoteName from './EmoteName';
-
 import ChatMessage from './ChatMessage';
 import WhisperMessage from './WhisperMessage';
 import InviteMessage from './InviteMessage';
@@ -42,6 +40,7 @@ export const Message = memo(
     intl,
     hasBackground,
     onTxAttemptClick,
+    isSearchHighlighted,
   }) => {
     if (user && user.blocked) {
       return null;
@@ -60,6 +59,7 @@ export const Message = memo(
             msgForm={msgForm}
             intl={intl}
             hasBackground={hasBackground}
+            isSearchHighlighted={isSearchHighlighted}
           />
         );
       case 'emote': {
@@ -220,6 +220,7 @@ Message.propTypes = {
   onTxAttemptClick: PropTypes.func,
   handleMention: PropTypes.func,
   handleContextMenu: PropTypes.func,
+  isSearchHighlighted: PropTypes.bool,
 };
 
 Message.displayName = 'Message';

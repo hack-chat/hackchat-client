@@ -12,13 +12,13 @@ import {
   FaCog,
   FaWallet,
   FaQuestion,
-  FaBars,
   FaTimes,
   FaPlusCircle,
   FaLanguage,
 } from 'react-icons/fa';
 import { MdOutlinePushPin, MdPushPin, MdOutlineLogout } from 'react-icons/md';
-import { BsPaperclip } from 'react-icons/bs';
+import { GrSearch, GrSearchAdvanced } from 'react-icons/gr';
+import { LuEllipsisVertical, LuLink } from 'react-icons/lu';
 
 import UserContextMenu from 'components/UserContextMenu';
 
@@ -26,17 +26,23 @@ import CurrentChannelInfo from './CurrentChannelInfo';
 import MenuFooter from './MenuFooter';
 import MenuWrapper from './MenuWrapper';
 import MenuContent from './MenuContent';
-import MenuToggle from './MenuToggle';
-import PinButton from './PinButton';
-import MenuLeaveButton from './MenuLeaveButton';
-import MenuCopyButton from './MenuCopyButton';
+import HeaderButton from './HeaderButton';
+import ChannelMenuDropdown from './ChannelMenuDropdown';
+import ChannelMenuItem from './ChannelMenuItem';
 import ItemList from './ItemList';
 import Item from './Item';
 import Divider from './Divider';
 import UserFlair from './UserFlair';
 import UserIcon from './UserIcon';
+import ChannelMenuWrapper from './ChannelMenuWrapper';
+import ChannelTextContent from './ChannelTextContent';
+import ChannelName from './ChannelName';
+import ChannelUserCount from './ChannelUserCount';
+import DropdownDivider from './DropdownDivider';
+import ItemText from './ItemText';
 
 import messages from './messages';
+import { PIN_MENU_LSLABEL } from './constants';
 
 const truncateAddress = (address) => {
   if (!address || address.length < 9) return address;
@@ -45,34 +51,13 @@ const truncateAddress = (address) => {
   return `${left}...${right}`;
 };
 
-const useWindowSize = () => {
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
-
-  useEffect(() => {
-    function handleResize() {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    }
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  return windowSize;
-};
-
 export function MainMenu({
   channel,
   channelData,
   intl,
   menuLeft = false,
   isLtr = true,
-  allowPinning = true,
+  toggleSimpleSearch = () => {},
   onJoinOrCreateClick = () => {},
   onCommandClick = () => {},
   onOpenLocaleModal = () => {},
@@ -81,18 +66,37 @@ export function MainMenu({
   walletAddress = '',
   onDisconnectWallet = () => {},
   onLeaveChannel = () => {},
+  isMobile,
+  largeMode,
 }) {
   const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [isPinned, setIsPinned] = useState(false);
+  const [isChannelMenuOpen, setIsChannelMenuOpen] = useState(false);
   const [contextMenu, setContextMenu] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
   const menuRef = useRef(null);
+  const channelMenuRef = useRef(null);
 
-  // Mobile detection
-  const windowSize = useWindowSize();
-  const isMobile = windowSize.width < 768;
+  const [isPinned, setIsPinned] = useState(() => {
+    try {
+      const storedItem = window.localStorage.getItem(PIN_MENU_LSLABEL);
+      return storedItem !== null ? JSON.parse(storedItem) : false;
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.warn('Failed to parse pin menu state from local storage', error);
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(PIN_MENU_LSLABEL, JSON.stringify(isPinned));
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.warn('Failed to save pin menu state to local storage', error);
+    }
+  }, [isPinned]);
 
   const joinedChannels = useMemo(() => Object.keys(channelData), [channelData]);
 
@@ -112,7 +116,7 @@ export function MainMenu({
   }, [channelData, channel]);
 
   const currentUserCount = onlineUsers.length;
-  const isMenuForcedOpen = isOpen || isPinned || !!contextMenu;
+  const isMenuForcedOpen = isOpen || (!isMobile && isPinned) || !!contextMenu;
 
   const handleUserClick = (user, event) => {
     event.preventDefault();
@@ -136,6 +140,21 @@ export function MainMenu({
   };
 
   useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        channelMenuRef.current &&
+        !channelMenuRef.current.contains(event.target)
+      ) {
+        setIsChannelMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
     if (!isHovered) return undefined;
 
     const handleMouseOver = (e) => {
@@ -145,6 +164,7 @@ export function MainMenu({
     };
 
     document.addEventListener('mouseover', handleMouseOver);
+
     return () => document.removeEventListener('mouseover', handleMouseOver);
   }, [isHovered]);
 
@@ -154,23 +174,87 @@ export function MainMenu({
       if (targetChannel) {
         navigate(`/?${targetChannel}`);
 
-        if (isMobile && !isPinned) {
-          setIsOpen(false);
-        }
+        if (isMobile) setIsOpen(false);
       }
     };
 
     window.addEventListener('app:switch-channel', handleSwitchChannel);
+
     return () =>
       window.removeEventListener('app:switch-channel', handleSwitchChannel);
   }, [navigate, isMobile, isPinned]);
 
+  useEffect(() => {
+    const handleToggleMobileMenu = () => setIsOpen((prev) => !prev);
+    window.addEventListener('app:toggle-mobile-menu', handleToggleMobileMenu);
+
+    return () => {
+      window.removeEventListener(
+        'app:toggle-mobile-menu',
+        handleToggleMobileMenu,
+      );
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) {
+      setIsOpen(false);
+    }
+  }, [isMobile]);
+
+  const handleHeaderClick = () => {
+    if (isMobile) {
+      setIsOpen(false);
+    } else {
+      setIsPinned(!isPinned);
+    }
+  };
+
+  const getHeaderTitle = () => {
+    if (isMobile) return 'Close';
+    return intl.formatMessage(messages.pinMenu);
+  };
+
+  const renderHeaderIcon = () => {
+    if (isMobile) return <FaTimes />;
+    if (isPinned) return <MdPushPin />;
+    return <MdOutlinePushPin />;
+  };
+
+  const renderUserIcon = (user) => {
+    if (user.flair) return <UserFlair>{user.flair}</UserFlair>;
+    return <UserIcon />;
+  };
+
+  const renderWalletItem = () => {
+    if (isWalletConnected) {
+      return (
+        <Item
+          onClick={() => {
+            onDisconnectWallet();
+            if (!isPinned) setIsOpen(false);
+          }}
+          title={walletAddress}
+        >
+          <FaWallet /> {truncateAddress(walletAddress)}
+        </Item>
+      );
+    }
+
+    return (
+      <Item
+        onClick={() => {
+          onOpenWalletModal();
+          if (!isPinned) setIsOpen(false);
+        }}
+      >
+        <FaWallet /> {intl.formatMessage(messages.connectWallet)}
+      </Item>
+    );
+  };
+
   return (
     <>
-      <MenuToggle $menuLeft={menuLeft} onClick={() => setIsOpen(!isOpen)}>
-        {isOpen ? <FaTimes /> : <FaBars />}
-      </MenuToggle>
-
       <MenuWrapper
         ref={menuRef}
         $isOpen={isMenuForcedOpen}
@@ -179,46 +263,90 @@ export function MainMenu({
         dir={isLtr ? 'ltr' : 'rtl'}
         onWheel={(e) => e.stopPropagation()}
         onMouseEnter={() => setIsHovered(true)}
+        $isMobile={isMobile}
+        $largeMode={largeMode}
       >
-        {allowPinning && (
-          <PinButton
-            onClick={() => setIsPinned(!isPinned)}
-            title={intl.formatMessage(messages.pinMenu)}
-          >
-            {isPinned ? <MdPushPin /> : <MdOutlinePushPin />}
-          </PinButton>
-        )}
-
-        <MenuCopyButton
-          onClick={handleCopyUrl}
-          title={intl.formatMessage(messages.copyUrl)}
-        >
-          <BsPaperclip />
-        </MenuCopyButton>
-
-        <MenuLeaveButton
-          onClick={() => {
-            onLeaveChannel(channel);
-            if (!isPinned) setIsOpen(false);
-          }}
-          title={intl.formatMessage(messages.leaveChannel)}
-        >
-          <MdOutlineLogout />
-        </MenuLeaveButton>
-
         <MenuContent>
           {channel && (
-            <CurrentChannelInfo>
-              ?{channel}
-              <span>
-                (
-                {intl.formatMessage(messages.usersCount, {
-                  count: currentUserCount,
-                })}
-                )
-              </span>
-            </CurrentChannelInfo>
+            <>
+              <CurrentChannelInfo>
+                <ChannelMenuWrapper ref={channelMenuRef}>
+                  <HeaderButton
+                    onClick={() => setIsChannelMenuOpen(!isChannelMenuOpen)}
+                  >
+                    <LuEllipsisVertical />
+                  </HeaderButton>
+
+                  {isChannelMenuOpen && (
+                    <ChannelMenuDropdown>
+                      <ChannelMenuItem
+                        onClick={() => {
+                          if (!isPinned) setIsOpen(false);
+
+                          toggleSimpleSearch();
+                          setIsChannelMenuOpen(false);
+                        }}
+                      >
+                        <GrSearch /> {intl.formatMessage(messages.searchChat)}
+                      </ChannelMenuItem>
+                      <ChannelMenuItem
+                        onClick={() => {
+                          navigate('/search');
+                          if (isMobile && !isPinned) setIsOpen(false);
+                          setIsChannelMenuOpen(false);
+                        }}
+                      >
+                        <GrSearchAdvanced />{' '}
+                        {intl.formatMessage(messages.advancedSearch)}
+                      </ChannelMenuItem>
+                      <ChannelMenuItem
+                        onClick={() => {
+                          handleCopyUrl();
+                          setIsChannelMenuOpen(false);
+                        }}
+                      >
+                        <LuLink /> {intl.formatMessage(messages.copyUrl)}
+                      </ChannelMenuItem>
+
+                      <DropdownDivider />
+
+                      <ChannelMenuItem
+                        $danger
+                        onClick={() => {
+                          onLeaveChannel(channel);
+                          setIsChannelMenuOpen(false);
+                          if (!isPinned) setIsOpen(false);
+                        }}
+                      >
+                        <MdOutlineLogout />{' '}
+                        {intl.formatMessage(messages.leaveChannel)}
+                      </ChannelMenuItem>
+                    </ChannelMenuDropdown>
+                  )}
+                </ChannelMenuWrapper>
+
+                <ChannelTextContent>
+                  <ChannelName>?{channel}</ChannelName>
+                  <ChannelUserCount>
+                    (
+                    {intl.formatMessage(messages.usersCount, {
+                      count: currentUserCount,
+                    })}
+                    )
+                  </ChannelUserCount>
+                </ChannelTextContent>
+
+                <HeaderButton
+                  $alignRight
+                  onClick={handleHeaderClick}
+                  title={getHeaderTitle()}
+                >
+                  {renderHeaderIcon()}
+                </HeaderButton>
+              </CurrentChannelInfo>
+            </>
           )}
+
           <ItemList>
             {joinedChannels.map((ch) => (
               <Item
@@ -226,16 +354,15 @@ export function MainMenu({
                 $isActive={ch === channel}
                 onClick={() => {
                   navigate(`/?${ch}`);
-                  if (isMobile && !isPinned) {
-                    setIsOpen(false);
-                  }
+                  if (isMobile && !isPinned) setIsOpen(false);
                 }}
               >
-                <FaQuestion /> {ch}
+                <FaQuestion />
+                <ItemText>{ch}</ItemText>
               </Item>
             ))}
+
             <Item
-              $marginTop="0.5rem"
               onClick={() => {
                 onJoinOrCreateClick();
                 if (!isPinned) setIsOpen(false);
@@ -246,6 +373,7 @@ export function MainMenu({
 
             <Divider />
           </ItemList>
+
           <ItemList>
             {onlineUsers.map((user) => (
               <Item
@@ -257,11 +385,7 @@ export function MainMenu({
                   user.nickColor ? `#${user.nickColor}` : 'transparent'
                 }
               >
-                {user.flair ? (
-                  <UserFlair>{user.flair}</UserFlair>
-                ) : (
-                  <UserIcon />
-                )}
+                {renderUserIcon(user)}
                 {user.username}
               </Item>
             ))}
@@ -269,6 +393,7 @@ export function MainMenu({
 
           <MenuFooter>
             <ItemList>
+              <Divider />
               <Item
                 onClick={() => {
                   onOpenLocaleModal();
@@ -280,26 +405,8 @@ export function MainMenu({
               <Item onClick={() => navigate('/settings')}>
                 <FaCog /> {intl.formatMessage(messages.settings)}
               </Item>
-              {isWalletConnected ? (
-                <Item
-                  onClick={() => {
-                    onDisconnectWallet();
-                    if (!isPinned) setIsOpen(false);
-                  }}
-                  title={walletAddress}
-                >
-                  <FaWallet /> {truncateAddress(walletAddress)}
-                </Item>
-              ) : (
-                <Item
-                  onClick={() => {
-                    onOpenWalletModal();
-                    if (!isPinned) setIsOpen(false);
-                  }}
-                >
-                  <FaWallet /> {intl.formatMessage(messages.connectWallet)}
-                </Item>
-              )}
+
+              {renderWalletItem()}
             </ItemList>
           </MenuFooter>
         </MenuContent>
@@ -320,7 +427,8 @@ MainMenu.propTypes = {
   channel: PropTypes.string,
   channelData: PropTypes.object,
   intl: PropTypes.object.isRequired,
-  allowPinning: PropTypes.bool,
+  isSimpleSearchOpen: PropTypes.bool,
+  toggleSimpleSearch: PropTypes.func,
   onJoinOrCreateClick: PropTypes.func,
   onCommandClick: PropTypes.func,
   onOpenLocaleModal: PropTypes.func,
@@ -329,6 +437,8 @@ MainMenu.propTypes = {
   walletAddress: PropTypes.string,
   onDisconnectWallet: PropTypes.func,
   onLeaveChannel: PropTypes.func,
+  isMobile: PropTypes.bool,
+  largeMode: PropTypes.bool,
 };
 
 export default compose(injectIntl)(MainMenu);

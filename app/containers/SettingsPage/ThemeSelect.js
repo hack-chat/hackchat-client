@@ -3,7 +3,7 @@
  */
 
 import styled from 'styled-components';
-import StyledInput from './StyledInput';
+import StyledInput from 'components/Generic/StyledInput';
 
 export default styled(StyledInput).attrs({
   as: 'select',

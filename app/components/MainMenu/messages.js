@@ -8,6 +8,10 @@ const scope = 'hcclient.components.MainMenu';
 const genScope = 'hcclient.generic';
 
 export default defineMessages({
+  advancedSearch: {
+    id: `${genScope}.advancedSearch`,
+    defaultMessage: 'Advanced Search',
+  },
   language: {
     id: `${genScope}.language`,
     defaultMessage: 'Language',
@@ -15,6 +19,10 @@ export default defineMessages({
   leaveChannel: {
     id: `${genScope}.leaveChannel`,
     defaultMessage: 'Leave Channel',
+  },
+  searchChat: {
+    id: `${genScope}.searchChat`,
+    defaultMessage: 'Search',
   },
 
   connectWallet: {

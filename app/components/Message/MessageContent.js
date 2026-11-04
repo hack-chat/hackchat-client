@@ -5,12 +5,14 @@
 import styled from 'styled-components';
 
 const getBackground = (props) => {
+  if (props.$isSearchHighlighted) return `${props.theme.palette.status.warn}1a`;
   if (props.$isMentioned) return props.theme.palette.status.mentionBg;
   if (props.$hasBackground) return props.theme.palette.background.alt;
   return 'transparent';
 };
 
 const getBorderColor = (props) => {
+  if (props.$isSearchHighlighted) return props.theme.palette.status.warn;
   if (props.$isMentioned) return props.theme.palette.status.mentionBorder;
   return props.theme.palette.border.divider;
 };
@@ -21,8 +23,12 @@ const MessageContent = styled.div`
   align-items: flex-start;
   flex-grow: 1;
   min-width: 0;
+  padding-block: 0.3em ${({ theme }) => theme.padding.chat.msgSpacing};
   padding-inline: 1.5em 0.5em;
   background-color: ${getBackground} !important;
+  transition:
+    background-color 0.2s ease-in-out,
+    border-color 0.2s ease-in-out;
 
   @media (width >= 768px) {
     padding-inline-start: 1em;
@@ -39,6 +45,15 @@ const MessageContent = styled.div`
   & li,
   & blockquote {
     color: inherit;
+  }
+
+  & p {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+  }
+
+  & p:last-child {
+    margin-bottom: 0;
   }
 
   & h1,
@@ -86,7 +101,7 @@ const MessageContent = styled.div`
   & img {
     max-width: 100%;
     height: auto;
-    max-height: 350px;
+    height: 350px;
     border-radius: 4px;
     margin: 0.5em 0;
   }

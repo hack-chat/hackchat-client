@@ -12,6 +12,7 @@ import { compose } from 'redux';
 import { ThemeProvider } from 'styled-components';
 
 import HomePage from 'containers/HomePage/Loadable';
+import SearchPage from 'containers/SearchPage/Loadable';
 import SettingsPage from 'containers/SettingsPage/Loadable';
 import ToastNotifier from 'containers/ToastNotifier';
 
@@ -65,6 +66,7 @@ function App({ cachedTheme, cachedLargeMode }) {
         </Helmet>
 
         <Routes>
+          <Route exact path="/search" Component={SearchPage} />
           <Route exact path="/settings" Component={SettingsPage} />
           <Route path="*" Component={HomePage} />
         </Routes>

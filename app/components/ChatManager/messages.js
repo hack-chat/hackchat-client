@@ -19,4 +19,8 @@ export default defineMessages({
     id: `${scope}.onlineUsersText`,
     defaultMessage: 'Online users:',
   },
+  noResults: {
+    id: `${scope}.noResults`,
+    defaultMessage: '0 / 0',
+  },
 });

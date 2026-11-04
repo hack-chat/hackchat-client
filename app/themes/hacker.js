@@ -19,9 +19,9 @@ const theme = {
       content: '';
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-repeat: repeat; 
+      background-repeat: repeat;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cstyle%3Etext%7Bfont-family:monospace;font-size:15px;fill:%23008f11;%7D.g%7Bfill:%2300ff41;text-shadow:0 0 5px %2300ff41;%7D.w%7Bfill:%23e0ffe5;text-shadow:0 0 5px %23ffffff;%7D%3C/style%3E%3Ctext x='5' y='20'%3E1%3C/text%3E%3Ctext x='5' y='40'%3E0%3C/text%3E%3Ctext x='5' y='60' class='w'%3E1%3C/text%3E%3Ctext x='30' y='50'%3E0%3C/text%3E%3Ctext x='30' y='70'%3E1%3C/text%3E%3Ctext x='30' y='90' class='g'%3E0%3C/text%3E%3Ctext x='55' y='10'%3E1%3C/text%3E%3Ctext x='55' y='30'%3E1%3C/text%3E%3Ctext x='55' y='50' class='g'%3E0%3C/text%3E%3Ctext x='80' y='80'%3E0%3C/text%3E%3Ctext x='80' y='100'%3E0%3C/text%3E%3Ctext x='80' y='120' class='w'%3E1%3C/text%3E%3Ctext x='105' y='40'%3E1%3C/text%3E%3Ctext x='105' y='60'%3E0%3C/text%3E%3Ctext x='105' y='80' class='g'%3E1%3C/text%3E%3Ctext x='130' y='90'%3E0%3C/text%3E%3Ctext x='130' y='110'%3E1%3C/text%3E%3Ctext x='130' y='130' class='g'%3E0%3C/text%3E%3C/svg%3E");
-      pointer-events: none; 
+      pointer-events: none;
       z-index: 0;
     }
 

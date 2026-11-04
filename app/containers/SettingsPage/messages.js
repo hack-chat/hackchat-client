@@ -111,6 +111,10 @@ export default defineMessages({
     id: `${scope}.showShortcodesText`,
     defaultMessage: 'Show Shortcode Suggestions',
   },
+  touchModeText: {
+    id: `${scope}.touchModeText`,
+    defaultMessage: 'Touch Mode',
+  },
   useLtrText: {
     id: `${scope}.useLtrText`,
     defaultMessage: 'Left to Right Reading',

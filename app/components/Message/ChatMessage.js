@@ -30,6 +30,7 @@ const ChatMessage = ({
   msgForm,
   intl,
   hasBackground,
+  isSearchHighlighted,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const isLongMessage = payload.content.length > TRUNCATION_CHAR_THRESHOLD;
@@ -92,7 +93,11 @@ const ChatMessage = ({
       ) : (
         <NickPlaceholder />
       )}
-      <ContentWrapper $hasBackground={hasBackground} $isMentioned={isMentioned}>
+      <ContentWrapper
+        $hasBackground={hasBackground}
+        $isMentioned={isMentioned}
+        $isSearchHighlighted={isSearchHighlighted}
+      >
         <ChatStyle
           $canExpand={isLongMessage}
           $isExpanded={isExpanded}
@@ -124,6 +129,7 @@ ChatMessage.propTypes = {
   handleContextMenu: PropTypes.func,
   onMessageClick: PropTypes.func,
   onMessageContextMenu: PropTypes.func,
+  isSearchHighlighted: PropTypes.bool,
 };
 
 export default ChatMessage;

@@ -85,6 +85,7 @@ import {
   makeSelectCachedEnablePreview,
   makeSelectCachedLargeMode,
   makeSelectCachedShortcodeSuggestions,
+  makeSelectCachedTouchMode,
 } from 'containers/SettingsPage/selectors';
 
 import LoadingIndicator from 'components/LoadingIndicator';
@@ -194,13 +195,22 @@ export function HomePage({
   cachedLargeMode,
   onJoinChannel,
   cachedShortcodeSuggestions,
+  cachedTouchMode,
 }) {
   const navigate = useNavigate();
   const channelFromUrl = useUrlChannel();
 
   const [isJoinModalOpen, setJoinModalOpen] = useState(false);
+  const [isSimpleSearchOpen, setIsSimpleSearchOpen] = useState(false);
+
   const lastPromptedUrl = useRef(null);
   const leavingChannelRef = useRef(null);
+
+  const isMobile = cachedTouchMode;
+
+  const toggleSimpleSearch = useCallback(() => {
+    setIsSimpleSearchOpen((prev) => !prev);
+  }, []);
 
   const handleLeaveChannel = useCallback(
     (channelToLeave) => {
@@ -598,6 +608,23 @@ export function HomePage({
     }
   }, [pendingPasswordReq]);
 
+  useEffect(() => {
+    const handleGlobalKeydown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'f') {
+        e.preventDefault();
+
+        setIsSimpleSearchOpen(true);
+
+        setTimeout(() => {
+          window.dispatchEvent(new CustomEvent('app:focus-simple-search'));
+        }, 50);
+      }
+    };
+
+    window.addEventListener('keydown', handleGlobalKeydown);
+    return () => window.removeEventListener('keydown', handleGlobalKeydown);
+  }, []);
+
   const handleCopyTx = async () => {
     if (txToWarn && txToWarn.tx) {
       try {
@@ -974,6 +1001,8 @@ export function HomePage({
           channelData={channelData}
           menuLeft={cachedMenuBtnPos}
           isLtr={cachedLtr}
+          isSimpleSearchOpen={isSimpleSearchOpen}
+          toggleSimpleSearch={toggleSimpleSearch}
           onJoinOrCreateClick={toggleJoinModal}
           onCommandClick={handleMenuCommand}
           onOpenLocaleModal={onOpenLocaleModal}
@@ -982,6 +1011,8 @@ export function HomePage({
           walletAddress={connectedAccount ? connectedAccount.address : ''}
           onDisconnectWallet={onDisconnectWallet}
           onLeaveChannel={handleLeaveChannel}
+          isMobile={isMobile}
+          largeMode={cachedLargeMode}
         />
       )}
 
@@ -1009,6 +1040,15 @@ export function HomePage({
                 externalScrollRef={chatScrollRefs.current[chanName]}
                 isWalletConnected={!!connectedTo}
                 largeMode={cachedLargeMode}
+                isMobile={isMobile}
+                isSimpleSearchOpen={isSimpleSearchOpen}
+                onToggleMainMenu={() => {
+                  window.dispatchEvent(
+                    new CustomEvent('app:toggle-mobile-menu'),
+                  );
+                }}
+                toggleSimpleSearch={toggleSimpleSearch}
+                myUsername={cachedUsername}
               />
             );
           })}
@@ -1331,6 +1371,7 @@ HomePage.propTypes = {
   cachedEnablePreview: PropTypes.bool,
   cachedLargeMode: PropTypes.bool,
   cachedShortcodeSuggestions: PropTypes.bool,
+  cachedTouchMode: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -1352,6 +1393,7 @@ const mapStateToProps = createStructuredSelector({
   cachedEnablePreview: makeSelectCachedEnablePreview(),
   cachedLargeMode: makeSelectCachedLargeMode(),
   cachedShortcodeSuggestions: makeSelectCachedShortcodeSuggestions(),
+  cachedTouchMode: makeSelectCachedTouchMode(),
 });
 
 export function mapDispatchToProps(dispatch) {

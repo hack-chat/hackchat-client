@@ -43,6 +43,8 @@ import {
   DOMAIN_WHITELIST_LSLABEL,
   SET_SHORTCODE_SUGGESTIONS,
   SHORTCODE_SUGGESTIONS_LSLABEL,
+  SET_TOUCH_MODE,
+  TOUCH_MODE_LSLABEL,
 } from './constants';
 
 const randomRGB = () => {
@@ -97,6 +99,14 @@ const defaultDomainWhitelist = [
   { domain: 'gateway.irys.xyz', state: 1 },
 ];
 
+const checkDefaultMobile = () => {
+  if (typeof navigator === 'undefined') return false;
+
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent,
+  );
+};
+
 export const settingsInitialState = {
   username: JSON.parse(localStorage.getItem(USERNAME_LSLABEL)) || '',
   password: JSON.parse(localStorage.getItem(PASSWORD_LSLABEL)) || '',
@@ -126,6 +136,9 @@ export const settingsInitialState = {
     defaultDomainWhitelist,
   showShortcodeSuggestions:
     JSON.parse(localStorage.getItem(SHORTCODE_SUGGESTIONS_LSLABEL)) ?? true,
+  touchMode:
+    JSON.parse(localStorage.getItem(TOUCH_MODE_LSLABEL)) ??
+    checkDefaultMobile(),
 };
 
 const settingsPageReducer = (state = settingsInitialState, action) =>
@@ -190,6 +203,9 @@ const settingsPageReducer = (state = settingsInitialState, action) =>
         break;
       case SET_SHORTCODE_SUGGESTIONS:
         draft.showShortcodeSuggestions = action.enabled;
+        break;
+      case SET_TOUCH_MODE:
+        draft.touchMode = action.touchMode;
         break;
     }
   });
