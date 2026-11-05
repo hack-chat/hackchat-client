@@ -5,14 +5,8 @@
 import styled from 'styled-components';
 
 const getBackground = (props) => {
-  if (props.$isMentioned) return props.theme.palette.status.mentionBg;
   if (props.$hasBackground) return props.theme.palette.background.alt;
   return 'transparent';
-};
-
-const getBorderColor = (props) => {
-  if (props.$isMentioned) return props.theme.palette.status.mentionBorder;
-  return props.theme.palette.border.divider;
 };
 
 export default styled.div`
@@ -24,7 +18,8 @@ export default styled.div`
   @media (width >= 768px) {
     margin-inline-start: calc(220px + 1em);
     padding-inline-start: 1em;
-    border-inline-start: 1px solid ${getBorderColor} !important;
+    border-inline-start: 1px solid
+      ${({ theme }) => theme.palette.border.divider};
   }
 
   @media (width <= 767px) {

@@ -22,6 +22,9 @@ import { LuEllipsisVertical, LuLink } from 'react-icons/lu';
 
 import UserContextMenu from 'components/UserContextMenu';
 
+import { PIN_MENU_LSLABEL } from './constants';
+import messages from './messages';
+
 import CurrentChannelInfo from './CurrentChannelInfo';
 import MenuFooter from './MenuFooter';
 import MenuWrapper from './MenuWrapper';
@@ -40,9 +43,7 @@ import ChannelName from './ChannelName';
 import ChannelUserCount from './ChannelUserCount';
 import DropdownDivider from './DropdownDivider';
 import ItemText from './ItemText';
-
-import messages from './messages';
-import { PIN_MENU_LSLABEL } from './constants';
+import UnreadBadge from './UnreadBadge';
 
 const truncateAddress = (address) => {
   if (!address || address.length < 9) return address;
@@ -68,6 +69,7 @@ export function MainMenu({
   onLeaveChannel = () => {},
   isMobile,
   largeMode,
+  unreadCounts = {},
 }) {
   const navigate = useNavigate();
 
@@ -358,7 +360,12 @@ export function MainMenu({
                 }}
               >
                 <FaQuestion />
-                <ItemText>{ch}</ItemText>
+                <ItemText>
+                  {ch}
+                  {unreadCounts[ch] > 0 && (
+                    <UnreadBadge>{unreadCounts[ch]}</UnreadBadge>
+                  )}
+                </ItemText>
               </Item>
             ))}
 
@@ -439,6 +446,7 @@ MainMenu.propTypes = {
   onLeaveChannel: PropTypes.func,
   isMobile: PropTypes.bool,
   largeMode: PropTypes.bool,
+  unreadCounts: PropTypes.object,
 };
 
 export default compose(injectIntl)(MainMenu);

@@ -321,29 +321,24 @@ export function HomePage({
   ]);
 
   const [isWalletModalOpen, setWalletModalOpen] = useState(false);
-
   const [externalUrlToWarn, setExternalUrlToWarn] = useState(null);
   const [suppressLinkWarning, setSuppressLinkWarning] = useState(false);
   const [tempSuppressCheckbox, setTempSuppressCheckbox] = useState(false);
-
   const [txToWarn, setTxToWarn] = useState(null);
   const [suppressTxWarning, setSuppressTxWarning] = useState(false);
   const [tempSuppressTxCheckbox, setTempSuppressTxCheckbox] = useState(false);
-
-  const [isFocused, setIsFocused] = useState(true);
-  const [missedMessages, setMissedMessages] = useState(0);
-
   const [showSlowWarning, setShowSlowWarning] = useState(false);
   const [showResetButton, setShowResetButton] = useState(false);
-
   const [challengeCaptcha, setChallengeCaptcha] = useState('');
   const [challengePassword, setChallengePassword] = useState('');
+  const [isFocused, setIsFocused] = useState(true);
+  const [unreadCounts, setUnreadCounts] = useState({});
 
+  const processedIndicesRef = useRef({});
+  const channelAtBottomRef = useRef({});
   const captchaInputRef = useRef(null);
   const passwordInputRef = useRef(null);
 
-  const currentMessageCount = channelData?.[channel]?.messages?.length || 0;
-  const prevMessageCountRef = useRef(currentMessageCount);
   const baseTitle = channelFromUrl ? `?${channelFromUrl}` : 'hack.chat';
 
   const createOrJoinLabel = intl.formatMessage(messages.createOrJoinLabel);
@@ -383,8 +378,6 @@ export function HomePage({
 
     const handleFocus = () => {
       setIsFocused(true);
-      setMissedMessages(0);
-      document.title = baseTitle;
     };
     const handleBlur = () => {
       setIsFocused(false);
@@ -397,27 +390,91 @@ export function HomePage({
       window.removeEventListener('focus', handleFocus);
       window.removeEventListener('blur', handleBlur);
     };
-  }, [baseTitle]);
+  }, []);
+
+  const totalUnread = useMemo(
+    () => Object.values(unreadCounts).reduce((acc, val) => acc + val, 0),
+    [unreadCounts],
+  );
 
   useEffect(() => {
-    if (!isFocused && currentMessageCount > prevMessageCountRef.current) {
-      const diff = currentMessageCount - prevMessageCountRef.current;
+    document.title =
+      totalUnread > 0 ? `(${totalUnread}) ${baseTitle}` : baseTitle;
+  }, [totalUnread, baseTitle]);
 
-      setMissedMessages((prev) => {
-        const newMissedCount = prev + diff;
-        document.title = `(${newMissedCount}) ${baseTitle}`;
+  const handleAtBottomChange = useCallback(
+    (chan, isAtBottom) => {
+      channelAtBottomRef.current[chan] = isAtBottom;
 
-        return newMissedCount;
+      if (isAtBottom && isFocused && channel === chan) {
+        setUnreadCounts((prev) => {
+          if (!prev[chan]) return prev;
+          const next = { ...prev };
+          delete next[chan];
+          return next;
+        });
+      }
+    },
+    [isFocused, channel],
+  );
+
+  useEffect(() => {
+    if (isFocused && channel && channelAtBottomRef.current[channel]) {
+      setUnreadCounts((prev) => {
+        if (!prev[channel]) return prev;
+        const next = { ...prev };
+        delete next[channel];
+        return next;
       });
     }
-
-    prevMessageCountRef.current = currentMessageCount;
-  }, [currentMessageCount, isFocused, baseTitle]);
+  }, [isFocused, channel]);
 
   useEffect(() => {
-    setMissedMessages(0);
-    prevMessageCountRef.current = channelData?.[channel]?.messages?.length || 0;
-  }, [channel]);
+    if (!channelData) return;
+
+    let hasChanges = false;
+    setUnreadCounts((prev) => {
+      const next = { ...prev };
+
+      Object.keys(channelData).forEach((chan) => {
+        const msgs = channelData[chan].messages || [];
+        const lastIdx = processedIndicesRef.current[chan] || 0;
+
+        if (msgs.length > lastIdx) {
+          if (lastIdx === 0) {
+            processedIndicesRef.current[chan] = msgs.length;
+          } else {
+            let newMissed = 0;
+            for (let i = lastIdx; i < msgs.length; i++) {
+              const msg = msgs[i];
+
+              if (
+                msg &&
+                (msg.type === 'chat' ||
+                  msg.type === 'whisper' ||
+                  msg.type === 'emote')
+              ) {
+                newMissed++;
+              }
+            }
+            processedIndicesRef.current[chan] = msgs.length;
+
+            if (newMissed > 0) {
+              const isAtBottom = channelAtBottomRef.current[chan] !== false;
+              const isLookingAtIt = isFocused && channel === chan && isAtBottom;
+
+              if (!isLookingAtIt) {
+                next[chan] = (next[chan] || 0) + newMissed;
+                hasChanges = true;
+              }
+            }
+          }
+        }
+      });
+
+      return hasChanges ? next : prev;
+    });
+  }, [channelData, isFocused, channel]);
 
   useEffect(() => {
     let warningTimer;
@@ -660,9 +717,6 @@ export function HomePage({
   );
 
   let homepageTitle = baseTitle;
-  if (missedMessages > 0) {
-    homepageTitle = `(${missedMessages}) ${baseTitle}`;
-  }
 
   const myUser = channelData?.[channel]?.users
     ? Object.values(channelData[channel].users).find((u) => u.mine)
@@ -1013,6 +1067,7 @@ export function HomePage({
           onLeaveChannel={handleLeaveChannel}
           isMobile={isMobile}
           largeMode={cachedLargeMode}
+          unreadCounts={unreadCounts}
         />
       )}
 
@@ -1039,7 +1094,6 @@ export function HomePage({
                 intl={intl}
                 externalScrollRef={chatScrollRefs.current[chanName]}
                 isWalletConnected={!!connectedTo}
-                largeMode={cachedLargeMode}
                 isMobile={isMobile}
                 isSimpleSearchOpen={isSimpleSearchOpen}
                 onToggleMainMenu={() => {
@@ -1049,6 +1103,7 @@ export function HomePage({
                 }}
                 toggleSimpleSearch={toggleSimpleSearch}
                 myUsername={cachedUsername}
+                onAtBottomChange={handleAtBottomChange}
               />
             );
           })}

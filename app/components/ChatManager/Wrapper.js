@@ -12,6 +12,7 @@ export default styled.div`
   flex: 1;
   min-height: 0;
   min-width: 0;
+  position: relative;
 
   ${thinScrollbar}
 `;
