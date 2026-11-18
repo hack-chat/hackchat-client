@@ -202,16 +202,18 @@ export function SettingsPage({
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
+        if (isDomainModalOpen || isLocaleModalOpen) return;
+
         handleGoBack();
       }
     };
+
     window.addEventListener('keydown', handleKeyDown);
+
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [handleGoBack]);
-
-  // useInjectReducer({ key: 'settingsPage', reducer });
+  }, [handleGoBack, isDomainModalOpen, isLocaleModalOpen]);
 
   const [invalidName, setInvalidName] = useState(false);
   const clearInvalidName = () => setInvalidName(false);
@@ -348,13 +350,15 @@ export function SettingsPage({
   );
 
   const handleDomainWhitelistChange = (newContents) => {
-    const reduxFormattedList = newContents.map((item) => ({
-      domain: item.domain,
-      state:
-        whitelistStates.indexOf(item.safe) !== -1
-          ? whitelistStates.indexOf(item.safe)
-          : 2,
-    }));
+    const reduxFormattedList = newContents
+      .filter((item) => item.domain && item.domain.trim() !== '')
+      .map((item) => ({
+        domain: item.domain.trim(),
+        state:
+          whitelistStates.indexOf(item.safe) !== -1
+            ? whitelistStates.indexOf(item.safe)
+            : 2,
+      }));
 
     dispatch(setDomainWhitelist(reduxFormattedList));
   };
@@ -417,15 +421,22 @@ export function SettingsPage({
                 value={chosenPassword}
                 onChange={(e) => {
                   setChosenPassword(e.target.value);
-                  dispatch(setPassword(e.target.value));
+                  if (chosenDoStore) {
+                    dispatch(setPassword(e.target.value));
+                  }
                 }}
               />
             </InputRow>
 
             <SwitchRow
               onClick={() => {
-                setChosenDoStore(!chosenDoStore);
-                dispatch(setStoreChannelsFlag(!chosenDoStore));
+                const nextStore = !chosenDoStore;
+                setChosenDoStore(nextStore);
+                dispatch(setStoreChannelsFlag(nextStore));
+
+                if (!nextStore) {
+                  dispatch(setPassword(''));
+                }
               }}
             >
               <LabelText>{rememberText}</LabelText>
@@ -454,10 +465,12 @@ export function SettingsPage({
                 }}
                 onBlur={() => {
                   let finalVal = chosenMaxMessages;
-                  if (finalVal === '') {
-                    finalVal = 0;
-                    setChosenMaxMessages(0);
+
+                  if (finalVal === '' || Number.isNaN(finalVal)) {
+                    finalVal = cachedTouchMode ? 500 : 3000;
+                    setChosenMaxMessages(finalVal);
                   }
+
                   if (finalVal !== cachedMaxMessages)
                     dispatch(setMaxMessages(finalVal));
                 }}

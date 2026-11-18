@@ -49,6 +49,13 @@ const isMobile =
     navigator.userAgent,
   );
 
+const getSenderId = (msg) => {
+  if (msg.user?.userid) return msg.user.userid;
+  if (msg.data?.from?.userid) return msg.data.from.userid;
+
+  return msg.data?.userid;
+};
+
 const DEFAULT_MAX_MESSAGES = isMobile ? 500 : 3000;
 
 const initialMaxMessagesStr = localStorage.getItem(MAX_MESSAGES_LSLABEL);
@@ -63,7 +70,8 @@ const initialHasAgreedTos = savedTosVersion === CURRENT_TOS_VERSION;
 export const initialState = {
   connected: false,
   channel: false,
-  channels: {},
+  pendingJoin: false,
+  channels: Object.create(null),
   meta: {
     channelCount: 0,
     userCount: 0,
@@ -108,8 +116,16 @@ const communicationProviderReducer = (state = initialState, action) =>
         });
         break;
       case CHANGE_CHANNEL:
+        draft.channel = action.channel;
+        break;
       case START_JOIN:
         draft.channel = action.channel;
+        if (typeof draft.channels[action.channel] === 'undefined') {
+          draft.channels[action.channel] = {
+            users: {},
+            messages: [],
+          };
+        }
         break;
       case CONNECTED:
         draft.connected = true;
@@ -118,11 +134,14 @@ const communicationProviderReducer = (state = initialState, action) =>
         localStorage.setItem(SESSION_LS, JSON.stringify(action.data.token));
         draft.sessionReady = true;
 
-        if (action.data.restored === true) {
-          const restoredChannels = action.data.channels || [];
+        if (
+          action.data.restored === true &&
+          Array.isArray(action.data.channels)
+        ) {
+          const activeChannels = action.data.channels;
 
           Object.keys(draft.channels).forEach((chanName) => {
-            if (!restoredChannels.includes(chanName)) {
+            if (!activeChannels.includes(chanName)) {
               delete draft.channels[chanName];
               return;
             }
@@ -136,7 +155,7 @@ const communicationProviderReducer = (state = initialState, action) =>
             if (
               lastMsg &&
               lastMsg.type === 'warn' &&
-              lastMsg.data.id === 987654322
+              lastMsg.data.isReconnectWarning
             ) {
               return;
             }
@@ -145,6 +164,8 @@ const communicationProviderReducer = (state = initialState, action) =>
               type: 'warn',
               data: {
                 id: 987654322,
+                uniqueKey: `warn-${Date.now()}-${Math.random()}`,
+                isReconnectWarning: true,
               },
             });
           });
@@ -154,6 +175,8 @@ const communicationProviderReducer = (state = initialState, action) =>
         draft.meta.channels = action.list;
         break;
       case HACK_ATTEMPT:
+        if (!draft.channels[action.data.channel]) break;
+
         draft.channels[action.data.channel].messages.push({
           type: 'hackAttempt',
           data: {
@@ -165,6 +188,11 @@ const communicationProviderReducer = (state = initialState, action) =>
       case JOINED_CHANNEL:
         draft.pendingCaptcha = false;
         draft.pendingPasswordReq = false;
+
+        if (draft.pendingJoin === action.data.channel || !draft.channel) {
+          draft.channel = action.data.channel;
+          draft.pendingJoin = false;
+        }
 
         if (typeof draft.channels[action.data.channel] === 'undefined') {
           draft.channels[action.data.channel] = {
@@ -192,6 +220,8 @@ const communicationProviderReducer = (state = initialState, action) =>
         //
         break;
       case USER_JOINED:
+        if (!draft.channels[action.channel]) break;
+
         draft.channels[action.channel].users[action.user.userid] = action.user;
         draft.channels[action.channel].messages.push({
           type: 'join',
@@ -203,7 +233,9 @@ const communicationProviderReducer = (state = initialState, action) =>
         });
         break;
       case USER_LEFT:
-        if (draft.channels[action.channel]?.users[action.user.userid]) {
+        if (!draft.channels[action.channel]) break;
+
+        if (draft.channels[action.channel].users[action.user.userid]) {
           draft.channels[action.channel].users[action.user.userid].online =
             false;
         }
@@ -217,13 +249,15 @@ const communicationProviderReducer = (state = initialState, action) =>
         });
         break;
       case USER_UPDATE:
+        if (!draft.channels[action.channel]) break;
+
         draft.channels[action.channel].users[action.user.userid] = action.user;
         break;
       case WARNING:
         if (action.data.channel && draft.channels[action.data.channel]) {
           draft.channels[action.data.channel].messages.push({
             type: 'warn',
-            data: action.data,
+            data: { ...action.data, time: Date.now() },
           });
         } else {
           Object.keys(draft.channels).forEach((chanName) => {
@@ -263,7 +297,7 @@ const communicationProviderReducer = (state = initialState, action) =>
         if (action.data.channel && draft.channels[action.data.channel]) {
           draft.channels[action.data.channel].messages.push({
             type: 'info',
-            data: action.data,
+            data: { ...action.data, time: Date.now() },
           });
         } else {
           Object.keys(draft.channels).forEach((chanName) => {
@@ -289,6 +323,8 @@ const communicationProviderReducer = (state = initialState, action) =>
         }
         break;
       case EMOTE:
+        if (!draft.channels[action.data.channel]) break;
+
         draft.channels[action.data.channel].messages.push({
           type: 'emote',
           data: { ...action.data, time: Date.now() },
@@ -296,18 +332,24 @@ const communicationProviderReducer = (state = initialState, action) =>
         });
         break;
       case INVITE:
+        if (!draft.channels[action.data.channel]) break;
+
         draft.channels[action.data.channel].messages.push({
           type: 'invite',
           data: action.data,
         });
         break;
       case WHISPER:
+        if (!draft.channels[action.channel]) break;
+
         draft.channels[action.channel].messages.push({
           type: 'whisper',
           data: { ...action.data, time: Date.now() },
         });
         break;
       case MESSAGE:
+        if (!draft.channels[action.data.channel]) break;
+
         draft.channels[action.data.channel].messages.push({
           type: 'chat',
           data: {
@@ -320,9 +362,19 @@ const communicationProviderReducer = (state = initialState, action) =>
         });
         break;
       case IGNORE_USER: {
+        if (!draft.channels[action.channel]) break;
+
         const toBlock = draft.channels[action.channel].users[action.userid];
+
         if (toBlock && !toBlock.blocked) {
           toBlock.blocked = true;
+
+          Object.keys(draft.channels).forEach((chan) => {
+            draft.channels[chan].messages = draft.channels[
+              chan
+            ].messages.filter((msg) => getSenderId(msg) !== action.userid);
+          });
+
           draft.channels[action.channel].messages.push({
             type: 'info',
             data: {
@@ -334,7 +386,10 @@ const communicationProviderReducer = (state = initialState, action) =>
         break;
       }
       case UNIGNORE_USER: {
+        if (!draft.channels[action.channel]) break;
+
         const toUnblock = draft.channels[action.channel].users[action.userid];
+
         if (toUnblock && toUnblock.blocked) {
           toUnblock.blocked = false;
           draft.channels[action.channel].messages.push({
@@ -348,6 +403,8 @@ const communicationProviderReducer = (state = initialState, action) =>
         break;
       }
       case NEW_TX_REQUEST:
+        if (!draft.channels[action.channel]) break;
+
         draft.channels[action.channel].messages.push({
           type: 'tx_request',
           data: {
@@ -363,11 +420,16 @@ const communicationProviderReducer = (state = initialState, action) =>
         const targetChannel = draft.channels[action.channel];
         if (!targetChannel) break;
 
-        const targetMessage = targetChannel.messages.find(
-          (msg) => msg.data && String(msg.data.id) === String(action.customId),
-        );
+        const targetMessage = [...targetChannel.messages]
+          .reverse()
+          .find(
+            (msg) =>
+              msg.data &&
+              String(msg.data.id) === String(action.customId) &&
+              msg.data.userid === action.userid,
+          );
 
-        if (targetMessage && targetMessage.data.userid === action.userid) {
+        if (targetMessage) {
           switch (action.mode) {
             case 'overwrite':
               targetMessage.data.content = action.text;
@@ -382,10 +444,10 @@ const communicationProviderReducer = (state = initialState, action) =>
             default:
               break;
           }
-        } else if (targetMessage) {
+        } else {
           // eslint-disable-next-line no-console
           console.log(
-            `User ${action.userid} attempted to edit a message owned by ${targetMessage.data.userid}`,
+            `User ${action.userid} attempted to edit an invalid or unowned message.`,
           );
         }
         break;
@@ -398,9 +460,12 @@ const communicationProviderReducer = (state = initialState, action) =>
           draft.channel =
             remainingChannels.length > 0 ? remainingChannels[0] : false;
         }
+
         break;
       }
       case CLEAR_CHANNEL: {
+        if (!draft.channels[action.channel]) break;
+
         draft.channels[action.channel].messages = [];
         break;
       }

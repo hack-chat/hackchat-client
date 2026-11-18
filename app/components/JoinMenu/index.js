@@ -86,24 +86,33 @@ export function JoinMenu({
   const [chosenChannel, setChosenChannel] = useState(qString || '');
   const [suggestions, setSuggestions] = useState([]);
   const [activeSuggestion, setActiveSuggestion] = useState(0);
+
   const suggestionsRef = useRef(null);
+  const hasPrefilledUsername = useRef(false);
+  const hasPrefilledPassword = useRef(false);
 
   useEffect(() => {
-    if (username !== undefined && !chosenUsername) setChosenUsername(username);
-  }, [username, chosenUsername, setChosenUsername]);
+    if (username !== undefined && !hasPrefilledUsername.current) {
+      setChosenUsername(username);
+      hasPrefilledUsername.current = true;
+    }
+  }, [username]);
 
   useEffect(() => {
-    if (password !== undefined && !chosenPassword) setChosenPassword(password);
-  }, [password, chosenPassword, setChosenPassword]);
+    if (password !== undefined && !hasPrefilledPassword.current) {
+      setChosenPassword(password);
+      hasPrefilledPassword.current = true;
+    }
+  }, [password]);
 
   useEffect(() => {
     if (prevColor !== undefined && !currentColor) setCurrentColor(prevColor);
   }, [prevColor, currentColor, setCurrentColor]);
 
-  const toggleInvalidName = () => setInvalidName(!invalidName);
+  const setInvalidNameFlag = () => setInvalidName(true);
   const clearInvalidName = () => setInvalidName(false);
   const toggleRememberMe = () => setRememberMe(!rememberMe);
-  const toggleInvalidChannel = () => setInvalidChannel(!invalidChannel);
+  const setInvalidChannelFlag = () => setInvalidChannel(true);
 
   const hideChannel = !isActivelyJoined && !!qString;
 
@@ -157,6 +166,8 @@ export function JoinMenu({
       setChosenChannel(suggestions[activeSuggestion]);
       setSuggestions([]);
     } else if (evt.key === 'Escape') {
+      evt.preventDefault();
+      evt.stopPropagation();
       setSuggestions([]);
     }
   };
@@ -173,14 +184,14 @@ export function JoinMenu({
 
     if (!isActivelyJoined && !chosenUsername) {
       err = true;
-      toggleInvalidName();
+      setInvalidNameFlag();
     }
 
     const chan = !isActivelyJoined && qString ? qString : chosenChannel;
 
     if (!chan) {
       err = true;
-      toggleInvalidChannel();
+      setInvalidChannelFlag();
     }
 
     if (hasAgreedTos === false && tosChecked === false) {
@@ -362,7 +373,7 @@ export function JoinMenu({
         </TosLabel>
       )}
 
-      <JoinButton onClick={doJoin}>{joinModalBtn}</JoinButton>
+      <JoinButton>{joinModalBtn}</JoinButton>
     </Form>
   );
 }
@@ -400,6 +411,9 @@ export function mapDispatchToProps(dispatch) {
         if (remember) {
           dispatch(setColor(color));
           dispatch(setPassword(pass));
+        } else {
+          dispatch(setColor(false));
+          dispatch(setPassword(''));
         }
       }
 

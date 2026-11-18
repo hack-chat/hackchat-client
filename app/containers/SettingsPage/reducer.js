@@ -112,12 +112,12 @@ export const settingsInitialState = {
   password: JSON.parse(localStorage.getItem(PASSWORD_LSLABEL)) || '',
   color: JSON.parse(localStorage.getItem(COLOR_LSLABEL)) || randomRGB(),
   storeChannels:
-    JSON.parse(localStorage.getItem(STORECHANNELS_LSLABEL)) || true,
+    JSON.parse(localStorage.getItem(STORECHANNELS_LSLABEL)) ?? true,
   prevChannels: JSON.parse(localStorage.getItem(PREVCHANNELS_LSLABEL)) || [],
   theme: JSON.parse(localStorage.getItem(THEME_LSLABEL)) || 'default',
-  allowKatex: JSON.parse(localStorage.getItem(ALLOWKATEX_LSLABEL)) || true,
+  allowKatex: JSON.parse(localStorage.getItem(ALLOWKATEX_LSLABEL)) ?? true,
   allowMarkdown:
-    JSON.parse(localStorage.getItem(ALLOWMARKDOWN_LSLABEL)) || true,
+    JSON.parse(localStorage.getItem(ALLOWMARKDOWN_LSLABEL)) ?? true,
   allowExternalCode:
     JSON.parse(localStorage.getItem(ALLOWEXTCODE_LSLABEL)) || false,
   ltr: savedLtr !== null ? savedLtr : !checkDefaultRtl(),

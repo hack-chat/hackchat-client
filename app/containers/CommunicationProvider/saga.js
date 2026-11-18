@@ -32,6 +32,7 @@ import {
   UNLOCK_CHANNEL,
   INVITE_USER,
   IGNORE_USER,
+  UNIGNORE_USER,
   KICK_USER,
   BAN_USER,
   MUTE_USER,
@@ -120,7 +121,7 @@ function initWebsocket() {
     };
 
     const onChannelJoined = (payload) => {
-      let userList = {};
+      let userList = Object.create(null);
       payload.users.forEach((userData) => {
         const userRecord = hcClient.users.get(userData.userid);
 
@@ -141,17 +142,19 @@ function initWebsocket() {
         };
       });
 
-      if (hcClient.myUser && hcClient.myUser.username) {
-        emitter(setUsername(hcClient.myUser.username, false));
-      }
-
-      return emitter({
+      emitter({
         type: JOINED_CHANNEL,
         data: {
           channel: payload.channel,
           users: userList,
         },
       });
+
+      if (hcClient.myUser && hcClient.myUser.username) {
+        setTimeout(() => {
+          emitter(setUsername(hcClient.myUser.username, false));
+        }, 0);
+      }
     };
 
     const onUserJoined = (payload) =>
@@ -254,8 +257,10 @@ function initWebsocket() {
         },
       });
 
-    const onEmote = (payload) =>
-      emitter({
+    const onEmote = (payload) => {
+      if (payload.user && payload.user.blocked) return;
+
+      return emitter({
         type: EMOTE,
         data: {
           channel: payload.channel,
@@ -277,9 +282,12 @@ function initWebsocket() {
           effect: payload.user.effect,
         },
       });
+    };
 
-    const onInvite = (payload) =>
-      emitter({
+    const onInvite = (payload) => {
+      if (payload.from && payload.from.blocked) return;
+
+      return emitter({
         type: INVITE,
         data: {
           channel: payload.channel,
@@ -299,9 +307,12 @@ function initWebsocket() {
           },
         },
       });
+    };
 
-    const onWhisper = (payload) =>
-      emitter({
+    const onWhisper = (payload) => {
+      if (payload.from && payload.from.blocked) return;
+
+      return emitter({
         type: WHISPER,
         channel: payload.channel,
         data: {
@@ -339,9 +350,12 @@ function initWebsocket() {
           },
         },
       });
+    };
 
-    const onMessage = (payload) =>
-      emitter({
+    const onMessage = (payload) => {
+      if (payload.user && payload.user.blocked) return;
+
+      return emitter({
         type: MESSAGE,
         data: {
           channel: payload.channel || hcClient.channel,
@@ -366,6 +380,7 @@ function initWebsocket() {
           effect: payload.user.effect,
         },
       });
+    };
 
     const onPublicChannels = (payload) =>
       emitter({
@@ -373,8 +388,10 @@ function initWebsocket() {
         list: payload.list,
       });
 
-    const onHackAttempt = (payload) =>
-      emitter({
+    const onHackAttempt = (payload) => {
+      if (payload.from && payload.from.blocked) return;
+
+      return emitter({
         type: HACK_ATTEMPT,
         data: {
           channel: payload.channel,
@@ -389,6 +406,7 @@ function initWebsocket() {
           url: payload.lib,
         },
       });
+    };
 
     const onSignMessage = (payload) =>
       emitter({
@@ -397,8 +415,10 @@ function initWebsocket() {
         message: payload.message,
       });
 
-    const onSignTransaction = (payload) =>
-      emitter({
+    const onSignTransaction = (payload) => {
+      if (payload.from && payload.from.blocked) return;
+
+      return emitter({
         type: NEW_TX_REQUEST,
         tx: payload.tx,
         tx_type: payload.type,
@@ -406,9 +426,12 @@ function initWebsocket() {
         from: payload.from,
         imageUrl: payload.imageUrl,
       });
+    };
 
-    const onUpdateMessage = (payload) =>
-      emitter({
+    const onUpdateMessage = (payload) => {
+      if (payload.user && payload.user.blocked) return;
+
+      return emitter({
         type: UPDATE_MSG,
         channel: payload.channel,
         customId: payload.customId,
@@ -416,6 +439,7 @@ function initWebsocket() {
         text: payload.text,
         userid: payload.user.userid,
       });
+    };
 
     const onSession = (payload) =>
       emitter({
@@ -436,7 +460,6 @@ function initWebsocket() {
       });
 
     hcClient.on('error', onError);
-    // fires as soon as the socket closes, well before a retry can fail
     hcClient.on('reconnecting', onError);
     hcClient.on('connected', onConnected);
     hcClient.on('session', onSession);
@@ -487,6 +510,10 @@ function initWebsocket() {
 export default function* communicationProviderSaga() {
   const client = yield call(initWebsocket);
 
+  if (initialGateway !== 'wss://hack.chat/chat-ws') {
+    yield put({ type: SET_WSPATH, wsPath: initialGateway });
+  }
+
   yield takeLatest(START_JOIN, (action) => {
     hcClient.join(
       action.username,
@@ -519,7 +546,10 @@ export default function* communicationProviderSaga() {
   );
 
   yield takeEvery(CHANGE_USERNAME, (action) => {
+    if (!hcClient || !hcClient.myUser) return;
+    //if (hcClient.myUser) {
     hcClient.myUser.changeUsername(action.username);
+    //}
   });
 
   yield takeLatest(DISABLE_CAPTCHA, (action) =>
@@ -542,7 +572,12 @@ export default function* communicationProviderSaga() {
 
   yield takeLatest(IGNORE_USER, (action) => {
     const targetUser = hcClient.users.get(action.userid);
-    if (targetUser) targetUser.toggleBlock();
+    if (targetUser) targetUser.blocked = true;
+  });
+
+  yield takeLatest(UNIGNORE_USER, (action) => {
+    const targetUser = hcClient.users.get(action.userid);
+    if (targetUser) targetUser.blocked = false;
   });
 
   yield takeLatest(KICK_USER, (action) => {
@@ -620,6 +655,8 @@ export default function* communicationProviderSaga() {
     if (isFocused && isCurrentChannel) return;
     if (payload.fromMe || (action.user && action.user.mine)) return;
 
+    if (action.user?.blocked || payload.from?.blocked) return;
+
     let shouldNotify = false;
     let title = '';
     let body = '';
@@ -685,7 +722,13 @@ export default function* communicationProviderSaga() {
 
   while (true) {
     const action = yield take(client);
-    yield put(action);
+
+    try {
+      yield put(action);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('Saga error caught during engine event dispatch:', err);
+    }
 
     if (
       (action.type === WARNING || action.type === INFORMATION) &&

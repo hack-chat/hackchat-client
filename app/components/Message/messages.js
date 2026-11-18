@@ -454,14 +454,6 @@ const messages = {
     id: `${scope}.info.Mod.UNLOCKED_DETAILED`,
     defaultMessage: 'Channel: ?{targetChannel} unlocked by [{trip}]{nick}',
   },
-  infoModUwuifyEnabled: {
-    id: `${scope}.info.Mod.UWUIFY_ENABLED`,
-    defaultMessage: '{nick}#{trip} turned {targetUser} into a catboy',
-  },
-  infoModUwuifyDisabled: {
-    id: `${scope}.info.Mod.UWUIFY_DISABLED`,
-    defaultMessage: '{nick}#{trip} de-catted {targetUser}',
-  },
   infoModPassEnabled: {
     id: `${scope}.info.Mod.PASS_ENABLED`,
     defaultMessage:
@@ -719,8 +711,8 @@ INFO_ID[1208] = messages.infoModUnmuzzledDetailed;
 INFO_ID[1209] = messages.infoModUnbannedDetailed;
 INFO_ID[1210] = messages.infoModUnbannedAllDetailed;
 INFO_ID[1211] = messages.infoModUnlockedDetailed;
-INFO_ID[1212] = messages.infoModUwuifyEnabled;
-INFO_ID[1213] = messages.infoModUwuifyDisabled;
+// INFO_ID[1212] = messages.infoModUwuifyEnabled;
+// INFO_ID[1213] = messages.infoModUwuifyDisabled;
 INFO_ID[1214] = messages.infoModPassEnabled;
 INFO_ID[1215] = messages.infoModPassDisabled;
 

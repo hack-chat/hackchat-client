@@ -71,10 +71,6 @@ export default defineMessages({
     id: `${scope}.unmuzzle`,
     defaultMessage: 'Unmuzzle',
   },
-  uwuify: {
-    id: `${scope}.uwuify`,
-    defaultMessage: 'Uwuify',
-  },
   whisper: {
     id: `${scope}.whisper`,
     defaultMessage: 'Whisper',

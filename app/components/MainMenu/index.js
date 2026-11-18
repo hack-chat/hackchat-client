@@ -121,6 +121,8 @@ export function MainMenu({
   const isMenuForcedOpen = isOpen || (!isMobile && isPinned) || !!contextMenu;
 
   const handleUserClick = (user, event) => {
+    if (user && user.mine) return;
+
     event.preventDefault();
     event.stopPropagation();
     setContextMenu({
@@ -174,7 +176,7 @@ export function MainMenu({
     const handleSwitchChannel = (e) => {
       const targetChannel = e.detail?.channel;
       if (targetChannel) {
-        navigate(`/?${targetChannel}`);
+        navigate(`/?${encodeURIComponent(targetChannel)}`);
 
         if (isMobile) setIsOpen(false);
       }
@@ -355,7 +357,7 @@ export function MainMenu({
                 key={ch}
                 $isActive={ch === channel}
                 onClick={() => {
-                  navigate(`/?${ch}`);
+                  navigate(`/?${encodeURIComponent(ch)}`);
                   if (isMobile && !isPinned) setIsOpen(false);
                 }}
               >

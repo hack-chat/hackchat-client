@@ -205,7 +205,8 @@ function ChatInput(
       currentIndex: 0,
       startIndex: -1,
     });
-  }, [channel]);
+    setTimeout(resizeTextarea, 0);
+  }, [channel, resizeTextarea]);
 
   const inputRef = useRef(null);
   const suggestionsRef = useRef(null);
@@ -224,6 +225,11 @@ function ChatInput(
   const updateSuggestions = useCallback(
     (text, cursor) => {
       const textBeforeCursor = text.slice(0, cursor);
+      const textAfterCursor = text.slice(cursor);
+      const trailingWordMatch = textAfterCursor.match(/^\S+/);
+      const replaceEnd = trailingWordMatch
+        ? cursor + trailingWordMatch[0].length
+        : cursor;
 
       if (textBeforeCursor.startsWith('/')) {
         const commandText = textBeforeCursor.slice(1).toLowerCase();
@@ -237,13 +243,13 @@ function ChatInput(
             value: `/${cmd.command} `,
             type: 'command',
             replaceStart: 0,
-            replaceEnd: cursor,
+            replaceEnd: replaceEnd,
           })),
         );
         setActiveSuggestion(0);
       } else {
         if (showShortcodeSuggestions) {
-          const match = textBeforeCursor.match(/(?:^|\s)(:[^\s:]+)$/);
+          const match = textBeforeCursor.match(/(?:^|\s)(:[^\s:]{2,})$/);
           if (match) {
             const query = match[1].toLowerCase();
             const filtered = ALL_EMOJIS.filter((e) =>
@@ -258,7 +264,7 @@ function ChatInput(
                   value: `${e.preview} `,
                   type: 'emoji',
                   replaceStart: cursor - match[1].length,
-                  replaceEnd: cursor,
+                  replaceEnd: replaceEnd,
                 })),
               );
               setActiveSuggestion(0);
@@ -298,6 +304,8 @@ function ChatInput(
       currentValue.substring(0, start) + text + currentValue.substring(end);
 
     setDraftValue(newValue);
+    setHistoryIndex(-1);
+    setMentionState((prev) => ({ ...prev, isCycling: false }));
 
     setTimeout(() => {
       input.focus();
@@ -310,6 +318,9 @@ function ChatInput(
   useImperativeHandle(ref, () => ({
     setCommand: (commandText) => {
       setDraftValue(commandText);
+      setHistoryIndex(-1);
+      setMentionState((prev) => ({ ...prev, isCycling: false }));
+
       if (inputRef.current) {
         inputRef.current.focus();
       }
@@ -356,7 +367,6 @@ function ChatInput(
   );
 
   const submitInput = useCallback(() => {
-    // While disconnected, keep the text rather than send it into the void
     if (!canSend) return;
 
     const text = parseMessage(inputValue.trim());
@@ -365,6 +375,7 @@ function ChatInput(
       onSendMessage(channel, text);
       updateHistory(text);
       setInputValue('');
+      setSuggestions([]);
       draftStorage.delete(channel);
       setHistoryIndex(-1);
       setMentionState((prev) => ({ ...prev, isCycling: false }));
@@ -411,7 +422,14 @@ function ChatInput(
           historyIndex !== -1 ||
           inputRef.current.selectionStart === 0
         ) {
+          if (evt.shiftKey || evt.altKey || evt.ctrlKey || evt.metaKey) return;
+
           evt.preventDefault();
+
+          if (historyIndex === -1) {
+            draftStorage.set(`${channel}_temp`, inputValue);
+          }
+
           const newIndex = Math.min(historyIndex + 1, history.length - 1);
           if (newIndex >= 0 && newIndex !== historyIndex) {
             setHistoryIndex(newIndex);
@@ -440,7 +458,11 @@ function ChatInput(
           const newIndex = Math.max(historyIndex - 1, -1);
           if (newIndex !== historyIndex) {
             setHistoryIndex(newIndex);
-            const newText = newIndex >= 0 ? history[newIndex] : '';
+
+            const newText =
+              newIndex >= 0
+                ? history[newIndex]
+                : draftStorage.get(`${channel}_temp`) || '';
             setDraftValue(newText);
 
             setTimeout(() => {
@@ -453,9 +475,8 @@ function ChatInput(
           }
         }
       } else if (evt.key === 'Tab') {
-        evt.preventDefault();
-
         if (suggestions.length > 0) {
+          evt.preventDefault();
           applySuggestion(suggestions[activeSuggestion]);
         } else {
           const cursor = inputRef.current.selectionStart;
@@ -466,6 +487,8 @@ function ChatInput(
             const match = textBeforeCursor.match(/(?:^|\s)(@\S+)$/);
 
             if (match) {
+              evt.preventDefault();
+
               const prefix = match[1].toLowerCase();
               const startIndex = cursor - match[1].length;
 
@@ -488,6 +511,7 @@ function ChatInput(
               }
             }
           } else {
+            evt.preventDefault();
             mState.currentIndex =
               (mState.currentIndex + 1) % mState.matches.length;
           }
@@ -646,10 +670,12 @@ function ChatInput(
         doToggle={() => setIsPreviewOpen(false)}
         wide
       >
-        <PreviewModal
-          text={parseMessage(inputValue.trim())}
-          title={previewTitle}
-        />
+        {isPreviewOpen && (
+          <PreviewModal
+            text={parseMessage(inputValue.trim())}
+            title={previewTitle}
+          />
+        )}
       </Modal>
     </Container>
   );

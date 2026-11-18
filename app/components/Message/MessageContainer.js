@@ -11,6 +11,7 @@ const MessageContainer = styled.div.attrs({ className: 'message' })`
   @media (width >= 768px) {
     flex-direction: row;
     align-items: stretch;
+    min-height: 24px;
   }
 `;
 

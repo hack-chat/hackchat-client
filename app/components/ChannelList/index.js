@@ -25,7 +25,7 @@ function ChannelList({ channels, onLeaveChannel }) {
   }
 
   const handleRowClick = (channel) => {
-    navigate(`/?${channel}`);
+    navigate(`/?${encodeURIComponent(channel)}`);
   };
 
   const handleLeaveClick = (e, channel) => {

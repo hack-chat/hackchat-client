@@ -17,7 +17,6 @@ import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import DOMPurify from 'dompurify';
 import {
   PublicKey,
   Transaction,
@@ -42,7 +41,6 @@ import {
   inviteUser,
   muteUser,
   unmuteUser,
-  uwuifyUser,
   leaveChannel,
   clearChannel,
   clearAuthReqs,
@@ -154,7 +152,14 @@ const isOverScrollable = (e) => {
 
 const useUrlChannel = () => {
   const { search } = useLocation();
-  return useMemo(() => search.substring(1), [search]);
+  return useMemo(() => {
+    const raw = search.substring(1);
+    try {
+      return decodeURIComponent(raw);
+    } catch {
+      return raw;
+    }
+  }, [search]);
 };
 
 export function HomePage({
@@ -163,6 +168,7 @@ export function HomePage({
   meta,
   onChangeChannel,
   onSendMessage,
+  onSendAuthAnswer,
   onKickUser,
   onBanUser,
   onIgnoreUser,
@@ -170,7 +176,6 @@ export function HomePage({
   onInviteUser,
   onMuteUser,
   onUnmuteUser,
-  onUwuifyUser,
   onLeaveChannel,
   isLocaleModalOpen,
   onCloseLocaleModal,
@@ -322,10 +327,22 @@ export function HomePage({
 
   const [isWalletModalOpen, setWalletModalOpen] = useState(false);
   const [externalUrlToWarn, setExternalUrlToWarn] = useState(null);
-  const [suppressLinkWarning, setSuppressLinkWarning] = useState(false);
+  const [suppressLinkWarning, setSuppressLinkWarningState] = useState(
+    () => sessionStorage.getItem('suppressLinkWarning') === 'true',
+  );
+  const setSuppressLinkWarning = useCallback((val) => {
+    sessionStorage.setItem('suppressLinkWarning', val);
+    setSuppressLinkWarningState(val);
+  }, []);
   const [tempSuppressCheckbox, setTempSuppressCheckbox] = useState(false);
   const [txToWarn, setTxToWarn] = useState(null);
-  const [suppressTxWarning, setSuppressTxWarning] = useState(false);
+  const [suppressTxWarning, setSuppressTxWarningState] = useState(
+    () => sessionStorage.getItem('suppressTxWarning') === 'true',
+  );
+  const setSuppressTxWarning = useCallback((val) => {
+    sessionStorage.setItem('suppressTxWarning', val);
+    setSuppressTxWarningState(val);
+  }, []);
   const [tempSuppressTxCheckbox, setTempSuppressTxCheckbox] = useState(false);
   const [showSlowWarning, setShowSlowWarning] = useState(false);
   const [showResetButton, setShowResetButton] = useState(false);
@@ -334,7 +351,7 @@ export function HomePage({
   const [isFocused, setIsFocused] = useState(true);
   const [unreadCounts, setUnreadCounts] = useState({});
 
-  const processedIndicesRef = useRef({});
+  const lastProcessedTimeRef = useRef({});
   const channelAtBottomRef = useRef({});
   const captchaInputRef = useRef(null);
   const passwordInputRef = useRef(null);
@@ -346,8 +363,6 @@ export function HomePage({
     messages.publicChannelsHeader,
   );
   const currentGithub = intl.formatMessage(messages.currentGithub);
-  // const legacyGithub = intl.formatMessage(messages.legacyGithub);
-  // const thirdParty = intl.formatMessage(messages.thirdParty);
   const siwText = intl.formatMessage(messages.siwText);
   const siwFinish = intl.formatMessage(messages.siwFinish);
   const cancelText = intl.formatMessage(messages.cancelText);
@@ -393,14 +408,15 @@ export function HomePage({
   }, []);
 
   const totalUnread = useMemo(
-    () => Object.values(unreadCounts).reduce((acc, val) => acc + val, 0),
-    [unreadCounts],
+    () =>
+      Object.entries(unreadCounts).reduce((acc, [chan, val]) => {
+        if (channelData && channelData[chan]) {
+          return acc + val;
+        }
+        return acc;
+      }, 0),
+    [unreadCounts, channelData],
   );
-
-  useEffect(() => {
-    document.title =
-      totalUnread > 0 ? `(${totalUnread}) ${baseTitle}` : baseTitle;
-  }, [totalUnread, baseTitle]);
 
   const handleAtBottomChange = useCallback(
     (chan, isAtBottom) => {
@@ -438,43 +454,56 @@ export function HomePage({
 
       Object.keys(channelData).forEach((chan) => {
         const msgs = channelData[chan].messages || [];
-        const lastIdx = processedIndicesRef.current[chan] || 0;
 
-        if (msgs.length > lastIdx) {
-          if (lastIdx === 0) {
-            processedIndicesRef.current[chan] = msgs.length;
-          } else {
-            let newMissed = 0;
-            for (let i = lastIdx; i < msgs.length; i++) {
-              const msg = msgs[i];
+        if (msgs.length === 0) {
+          lastProcessedTimeRef.current[chan] = 0;
+          return;
+        }
 
-              if (
-                msg &&
-                (msg.type === 'chat' ||
-                  msg.type === 'whisper' ||
-                  msg.type === 'emote')
-              ) {
-                newMissed++;
-              }
-            }
-            processedIndicesRef.current[chan] = msgs.length;
+        const lastTime = lastProcessedTimeRef.current[chan] || 0;
+        let latestTime = lastTime;
+        let newMissed = 0;
 
-            if (newMissed > 0) {
-              const isAtBottom = channelAtBottomRef.current[chan] !== false;
-              const isLookingAtIt = isFocused && channel === chan && isAtBottom;
+        for (let i = msgs.length - 1; i >= 0; i--) {
+          const msg = msgs[i];
+          const msgTime = msg.data?.time || 0;
 
-              if (!isLookingAtIt) {
-                next[chan] = (next[chan] || 0) + newMissed;
-                hasChanges = true;
-              }
-            }
+          if (msgTime <= lastTime) break;
+
+          if (
+            msg.type === 'chat' ||
+            msg.type === 'whisper' ||
+            msg.type === 'emote'
+          ) {
+            newMissed++;
+          }
+          if (msgTime > latestTime) {
+            latestTime = msgTime;
+          }
+        }
+
+        if (lastTime === 0) {
+          lastProcessedTimeRef.current[chan] = latestTime;
+        } else if (newMissed > 0) {
+          lastProcessedTimeRef.current[chan] = latestTime;
+
+          const isAtBottom = channelAtBottomRef.current[chan] !== false;
+          const isLookingAtIt =
+            isFocused &&
+            channel === chan &&
+            isAtBottom &&
+            channelFromUrl === chan;
+
+          if (!isLookingAtIt) {
+            next[chan] = (next[chan] || 0) + newMissed;
+            hasChanges = true;
           }
         }
       });
 
       return hasChanges ? next : prev;
     });
-  }, [channelData, isFocused, channel]);
+  }, [channelData, isFocused, channel, channelFromUrl]);
 
   useEffect(() => {
     let warningTimer;
@@ -536,7 +565,6 @@ export function HomePage({
       const inviteMatch = commandText.match(/^\/invite @(.+)/);
       const muzzleMatch = commandText.match(/^\/muzzle @(.+)/);
       const unmuzzleMatch = commandText.match(/^\/unmuzzle @(.+)/);
-      const uwuifyMatch = commandText.match(/^\/uwuify @(.+)/);
 
       if (
         kickMatch ||
@@ -545,8 +573,7 @@ export function HomePage({
         unignoreMatch ||
         inviteMatch ||
         muzzleMatch ||
-        unmuzzleMatch ||
-        uwuifyMatch
+        unmuzzleMatch
       ) {
         const username =
           (kickMatch && kickMatch[1]) ||
@@ -555,8 +582,7 @@ export function HomePage({
           (unignoreMatch && unignoreMatch[1]) ||
           (inviteMatch && inviteMatch[1]) ||
           (muzzleMatch && muzzleMatch[1]) ||
-          (unmuzzleMatch && unmuzzleMatch[1]) ||
-          (uwuifyMatch && uwuifyMatch[1]);
+          (unmuzzleMatch && unmuzzleMatch[1]);
 
         const users = channelUsersRef.current;
 
@@ -566,9 +592,9 @@ export function HomePage({
           return;
         }
 
-        const targetUser = Object.values(users).find(
-          (u) => u.username === username,
-        );
+        const targetUser = Object.values(users)
+          .filter((u) => u.username === username)
+          .sort((a, b) => (b.online === a.online ? 0 : b.online ? -1 : 1))[0];
 
         if (targetUser) {
           if (kickMatch) {
@@ -585,8 +611,6 @@ export function HomePage({
             onMuteUser(channel, targetUser.userid);
           } else if (unmuzzleMatch) {
             onUnmuteUser(channel, targetUser.userid);
-          } else if (uwuifyMatch) {
-            onUwuifyUser(channel, targetUser.userid);
           }
         } else {
           // eslint-disable-next-line no-console
@@ -607,7 +631,6 @@ export function HomePage({
       onInviteUser,
       onMuteUser,
       onUnmuteUser,
-      onUwuifyUser,
     ],
   );
 
@@ -617,6 +640,10 @@ export function HomePage({
 
   const handleGlobalWheel = useCallback(
     (e) => {
+      if (!e.currentTarget.contains(e.target)) {
+        return;
+      }
+
       if (
         isJoinModalOpen ||
         isLocaleModalOpen ||
@@ -668,13 +695,13 @@ export function HomePage({
   useEffect(() => {
     const handleGlobalKeydown = (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'f') {
-        e.preventDefault();
-
-        setIsSimpleSearchOpen(true);
-
-        setTimeout(() => {
-          window.dispatchEvent(new CustomEvent('app:focus-simple-search'));
-        }, 50);
+        if (showChatRef.current) {
+          e.preventDefault();
+          setIsSimpleSearchOpen(true);
+          setTimeout(() => {
+            window.dispatchEvent(new CustomEvent('app:focus-simple-search'));
+          }, 50);
+        }
       }
     };
 
@@ -693,17 +720,28 @@ export function HomePage({
     }
   };
 
+  const closeCaptcha = useCallback(() => {
+    setChallengeCaptcha('');
+    onClearAuthReqs();
+  }, [onClearAuthReqs]);
+
+  const closePassword = useCallback(() => {
+    setChallengePassword('');
+    onClearAuthReqs();
+  }, [onClearAuthReqs]);
+
   const publicChannels = useMemo(() => {
     const sortedChannels = [...meta.channels].sort((a, b) => b.count - a.count);
 
     return sortedChannels.map((ch) => {
-      const cleanName = DOMPurify.sanitize(ch.name);
+      const rawName = ch.name;
+      const encodedName = encodeURIComponent(rawName);
       return (
         <PublicChannelButton
-          key={`pchan-${cleanName}`}
-          onClick={() => navigate(`/?${cleanName}`)}
+          key={`pchan-${rawName}`}
+          onClick={() => navigate(`/?${encodedName}`)}
         >
-          <b>?{cleanName}</b>
+          <b>?{rawName}</b>
           <i>
             {ch.count} <FaUser />
           </i>
@@ -712,11 +750,8 @@ export function HomePage({
     });
   }, [meta.channels, navigate]);
 
-  const showChat = Boolean(
-    channel && channelData && channelData[channel] && channelFromUrl,
-  );
-
-  let homepageTitle = baseTitle;
+  let homepageTitle =
+    totalUnread > 0 ? `(${totalUnread}) ${baseTitle}` : baseTitle;
 
   const myUser = channelData?.[channel]?.users
     ? Object.values(channelData[channel].users).find((u) => u.mine)
@@ -1039,6 +1074,19 @@ export function HomePage({
     }
   }, [txToWarn]);
 
+  const showChat = Boolean(
+    channel &&
+    typeof channel === 'string' &&
+    channelFromUrl === channel &&
+    channelData &&
+    channelData[channel],
+  );
+
+  const showChatRef = useRef(false);
+  useEffect(() => {
+    showChatRef.current = showChat;
+  }, [showChat]);
+
   return (
     <MainContainer onWheel={handleGlobalWheel}>
       <Helmet>
@@ -1317,12 +1365,12 @@ export function HomePage({
         </ModalActions>
       </Modal>
 
-      <Modal isOpen={!!pendingCaptcha} doToggle={onClearAuthReqs}>
+      <Modal doToggle={closeCaptcha} isOpen={!!pendingCaptcha}>
         <form
           onSubmit={(e) => {
             e.preventDefault();
             if (challengeCaptcha.trim() !== '') {
-              onSendMessage(pendingCaptcha.channel, challengeCaptcha.trim());
+              onSendAuthAnswer(pendingCaptcha.channel, challengeCaptcha.trim());
               setChallengeCaptcha('');
               onClearAuthReqs();
             }
@@ -1346,12 +1394,12 @@ export function HomePage({
         </form>
       </Modal>
 
-      <Modal isOpen={!!pendingPasswordReq} doToggle={onClearAuthReqs}>
+      <Modal doToggle={closePassword} isOpen={!!pendingPasswordReq}>
         <form
           onSubmit={(e) => {
             e.preventDefault();
             if (challengePassword !== '') {
-              onSendMessage(pendingPasswordReq.channel, challengePassword);
+              onSendAuthAnswer(pendingPasswordReq.channel, challengePassword);
               setChallengePassword('');
               onClearAuthReqs();
             }
@@ -1394,6 +1442,7 @@ HomePage.propTypes = {
   meta: PropTypes.object,
   onChangeChannel: PropTypes.func,
   onSendMessage: PropTypes.func,
+  onSendAuthAnswer: PropTypes.func,
   onKickUser: PropTypes.func,
   onBanUser: PropTypes.func,
   onIgnoreUser: PropTypes.func,
@@ -1401,7 +1450,6 @@ HomePage.propTypes = {
   onInviteUser: PropTypes.func,
   onMuteUser: PropTypes.func,
   onUnmuteUser: PropTypes.func,
-  onUwuifyUser: PropTypes.func,
   onLeaveChannel: PropTypes.func,
   isLocaleModalOpen: PropTypes.bool,
   onCloseLocaleModal: PropTypes.func,
@@ -1454,6 +1502,8 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
   return {
     onChangeChannel: (channelName) => dispatch(changeChannel(channelName)),
+    onSendAuthAnswer: (channel, message) =>
+      dispatch(sendChat(channel, message)),
     onSendMessage: (channel, message) => {
       // bet there is a better spot for these. . .
       if (message.trim() === '/clear') {
@@ -1474,7 +1524,6 @@ export function mapDispatchToProps(dispatch) {
     onInviteUser: (channel, userid) => dispatch(inviteUser(channel, userid)),
     onMuteUser: (channel, user) => dispatch(muteUser(channel, user)),
     onUnmuteUser: (channel, user) => dispatch(unmuteUser(channel, user)),
-    onUwuifyUser: (channel, user) => dispatch(uwuifyUser(channel, user)),
     onLeaveChannel: (channel) => dispatch(leaveChannel(channel)),
     onCloseLocaleModal: () => dispatch(closeLocaleModal()),
     onOpenLocaleModal: () => dispatch(openLocaleModal()),

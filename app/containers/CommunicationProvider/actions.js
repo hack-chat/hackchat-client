@@ -19,7 +19,6 @@ import {
   BAN_USER,
   MUTE_USER,
   UNMUTE_USER,
-  UWUIFY_USER,
   CLEAR_CHANNEL,
   CLEAR_AUTH_REQS,
   CHANGE_USERNAME,
@@ -241,20 +240,6 @@ export function muteUser(channel, user) {
 export function unmuteUser(channel, user) {
   return {
     type: UNMUTE_USER,
-    channel,
-    user,
-  };
-}
-
-/**
- * Uwuify target user
- * @param  {string} channel Target channel
- * @param  {number} user Target user to uwuify
- * @return {object} An action object with a type of UWUIFY_USER
- */
-export function uwuifyUser(channel, user) {
-  return {
-    type: UWUIFY_USER,
     channel,
     user,
   };

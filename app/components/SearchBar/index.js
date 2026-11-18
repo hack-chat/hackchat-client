@@ -62,10 +62,14 @@ export default function SearchBar({
       window.removeEventListener('app:focus-simple-search', handleFocusEvent);
   }, []);
 
-  const handleKeyDown = (e) => {
+  const handleWrapperKeyDown = (e) => {
     if (e.key === 'Escape') {
       onClose();
-    } else if (e.key === 'Enter') {
+    }
+  };
+
+  const handleInputKeyDown = (e) => {
+    if (e.key === 'Enter') {
       if (e.shiftKey) {
         onPrevMatch();
       } else {
@@ -75,7 +79,7 @@ export default function SearchBar({
   };
 
   return (
-    <Wrapper onKeyDown={handleKeyDown}>
+    <Wrapper onKeyDown={handleWrapperKeyDown}>
       <NickPlaceholder />
       <Content>
         <TopRow>
@@ -90,6 +94,7 @@ export default function SearchBar({
             ref={inputRef}
             value={searchValue}
             onChange={(e) => onSearchChange(e.target.value)}
+            onKeyDown={handleInputKeyDown}
             placeholder={intl.formatMessage(messages.searchChat)}
           />
 

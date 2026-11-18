@@ -6,7 +6,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-import DOMPurify from 'dompurify';
 
 import messages from './messages';
 import InviteStyle from './InviteStyle';
@@ -27,9 +26,7 @@ const InviteMessage = ({ payload }) => {
         values={{
           ...values,
           targetChannel: (
-            <Link to={`/?${DOMPurify.sanitize(targetChannel)}`}>
-              ?{DOMPurify.sanitize(targetChannel)}
-            </Link>
+            <Link to={`/?${targetChannel}`}>?{targetChannel}</Link>
           ),
         }}
       />

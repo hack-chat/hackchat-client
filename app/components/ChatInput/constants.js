@@ -109,7 +109,6 @@ export const COMMANDS = [
   // { command: 'invite', params: ['username', '<channel>'] },
   // { command: 'muzzle', params: ['username'] },
   // { command: 'unmuzzle', params: ['username'] },
-  // { command: 'uwuify', params: ['username'] },
   // { command: 'ignore', params: ['username'] },
   // { command: 'unignore', params: ['username'] },
 ];

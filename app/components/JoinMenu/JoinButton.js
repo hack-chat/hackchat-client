@@ -51,7 +51,7 @@ const getPointerEvents = (props) => {
 };
 
 export default styled.button.attrs({
-  type: 'button',
+  type: 'submit',
 })`
   display: inline-flex;
   align-items: center;

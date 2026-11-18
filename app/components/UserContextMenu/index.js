@@ -150,9 +150,6 @@ export function UserContextMenu({
       case 'unmuzzle':
         commandString = `/unmuzzle @${username}`;
         break;
-      case 'uwuify':
-        commandString = `/uwuify @${username}`;
-        break;
       case 'setlevel':
         commandString = `/setlevel @${username} `;
         break;
@@ -208,9 +205,6 @@ export function UserContextMenu({
       </ContextMenuItem>
       <ContextMenuItem onClick={() => handleContextMenuClick('change-flair')}>
         {intl.formatMessage(messages.changeFlair)}
-      </ContextMenuItem>
-      <ContextMenuItem onClick={() => handleContextMenuClick('uwuify')}>
-        {intl.formatMessage(messages.uwuify)}
       </ContextMenuItem>
     </>
   );

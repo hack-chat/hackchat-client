@@ -14,7 +14,7 @@ import { linkify } from 'remarkable/linkify';
 import DOMPurify from 'dompurify';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
-import { InlineMath, BlockMath } from 'react-katex';
+import katex from 'katex';
 
 import { selectSettingsPageDomain } from '../../containers/SettingsPage/selectors';
 
@@ -59,13 +59,23 @@ const isSafeHref = (href) =>
 const getDomainState = (urlStr, whitelist) => {
   try {
     const url = new URL(urlStr);
-    const host = url.hostname;
+    const host = url.hostname.toLowerCase();
+    const sortedWhitelist = [...whitelist].sort((a, b) => {
+      const aLen = a.domain ? a.domain.length : 0;
+      const bLen = b.domain ? b.domain.length : 0;
 
-    const match = whitelist.find(
-      (d) => host === d.domain || host.endsWith(`.${d.domain}`),
-    );
+      return bLen - aLen;
+    });
 
-    if (match) {
+    const match = sortedWhitelist.find((d) => {
+      if (!d.domain) return false;
+
+      const dLower = d.domain.trim().toLowerCase();
+
+      return host === dLower || host.endsWith(`.${dLower}`);
+    });
+
+    if (match && typeof match.state === 'number') {
       return match.state;
     }
 
@@ -122,7 +132,7 @@ const MarkdownImage = ({ alt, src, title }) => {
   const domainState = getDomainState(src, domainWhitelist);
 
   if (domainState === 0) {
-    return <span>{alt || src}</span>;
+    return <span>{alt || src || '\u00A0'}</span>;
   }
 
   if (domainState === 1) {
@@ -157,8 +167,21 @@ const KatexInlineComponent = ({ content }) => {
   const allowKatex = useSelector(
     (state) => selectSettingsPageDomain(state).allowKatex ?? true,
   );
-  if (!allowKatex) return <span>${content}$</span>;
-  return <InlineMath>{content}</InlineMath>;
+
+  const isCurrency =
+    /^\d+$/.test(content.trim()) || /^\s/.test(content) || /\s$/.test(content);
+
+  if (!allowKatex || isCurrency) return <span>${content}$</span>;
+
+  try {
+    const html = katex.renderToString(content, {
+      displayMode: false,
+      throwOnError: false,
+    });
+    return <span dangerouslySetInnerHTML={{ __html: html }} />;
+  } catch {
+    return <span>${content}$</span>;
+  }
 };
 
 const KatexBlockComponent = ({ content }) => {
@@ -166,7 +189,16 @@ const KatexBlockComponent = ({ content }) => {
     (state) => selectSettingsPageDomain(state).allowKatex ?? true,
   );
   if (!allowKatex) return <span>$${content}$$</span>;
-  return <BlockMath>{content}</BlockMath>;
+
+  try {
+    const html = katex.renderToString(content, {
+      displayMode: true,
+      throwOnError: false,
+    });
+    return <span dangerouslySetInnerHTML={{ __html: html }} />;
+  } catch {
+    return <span>$${content}$$</span>;
+  }
 };
 
 const ExternalCodeComponent = ({ content, params: language }) => {
@@ -203,7 +235,13 @@ const ExternalCodeComponent = ({ content, params: language }) => {
   return '';
 };
 
-const MarkdownElement = ({ tag: Tag, prefix = '', suffix = '', children }) => {
+const MarkdownElement = ({
+  tag: Tag,
+  prefix = '',
+  suffix = '',
+  children,
+  ...props
+}) => {
   const allowMarkdown = useSelector(
     (state) => selectSettingsPageDomain(state).allowMarkdown ?? true,
   );
@@ -218,17 +256,17 @@ const MarkdownElement = ({ tag: Tag, prefix = '', suffix = '', children }) => {
     );
   }
 
-  return <Tag>{children}</Tag>;
+  return <Tag {...props}>{children}</Tag>;
 };
 
 MessageFormatter.renderer = new RemarkableReactRenderer({
   components: {
-    a: MarkdownLink,
-    img: MarkdownImage,
-    pre: ExternalCodeComponent,
+    a: (props) => <MarkdownElement tag={MarkdownLink} {...props} />,
+    img: (props) => <MarkdownElement tag={MarkdownImage} {...props} />,
+    pre: (props) => <MarkdownElement tag={ExternalCodeComponent} {...props} />,
     katex_block: KatexBlockComponent,
     katex_inline: KatexInlineComponent,
-    spoiler: ({ content }) => <Spoiler>{content}</Spoiler>,
+    spoiler: ({ children }) => <Spoiler>{children}</Spoiler>,
     strong: (props) => (
       <MarkdownElement tag="strong" prefix="**" suffix="**" {...props} />
     ),
@@ -248,7 +286,7 @@ MessageFormatter.renderer = new RemarkableReactRenderer({
       <MarkdownElement tag="blockquote" prefix="> " {...props} />
     ),
     code: (props) => (
-      <MarkdownElement tag="code" prefix="\`" suffix="\`" {...props} />
+      <MarkdownElement tag="code" prefix={'`'} suffix={'`'} {...props} />
     ),
     p: ({ children }) => {
       const alteredChildren = [];
@@ -274,8 +312,8 @@ MessageFormatter.renderer = new RemarkableReactRenderer({
                 if (cleanChannel.length > 1 && /[^?]/.test(cleanChannel)) {
                   const key = `invite-${i}-${k}`;
                   alteredChildren.push(
-                    <Link key={key} to={`/${DOMPurify.sanitize(cleanChannel)}`}>
-                      {DOMPurify.sanitize(cleanChannel)}
+                    <Link key={key} to={`/${cleanChannel}`}>
+                      {cleanChannel}
                     </Link>,
                   );
 
@@ -322,7 +360,7 @@ const katexRule = ({ src, tokens }) => {
 const spoilerRule = ({ src, tokens }) => {
   if (src.indexOf('||') === -1) return;
 
-  for (let i = 0, j = tokens.length; i < j; i += 1) {
+  for (let i = 0; i < tokens.length; i += 1) {
     if (tokens[i].type === 'inline') {
       tokens[i].children = parseSpoiler(tokens[i].children);
     }
@@ -333,92 +371,105 @@ const parseSpoiler = (children) => {
   const newChildren = [];
   const delimiter = '||';
 
-  for (let i = 0, j = children.length; i < j; i += 1) {
-    if (children[i].type === 'text') {
-      const content = children[i].content;
-      const parts = content.split(delimiter);
+  let inSpoiler = false;
+  let spoilerChildren = [];
+  let buffer = '';
 
-      if (parts.length === 1) {
-        newChildren.push(children[i]);
-        continue;
-      }
-
-      for (let k = 0; k < parts.length; k += 1) {
-        if (k % 2 === 1) {
-          newChildren.push({
-            type: 'spoiler',
-            content: parts[k],
-          });
-        } else {
-          if (parts[k] !== '') {
-            newChildren.push({
-              type: 'text',
-              content: parts[k],
-            });
-          }
-        }
-      }
-    } else {
-      newChildren.push(children[i]);
+  const pushBuffer = (targetArray) => {
+    if (buffer !== '') {
+      targetArray.push({ type: 'text', content: buffer });
+      buffer = '';
     }
+  };
+
+  for (let i = 0; i < children.length; i += 1) {
+    const child = children[i];
+
+    if (child.type === 'text') {
+      const content = child.content;
+      let start = 0;
+      let idx = content.indexOf(delimiter);
+
+      while (idx !== -1) {
+        buffer += content.slice(start, idx);
+        pushBuffer(inSpoiler ? spoilerChildren : newChildren);
+
+        if (inSpoiler) {
+          newChildren.push({ type: 'spoiler', children: spoilerChildren });
+          spoilerChildren = [];
+          inSpoiler = false;
+        } else {
+          inSpoiler = true;
+        }
+
+        start = idx + 2;
+        idx = content.indexOf(delimiter, start);
+      }
+
+      buffer += content.slice(start);
+      pushBuffer(inSpoiler ? spoilerChildren : newChildren);
+    } else {
+      pushBuffer(inSpoiler ? spoilerChildren : newChildren);
+      if (inSpoiler) {
+        spoilerChildren.push(child);
+      } else {
+        newChildren.push(child);
+      }
+    }
+  }
+
+  if (inSpoiler) {
+    newChildren.push({ type: 'text', content: delimiter });
+    newChildren.push(...spoilerChildren);
   }
 
   return newChildren;
 };
 
 const parseKatex = (children) => {
+  if (!children || !Array.isArray(children)) return children;
+
   let buffer = '';
-  let content = '';
-  let char = '';
   const katexDelim = '$';
   let inBlock = false;
   let inInline = false;
   const newChildren = [];
+  let pendingNonTextTokens = [];
 
   for (let i = 0, j = children.length; i < j; i += 1) {
-    if (children[i].type === 'text') {
-      content = children[i].content;
-      for (let o = 0, p = content.length; o <= p; o += 1) {
-        char = content.charAt(o);
-        if (o === p && inInline === false && inBlock === false) {
-          if (buffer !== '') {
-            newChildren.push({
-              type: 'text',
-              content: buffer,
-            });
+    const child = children[i];
 
-            buffer = '';
-          }
-        }
+    if (child.type === 'text') {
+      const content = child.content || '';
+
+      for (let o = 0, p = content.length; o < p; o += 1) {
+        const char = content.charAt(o);
+
         if (char === katexDelim) {
           if (inBlock) {
-            newChildren.push({
-              type: 'katex_block',
-              content: buffer,
-            });
-
-            buffer = '';
-            o += 1;
-            inBlock = false;
+            if (o + 1 < p && content.charAt(o + 1) === katexDelim) {
+              newChildren.push({ type: 'katex_block', content: buffer });
+              buffer = '';
+              o += 1;
+              inBlock = false;
+              pendingNonTextTokens = [];
+            } else {
+              buffer += char;
+            }
           } else if (inInline) {
-            newChildren.push({
-              type: 'katex_inline',
-              content: buffer,
-            });
-
+            newChildren.push({ type: 'katex_inline', content: buffer });
             buffer = '';
             inInline = false;
+            pendingNonTextTokens = [];
           } else {
-            newChildren.push({
-              type: 'text',
-              content: buffer,
-            });
+            if (buffer !== '') {
+              newChildren.push({ type: 'text', content: buffer });
+              buffer = '';
+            }
 
-            buffer = '';
-
-            if (content.charAt(o + 1) === katexDelim) {
-              o += 1;
+            if (o + 1 < p && content.charAt(o + 1) === katexDelim) {
               inBlock = true;
+              o += 1;
             } else {
               inInline = true;
             }
@@ -427,23 +478,26 @@ const parseKatex = (children) => {
           buffer += char;
         }
       }
-    } else if (children[i].type === 'hardbreak' && (inBlock || inInline)) {
+
+      if (!inBlock && !inInline && buffer !== '') {
+        newChildren.push({ type: 'text', content: buffer });
+        buffer = '';
+      }
+    } else if (child.type === 'hardbreak' && (inBlock || inInline)) {
       buffer += ' \\\\ ';
-    } else if (inBlock === false && inInline === false) {
-      newChildren.push(children[i]);
+    } else if (inBlock || inInline) {
+      pendingNonTextTokens.push(child);
+    } else {
+      newChildren.push(child);
     }
   }
 
   if (inBlock) {
-    newChildren.push({
-      type: 'text',
-      content: `$$${buffer}`,
-    });
+    newChildren.push({ type: 'text', content: `$$${buffer}` });
+    newChildren.push(...pendingNonTextTokens);
   } else if (inInline) {
-    newChildren.push({
-      type: 'text',
-      content: `$${buffer}`,
-    });
+    newChildren.push({ type: 'text', content: `$${buffer}` });
+    newChildren.push(...pendingNonTextTokens);
   }
 
   return newChildren;

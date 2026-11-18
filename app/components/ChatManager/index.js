@@ -12,7 +12,6 @@ import React, {
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import { compose } from 'redux';
-import { Virtuoso } from 'react-virtuoso';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaBars } from 'react-icons/fa';
 import { BiArrowToBottom } from 'react-icons/bi';
@@ -33,8 +32,9 @@ import MobileMenuToggle from './MobileMenuToggle';
 import ChannelName from './ChannelName';
 import MobileTopBarContent from './MobileTopBarContent';
 import ScrollToBottomButton from './ScrollToBottomButton';
+import ChannelDisplay from './ChannelDisplay';
 
-const EMPTY_USER = {};
+const EMPTY_USER = Object.create(null);
 
 export function ChatManager({
   channel,
@@ -90,12 +90,13 @@ export function ChatManager({
     if (!searchQuery && !mentionsOnly) return [];
 
     let activeQuery = searchQuery.toLowerCase();
-
+    let mentionRegex = null;
     if (mentionsOnly && myUsername) {
-      activeQuery = `@${myUsername.toLowerCase()}`;
+      mentionRegex = new RegExp(
+        `(^|\\s|\\W)@${myUsername.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}($|\\s|\\W)`,
+        'i',
+      );
     }
-
-    if (!activeQuery) return [];
 
     const matches = [];
     currentChannelData.messages.forEach((msg, index) => {
@@ -131,8 +132,15 @@ export function ChatManager({
           rawString = extractText(msg.data.content);
         }
 
-        if (rawString && rawString.toLowerCase().includes(activeQuery)) {
-          matches.push(index + 1);
+        if (rawString) {
+          if (mentionRegex) {
+            if (mentionRegex.test(rawString)) matches.push(index + 1);
+          } else if (
+            activeQuery &&
+            rawString.toLowerCase().includes(activeQuery)
+          ) {
+            matches.push(index + 1);
+          }
         }
       }
     });
@@ -180,9 +188,11 @@ export function ChatManager({
   }, [matchingIndices, activeMatchCursor]);
 
   useEffect(() => {
-    setActiveMatchCursor(0);
-
-    if (matchingIndices.length > 0) {
+    if (
+      isSimpleSearchOpen &&
+      matchingIndices.length > 0 &&
+      activeMatchCursor === 0
+    ) {
       setTimeout(() => {
         virtuosoRef.current?.scrollToIndex({
           index: matchingIndices[0],
@@ -191,16 +201,23 @@ export function ChatManager({
         });
       }, 0);
     }
-  }, [searchQuery, mentionsOnly, matchingIndices]);
+  }, [searchQuery, mentionsOnly, isSimpleSearchOpen]);
+
+  useEffect(() => {
+    if (!isSimpleSearchOpen) {
+      setSearchQuery('');
+      setMentionsOnly(false);
+    }
+  }, [isSimpleSearchOpen]);
 
   const handleCloseSearch = () => {
-    setSearchQuery('');
-    setMentionsOnly(false);
     toggleSimpleSearch();
   };
 
   const handleChatClick = (e) => {
     const linkTarget = e.target.closest('a');
+
+    if (e.type === 'auxclick' && e.button !== 1) return;
 
     if (
       linkTarget &&
@@ -318,7 +335,7 @@ export function ChatManager({
 
   const enrichedMessages = useMemo(() => {
     let lastUserId = null;
-    let stripe = false;
+    let currentStripe = false;
 
     const mappedMessages = currentChannelData.messages.map(
       (msg, index, allMessages) => {
@@ -339,16 +356,25 @@ export function ChatManager({
           msg.type === 'chat' &&
           previousUserId === currentUserId;
 
-        if (currentUserId && currentUserId !== lastUserId) {
-          stripe = !stripe;
+        if (currentUserId !== lastUserId) {
+          if (lastUserId !== null) {
+            currentStripe = !currentStripe;
+          } else {
+            currentStripe = true;
+          }
+
           lastUserId = currentUserId;
         }
+
+        const fallbackId = msg.data.id || msg.data.time || 'msg';
+        const stableKey = `${fallbackId}-${index}`;
 
         return {
           ...msg,
           computedUser: user,
           isExtended,
-          stripe,
+          stripe: currentStripe,
+          stableKey,
         };
       },
     );
@@ -359,6 +385,7 @@ export function ChatManager({
       computedUser: EMPTY_USER,
       isExtended: false,
       stripe: false,
+      stableKey: 'welcome-msg',
     };
 
     return [welcomeMessageObj, ...mappedMessages];
@@ -381,10 +408,9 @@ export function ChatManager({
       if (arrayIndex !== -1) {
         processedSearchTargetRef.current = searchTargetId;
 
-        const offset = Math.max(0, 1000000 - enrichedMessages.length);
-        const targetIndex = arrayIndex + offset;
+        const targetIndex = arrayIndex;
 
-        setExternalHighlightIndex(targetIndex);
+        setExternalHighlightIndex(searchTargetId);
 
         setTimeout(() => {
           if (virtuosoRef.current) {
@@ -412,14 +438,14 @@ export function ChatManager({
   }, [searchTargetId, enrichedMessages, isActive, location, navigate]);
 
   const prevIsActiveRef = useRef(isActive);
-  const prevLenRef = useRef(enrichedMessages.length);
+  const prevMessagesRef = useRef(enrichedMessages);
 
   useEffect(() => {
     const channelSwitched = isActive && !prevIsActiveRef.current;
-    const newMessagesArrived =
-      isActive && enrichedMessages.length > prevLenRef.current;
+    const messagesChanged =
+      isActive && enrichedMessages !== prevMessagesRef.current;
 
-    if (channelSwitched || newMessagesArrived) {
+    if (channelSwitched || messagesChanged) {
       if (
         isAtBottomRef.current &&
         virtuosoRef.current &&
@@ -440,13 +466,8 @@ export function ChatManager({
     }
 
     prevIsActiveRef.current = isActive;
-    prevLenRef.current = enrichedMessages.length;
-  }, [
-    isActive,
-    enrichedMessages.length,
-    isSimpleSearchOpen,
-    externalHighlightIndex,
-  ]);
+    prevMessagesRef.current = enrichedMessages;
+  }, [isActive, enrichedMessages, isSimpleSearchOpen, externalHighlightIndex]);
 
   const myPermissionLevel = useMemo(() => {
     const me = Object.values(currentChannelData.users).find(
@@ -487,6 +508,7 @@ export function ChatManager({
       translate="no"
       className="notranslate chat-log"
       onClick={handleChatClick}
+      onAuxClick={handleChatClick}
       style={{ display: isActive ? 'flex' : 'none' }}
     >
       {isMobile && (
@@ -520,7 +542,7 @@ export function ChatManager({
         />
       )}
 
-      <Virtuoso
+      <ChannelDisplay
         ref={virtuosoRef}
         scrollerRef={(element) => {
           if (externalScrollRef) {
@@ -532,7 +554,7 @@ export function ChatManager({
         defaultItemHeight={50}
         increaseViewportBy={{ top: 1200, bottom: 800 }}
         initialTopMostItemIndex={enrichedMessages.length - 1}
-        firstItemIndex={Math.max(0, 1000000 - enrichedMessages.length)}
+        firstItemIndex={10000}
         alignToBottom={true}
         followOutput={false}
         atBottomThreshold={50}
@@ -546,11 +568,17 @@ export function ChatManager({
             onAtBottomChange(channel, atBottom);
           }
         }}
+        computeItemKey={(index, msg) =>
+          msg.data?.uniqueKey || msg.stableKey || index
+        }
         context={virtuosoContext}
         components={virtuosoComponents}
         itemContent={(index, msg) => (
           <Message
-            isSearchHighlighted={index === virtuosoContext.highlightedIndex}
+            isSearchHighlighted={
+              externalHighlightIndex === msg.data?.id ||
+              (isSimpleSearchOpen && index === virtuosoContext.highlightedIndex)
+            }
             msgForm={MessageFormatter}
             handleMention={handleMenuCommand}
             handleContextMenu={handleUserContextMenu}

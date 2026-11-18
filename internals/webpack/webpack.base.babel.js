@@ -66,17 +66,27 @@ module.exports = options => {
           loader: ImageMinimizerPlugin.loader,
           enforce: "pre",
           options: {
-            minimizer: {
-              implementation: ImageMinimizerPlugin.imageminMinify,
-              options: {
-                plugins: [
-                  "imagemin-gifsicle",
-                  "imagemin-mozjpeg",
-                  "imagemin-pngquant",
-                  "imagemin-svgo",
-                ],
+            minimizer: [
+              {
+                implementation: ImageMinimizerPlugin.sharpMinify,
+                options: {
+                  encodeOptions: {
+                    jpeg: { quality: 90 },
+                    png: { quality: 90 },
+                    gif: {},
+                  },
+                },
               },
-            },
+              {
+                implementation: ImageMinimizerPlugin.svgoMinify,
+                options: {
+                  encodeOptions: {
+                    multipass: true,
+                    plugins: ["preset-default"],
+                  },
+                },
+              },
+            ],
           },
         },
         {

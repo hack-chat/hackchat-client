@@ -42,7 +42,6 @@ export const MESSAGE = 'app/CommunicationProvider/MESSAGE';
 
 export const PUB_CHANS = 'app/CommunicationProvider/PUB_CHANS';
 export const HACK_ATTEMPT = 'app/CommunicationProvider/HACK_ATTEMPT';
-export const UWUIFY_USER = 'app/CommunicationProvider/UWUIFY_USER';
 
 export const NEW_TX_REQUEST = 'app/WalletLayer/NEW_TX_REQUEST';
 

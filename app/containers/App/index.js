@@ -4,7 +4,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { ToastContainer, Slide } from 'react-toastify';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -27,6 +27,20 @@ import GlobalStyle from '../../global-styles';
 
 function App({ cachedTheme, cachedLargeMode }) {
   const [activeTheme, setActiveTheme] = useState(defaultThemeObj);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleSwitchChannel = (e) => {
+      const targetChannel = e.detail?.channel;
+      if (targetChannel) {
+        navigate(`/?${encodeURIComponent(targetChannel)}`);
+      }
+    };
+
+    window.addEventListener('app:switch-channel', handleSwitchChannel);
+    return () =>
+      window.removeEventListener('app:switch-channel', handleSwitchChannel);
+  }, [navigate]);
 
   useEffect(() => {
     let isMounted = true;

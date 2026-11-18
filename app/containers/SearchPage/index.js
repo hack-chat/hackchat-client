@@ -91,13 +91,17 @@ export function SearchPage({
   );
 
   useEffect(() => {
-    const initialSelections = {};
+    setSelectedChannels((prevSelections) => {
+      const updatedSelections = { ...prevSelections };
 
-    joinedChannels.forEach((chan) => {
-      initialSelections[chan] = true;
+      joinedChannels.forEach((chan) => {
+        if (updatedSelections[chan] === undefined) {
+          updatedSelections[chan] = true;
+        }
+      });
+
+      return updatedSelections;
     });
-
-    setSelectedChannels(initialSelections);
   }, [joinedChannels]);
 
   const handleGlobalWheel = useCallback((e) => {
@@ -155,11 +159,13 @@ export function SearchPage({
         }
 
         if (mentionsOnly && cachedUsername && matches) {
-          if (
-            !msg.data.content
-              ?.toLowerCase()
-              .includes(`@${cachedUsername.toLowerCase()}`)
-          ) {
+          const mentionRegex = new RegExp(
+            `(^|\\s|\\W)@${cachedUsername.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}($|\\s|\\W)`,
+            'i',
+          );
+          const contentStr = msg.data.content || '';
+
+          if (!mentionRegex.test(contentStr)) {
             matches = false;
           }
         }

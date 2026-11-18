@@ -29,6 +29,13 @@ import {
   ComputeBudgetProgram,
   SystemProgram,
 } from '@solana/web3.js';
+import {
+  SolanaMobileWalletAdapter,
+  createDefaultAddressSelector,
+  createDefaultAuthorizationResultCache,
+  createDefaultWalletNotFoundHandler,
+} from '@solana-mobile/wallet-adapter-mobile';
+
 import { SHOW_TOAST } from 'containers/ToastNotifier/constants';
 import {
   ADD_WALLET,
@@ -76,8 +83,87 @@ if (!window.__WALLET_CACHE__) {
 
 const WALLET_CACHE = window.__WALLET_CACHE__;
 
-const RPC_URL = `https://rpc.solanatracker.io/public`;
+const RPC_URL = `https://solana-mainnet.gateway.tatum.io/`;
 const connection = new Connection(RPC_URL, 'confirmed');
+
+const isMobileDevice = () =>
+  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent,
+  );
+
+function createMobileWalletAdapterStandardMock() {
+  const mwa = new SolanaMobileWalletAdapter({
+    addressSelector: createDefaultAddressSelector(),
+    appIdentity: {
+      name: 'HackChat',
+      uri: window.location.origin,
+      icon: 'favicon.ico',
+    },
+    authorizationResultCache: createDefaultAuthorizationResultCache(),
+    cluster: 'mainnet-beta',
+    onWalletNotFound: createDefaultWalletNotFoundHandler(),
+  });
+
+  return {
+    chains: [SOLANA_MAINNET_CHAIN],
+    name: mwa.name,
+    icon: mwa.icon,
+    version: '1.0.0',
+    features: {
+      [StandardConnect]: {
+        version: '1.0.0',
+        connect: async () => {
+          await mwa.connect();
+          return {
+            accounts: [
+              {
+                address: mwa.publicKey.toBase58(),
+                publicKey: mwa.publicKey.toBytes(),
+                chains: [SOLANA_MAINNET_CHAIN],
+                features: [],
+              },
+            ],
+          };
+        },
+      },
+      [StandardDisconnect]: {
+        version: '1.0.0',
+        disconnect: async () => {
+          await mwa.disconnect();
+        },
+      },
+      [SolanaSignAndSendTransaction]: {
+        version: '1.0.0',
+        signAndSendTransaction: async (...inputs) => {
+          const outputs = [];
+          for (const input of inputs) {
+            let tx;
+            try {
+              tx = Transaction.from(input.transaction);
+            } catch {
+              tx = VersionedTransaction.deserialize(input.transaction);
+            }
+
+            const signatureString = await mwa.sendTransaction(tx, connection);
+            outputs.push({ signature: bs58.decode(signatureString) });
+          }
+          return outputs;
+        },
+      },
+      [SolanaSignMessage]: {
+        version: '1.0.0',
+        signMessage: async (...inputs) => {
+          const outputs = [];
+          for (const input of inputs) {
+            const signature = await mwa.signMessage(input.message);
+            outputs.push({ signedMessage: input.message, signature });
+          }
+          return outputs;
+        },
+      },
+    },
+  };
+}
 
 function decodeChannelState(data) {
   const dataView = new DataView(data.buffer, data.byteOffset, data.byteLength);
@@ -415,7 +501,10 @@ function* connectWalletSaga(action) {
     console.error('An error occurred during the connect process:', e);
     yield put({ type: WAITING_ON_WALLET, waiting: false });
 
-    if (e.message === 'Connection rejected') {
+    if (
+      e.message === 'Connection rejected' ||
+      e.message === 'User declined request'
+    ) {
       yield put({
         type: SHOW_TOAST,
         payload: {
@@ -516,7 +605,8 @@ function* signMessageSaga(action) {
 
     if (
       err === 'Transaction cancelled' ||
-      err.message === 'User rejected the request.'
+      err.message === 'User rejected the request.' ||
+      err.message === 'User declined request'
     ) {
       yield put({
         type: SHOW_TOAST,
@@ -545,7 +635,11 @@ function initWalletListenerChannel() {
 
       for (const wallet of walletsArray) {
         const isSolanaWallet =
-          wallet.chains && wallet.chains.includes(SOLANA_MAINNET_CHAIN);
+          (wallet.chains &&
+            wallet.chains.some((c) => c.startsWith('solana:'))) ||
+          (wallet.features &&
+            !!wallet.features['solana:signAndSendTransaction']) ||
+          wallet.name === 'Mobile Wallet Adapter';
 
         if (!isSolanaWallet) {
           continue;
@@ -597,12 +691,27 @@ function* discoverInitialWalletsSaga() {
 
   try {
     const { get } = getWallets();
-    const initialWallets = yield call(get);
+
+    const initialWallets = [...(yield call(get))];
     const serializableWallets = [];
+
+    const discoveredSolanaWallets = initialWallets.filter(
+      (wallet) =>
+        (wallet.chains && wallet.chains.some((c) => c.startsWith('solana:'))) ||
+        (wallet.features && !!wallet.features['solana:signAndSendTransaction']),
+    );
+
+    if (discoveredSolanaWallets.length === 0 && isMobileDevice()) {
+      const mwaMock = createMobileWalletAdapterStandardMock();
+      initialWallets.push(mwaMock);
+    }
 
     for (const wallet of initialWallets) {
       const isSolanaWallet =
-        wallet.chains && wallet.chains.includes(SOLANA_MAINNET_CHAIN);
+        (wallet.chains && wallet.chains.some((c) => c.startsWith('solana:'))) ||
+        (wallet.features &&
+          !!wallet.features['solana:signAndSendTransaction']) ||
+        wallet.name === 'Mobile Wallet Adapter';
 
       if (!isSolanaWallet) {
         continue;
@@ -669,7 +778,7 @@ function* checkChannelInfoSaga(action) {
 
       infoText = `ℹ️ ?${channel}\n👑: [${shortenAddress(ownerWalletKey)}](https://solscan.io/account/${ownerWalletKey})\n🔑: [${shortenAddress(nftMintKey)}](https://solscan.io/account/${nftMintKey})\n🛡️: ${modsStr}`;
     } else {
-      infoText = `⚪ ?${channel} 🔓 ➡️ /mintchannel`;
+      infoText = `ℹ️ ?${channel} is available, use: /mintchannel`; // @todo translation
     }
 
     yield put({
